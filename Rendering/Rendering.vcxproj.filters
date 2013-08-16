@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Aven">
+      <UniqueIdentifier>{e2f5100b-4253-456c-ba6f-f8f1fb5b8053}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Common">
+      <UniqueIdentifier>{2b40c85a-cd00-4a1f-bf32-f94a09865b53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Common\Rect">
+      <UniqueIdentifier>{0fff2ffe-5eef-49b0-9ded-dde5b9d42c26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Common\Utility">
+      <UniqueIdentifier>{b998ec39-40bc-4c36-9b6a-c6d087140e7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Common\Intersection">
+      <UniqueIdentifier>{3328e821-5b85-471c-bba1-84f6922f6ddf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Engine">
+      <UniqueIdentifier>{cc64f708-ae12-4e4c-b0b5-a1baf896dc4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Engine\Rendering">
+      <UniqueIdentifier>{25d23c10-d987-4623-be39-cfb4ab5784de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Engine\Rendering\Object">
+      <UniqueIdentifier>{9ede9b9a-3fc1-44b2-a721-d3e9e2b2861b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Engine\Rendering\D3D">
+      <UniqueIdentifier>{85a96d7e-97f7-41ea-aca2-d0ba01975f60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Engine\Rendering\Director">
+      <UniqueIdentifier>{d7529660-6552-4091-a859-2977f57f99ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Engine\Rendering\Windows">
+      <UniqueIdentifier>{50f0ca3a-6f17-44e6-8b04-6c99d5270474}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Common\Math">
+      <UniqueIdentifier>{12acd288-9d8a-4867-b3b1-017bf0587cc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Common\Intersection\AABB">
+      <UniqueIdentifier>{0d4e7dd6-fb29-48d7-809e-ca3873d571b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Common\Intersection\Ray">
+      <UniqueIdentifier>{a1cb17db-b107-4261-bf0d-739ee44a49e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Common\LayerManager">
+      <UniqueIdentifier>{fc41cadf-cf98-4b22-b785-935f840fa544}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Common\TagManager">
+      <UniqueIdentifier>{af26c325-8e19-4cf6-a307-c275107989f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Engine\Rendering\Rendering">
+      <UniqueIdentifier>{c140204d-e990-49a4-b1a1-79d2750111a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Engine\Rendering\Rendering\camera">
+      <UniqueIdentifier>{9a77ae48-3801-4d89-8fc1-af47f840d4f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Engine\Rendering\Rendering\Frustum">
+      <UniqueIdentifier>{87cfb2d1-511d-4fc2-80cd-d6839f60f503}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Engine\Rendering\Rendering\SkyBox">
+      <UniqueIdentifier>{943a9e2b-ee7c-4d8a-90f2-9748fe4cc4a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Engine\Rendering\Texture Manager">
+      <UniqueIdentifier>{d254d994-bc71-4e4c-aacb-34a1196964ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Engine\Rendering\Mesh">
+      <UniqueIdentifier>{90704699-6bc7-4c8d-b35f-e56bc06af2cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Engine\Rendering\Color">
+      <UniqueIdentifier>{1caae0af-249c-4c06-b45d-2dc647aeccfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Engine\Rendering\Mesh\MeshFilter">
+      <UniqueIdentifier>{72303555-3c5b-4463-a5db-2012340d2a9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Engine\Rendering\Mesh\MeshRenderer">
+      <UniqueIdentifier>{8e5fc50b-5620-4351-9cf4-f78b61f336e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Engine\Rendering\Shader Manager">
+      <UniqueIdentifier>{af35125e-dd09-43d3-88d3-4c80fbd00e09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Engine\Rendering\Material">
+      <UniqueIdentifier>{19cf0902-3d51-4b51-aaa7-bebd655419f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Engine\Rendering\Light">
+      <UniqueIdentifier>{8c2b3cda-d8d5-4c0f-9133-44f3fb990c93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Engine\Rendering\Light\Directional">
+      <UniqueIdentifier>{0e741f4c-7e10-40d9-86bd-e0f1d0a00b7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Engine\Rendering\Light\Omni">
+      <UniqueIdentifier>{993273e4-a8e7-4373-ba38-78c764d7ffdc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Engine\Rendering\Light\Point">
+      <UniqueIdentifier>{4859addf-69a2-441d-8764-fdb012d152de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Aven\Engine\Rendering\Light\Spot">
+      <UniqueIdentifier>{31c36339-d40e-4562-8621-657fdecb1520}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="DeviceDirector.cpp">
+      <Filter>Aven\Engine\Rendering\Director</Filter>
+    </ClCompile>
+    <ClCompile Include="Math.cpp">
+      <Filter>Aven\Common\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Aven\Engine\Rendering\Rendering\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Frustum.cpp">
+      <Filter>Aven\Engine\Rendering\Rendering\Frustum</Filter>
+    </ClCompile>
+    <ClCompile Include="AABB.cpp">
+      <Filter>Aven\Common\Intersection\AABB</Filter>
+    </ClCompile>
+    <ClCompile Include="Ray.cpp">
+      <Filter>Aven\Common\Intersection\Ray</Filter>
+    </ClCompile>
+    <ClCompile Include="LayerManager.cpp">
+      <Filter>Aven\Common\LayerManager</Filter>
+    </ClCompile>
+    <ClCompile Include="TagManager.cpp">
+      <Filter>Aven\Common\TagManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Skybox.cpp">
+      <Filter>Aven\Engine\Rendering\Rendering\SkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureManager.cpp">
+      <Filter>Aven\Engine\Rendering\Texture Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Color.cpp">
+      <Filter>Aven\Engine\Rendering\Color</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Aven\Engine\Rendering\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Windows.cpp">
+      <Filter>Aven\Engine\Rendering\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="D3DDevice.cpp">
+      <Filter>Aven\Engine\Rendering\D3D</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshFilter.cpp">
+      <Filter>Aven\Engine\Rendering\Mesh\MeshFilter</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshRenderer.cpp">
+      <Filter>Aven\Engine\Rendering\Mesh\MeshRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderManager.cpp">
+      <Filter>Aven\Engine\Rendering\Shader Manager</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Utility.h">
+      <Filter>Aven\Common\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceDirector.h">
+      <Filter>Aven\Engine\Rendering\Director</Filter>
+    </ClInclude>
+    <ClInclude Include="Math.h">
+      <Filter>Aven\Common\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Aven\Engine\Rendering\Rendering\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Frustum.h">
+      <Filter>Aven\Engine\Rendering\Rendering\Frustum</Filter>
+    </ClInclude>
+    <ClInclude Include="AABB.h">
+      <Filter>Aven\Common\Intersection\AABB</Filter>
+    </ClInclude>
+    <ClInclude Include="Ray.h">
+      <Filter>Aven\Common\Intersection\Ray</Filter>
+    </ClInclude>
+    <ClInclude Include="LayerManager.h">
+      <Filter>Aven\Common\LayerManager</Filter>
+    </ClInclude>
+    <ClInclude Include="TagManager.h">
+      <Filter>Aven\Common\TagManager</Filter>
+    </ClInclude>
+    <ClInclude Include="SingleTon.h">
+      <Filter>Aven\Common\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Skybox.h">
+      <Filter>Aven\Engine\Rendering\Rendering\SkyBox</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureManager.h">
+      <Filter>Aven\Engine\Rendering\Texture Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>Aven\Engine\Rendering\Color</Filter>
+    </ClInclude>
+    <ClInclude Include="Rect.h">
+      <Filter>Aven\Common\Rect</Filter>
+    </ClInclude>
+    <ClInclude Include="Size.h">
+      <Filter>Aven\Common\Rect</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Aven\Engine\Rendering\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Windows.h">
+      <Filter>Aven\Engine\Rendering\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DDevice.h">
+      <Filter>Aven\Engine\Rendering\D3D</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshFilter.h">
+      <Filter>Aven\Engine\Rendering\Mesh\MeshFilter</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshRenderer.h">
+      <Filter>Aven\Engine\Rendering\Mesh\MeshRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderManager.h">
+      <Filter>Aven\Engine\Rendering\Shader Manager</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
