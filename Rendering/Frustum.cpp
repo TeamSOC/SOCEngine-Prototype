@@ -2,7 +2,7 @@
 
 namespace Rendering
 {
-	Frustum::Frustum(float gap /*= 0.0*/)
+	Frustum::Frustum(float gap)
 	{
 		this->gap = gap;
 		isMake = false;
@@ -12,9 +12,9 @@ namespace Rendering
 	{
 	}
 
-	void Frustum::Make(D3DXMATRIX *viewProjection)
+	void Frustum::Make(SOC_Matrix *viewProjection)
 	{
-		D3DXMATRIX matInv;
+		SOC_Matrix matInv;
 
 		planeVertex[0].x = -1.0f;	planeVertex[0].y = -1.0f;	planeVertex[0].z = 0.0f;
 		planeVertex[1].x =  1.0f;	planeVertex[1].y = -1.0f;	planeVertex[1].z = 0.0f;
@@ -26,22 +26,22 @@ namespace Rendering
 		planeVertex[7].x = -1.0f;	planeVertex[7].y =  1.0f;	planeVertex[7].z = 1.0f;
 
 		//determinat는 필요없음
-		D3DXMatrixInverse(&matInv, NULL, viewProjection);
-		D3DXVec3TransformCoordArray(planeVertex, sizeof(D3DXVECTOR3), planeVertex, sizeof(D3DXVECTOR3), &matInv, 8);
+		SOCMatrixInverse(&matInv, NULL, viewProjection);
+		SOCVec3TransformCoordArray(planeVertex, sizeof(SOC_Vector3), planeVertex, sizeof(SOC_Vector3), &matInv, 8);
 
 		position = (planeVertex[0] + planeVertex[5]) / 2.0f;
 
-		D3DXPlaneFromPoints(&plane[0], planeVertex+4, planeVertex+7, planeVertex+6);	// 상 평면(top)
-		D3DXPlaneFromPoints(&plane[1], planeVertex  , planeVertex+1, planeVertex+2);	// 하 평면(bottom)
-		D3DXPlaneFromPoints(&plane[2], planeVertex  , planeVertex+4, planeVertex+5);	// 근 평면(near)
-		D3DXPlaneFromPoints(&plane[3], planeVertex+2, planeVertex+6, planeVertex+7);	// 원 평면(far)
-		D3DXPlaneFromPoints(&plane[4], planeVertex  , planeVertex+3, planeVertex+7);	// 좌 평면(left)
-		D3DXPlaneFromPoints(&plane[5], planeVertex+1, planeVertex+5, planeVertex+6);	// 우 평면(right)
+		SOCPlaneFromPoints(&plane[0], planeVertex+4, planeVertex+7, planeVertex+6);	// 상 평면(top)
+		SOCPlaneFromPoints(&plane[1], planeVertex  , planeVertex+1, planeVertex+2);	// 하 평면(bottom)
+		SOCPlaneFromPoints(&plane[2], planeVertex  , planeVertex+4, planeVertex+5);	// 근 평면(near)
+		SOCPlaneFromPoints(&plane[3], planeVertex+2, planeVertex+6, planeVertex+7);	// 원 평면(far)
+		SOCPlaneFromPoints(&plane[4], planeVertex  , planeVertex+3, planeVertex+7);	// 좌 평면(left)
+		SOCPlaneFromPoints(&plane[5], planeVertex+1, planeVertex+5, planeVertex+6);	// 우 평면(right)
 
 		isMake = true;
 	}
 
-	bool Frustum::In(D3DXVECTOR3 &v, float radius /* = 0.0*/)
+	bool Frustum::In(SOC_Vector3 &v, float radius)
 	{
 		if( isMake == false ) return false;
 
@@ -49,7 +49,7 @@ namespace Rendering
 
 		for(int i=0; i<6; ++i)
 		{
-			dist = D3DXPlaneDotCoord( &plane[i], &v );
+			dist = SOCPlaneDotCoord( &plane[i], &v );
 			if(dist > (radius + gap) ) return false;
 		}
 
@@ -58,10 +58,10 @@ namespace Rendering
 
 	bool Frustum::In(Object* obj)
 	{
-		return In(obj->GetWorldPosition(), obj->GetRadius());
+		return In(obj);//->GetWorldPosition(), obj->GetRadius());
 	}
 
-	D3DXVECTOR3 Frustum::GetPosition()
+	SOC_Vector3 Frustum::GetPosition()
 	{
 		return position;
 	}

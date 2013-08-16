@@ -1,21 +1,20 @@
 #pragma once
 
-#include <d3d9.h>
-#include <d3dx9.h>
+#include "Rendering.h"
 
 namespace Intersection
 {
 	struct Ray
 	{
 	public:
-		D3DXVECTOR3 origin;
-		D3DXVECTOR3 direction;
+		SOC_Vector3 origin;
+		SOC_Vector3 direction;
 
 	public:
-		Ray(D3DXVECTOR3 origin, D3DXVECTOR3 direction);
+		Ray(SOC_Vector3 origin, SOC_Vector3 direction);
 		~Ray(void);
 
 	public:
-		D3DXVECTOR3 GetPoint(float distance);
+		SOC_Vector3 GetPoint(float distance);
 	};
 }
