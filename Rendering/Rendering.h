@@ -1,4 +1,4 @@
-//
+﻿//
 //  Rendering.h
 //  Rendering
 //
@@ -16,7 +16,7 @@
 #define sqr(x) ((x)*(x))
 #endif
 
-#if defined(WIN32)
+#if defined(WIN32) && !defined(_USE_GL_DEFINES)
 
 #include <d3d9.h>
 #include <d3dx9.h>
@@ -32,26 +32,20 @@ typedef WORD				SOC_word;
 typedef INT					SOC_int;
 typedef DWORD				SOC_dword;
 typedef SIZE_T				SOC_sizei;
-typedef UBYTE				SOC_ubyte;
 typedef USHORT				SOC_ushort;
 typedef UWORD				SOC_uword;
 typedef UINT				SOC_uint;
-typedef UDWORD				SOC_udword;
 typedef FLOAT				SOC_float;
-typedef CLAMPF				SOC_clampf;
+typedef float				SOC_clampf;
 typedef FIXED				SOC_fixed;
-typedef CLAMPX				SOC_clampx;
 
-typedef INTPTR				SOC_intptr;
-typedef SIZEPTR				SOC_sizeiptr;
+typedef PINT				SOC_intptr;
+typedef PSIZE_T				SOC_sizeiptr;
 
-typedef HALF				SOC_half;
-
-typedef INT64				SOC_int64;
-typedef QWORD				SOC_qword;
-typedef UINT64				SOC_uint64;
-typedef UQWORD				SOC_uqword;
-typedef SYNC				SOC_sync;
+//typedef INT64				SOC_int64;
+//typedef INT64				SOC_qword;
+//typedef UINT64				SOC_uint64;
+//typedef UINT64				SOC_uqword;
 
 typedef D3DXFLOAT16			SOC_float16;
 typedef double				SOC_double;
@@ -94,8 +88,8 @@ typedef D3DXPLANE			SOC_Plane;
 		D3DXMatrixDeterminant(In_Const_Matrix_Ptr)
 #define SOCMatrixInverse(Out_Matrix_Ptr, Out_Float_Ptr, In_Const_Matrix_Ptr) \
 		D3DXMatrixInverse(Out_Matrix_Ptr, Out_Float_Ptr, In_Const_Matrix_Ptr)
-#define SOCMatrixTranspose(Out_Matrix_Ptr* pOut, In_Const_Matrix_Ptr) \
-		D3DXMatrixTranspose(Out_Matrix_Ptr* pOut, In_Const_Matrix_Ptr)
+#define SOCMatrixTranspose(Out_Matrix_Ptr, In_Const_Matrix_Ptr) \
+		D3DXMatrixTranspose(Out_Matrix_Ptr, In_Const_Matrix_Ptr)
 
 #define SOCMatrixRotationAxis(Out_Matrix_Ptr, In_Const_Vector_Ptr, In_Float) \
 		D3DXMatrixRotationAxis(Out_Matrix_Ptr, In_Const_Vector_Ptr, In_Float)
@@ -114,45 +108,50 @@ typedef D3DXPLANE			SOC_Plane;
 
 #define SOCM_PI				D3DX_PI
 
-#elif defined(__APPLE__)
+#elif defined(__APPLE__) || defined(_USE_GL_DEFINES)
 
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
 
+#define ALIGN(x)			__attribute__((aligned(x)))
+
+#if defined(WIN32)
+
+#include <Windows.h>
+#include <math.h>
+#include <gl/GL.h>
+#include <gl/GLU.h>
+
+#define ALIGN(x)			__declspec(align(x))
+#endif
+
 typedef GLvoid				SOC_void;
-typedef GLchar				SOC_char;
+typedef GLbyte				SOC_char;
 typedef GLenum				SOC_enum;
 typedef GLboolean			SOC_bool;
 typedef GLbitfield			SOC_bitfield;
-typedef GLbyte				SOC_byte;
+typedef GLubyte				SOC_byte;
 typedef GLshort				SOC_short;
-typedef GLshort				SOC_word;
+typedef GLushort			SOC_word;
 typedef GLint				SOC_int;
-typedef GLint				SOC_dword;
+typedef GLuint				SOC_dword;
 typedef GLsizei				SOC_sizei;
-typedef GLubyte				SOC_ubyte;
 typedef GLushort			SOC_ushort;
-typedef GLushort			SOC_uword;
 typedef GLuint				SOC_uint;
-typedef GLuint				SOC_udword;
 typedef GLfloat 			SOC_float;
 typedef GLclampf			SOC_clampf;
-typedef GLfixed				SOC_fixed;
-typedef GLclampx			SOC_clampx;
+typedef unsigned long		SOC_fixed;
 
-typedef GLintptr			SOC_intptr;
-typedef GLsizeiptr			SOC_sizeiptr;
-
-typedef GLhalf				SOC_half;
+typedef GLint*				SOC_intptr;
+typedef GLsizei*			SOC_sizeiptr;
 
 typedef double				SOC_float16;
 typedef double				SOC_double;
 
-typedef GLint64				SOC_int64;
-typedef GLint64				SOC_qword;
-typedef GLuint64			SOC_uint64;
-typedef GLuint64			SOC_uqword;
-typedef GLsync				SOC_sync;
+//typedef GLint64				SOC_int64;
+//typedef GLint64				SOC_qword;
+//typedef GLuint64			SOC_uint64;
+//typedef GLuint64			SOC_uqword;
 
 struct SOC_Vector2
 {
@@ -273,7 +272,9 @@ public:
 	}
 	SOC_Vector3(const SOC_Vector& vector)
 	{
-		*this = vector;
+		this->x = vector.x;
+		this->y = vector.y;
+		this->z = vector.z;
 	}
 	SOC_Vector3(const SOC_float16* elements)
 	{
@@ -719,7 +720,7 @@ public:
 	}
 	SOC_Matrix(const SOC_MatrixBase& mat)
 	{
-		*this = mat;
+		memcpy(m, mat.m, sizeof(SOC_MatrixBase) );
 	}
 	SOC_Matrix(const SOC_float16* elements)
 	{
@@ -1104,7 +1105,7 @@ SOC_Vector3* SOCVec3TransformCoordArray(SOC_Vector3* pOut, SOC_uint OutStride, c
 	SOC_Vector4 res;
 	SOC_float* linearOut = *pOut;
 	const SOC_float* linearIn = *pV;
-	for(int i = 0; i < n; ++i)
+	for(SOC_uint i = 0; i < n; ++i)
 	{
 		res = SOC_Vector4(linearIn[0], linearIn[1], linearIn[2], 1) * *pM;
 		linearOut[0] = res.x / res.w;
@@ -1117,8 +1118,8 @@ SOC_Vector3* SOCVec3TransformCoordArray(SOC_Vector3* pOut, SOC_uint OutStride, c
 	
 	return pOut;
 }
-	
-struct SOC_MatrixA16 : public SOC_Matrix {} __attribute__((aligned(16)));
+
+struct SOC_MatrixA16 : public SOC_Matrix {} ALIGN(16);
 	
 struct SOC_Plane
 {

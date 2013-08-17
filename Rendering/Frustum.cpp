@@ -58,7 +58,7 @@ namespace Rendering
 
 	bool Frustum::In(Object* obj)
 	{
-		return In(obj);//->GetWorldPosition(), obj->GetRadius());
+		return In(obj->GetWorldPosition(), obj->GetRadius());
 	}
 
 	SOC_Vector3 Frustum::GetPosition()
