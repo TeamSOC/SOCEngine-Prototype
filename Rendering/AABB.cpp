@@ -5,8 +5,8 @@ namespace Intersection
 {
 	AABB::AABB()
 	{
-		center = D3DXVECTOR3(0, 0, 0);
-		size = D3DXVECTOR3(1, 1, 1);
+		center = SOC_Vector3(0, 0, 0);
+		size = SOC_Vector3(1, 1, 1);
 
 		extents = size / 2.0f;
 
@@ -14,7 +14,7 @@ namespace Intersection
 		max =  extents;
 	}
 
-	AABB::AABB(D3DXVECTOR3 worldCenter, D3DXVECTOR3 size)
+	AABB::AABB(SOC_Vector3 worldCenter, SOC_Vector3 size)
 	{
 		center = worldCenter;
 		this->size = size;
@@ -28,7 +28,7 @@ namespace Intersection
 	{
 	}
 
-	void AABB::SetMinMax(D3DXVECTOR3 min, D3DXVECTOR3 max)
+	void AABB::SetMinMax(SOC_Vector3 min, SOC_Vector3 max)
 	{
 		center -= (min + extents);
 
@@ -48,7 +48,7 @@ namespace Intersection
 		max = center + extents;
 	}
 
-	void AABB::Expand(D3DXVECTOR3 amount)
+	void AABB::Expand(SOC_Vector3 amount)
 	{
 		size += amount;
 		extents = size / 2.0f;
@@ -58,10 +58,10 @@ namespace Intersection
 
 	bool AABB::Intersects(AABB bounds)
 	{
-		D3DXVECTOR3 realMin = center + min;
-		D3DXVECTOR3 realMax = center + max;
-		D3DXVECTOR3 otherMin = bounds.center + min;
-		D3DXVECTOR3 otherMax = bounds.center + max;
+		SOC_Vector3 realMin = center + min;
+		SOC_Vector3 realMax = center + max;
+		SOC_Vector3 otherMin = bounds.center + min;
+		SOC_Vector3 otherMax = bounds.center + max;
 
 		if(realMax.x < otherMin.x || realMin.x > otherMax.x) return false;
 		if(realMax.y < otherMin.y || realMin.y > otherMax.y) return false;
@@ -70,16 +70,16 @@ namespace Intersection
 		return true;
 	}
 
-	float AABB::SqrDistance(D3DXVECTOR3 point)
+	float AABB::SqrDistance(SOC_Vector3 point)
 	{
-		D3DXVECTOR3 v = point - extents - center;
+		SOC_Vector3 v = point - extents - center;
 		return (v.x * v.x) + (v.y * v.y) + (v.z * v.z);
 	}
 
-	bool AABB::Contains(D3DXVECTOR3 point)
+	bool AABB::Contains(SOC_Vector3 point)
 	{
-		D3DXVECTOR3 realMin = center + min;
-		D3DXVECTOR3 realMax = center + max;
+		SOC_Vector3 realMin = center + min;
+		SOC_Vector3 realMax = center + max;
 
 		if(point.x < realMin.x || point.x > realMax.x) return false;
 		if(point.y < realMin.y || point.y > realMax.y) return false;
@@ -88,10 +88,10 @@ namespace Intersection
 		return true;
 	}
 
-	bool AABB::IntersectRay(Ray ray, D3DXVECTOR3 *outPickPoint /*= NULL*/, float gap)
+	bool AABB::IntersectRay(Ray ray, SOC_Vector3 *outPickPoint /*= NULL*/, float gap)
 	{
-		D3DXVECTOR3 realMin = center + min;
-		D3DXVECTOR3 realMax = center + max;
+		SOC_Vector3 realMin = center + min;
+		SOC_Vector3 realMax = center + max;
 
 		float rayMin = 0.0f;
 		float rayMax = 100000.0f;

@@ -109,6 +109,9 @@
     <Filter Include="Aven\Engine\Rendering\Light\Spot">
       <UniqueIdentifier>{31c36339-d40e-4562-8621-657fdecb1520}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Aven\Device">
+      <UniqueIdentifier>{301c43d5-66a5-44d0-8aaf-a7987fcb3e48}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -229,6 +232,12 @@
     </ClInclude>
     <ClInclude Include="ShaderManager.h">
       <Filter>Aven\Engine\Rendering\Shader Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering.h">
+      <Filter>Aven\Common\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="SOCHashMap.h">
+      <Filter>Aven\Common\Utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <hash_map>
+#include "SOCHashMap.h"
 #include <string>
 #include <fstream>
 
@@ -12,7 +12,7 @@ namespace Rendering
 #define SHADER_DIR "../Shader/"
 
 	private:
-		std::hash_map<std::string, std::wstring> hash;
+		SOCHashMap<std::string, std::wstring> hash;
 		int dirLen;
 
 	public:
@@ -32,7 +32,7 @@ namespace Rendering
 			if(inShaderFolder)
 				path.erase(0, dirLen);
 
-			std::hash_map<std::string, std::wstring>::iterator iter = hash.find(path);
+			SOCHashMap<std::string, std::wstring>::iterator iter = hash.find(path);
 
 			if(iter != hash.end())
 				return false;
@@ -51,7 +51,7 @@ namespace Rendering
 			while(std::getline(file, buff))
 				data += buff;
 
-			hash.insert( std::hash_map<std::string, std::wstring>::value_type(path, data));
+			hash.insert( SOCHashMap<std::string, std::wstring>::value_type(path, data));
 
 			return true;
 		}
@@ -61,7 +61,7 @@ namespace Rendering
 			if(inResourceFolder)
 				path.erase(0, dirLen);
 			
-			std::hash_map<std::string, std::wstring>::iterator iter = hash.find(path);
+			SOCHashMap<std::string, std::wstring>::iterator iter = hash.find(path);
 
 			if(iter == hash.end())
 				return false;

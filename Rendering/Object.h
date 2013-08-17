@@ -3,8 +3,7 @@
 //#include <stdarg.h>
 #include <vector>
 
-#include <d3dx9.h>
-#include <d3d9.h>
+#include "Rendering.h"
 
 #include <string>
 
@@ -18,22 +17,22 @@ namespace Rendering
 		bool use;
 
 	protected:
-		D3DXVECTOR3 forward;
-		D3DXVECTOR3 right;
-		D3DXVECTOR3 up;
+		SOC_Vector3 forward;
+		SOC_Vector3 right;
+		SOC_Vector3 up;
 
-		D3DXVECTOR3 position;
-		D3DXVECTOR3 localPosition;
+		SOC_Vector3 position;
+		SOC_Vector3 localPosition;
 
-		D3DXQUATERNION rotation;
+		SOC_Quaternion rotation;
 
-		D3DXVECTOR3 scale;
-		D3DXVECTOR3 localScale;
+		SOC_Vector3 scale;
+		SOC_Vector3 localScale;
 
-		D3DXVECTOR3 eulerAngles;
-		D3DXVECTOR3 localEulerAngles;
+		SOC_Vector3 eulerAngles;
+		SOC_Vector3 localEulerAngles;
 
-		D3DXMATRIXA16 matrix;
+		SOC_MatrixA16 matrix;
 
 		float radius;
 
@@ -73,20 +72,20 @@ namespace Rendering
 
 	public:
 		void LookAt(Object *target);
-		void LookAt(D3DXVECTOR3 worldPosition);
-		void LookAt(Object *target, D3DXVECTOR3 worldUp);
-		void LookAt(D3DXVECTOR3 worldPosition, D3DXVECTOR3 worldUp);
+		void LookAt(SOC_Vector3 worldPosition);
+		void LookAt(Object *target, SOC_Vector3 worldUp);
+		void LookAt(SOC_Vector3 worldPosition, SOC_Vector3 worldUp);
 
-		void Rotate(D3DXVECTOR3 eulerAngles);
-		void Rotate(D3DXVECTOR3 axis, float angle);
+		void Rotate(SOC_Vector3 eulerAngles);
+		void Rotate(SOC_Vector3 axis, float angle);
 		void Rotate(float x, float y, float z);
 
-		void Translate(D3DXVECTOR3 translation);
+		void Translate(SOC_Vector3 translation);
 		void TranslateWithUpVec(float units);
 		void TranslateWithForwardVec(float units);
 		void TranslateWithRightVec(float units);
 
-		void Billboard(Object *camera, D3DXMATRIX *outMatrix);
+		void Billboard(Object *camera, SOC_Matrix *outMatrix);
 
 		bool IsChildOf(Object *parent);
 
@@ -101,10 +100,10 @@ namespace Rendering
 		*/
 
 	public:
-		void SetPosition(D3DXVECTOR3 position);		
-		void SetRotation(D3DXQUATERNION quaternion);				
-		void SetScale(D3DXVECTOR3 scale);
-		void SetEulerAngles(D3DXVECTOR3 euler);
+		void SetPosition(SOC_Vector3 position);		
+		void SetRotation(SOC_Quaternion quaternion);				
+		void SetScale(SOC_Vector3 scale);
+		void SetEulerAngles(SOC_Vector3 euler);
 
 	private:
 		void Roll(float angle);
@@ -112,8 +111,8 @@ namespace Rendering
 		void Pitch(float angle);
 
 	public:
-		void GetMatrix(D3DXMATRIX *outMatrix);
-		void GetWorldMatrix(D3DXMATRIX *outMatrix);
+		void GetMatrix(SOC_Matrix *outMatrix);
+		void GetWorldMatrix(SOC_Matrix *outMatrix);
 
 		int GetChildCount()
 		{ return childs.size(); }
@@ -121,8 +120,8 @@ namespace Rendering
 		{ return *(childs.begin()+index); }
 		float GetRadius()
 		{ return radius; }
-		D3DXVECTOR3 GetWorldPosition();
-		D3DXVECTOR3 GetLocalPosition();
+		SOC_Vector3 GetWorldPosition();
+		SOC_Vector3 GetLocalPosition();
 
 		void SetUse(bool is);
 		bool GetUse();
