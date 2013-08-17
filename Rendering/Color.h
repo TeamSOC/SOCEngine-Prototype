@@ -1,6 +1,6 @@
 #pragma once
 
-#include <d3dx9math.h>
+#include "Rendering.h"
 
 namespace Rendering
 {
@@ -51,10 +51,10 @@ namespace Rendering
 			return (*this); 
 		}
 
-		D3DXVECTOR4 GetVectorType()
+		SOC_Vector4 GetVectorType()
 		{
 			Color color = GetColor();
-			return D3DXVECTOR4(color.r, color.g, color.b, color.a);
+			return SOC_Vector4(color.r, color.g, color.b, color.a);
 		}
 
 	public:

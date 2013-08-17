@@ -1,4 +1,4 @@
-#include "Object.h"
+ï»¿#include "Object.h"
 #include "Math.h"
 
 using namespace std;
@@ -13,14 +13,14 @@ namespace Rendering
      		 root = parent->root;
 		else root = this;
 
-		forward = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
-		right	= D3DXVECTOR3(1.0f, 0.0f, 0.0f);
-		up		= D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+		forward = SOC_Vector3(0.0f, 0.0f, 1.0f);
+		right	= SOC_Vector3(1.0f, 0.0f, 0.0f);
+		up		= SOC_Vector3(0.0f, 1.0f, 0.0f);
 
-		localPosition	 = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		rotation		 = D3DXQUATERNION(0.0f, 0.0f, 0.0f, 1.0f);
-		localScale		 = D3DXVECTOR3(1.0f, 1.0f, 1.0f);
-		localEulerAngles = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		localPosition	 = SOC_Vector3(0.0f, 0.0f, 0.0f);
+		rotation		 = SOC_Quaternion(0.0f, 0.0f, 0.0f, 1.0f);
+		localScale		 = SOC_Vector3(1.0f, 1.0f, 1.0f);
+		localEulerAngles = SOC_Vector3(0.0f, 0.0f, 0.0f);
 
 		for(Object *o = this; o != NULL; o = o->parent)
 		{
@@ -47,9 +47,9 @@ namespace Rendering
 
 		Object *c = copy == false ? child : Object::Copy(this);
 
-		vector<Object*>::iterator iter = childs.begin();
+		vector<Object*>::iterator iter;
 
-		for(iter; iter != childs.end(); ++iter)
+		for(iter = childs.begin(); iter != childs.end(); ++iter)
 		{
 			if( (*iter)->renderQueue <= renderQueue )
 			{
@@ -71,9 +71,9 @@ namespace Rendering
 
 	void Object::DeleteChild(Object *child)
 	{
-		vector<Object*>::iterator iter = childs.begin();
+		vector<Object*>::iterator iter;
 
-		for(iter; iter != childs.end(); ++iter)
+		for(iter = childs.begin(); iter != childs.end(); ++iter)
 		{
 			if((*iter) == child)
 			{
@@ -93,9 +93,9 @@ namespace Rendering
 		if(use == false)
 			return;
 
-		vector<Object*>::iterator iter = childs.begin();
+		vector<Object*>::iterator iter;
 
-		for(iter; iter != childs.end(); ++iter)
+		for(iter = childs.begin(); iter != childs.end(); ++iter)
 		{
 			(*iter)->Update();
 			(*iter)->Render();
@@ -113,9 +113,9 @@ namespace Rendering
 	vector<Object*> Object::_FindChild(std::string str, FIND_ENUM e, bool one)
 	{
 		vector<Object*> v;
-		vector<Object*>::iterator iter = childs.begin();
+		vector<Object*>::iterator iter;
 
-		for(iter; iter != childs.end(); ++iter)
+		for(iter = childs.begin(); iter != childs.end(); ++iter)
 		{
 			string *findItem = e == FIND_ENUM_NAME ? &(*iter)->name : &(*iter)->tag;
 			if( (*findItem) == str )
@@ -124,7 +124,6 @@ namespace Rendering
 				if(one) return v;
 			}
 		}
-		//ÇØ½¬·Î ÇÑ´Ù¸é ÇÒ¼öÀÖ°ÚÁö¸¸, ±»ÀÌ ±×·²ÇÊ¿ä°¡ ÀÖ³ª ½Í¾î
 		return v;
 	}
 
@@ -153,38 +152,35 @@ namespace Rendering
 	void Object::LookAt(Object *target)
 	{
 		target->UpdateWorldTransform();
-		LookAt(target->position, D3DXVECTOR3(0, 1, 0));
+		LookAt(target->position, SOC_Vector3(0, 1, 0));
 	}
 
-	void Object::LookAt(D3DXVECTOR3 worldPosition)
+	void Object::LookAt(SOC_Vector3 worldPosition)
 	{
-		LookAt(worldPosition, D3DXVECTOR3(0, 1, 0));
+		LookAt(worldPosition, SOC_Vector3(0, 1, 0));
 	}
 
-	void Object::LookAt(Object *target, D3DXVECTOR3 worldUp)
+	void Object::LookAt(Object *target, SOC_Vector3 worldUp)
 	{
 		target->UpdateWorldTransform();
 		LookAt(target->position, worldUp);
 	}
 	
-	void Object::LookAt(D3DXVECTOR3 worldPosition, D3DXVECTOR3 worldUp)
+	void Object::LookAt(SOC_Vector3 worldPosition, SOC_Vector3 worldUp)
 	{
 		UpdateWorldTransform();
 
-		D3DXVECTOR3 dir = position - worldPosition;
-		D3DXVec3Normalize(&dir, &dir);
-		//±×·³ ÀÌÁ¦, ÀÌ dir°ú ¿ùµå forwardÀÇ °¢ÀÌ ¾ó¸¶³ª ²©¿´´ÂÁö ¾Ë¾Æ³»¼­ È¸Àü½ÃÅ°¸é µÇ.
-
+		SOC_Vector3 dir = position - worldPosition;
+		SOCVec3Normalize(&dir, &dir);
 		forward = dir;
 		up = worldUp;
 
-		D3DXVec3Cross(&right, &up, &forward);
-		D3DXVec3Normalize(&right, &right);
+		SOCVec3Cross(&right, &up, &forward);
+		SOCVec3Normalize(&right, &right);
 
-		D3DXVec3Cross(&up, &forward, &right);
-		//3Ãà±¸ÇÔ
+		SOCVec3Cross(&up, &forward, &right);
 
-		D3DXMATRIX rotationMatrix;
+		SOC_Matrix rotationMatrix;
 
 		rotationMatrix._11 = right.x;
 		rotationMatrix._12 = up.x;
@@ -206,23 +202,23 @@ namespace Rendering
 		rotationMatrix._43 = 0;
 		rotationMatrix._44 = 1.0f;
 
-		D3DXQuaternionRotationMatrix(&rotation, &rotationMatrix); //ÄõÅÍ´Ï¾ð ±¸ÇÔ
-		localEulerAngles = Math::Tool::QuaternionToEuler(rotation); // ¿ÀÀÏ·¯ ±¸ÇÔ
+		SOCQuaternionRotationMatrix(&rotation, &rotationMatrix); //Æ’Ä±â‰ˆÃ•Â¥Å“Ã¦ï£¿ Â±âˆÂ«â€˜
+		localEulerAngles = Math::Tool::QuaternionToEuler(rotation); // Ã¸Â¿Â¿Å“âˆ‘Ã˜ Â±âˆÂ«â€˜
 		UpdateMatrix();
 	}
 
-	void Object::Rotate(D3DXVECTOR3 eulerAngles)
+	void Object::Rotate(SOC_Vector3 eulerAngles)
 	{
-		D3DXVECTOR3 euler = this->localEulerAngles + eulerAngles;
+		SOC_Vector3 euler = this->localEulerAngles + eulerAngles;
 		SetEulerAngles(euler);
 	}
 
-	void Object::Rotate(D3DXVECTOR3 axis, float angle)
+	void Object::Rotate(SOC_Vector3 axis, float angle)
 	{
-		D3DXQUATERNION q;
-		D3DXQuaternionRotationAxis(&q, &axis, angle);
+		SOC_Quaternion q;
+		SOCQuaternionRotationAxis(&q, &axis, angle);
 
-		D3DXVECTOR3 euler = Math::Tool::QuaternionToEuler(q);
+		SOC_Vector3 euler = Math::Tool::QuaternionToEuler(q);
 		euler += this->localEulerAngles;
 
 		SetEulerAngles(euler);
@@ -230,13 +226,13 @@ namespace Rendering
 
 	void Object::Rotate(float x, float y, float z)
 	{
-		D3DXVECTOR3 euler = localEulerAngles + D3DXVECTOR3(x, y, z);
+		SOC_Vector3 euler = localEulerAngles + SOC_Vector3(x, y, z);
 		SetEulerAngles(euler);
 	}
 
-	void Object::Translate(D3DXVECTOR3 translation)
+	void Object::Translate(SOC_Vector3 translation)
 	{
-		D3DXVECTOR3 p = localPosition + translation;
+		SOC_Vector3 p = localPosition + translation;
 		SetPosition(p);
 	}
 
@@ -255,69 +251,69 @@ namespace Rendering
 		localPosition += right * units;
 	}
 
-	void Object::GetMatrix(D3DXMATRIX *outMatrix)
+	void Object::GetMatrix(SOC_Matrix *outMatrix)
 	{
 		*outMatrix = matrix;
 	}
 
-	void Object::GetWorldMatrix(D3DXMATRIX *outMatrix)
+	void Object::GetWorldMatrix(SOC_Matrix *outMatrix)
 	{
-		D3DXMATRIX mat;
+		SOC_Matrix mat;
 		for(Object *o = this; o != NULL; o = o->parent)
 			mat *= o->matrix;
 
 		*outMatrix = mat;
 	}
 
-	void Object::SetPosition(D3DXVECTOR3 position)
+	void Object::SetPosition(SOC_Vector3 position)
 	{
 		this->localPosition = position;
 		UpdateMatrix();
 	}
 
-	void Object::SetRotation(D3DXQUATERNION quaternion)
+	void Object::SetRotation(SOC_Quaternion quaternion)
 	{
-		rotation = quaternion; //ÄõÅÍ´Ï¾ð ±¸ÇÔ
+		rotation = quaternion; //Æ’Ä±â‰ˆÃ•Â¥Å“Ã¦ï£¿ Â±âˆÂ«â€˜
 
-		D3DXMATRIX rotationMatrix;		
-		D3DXMatrixRotationQuaternion(&rotationMatrix, &quaternion);
+		SOC_Matrix rotationMatrix;
+		SOCMatrixRotationQuaternion(&rotationMatrix, &quaternion);
 
-		right	= D3DXVECTOR3(rotationMatrix._11, rotationMatrix._21, rotationMatrix._31);
-		up		= D3DXVECTOR3(rotationMatrix._12, rotationMatrix._22, rotationMatrix._32);
-		forward = D3DXVECTOR3(rotationMatrix._13, rotationMatrix._23, rotationMatrix._33);
-		//3Ãà ±¸ÇÔ
+		right	= SOC_Vector3(rotationMatrix._11, rotationMatrix._21, rotationMatrix._31);
+		up		= SOC_Vector3(rotationMatrix._12, rotationMatrix._22, rotationMatrix._32);
+		forward = SOC_Vector3(rotationMatrix._13, rotationMatrix._23, rotationMatrix._33);
+		//3âˆšâ€¡ Â±âˆÂ«â€˜
 
 		localEulerAngles = Math::Tool::QuaternionToEuler(quaternion);
 
-		//¿ÀÀÏ·¯ ±¸ÇÔ.
+		//Ã¸Â¿Â¿Å“âˆ‘Ã˜ Â±âˆÂ«â€˜.
 		UpdateMatrix();
 	}
 
-	void Object::SetScale(D3DXVECTOR3 scale)
+	void Object::SetScale(SOC_Vector3 scale)
 	{
 		this->localScale = scale;
 		UpdateMatrix();
 	}
 
-	void Object::SetEulerAngles(D3DXVECTOR3 euler)
+	void Object::SetEulerAngles(SOC_Vector3 euler)
 	{
 		euler = Math::Tool::EulerNormalize(euler);
-		localEulerAngles = euler; //¿ÀÀÏ·¯ ±¸ÇÔ.
+		localEulerAngles = euler; //Ã¸Â¿Â¿Å“âˆ‘Ã˜ Â±âˆÂ«â€˜.
 
 		Yaw(euler.y);
 		Pitch(euler.x);
 		Roll(euler.z);
 
-		D3DXVec3Normalize(&forward, &forward);
+		SOCVec3Normalize(&forward, &forward);
 
-		D3DXVec3Cross(&up, &forward, &right);
-		D3DXVec3Normalize(&up, &up);
+		SOCVec3Cross(&up, &forward, &right);
+		SOCVec3Normalize(&up, &up);
 
-		D3DXVec3Cross(&right, &up, &forward);
-		D3DXVec3Normalize(&right, &right);
-		//3Ãà ±¸ÇÔ.
+		SOCVec3Cross(&right, &up, &forward);
+		SOCVec3Normalize(&right, &right);
+		//3âˆšâ€¡ Â±âˆÂ«â€˜.
 
-		D3DXMATRIX rotationMatrix;
+		SOC_Matrix rotationMatrix;
 
 		rotationMatrix._11 = right.x;
 		rotationMatrix._12 = up.x;
@@ -334,13 +330,13 @@ namespace Rendering
 		rotationMatrix._33 = forward.z;
 		rotationMatrix._34 = 0;
 
-		D3DXQuaternionRotationMatrix(&rotation, &rotationMatrix); //ÄõÅÍ´Ï¾ð ±¸ÇÔ.
+		SOCQuaternionRotationMatrix(&rotation, &rotationMatrix); //Æ’Ä±â‰ˆÃ•Â¥Å“Ã¦ï£¿ Â±âˆÂ«â€˜.
 		UpdateMatrix();
 	}
 
 	void Object::UpdateWorldTransform()
 	{
-		D3DXVECTOR3 p(0, 0, 0), s(1, 1, 1), e(0, 0, 0);
+		SOC_Vector3 p(0, 0, 0), s(1, 1, 1), e(0, 0, 0);
 
 		for(Object *o = this; o != NULL; o = o->parent)
 		{
@@ -360,15 +356,15 @@ namespace Rendering
 
 	void Object::UpdateMatrix()
 	{
-		D3DXMatrixRotationQuaternion(&matrix, &rotation);
+		SOCMatrixRotationQuaternion(&matrix, &rotation);
 
 		matrix._11 *= localScale.x;
 		matrix._22 *= localScale.y;
 		matrix._33 *= localScale.z;
 
-		D3DXVECTOR3 p = D3DXVECTOR3(-D3DXVec3Dot(&right, &localPosition),
-									-D3DXVec3Dot(&up, &localPosition),
-									-D3DXVec3Dot(&forward, &localPosition));
+		SOC_Vector3 p = SOC_Vector3(-SOCVec3Dot(&right, &localPosition),
+									-SOCVec3Dot(&up, &localPosition),
+									-SOCVec3Dot(&forward, &localPosition));
 
 		matrix._41 = p.x;
 		matrix._42 = p.y;
@@ -378,34 +374,34 @@ namespace Rendering
 
 	void Object::Roll(float angle)
 	{
-		D3DXMATRIX T;
+		SOC_Matrix T;
 
-		D3DXMatrixRotationAxis(&T, &forward, angle);
-		D3DXVec3TransformCoord(&up, &up, &T);
-		D3DXVec3TransformCoord(&right, &right, &T);
+		SOCMatrixRotationAxis(&T, &forward, angle);
+		SOCVec3TransformCoord(&up, &up, &T);
+		SOCVec3TransformCoord(&right, &right, &T);
 	}
 
 	void Object::Yaw(float angle)
 	{
-		D3DXMATRIX T;
+		SOC_Matrix T;
 
-		D3DXMatrixRotationAxis(&T, &up, angle);
-		D3DXVec3TransformCoord(&right, &right, &T);
-		D3DXVec3TransformCoord(&forward, &forward, &T);
+		SOCMatrixRotationAxis(&T, &up, angle);
+		SOCVec3TransformCoord(&right, &right, &T);
+		SOCVec3TransformCoord(&forward, &forward, &T);
 	}
 
 	void Object::Pitch(float angle)
 	{
-		D3DXMATRIX T;
+		SOC_Matrix T;
 
-		D3DXMatrixRotationAxis(&T, &right, angle);
-		D3DXVec3TransformCoord(&right, &right, &T);
-		D3DXVec3TransformCoord(&forward, &forward, &T);
+		SOCMatrixRotationAxis(&T, &right, angle);
+		SOCVec3TransformCoord(&right, &right, &T);
+		SOCVec3TransformCoord(&forward, &forward, &T);
 	}
 
-	D3DXVECTOR3 Object::GetWorldPosition()
+	SOC_Vector3 Object::GetWorldPosition()
 	{
-		D3DXVECTOR3 p(0,0,0);
+		SOC_Vector3 p(0,0,0);
 
 		for(Object *o = this; o != NULL; o = o->parent)
 			p += o->localPosition;
@@ -413,18 +409,18 @@ namespace Rendering
 		return p;
 	}
 
-	D3DXVECTOR3 Object::GetLocalPosition()
+	SOC_Vector3 Object::GetLocalPosition()
 	{
 		return localPosition;
 	}
 
-	void Object::Billboard(Object *camera, D3DXMATRIX *outMatrix)
+	void Object::Billboard(Object *camera, SOC_Matrix *outMatrix)
 	{
-		//Ä«¸Þ¶ó ±¸Çö ÀÌÈÄ¿¡ ÀÛ¾÷.
-		D3DXMATRIX mat;
-		D3DXMatrixIdentity(&mat);
+		//Æ’Â´âˆï¬âˆ‚Ã› Â±âˆÂ«Ë† Â¿ÃƒÂ»Æ’Ã¸Â° Â¿â‚¬Ã¦Ëœ.
+		SOC_Matrix mat;
+		SOCMatrixIdentity(&mat);
 
-		D3DXMATRIX camWorldMat;
+		SOC_Matrix camWorldMat;
 		camera->GetWorldMatrix(&camWorldMat);
 
 		mat._11 = camWorldMat._11;
@@ -432,7 +428,7 @@ namespace Rendering
 		mat._31 = camWorldMat._31;
 		mat._33 = camWorldMat._33;
 
-		D3DXMatrixInverse(&mat, NULL, &mat);
+		SOCMatrixInverse(&mat, NULL, &mat);
 		*outMatrix = mat;
 	}
 

@@ -1,6 +1,7 @@
 #pragma once
 
-#include <hash_map>
+#include "SOCHashMap.h"
+
 #include <string>
 #include "SingleTon.h"
 
@@ -9,7 +10,7 @@ namespace Rendering
 	class TagManager : public Utility::SingleTon<TagManager>
 	{
 	protected:
-		std::hash_map<std::string, int> hash;
+		SOCHashMap<std::string, int> hash;
 
 	public:
 		bool AddTag(std::string key, int id);
