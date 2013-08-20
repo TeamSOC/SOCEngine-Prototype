@@ -1,0 +1,341 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Engine\Common">
+      <UniqueIdentifier>{01982b91-9600-4fcd-97b6-19089d11e45a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Common\Intersection">
+      <UniqueIdentifier>{f834bf48-36f3-4f77-bf92-f3f4d247d4a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Common\LayerManager">
+      <UniqueIdentifier>{7fc00bf2-f83a-403f-9139-8e71b139bedd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Common\Math">
+      <UniqueIdentifier>{7b090837-1844-49a7-9fe6-09fce6c13e7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Common\Rect">
+      <UniqueIdentifier>{623ea997-a949-47d8-88ca-32310088aa32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Common\TagManager">
+      <UniqueIdentifier>{ced0872a-90df-4845-9bec-3976a84a31c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Common\Utility">
+      <UniqueIdentifier>{02af26ab-9cc1-4a4d-8ad6-602ef5589ef9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Common\Intersection\AABB">
+      <UniqueIdentifier>{c42832d8-acba-4430-84d0-7ad308c377d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Common\Intersection\Cone">
+      <UniqueIdentifier>{76e7c6e4-4d0a-4ec3-ae24-aa78f2613755}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Common\Intersection\Ray">
+      <UniqueIdentifier>{305084f1-aa30-4a71-bf5f-d6f12f61db8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Common\Intersection\Sphere">
+      <UniqueIdentifier>{caa6b340-5a76-4c18-a59e-ac634a9d5a77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering">
+      <UniqueIdentifier>{058ed3d7-bfe3-4239-afa3-3415cd818c4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Color">
+      <UniqueIdentifier>{2b0bc4c3-db85-431b-b06c-c6ce0ec91fed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Camera">
+      <UniqueIdentifier>{51805850-d726-46a2-8e45-c187d34ddbc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Light">
+      <UniqueIdentifier>{c15bc560-f236-4f9a-ba90-f2a0bd6d820d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Device">
+      <UniqueIdentifier>{3548d313-9ddb-4f1f-8c05-dacee9e7ef02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Light\Spot">
+      <UniqueIdentifier>{be5277d2-babd-4502-a4ad-fae445318bef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Light\Directional">
+      <UniqueIdentifier>{a094c8fd-9851-48a8-843b-f5127e8568bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Light\Point">
+      <UniqueIdentifier>{a61c40b2-fd48-4002-86ba-6cc5ef6c7a9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Light\Basic Form">
+      <UniqueIdentifier>{1707f40f-ab1b-4476-a7e8-a6f16724bb4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Light\Manager">
+      <UniqueIdentifier>{b0c70c14-b171-4c9e-bdc9-9073049e471c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Camera\Frustum">
+      <UniqueIdentifier>{5015df59-bd9b-4123-a92b-e2f0c0997df6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Mesh">
+      <UniqueIdentifier>{f485257a-db4c-4ea7-8f45-2f2b9db613af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Mesh\Filter">
+      <UniqueIdentifier>{0304f905-9afa-4051-8ae5-3ab8bfaf79c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Mesh\Renderer">
+      <UniqueIdentifier>{08f12392-831c-42e2-9c58-568526e30578}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Shader">
+      <UniqueIdentifier>{ca0faedb-84f0-4851-a18d-4b3c431bccbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Shader\Manager">
+      <UniqueIdentifier>{e690a0a7-3c59-472d-a622-26374f686cca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Skybox">
+      <UniqueIdentifier>{61b0969f-ac18-4c8e-8743-5f702610077a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Object">
+      <UniqueIdentifier>{19931332-b7ad-40d0-bb9e-19566f0adc27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{3314bdab-e759-42b3-8773-ea72229440fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Device\Application">
+      <UniqueIdentifier>{9ac3bbae-63ba-44b0-8f7b-6e5ca9a30b0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Device\Graphics">
+      <UniqueIdentifier>{9a30c35e-7122-4c4a-898d-48ceccbca445}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Device\Graphics\Form">
+      <UniqueIdentifier>{654c1d28-9582-441e-8de7-caa5393116aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Device\Application\Form">
+      <UniqueIdentifier>{e0d16ee9-170d-4fbb-b21c-559f58f3c580}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Device\Graphics\Form\DX">
+      <UniqueIdentifier>{d15b0059-0604-4084-a116-d161ebd1d372}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Device\Graphics\Form\GL">
+      <UniqueIdentifier>{fe8109a7-ee13-49c4-83fd-2c747420076d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Device\Application\Windows">
+      <UniqueIdentifier>{ff62a7cb-05aa-4aae-93ba-0885e1d55832}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Device\Director">
+      <UniqueIdentifier>{2d1c4e0d-019b-4cd3-ab97-1d297bff4d6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Texture">
+      <UniqueIdentifier>{e1ad4a7b-efca-45ce-944a-8b37d3d947b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Texture\Manager">
+      <UniqueIdentifier>{2ab0c5d1-5ea3-4c73-b8eb-80ccdad2a94b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Texture\Form">
+      <UniqueIdentifier>{80aed4ce-11b2-4229-bddd-762f079d95f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Texture\DX">
+      <UniqueIdentifier>{56898e55-afeb-443e-92a5-05fb2bf8dd8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Texture\GL">
+      <UniqueIdentifier>{5736f897-73a6-46de-bd99-5b222953acb2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AABB.cpp">
+      <Filter>Engine\Common\Intersection\AABB</Filter>
+    </ClCompile>
+    <ClCompile Include="Cone.cpp">
+      <Filter>Engine\Common\Intersection\Cone</Filter>
+    </ClCompile>
+    <ClCompile Include="Ray.cpp">
+      <Filter>Engine\Common\Intersection\Ray</Filter>
+    </ClCompile>
+    <ClCompile Include="Math.cpp">
+      <Filter>Engine\Common\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Sphere.cpp">
+      <Filter>Engine\Common\Intersection\Sphere</Filter>
+    </ClCompile>
+    <ClCompile Include="LayerManager.cpp">
+      <Filter>Engine\Common\LayerManager</Filter>
+    </ClCompile>
+    <ClCompile Include="TagManager.cpp">
+      <Filter>Engine\Common\TagManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Engine\Rendering\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Color.cpp">
+      <Filter>Engine\Rendering\Color</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectionalLight.cpp">
+      <Filter>Engine\Rendering\Light\Directional</Filter>
+    </ClCompile>
+    <ClCompile Include="LightForm.cpp">
+      <Filter>Engine\Rendering\Light\Basic Form</Filter>
+    </ClCompile>
+    <ClCompile Include="LightManager.cpp">
+      <Filter>Engine\Rendering\Light\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLight.cpp">
+      <Filter>Engine\Rendering\Light\Point</Filter>
+    </ClCompile>
+    <ClCompile Include="SpotLight.cpp">
+      <Filter>Engine\Rendering\Light\Spot</Filter>
+    </ClCompile>
+    <ClCompile Include="Frustum.cpp">
+      <Filter>Engine\Rendering\Camera\Frustum</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshRenderer.cpp">
+      <Filter>Engine\Rendering\Mesh\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshFilter.cpp">
+      <Filter>Engine\Rendering\Mesh\Filter</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderManager.cpp">
+      <Filter>Engine\Rendering\Shader\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Skybox.cpp">
+      <Filter>Engine\Rendering\Skybox</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Engine\Rendering\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>Engine\Device\Application\Form</Filter>
+    </ClCompile>
+    <ClCompile Include="DX.cpp">
+      <Filter>Engine\Device\Graphics\Form\DX</Filter>
+    </ClCompile>
+    <ClCompile Include="Windows.cpp">
+      <Filter>Engine\Device\Application\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="DeviceDirector.cpp">
+      <Filter>Engine\Device\Director</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsForm.cpp">
+      <Filter>Engine\Device\Graphics\Form</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureManager.cpp">
+      <Filter>Engine\Rendering\Texture\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureForm.cpp">
+      <Filter>Engine\Rendering\Texture\Form</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureDX.cpp">
+      <Filter>Engine\Rendering\Texture\DX</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AABB.h">
+      <Filter>Engine\Common\Intersection\AABB</Filter>
+    </ClInclude>
+    <ClInclude Include="Cone.h">
+      <Filter>Engine\Common\Intersection\Cone</Filter>
+    </ClInclude>
+    <ClInclude Include="Ray.h">
+      <Filter>Engine\Common\Intersection\Ray</Filter>
+    </ClInclude>
+    <ClInclude Include="Rect.h">
+      <Filter>Engine\Common\Rect</Filter>
+    </ClInclude>
+    <ClInclude Include="Math.h">
+      <Filter>Engine\Common\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.h">
+      <Filter>Engine\Common\Intersection\Sphere</Filter>
+    </ClInclude>
+    <ClInclude Include="LayerManager.h">
+      <Filter>Engine\Common\LayerManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility.h">
+      <Filter>Engine\Common\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="TagManager.h">
+      <Filter>Engine\Common\TagManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Engine\Rendering\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>Engine\Rendering\Color</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectionalLight.h">
+      <Filter>Engine\Rendering\Light\Directional</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Engine\Rendering\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="LightForm.h">
+      <Filter>Engine\Rendering\Light\Basic Form</Filter>
+    </ClInclude>
+    <ClInclude Include="LightManager.h">
+      <Filter>Engine\Rendering\Light\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLight.h">
+      <Filter>Engine\Rendering\Light\Point</Filter>
+    </ClInclude>
+    <ClInclude Include="SpotLight.h">
+      <Filter>Engine\Rendering\Light\Spot</Filter>
+    </ClInclude>
+    <ClInclude Include="Frustum.h">
+      <Filter>Engine\Rendering\Camera\Frustum</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshRenderer.h">
+      <Filter>Engine\Rendering\Mesh\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshFilter.h">
+      <Filter>Engine\Rendering\Mesh\Filter</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderManager.h">
+      <Filter>Engine\Rendering\Shader\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SingleTon.h">
+      <Filter>Engine\Common\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Skybox.h">
+      <Filter>Engine\Rendering\Skybox</Filter>
+    </ClInclude>
+    <ClInclude Include="Size.h">
+      <Filter>Engine\Common\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Engine\Rendering\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SOCHashMap.h">
+      <Filter>Engine\Common\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering.h">
+      <Filter>Engine\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>Engine\Device\Application\Form</Filter>
+    </ClInclude>
+    <ClInclude Include="DX.h">
+      <Filter>Engine\Device\Graphics\Form\DX</Filter>
+    </ClInclude>
+    <ClInclude Include="Windows.h">
+      <Filter>Engine\Device\Application\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceDirector.h">
+      <Filter>Engine\Device\Director</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsForm.h">
+      <Filter>Engine\Device\Graphics\Form</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureManager.h">
+      <Filter>Engine\Rendering\Texture\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureForm.h">
+      <Filter>Engine\Rendering\Texture\Form</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureDX.h">
+      <Filter>Engine\Rendering\Texture\DX</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Engine\Rendering\Texture</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

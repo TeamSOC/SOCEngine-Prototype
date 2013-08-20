@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{98BB6294-9299-49A8-9EF4-ADF24AD0D2A8}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>SOC</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>..\NvTriStrip\include;$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\NvTriStrip\lib\Release;$(DXSDK_DIR)Lib\x86;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="AABB.cpp" />
+    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Color.cpp" />
+    <ClCompile Include="Cone.cpp" />
+    <ClCompile Include="DeviceDirector.cpp" />
+    <ClCompile Include="DX.cpp" />
+    <ClCompile Include="GraphicsForm.cpp" />
+    <ClCompile Include="DirectionalLight.cpp" />
+    <ClCompile Include="Frustum.cpp" />
+    <ClCompile Include="LayerManager.cpp" />
+    <ClCompile Include="LightForm.cpp" />
+    <ClCompile Include="LightManager.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Math.cpp" />
+    <ClCompile Include="MeshFilter.cpp" />
+    <ClCompile Include="MeshRenderer.cpp" />
+    <ClCompile Include="Object.cpp" />
+    <ClCompile Include="PointLight.cpp" />
+    <ClCompile Include="Ray.cpp" />
+    <ClCompile Include="ShaderManager.cpp" />
+    <ClCompile Include="Skybox.cpp" />
+    <ClCompile Include="Sphere.cpp" />
+    <ClCompile Include="SpotLight.cpp" />
+    <ClCompile Include="TagManager.cpp" />
+    <ClCompile Include="TextureDX.cpp" />
+    <ClCompile Include="TextureForm.cpp" />
+    <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="Windows.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AABB.h" />
+    <ClInclude Include="Application.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Color.h" />
+    <ClInclude Include="Cone.h" />
+    <ClInclude Include="DeviceDirector.h" />
+    <ClInclude Include="DX.h" />
+    <ClInclude Include="GraphicsForm.h" />
+    <ClInclude Include="DirectionalLight.h" />
+    <ClInclude Include="Frustum.h" />
+    <ClInclude Include="LayerManager.h" />
+    <ClInclude Include="Light.h" />
+    <ClInclude Include="LightForm.h" />
+    <ClInclude Include="LightManager.h" />
+    <ClInclude Include="Math.h" />
+    <ClInclude Include="MeshFilter.h" />
+    <ClInclude Include="MeshRenderer.h" />
+    <ClInclude Include="Object.h" />
+    <ClInclude Include="PointLight.h" />
+    <ClInclude Include="Ray.h" />
+    <ClInclude Include="Rect.h" />
+    <ClInclude Include="Rendering.h" />
+    <ClInclude Include="ShaderManager.h" />
+    <ClInclude Include="SingleTon.h" />
+    <ClInclude Include="Size.h" />
+    <ClInclude Include="Skybox.h" />
+    <ClInclude Include="SOCHashMap.h" />
+    <ClInclude Include="Sphere.h" />
+    <ClInclude Include="SpotLight.h" />
+    <ClInclude Include="TagManager.h" />
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="TextureDX.h" />
+    <ClInclude Include="TextureForm.h" />
+    <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="Utility.h" />
+    <ClInclude Include="Windows.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
