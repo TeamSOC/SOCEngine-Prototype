@@ -5,13 +5,13 @@
 namespace Utility
 {
 	template<typename T>
-	inline void SAFE_DELETE(T& p){if(p){delete p; p=NULL;}}
+	inline void SAFE_DELETE(T& p){if(p){delete p; p=nullptr;}}
 
 	template<typename T>
-	inline void SAFE_ARRARY_DELETE(T& p){if(p){delete[] p; p=NULL;}}
+	inline void SAFE_ARRARY_DELETE(T& p){if(p){delete[] p; p=nullptr;}}
 
 	template<typename T>
-	inline void SAFE_RELEASE(T& p){if(p){p->Release(); p = NULL;}}
+	inline void SAFE_RELEASE(T& p){if(p){p->Release(); p = nullptr;}}
 
 	template<typename T>
 	inline T Min(T a, T b){ return a < b ? a : b;}

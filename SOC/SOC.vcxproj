@@ -88,6 +88,8 @@
     <ClCompile Include="GraphicsForm.cpp" />
     <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="Frustum.cpp" />
+    <ClCompile Include="IndexBufferForm.cpp" />
+    <ClCompile Include="IndexBufferDX.cpp" />
     <ClCompile Include="LayerManager.cpp" />
     <ClCompile Include="LightForm.cpp" />
     <ClCompile Include="LightManager.cpp" />
@@ -106,6 +108,8 @@
     <ClCompile Include="TextureDX.cpp" />
     <ClCompile Include="TextureForm.cpp" />
     <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="VertexBufferForm.cpp" />
+    <ClCompile Include="VertexBufferDX.cpp" />
     <ClCompile Include="Windows.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -119,6 +123,9 @@
     <ClInclude Include="GraphicsForm.h" />
     <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="Frustum.h" />
+    <ClInclude Include="Buffer.h" />
+    <ClInclude Include="IndexBufferForm.h" />
+    <ClInclude Include="IndexBufferDX.h" />
     <ClInclude Include="LayerManager.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightForm.h" />
@@ -144,6 +151,8 @@
     <ClInclude Include="TextureForm.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Utility.h" />
+    <ClInclude Include="VertexBufferForm.h" />
+    <ClInclude Include="VertexBufferDX.h" />
     <ClInclude Include="Windows.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

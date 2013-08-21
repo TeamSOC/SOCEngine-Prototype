@@ -1,10 +1,11 @@
-#include "Windows.h"
+#if defined(WIN32)
 
-#include <vector>
+#include "Windows.h"
 
 INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
 {
-//	_CrtDumpMemoryLeaks();
 
 	return 0;
 }
+
+#endif

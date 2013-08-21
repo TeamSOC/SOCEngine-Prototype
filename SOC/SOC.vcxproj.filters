@@ -138,6 +138,27 @@
     <Filter Include="Engine\Rendering\Texture\GL">
       <UniqueIdentifier>{5736f897-73a6-46de-bd99-5b222953acb2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Rendering\Buffer">
+      <UniqueIdentifier>{d936b711-4f37-48a8-95ed-011883f8b119}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Buffer\Vertex">
+      <UniqueIdentifier>{a4790843-157e-4006-8daa-e6c1c2f16c93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Buffer\Index">
+      <UniqueIdentifier>{d7fe2914-1386-4483-a53f-cdb0be4ab505}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Buffer\Index\Form">
+      <UniqueIdentifier>{db055877-f815-48db-b007-c243961a481d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Buffer\Index\DX">
+      <UniqueIdentifier>{bf53f986-7778-4e2e-8b07-3ad69c8bbf2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Buffer\Vertex\DX">
+      <UniqueIdentifier>{d4c04d7b-4a52-4d22-9df2-0f5447b405d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Buffer\Vertex\Form">
+      <UniqueIdentifier>{f55009c0-f914-4ce3-b92b-959bcd420519}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AABB.cpp">
@@ -226,6 +247,18 @@
     </ClCompile>
     <ClCompile Include="TextureDX.cpp">
       <Filter>Engine\Rendering\Texture\DX</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexBufferDX.cpp">
+      <Filter>Engine\Rendering\Buffer\Vertex\DX</Filter>
+    </ClCompile>
+    <ClCompile Include="IndexBufferDX.cpp">
+      <Filter>Engine\Rendering\Buffer\Index\DX</Filter>
+    </ClCompile>
+    <ClCompile Include="IndexBufferForm.cpp">
+      <Filter>Engine\Rendering\Buffer\Index\Form</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexBufferForm.cpp">
+      <Filter>Engine\Rendering\Buffer\Vertex\Form</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -336,6 +369,21 @@
     </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Engine\Rendering\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexBufferDX.h">
+      <Filter>Engine\Rendering\Buffer\Vertex\DX</Filter>
+    </ClInclude>
+    <ClInclude Include="IndexBufferDX.h">
+      <Filter>Engine\Rendering\Buffer\Index\DX</Filter>
+    </ClInclude>
+    <ClInclude Include="IndexBufferForm.h">
+      <Filter>Engine\Rendering\Buffer\Index\Form</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexBufferForm.h">
+      <Filter>Engine\Rendering\Buffer\Vertex\Form</Filter>
+    </ClInclude>
+    <ClInclude Include="Buffer.h">
+      <Filter>Engine\Rendering\Buffer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
