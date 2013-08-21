@@ -2,5 +2,6 @@ Debug/
 *.sdf
 *.opensdf
 *.ipch
+*.v11.suo
 Interface/Interface.xcodeproj/xcuserdata/sinhyunho.xcuserdatad/xcschemes/xcschememanagement.plist
 Rendering.xcodeproj/xcuserdata/sinhyunho.xcuserdatad/xcschemes/xcschememanagement.plist
