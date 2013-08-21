@@ -1,13 +1,11 @@
 #pragma once
 
-#include <d3d9.h>
-#include <d3dx9.h>
-#include <vector>
+#include "DeviceDirector.h"
 #include "AABB.h"
 #include "Color.h"
-//#include <NvTriStrip.h>
 #include "Utility.h"
 #include "Math.h"
+#include "Buffer.h"
 
 namespace Rendering
 {
@@ -31,8 +29,8 @@ namespace Rendering
 
 		std::pair<size, WORD*>  indices;
 
-		LPDIRECT3DVERTEXBUFFER9 vertexBuffer;
-		LPDIRECT3DINDEXBUFFER9 indexBuffer;
+		Buffer::VertexBuffer	*vertexBuffer;
+		Buffer::IndexBuffer		*indexBuffer;
 
 		int			vertexBufferSize;
 		int			numOfVertex;
@@ -85,7 +83,7 @@ namespace Rendering
 			return true;
 		}
 
-		bool Create(SOC_Vector3 *vertices, SOC_Vector3 *normals, SOC_Vector2 *uv, SOC_Vector2 *uv2,	SOC_Vector3 *tangents, SOC_Vector3 *binomals, Color *colors, int numOfVertex, std::pair<size, WORD*> indices, TRIANGLES_TYPE type, bool isDynamic, LPDIRECT3DDEVICE9 device)
+		bool Create(SOC_Vector3 *vertices, SOC_Vector3 *normals, SOC_Vector2 *uv, SOC_Vector2 *uv2,	SOC_Vector3 *tangents, SOC_Vector3 *binomals, Color *colors, int numOfVertex, std::pair<size, WORD*> indices, TRIANGLES_TYPE type, bool isDynamic)
 		{
 			if(vertices == NULL || normals == NULL) return false;
 
@@ -112,24 +110,34 @@ namespace Rendering
 
 			CalcVertexBufferSize();
 
-			if( CreateVertexBuffer(device, isDynamic) == false )
+			if(vertexBuffer || indexBuffer)
+			{
+				Utility::SAFE_DELETE(vertexBuffer);
+				Utility::SAFE_DELETE(indexBuffer);
+			}
+
+			Device::Graphics::GraphicsForm *gp = Device::DeviceDirector::GetInstance()->GetGraphics();
+			vertexBuffer = new Buffer::VertexBuffer( vertexBufferSize * numOfVertex, gp );
+			indexBuffer = new Buffer::IndexBuffer( indices.first, gp);
+
+			if( CreateVertexBuffer(isDynamic) == false )
 				return false;
 
-			if( CreateIndexBuffer(device) == false )
+			if( CreateIndexBuffer() == false )
 				return false;
 
 			return true; 
 		}
 
-		bool CreateVertexBuffer(LPDIRECT3DDEVICE9 device, bool isDynamic)
+		bool CreateVertexBuffer(bool isDynamic)
 		{
-			DWORD usage = D3DUSAGE_WRITEONLY | (isDynamic ? D3DUSAGE_DYNAMIC : 0);
-			if( FAILED(device->CreateVertexBuffer( numOfVertex * vertexBufferSize, usage, 0, D3DPOOL_DEFAULT, &vertexBuffer, NULL)) )
+			SOC_dword usage = SOC_USAGE_WRITEONLY | (isDynamic ? SOC_USAGE_DYNAMIC : 0);
+
+			if( vertexBuffer->Create( usage, SOC_POOL_DEFAULT) == false )
 				return false;
 
 			void *vertexBufferData;
-
-			if( FAILED(vertexBuffer->Lock( 0, numOfVertex * vertexBufferSize, &vertexBufferData, NULL)) )
+			if( vertexBuffer->Lock(&vertexBufferData) == false )
 				return false;
 
 			float maxRadius = 0.0f;
@@ -191,25 +199,23 @@ namespace Rendering
 
 			}
 
-			vertexBuffer->Unlock();
+			vertexBuffer->UnLock();
 			radius = maxRadius;
 			bounds.SetMinMax(minSize, maxSize);
 
 			return true;
 		}
-		bool CreateIndexBuffer(LPDIRECT3DDEVICE9 device)
+		bool CreateIndexBuffer()
 		{
-			if( FAILED( device->CreateIndexBuffer(0, D3DUSAGE_WRITEONLY, D3DFMT_INDEX16, D3DPOOL_DEFAULT, &indexBuffer, NULL) ) )
+			if( indexBuffer->Create(SOC_POOL_DEFAULT) == false)
 				return false;
 
 			WORD *indexBufferData;
-			int indicesCount = this->indices.first;
-
-			if( FAILED( indexBuffer->Lock( sizeof(WORD) * indicesCount, 0, (void**)&indexBufferData, NULL) ) )
+			if( indexBuffer->Lock((void**)&indexBufferData) == false)
 				return false;
 
-			memcpy(indexBufferData, this->indices.second, sizeof(WORD) * indicesCount);
-			indexBuffer->Unlock();
+			memcpy(indexBufferData, this->indices.second, sizeof(WORD) * indexBuffer->GetCount());
+			indexBuffer->UnLock();
 
 			return true;
 		}
