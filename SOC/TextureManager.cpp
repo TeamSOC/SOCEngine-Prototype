@@ -25,18 +25,11 @@ namespace Rendering
 		if(iter != hash.end())
 			return iter->second;
 
-		wchar_t wcharPath[260];
-		//		const char *charPath = path.c_str();
-
-		MultiByteToWideChar(CP_ACP, NULL, string( inResourceFolder ? RESOURCE_DIR  : "" + path ).c_str(), -1, wcharPath, path.length()+1 );
-
 		Texture::TextureForm *tex = NULL;
 		bool success;
 
-#if defined(WIN32) && !defined(_USE_GL_DEFINES)
-		tex = new Texture::TextureDX();
-		success = tex->Create(wcharPath);
-#endif
+		tex = new Texture::Texture();
+		success = tex->Create(path.c_str());
 
 		if(success == false)
 			return NULL;

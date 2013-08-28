@@ -2,16 +2,17 @@
 
 #if defined(WIN32) && !defined(_USE_GL_DEFINES)
 
-#include "TextureDX.h"
+#include "ShaderDX.h"
 
 namespace Rendering
 {
-	namespace Texture
+	namespace Shader
 	{
-		typedef Rendering::Texture::TextureDX Texture;
+		typedef ShaderDX Shader;
 	}
 }
 
 #elif defined(__APPLE__) || defined(_USE_GL_DEFINES)
+
 
 #endif

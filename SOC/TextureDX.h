@@ -24,7 +24,7 @@ namespace Rendering
 			}
 
 		public:
-			bool Create(wchar_t *path)
+			bool Create(const char *path)
 			{
 				Device::Graphics::DX *device = dynamic_cast<Device::Graphics::DX*>( Device::DeviceDirector::GetInstance()->GetGraphics() );
 

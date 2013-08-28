@@ -159,6 +159,21 @@
     <Filter Include="Engine\Rendering\Buffer\Vertex\Form">
       <UniqueIdentifier>{f55009c0-f914-4ce3-b92b-959bcd420519}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Rendering\Material">
+      <UniqueIdentifier>{614e1a77-6fa7-4e6a-95ad-22825afddbf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Shader\Shader">
+      <UniqueIdentifier>{49e4fe26-1f44-4d58-89b7-dd0de124d08b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Shader\Shader\Form">
+      <UniqueIdentifier>{eb1c94f8-0acd-4afc-ac5d-e402de25ce89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Shader\Shader\DX">
+      <UniqueIdentifier>{f647cd5d-11af-4d8e-9edf-d29622302bbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Shader\Shader\GL">
+      <UniqueIdentifier>{3a5d34a4-a988-4f92-8604-5315ac6037ae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AABB.cpp">
@@ -260,6 +275,15 @@
     <ClCompile Include="VertexBufferForm.cpp">
       <Filter>Engine\Rendering\Buffer\Vertex\Form</Filter>
     </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Engine\Rendering\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderForm.cpp">
+      <Filter>Engine\Rendering\Shader\Shader\Form</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderDX.cpp">
+      <Filter>Engine\Rendering\Shader\Shader\DX</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABB.h">
@@ -331,9 +355,6 @@
     <ClInclude Include="Skybox.h">
       <Filter>Engine\Rendering\Skybox</Filter>
     </ClInclude>
-    <ClInclude Include="Size.h">
-      <Filter>Engine\Common\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="Object.h">
       <Filter>Engine\Rendering\Object</Filter>
     </ClInclude>
@@ -384,6 +405,21 @@
     </ClInclude>
     <ClInclude Include="Buffer.h">
       <Filter>Engine\Rendering\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Size.h">
+      <Filter>Engine\Common\Rect</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Engine\Rendering\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderForm.h">
+      <Filter>Engine\Rendering\Shader\Shader\Form</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Engine\Rendering\Shader\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderDX.h">
+      <Filter>Engine\Rendering\Shader\Shader\DX</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

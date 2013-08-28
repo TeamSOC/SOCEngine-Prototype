@@ -20,7 +20,7 @@ namespace Rendering
 			}
 
 		public:
-			virtual bool Create(wchar_t *path) = 0;
+			virtual bool Create(const char *path) = 0;
 
 
 		public:

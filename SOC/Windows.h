@@ -11,7 +11,7 @@ namespace Device
 		{
 		private:
 			WNDCLASSEX		windowInfo;
-			const wchar_t*	name;
+			const char*	name;
 			HWND			parentHandle;
 			HWND			handle;
 			unsigned int	options;
@@ -24,7 +24,7 @@ namespace Device
 			}
 
 		public:
-			Windows(Common::Rect<int> &rect, HINSTANCE Instance, const wchar_t* name, bool windowMode, bool isChild, HWND parentHandle = NULL)
+			Windows(Common::Rect<int> &rect, HINSTANCE Instance, const char* name, bool windowMode, bool isChild, HWND parentHandle = NULL)
 			{
 				windowInfo.cbSize			= sizeof(WNDCLASSEX);
 				windowInfo.style			= CS_CLASSDC;

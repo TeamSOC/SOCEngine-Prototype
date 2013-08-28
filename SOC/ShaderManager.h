@@ -7,74 +7,81 @@
 
 namespace Rendering
 {
-	class ShaderManager
+	namespace Shader
 	{
+
+		class ShaderManager
+		{
 #define SHADER_DIR "../Shader/"
 
-	private:
-		SOCHashMap<std::string, std::wstring> hash;
-		int dirLen;
+		public:
+			typedef std::string shaderCode;
 
-	public:
-		ShaderManager(void)
-		{
-			dirLen = strlen(SHADER_DIR);
-		}
+		private:
+			SOCHashMap<std::string, shaderCode> hash;
+			int dirLen;
 
-		~ShaderManager(void)
-		{
-
-		}
-
-	public:
-		bool InitializeFromFile( std::string &path, bool inShaderFolder)
-		{
-			if(inShaderFolder)
-				path.erase(0, dirLen);
-
-			SOCHashMap<std::string, std::wstring>::iterator iter = hash.find(path);
-
-			if(iter != hash.end())
-				return false;
-
-			std::wifstream file( path.c_str() );
-
-			if( file.good() == false )
+		public:
+			ShaderManager(void)
 			{
-				file.close();
-				return false;
+				dirLen = strlen(SHADER_DIR);
 			}
 
-			std::wstring buff;
-			std::wstring data;
+			~ShaderManager(void)
+			{
 
-			while(std::getline(file, buff))
-				data += buff;
+			}
 
-			hash.insert( SOCHashMap<std::string, std::wstring>::value_type(path, data));
+		public:
+			bool InitializeFromFile( std::string &path, bool inShaderFolder)
+			{
+				if(inShaderFolder)
+					path.erase(0, dirLen);
 
-			return true;
-		}
+				SOCHashMap<std::string, shaderCode>::iterator iter = hash.find(path);
 
-		bool FindShader(std::string path, std::wstring *outFile, bool inResourceFolder)
-		{
-			if(inResourceFolder)
-				path.erase(0, dirLen);
-			
-			SOCHashMap<std::string, std::wstring>::iterator iter = hash.find(path);
+				if(iter != hash.end())
+					return false;
 
-			if(iter == hash.end())
-				return false;
+				std::ifstream file( path.c_str() );
 
-			*outFile = iter->second;
+				if( file.good() == false )
+				{
+					file.close();
+					return false;
+				}
 
-			return true;
-		}
+				std::string buff;
+				std::string data;
 
-		void DeleteAll()
-		{
-			hash.clear();
-		}
-	};
+				while(std::getline(file, buff))
+					data += buff;
 
+				hash.insert( SOCHashMap<std::string, shaderCode>::value_type(path, data));
+
+				return true;
+			}
+
+			bool FindShader(std::string path, std::string *outFile, bool inResourceFolder)
+			{
+				if(inResourceFolder)
+					path.erase(0, dirLen);
+
+				SOCHashMap<std::string, shaderCode>::iterator iter = hash.find(path);
+
+				if(iter == hash.end())
+					return false;
+
+				*outFile = iter->second;
+
+				return true;
+			}
+
+			void DeleteAll()
+			{
+				hash.clear();
+			}
+		};
+
+	}
 }

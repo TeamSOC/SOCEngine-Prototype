@@ -26,7 +26,7 @@ namespace Device
 		{
 			Common::Rect<int> &rect;
 			HINSTANCE instance;
-			const wchar_t* name;
+			const char* name;
 			bool windowMode;
 			bool isChild;
 			HWND parentHandle;
