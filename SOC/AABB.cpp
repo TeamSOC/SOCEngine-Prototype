@@ -100,7 +100,7 @@ namespace Intersection
 		{
 			if(abs(ray.direction[i]) < gap)
 			{
-				if(ray.origin[i] < realMin[i] || ray.origin[i] > realMax[i])
+				if(realMin[i] > ray.origin[i] || ray.origin[i] > realMax[i])
 					return false;
 			}
 			else
@@ -110,10 +110,10 @@ namespace Intersection
 				float t2 = ( -ray.origin[i] - realMax[i]) * denom;
 
 				if( t1 > t2 )
-					Utility::Max(t1, t2);
+					Utility::Swap(t1, t2);
 
 				rayMin = Utility::Max(rayMin, t1);
-				rayMax = Utility::Max(rayMax, t2);
+				rayMax = Utility::Min(rayMax, t2);
 
 				if(rayMin > rayMax)
 					return false;
