@@ -27,7 +27,7 @@ namespace Rendering
 			}
 
 		public:
-			virtual bool Load(std::string shaderCode) = 0;
+			virtual bool Compile(std::string shaderCode) = 0;
 
 			virtual bool SetMatrix(char *parameter, SOC_Matrix *m) = 0;
 			virtual bool SetMatrixAry(char *parameter, SOC_Matrix *ary, SOC_uint count) = 0;

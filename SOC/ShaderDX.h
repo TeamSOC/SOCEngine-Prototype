@@ -17,7 +17,7 @@ namespace Rendering
 			~ShaderDX(void);
 
 		public:
-			bool Load(std::string shaderCode);
+			bool Compile(std::string shaderCode);
 
 			bool SetMatrix(char *parameter, SOC_Matrix *m);
 			bool SetMatrixAry(char *parameter, SOC_Matrix *ary, SOC_uint count);
