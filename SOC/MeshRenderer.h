@@ -15,15 +15,15 @@ namespace Rendering
 			bool reciveShadow;
 
 		public:
-			MeshRenderer(void (**beginFunc)(void) = nullptr, void (**endFunc)(void) = nullptr)
+			MeshRenderer(void (**beginFunc)(MeshRenderer*) = nullptr, void (**endFunc)(MeshRenderer*) = nullptr)
 			{
 				castShadow = false;
 				reciveShadow = false;
 
 				if(beginFunc && endFunc)
 				{
-					*beginFunc = &this->Begin;
-					*endFunc = &this->End;
+					(*beginFunc)	= this->Begin;
+					(*endFunc)		= this->End;
 				}
 			}
 
@@ -35,7 +35,7 @@ namespace Rendering
 		public:
 			void AddMaterial(Material *material, bool copy)
 			{
-				Material *m = copy ? Material::Copy(material) : material;
+				Material *m = copy ? new Material(*material) : material; // Material::Copy(material) : material;
 				materials.push_back(m);
 			}
 			bool DeleteMaterial(Material *material)
@@ -74,19 +74,25 @@ namespace Rendering
 			}
 
 		private:
-			void Begin()
+			static void Begin(MeshRenderer *renderer)
 			{
 				std::vector<Material*>::iterator iter;
-				for(iter = materials.begin(); iter != materials.end(); ++iter)
+				std::vector<Material*>::iterator begin = renderer->materials.begin();
+				std::vector<Material*>::iterator end = renderer->materials.end();
+
+				for(iter = begin; iter != end; ++iter)
 				{
 					(*iter)->Begin();
 					(*iter)->BeginPass();
 				}
 			}
-			void End()
+			static void End(MeshRenderer *renderer)
 			{
 				std::vector<Material*>::iterator iter;
-				for(iter = materials.begin(); iter != materials.end(); ++iter)
+				std::vector<Material*>::iterator begin = renderer->materials.begin();
+				std::vector<Material*>::iterator end = renderer->materials.end();
+
+				for(iter = begin; iter != end; ++iter)
 				{
 					(*iter)->EndPass();
 					(*iter)->End();

@@ -95,13 +95,13 @@ namespace Rendering
 		{
 			return shaders.size();
 		}
-		static Material* Copy(Material *material)
-		{
-			Material *m = new Material();
-			(*m) = (*material);
+		//static Material* Copy(Material *material)
+		//{
+		//	Material *m = new Material();
+		//	(*m) = (*material);
 
-			return m;
-		}
+		//	return m;
+		//}
 		const char* GetName()
 		{
 			return name.c_str();

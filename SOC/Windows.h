@@ -63,10 +63,14 @@ namespace Device
 					rect.size.w, rect.size.h, 
 					parentHandle, NULL, windowInfo.hInstance, NULL);
 
+				if(handle == NULL)
+					return false;
+
 				if( options != (WS_CHILD | WS_VISIBLE | WS_CLIPCHILDREN) )
 					ShowWindow(handle, SW_SHOWDEFAULT);
-			}
 
+				return true;
+			}
 			void Destroy()
 			{
 				UnregisterClass( name, windowInfo.hInstance );
@@ -74,6 +78,11 @@ namespace Device
 				if( options != (WS_CHILD | WS_VISIBLE | WS_CLIPCHILDREN) )
 					DestroyWindow(handle);
 				else PostQuitMessage(0);
+			}
+
+			void Run()
+			{
+
 			}
 
 		public:

@@ -24,7 +24,7 @@ namespace Rendering
 			~ShaderForm(void);
 
 		public:
-			virtual bool Compile(std::string shaderCode) = 0;
+			virtual bool Compile(std::string &shaderCode) = 0;
 
 			virtual bool SetVariable(char *parameter, SOC_Matrix *m) = 0;
 			virtual bool SetVariable(char *parameter, SOC_Matrix *ary, SOC_uint count) = 0;

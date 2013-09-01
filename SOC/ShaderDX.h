@@ -17,7 +17,7 @@ namespace Rendering
 			~ShaderDX(void);
 
 		public:
-			bool Compile(std::string shaderCode);
+			bool Compile(std::string &shaderCode);
 
 			bool SetVariable(char *parameter, SOC_Matrix *m);
 			bool SetVariable(char *parameter, SOC_Matrix *ary, SOC_uint count);

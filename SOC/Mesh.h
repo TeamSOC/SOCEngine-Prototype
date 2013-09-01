@@ -16,8 +16,8 @@ namespace Rendering
 			Device::Graphics::GraphicsForm	*graphics;
 
 		private:
-			void (*beginFunc)(void);
-			void (*endFunc)(void);
+			void (*beginFunc)(MeshRenderer*);
+			void (*endFunc)(MeshRenderer*);
 
 		public:
 			Mesh(Device::Graphics::GraphicsForm	*graphics, MeshFilter *filter = nullptr, MeshRenderer *renderer = nullptr)
@@ -40,7 +40,7 @@ namespace Rendering
 				if( (beginFunc && endFunc) == false)
 					return;
 
-				beginFunc();
+				beginFunc(renderer);
 				{
 					void* idxBuffer = filter->GetIndexBuffer()->GetBuffer();
 					SOC_uint numOfVertex = filter->GetNumOfVertex();
@@ -50,7 +50,7 @@ namespace Rendering
 					graphics->SetIndices(idxBuffer);
 					graphics->DrawIndexedPrimitive(type, 0, 0, numOfVertex, 0, triangleCount);
 				}
-				endFunc();
+				endFunc(renderer);
 			}
 
 		public:

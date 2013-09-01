@@ -14,7 +14,7 @@ namespace Rendering
 		SOCHashMap<std::string, Texture::TextureForm*> hash;
 		int resourceDirLen;
 
-	private:
+	public:
 		TextureManager();
 		~TextureManager();
 

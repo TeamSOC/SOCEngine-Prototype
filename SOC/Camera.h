@@ -18,7 +18,7 @@ namespace Rendering
 
 	private:
 		Frustum *frustum;
-		Device::DeviceDirector device;
+		Device::DeviceDirector *device;
 
 	private:
 		Common::Rect<float>	  normalizedViewPortRect;
@@ -40,10 +40,15 @@ namespace Rendering
 		//3. 렌더 텍스쳐 선택. 이건 지금 할게 아니야
 
 	public:
-		Camera(Device::DeviceDirector device, Skybox *skybox, 
+		Camera(Device::DeviceDirector *device, Skybox *skybox, 
 			std::vector<Object*>* objectRoots, Light::LightManager* sceneLightMgr, 
 			Object *parent = NULL);
 		~Camera(void);
+
+	private:
+		Camera(const Camera &cam)
+		{
+		}
 
 	private:
 		void CalcAspect();

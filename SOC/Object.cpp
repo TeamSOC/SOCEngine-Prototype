@@ -35,6 +35,7 @@ namespace Rendering
 		}
 
 		radius = 50.0f; // default
+		isLight = false;
 	}
 
 	Object::~Object(void)
@@ -46,7 +47,7 @@ namespace Rendering
 		if(renderQueue < 0)
 			return;
 
-		Object *c = copy == false ? child : Object::Copy(this);
+		Object *c = copy == false ? child : new Object(*this);
 
 		vector<Object*>::iterator iter;
 
@@ -63,7 +64,7 @@ namespace Rendering
 
 	void Object::AddChild(Object *child, bool copy/* = false */)
 	{
-		Object *c = copy == false ? child : Object::Copy(this);
+		Object *c = copy == false ? child : new Object(this);// Object::Copy(this);
 
 		c->renderQueue = (*(childs.end() - 1))->renderQueue + 1;
 		c->parent = this;
@@ -110,13 +111,13 @@ namespace Rendering
 			(*iter)->Update();
 	}
 
-	Object* Object::Copy(Object *obj)
-	{
-		Object *o = new Object(NULL);
-		(*o) = (*obj);
+	//Object* Object::Copy(Object *obj)
+	//{
+	//	Object *o = new Object(NULL);
+	//	(*o) = (*obj);
 
-		return o;
-	}
+	//	return o;
+	//}
 
 	vector<Object*> Object::_FindChild(std::string str, FIND_ENUM e, bool one)
 	{

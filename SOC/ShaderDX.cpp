@@ -19,7 +19,7 @@ namespace Rendering
 				shader->Release();
 		}
 
-		bool ShaderDX::Compile(string shaderCode)
+		bool ShaderDX::Compile(string &shaderCode)
 		{
 			LPD3DXBUFFER error = nullptr;
 			SOC_dword flags = 0;

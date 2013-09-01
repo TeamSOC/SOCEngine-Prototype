@@ -177,6 +177,15 @@
     <Filter Include="Engine\Device\Graphics\GL">
       <UniqueIdentifier>{fe8109a7-ee13-49c4-83fd-2c747420076d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test">
+      <UniqueIdentifier>{54c1f466-d4cc-44ca-8675-19cb514549a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\H">
+      <UniqueIdentifier>{c2b20625-accf-4b26-8dcb-e2554cc9ccc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\aa">
+      <UniqueIdentifier>{11ec5c53-5e16-46f5-8723-5d39a24627a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AABB.cpp">
@@ -233,9 +242,6 @@
     <ClCompile Include="Skybox.cpp">
       <Filter>Engine\Rendering\Skybox</Filter>
     </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>Engine\Rendering\Object</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -289,6 +295,15 @@
     </ClCompile>
     <ClCompile Include="MeshRenderer.cpp">
       <Filter>Engine\Rendering\Mesh\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Engine\Rendering\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Test.cpp">
+      <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Source\aa</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -357,9 +372,6 @@
     </ClInclude>
     <ClInclude Include="Skybox.h">
       <Filter>Engine\Rendering\Skybox</Filter>
-    </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>Engine\Rendering\Object</Filter>
     </ClInclude>
     <ClInclude Include="SOCHashMap.h">
       <Filter>Engine\Common\Utility</Filter>
@@ -432,6 +444,15 @@
     </ClInclude>
     <ClInclude Include="Device.h">
       <Filter>Engine\Device</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Engine\Rendering\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Test.h">
+      <Filter>Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Source\aa</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

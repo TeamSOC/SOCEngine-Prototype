@@ -12,7 +12,7 @@ namespace Rendering
 {
 	static Camera *mainCamera = NULL;
 
-	Camera::Camera(Device::DeviceDirector device, Skybox *skybox, 
+	Camera::Camera(Device::DeviceDirector* device, Skybox *skybox, 
 		std::vector<Object*>* objectRoots, LightManager* sceneLightMgr, 
 		Object *parent/* = NULL*/)
 	{

@@ -12,13 +12,6 @@ namespace Device
 		class GraphicsForm
 		{
 		public:
-			enum PRESENT_INTERVAL
-			{
-				PRESENT_INTERVAL_DEFAULT,
-				PRESENT_INTERVAL_IMMEDIATE,
-				PRESENT_INTERVAL_VERTICALSYNC
-			};
-
 			enum CLEAR_FLAG
 			{
 				CLEAR_FLAG_TARGET	= 1,

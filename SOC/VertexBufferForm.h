@@ -20,7 +20,10 @@ namespace Rendering
 				this->graphics = graphics;
 			}
 
-			~VertexBufferForm(void);
+			virtual ~VertexBufferForm(void)
+			{
+
+			}
 
 		public:
 			virtual bool Create(SOC_dword usage, SOC_POOL pool) = 0;

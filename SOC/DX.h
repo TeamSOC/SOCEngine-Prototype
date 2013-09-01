@@ -84,8 +84,10 @@ namespace Device
 				//if(flags & CLEAR_FLAG_STENCIL)
 				//	flag |= D3DCLEAR_STENCIL
 
+				bool success = false;
+
 				if(rect == nullptr)	
-					device->Clear(0, NULL, flags, d3dColor, z, stencil);
+					success = SUCCEEDED( device->Clear(0, NULL, flags, d3dColor, z, stencil) );
 				else
 				{
 					D3DRECT d3dRect;
@@ -94,8 +96,10 @@ namespace Device
 					d3dRect.x2 = rect->x + rect->size.w;
 					d3dRect.y2 = rect->y + rect->size.h;
 
-					device->Clear(count, &d3dRect, flags, d3dColor, z, stencil);
+					success = SUCCEEDED( device->Clear(count, &d3dRect, flags, d3dColor, z, stencil) );
 				}
+
+				return success;
 			}
 
 			bool CreateVertexBuffer(int bufferSize, SOC_dword usage, SOC_POOL pool, void** outBuffer)

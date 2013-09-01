@@ -1,5 +1,12 @@
 #pragma once
 
+enum PRESENT_INTERVAL
+{
+	PRESENT_INTERVAL_DEFAULT,
+	PRESENT_INTERVAL_IMMEDIATE,
+	PRESENT_INTERVAL_VERTICALSYNC
+};
+
 #if defined(WIN32) && !defined(_USE_GL_DEFINES)
 
 #include <Windows.h>

@@ -21,7 +21,7 @@ namespace Rendering
 				this->graphics = graphics;
 			}
 
-			~IndexBufferForm(void)
+			virtual ~IndexBufferForm(void)
 			{
 			}
 

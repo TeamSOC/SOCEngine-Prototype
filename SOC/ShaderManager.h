@@ -33,7 +33,7 @@ namespace Rendering
 			}
 
 		public:
-			bool InitializeFromFile( std::string &path, bool inShaderFolder)
+			bool LoadShaderFromFile( std::string path, shaderCode *outShaderCode, bool inShaderFolder)
 			{
 				if(inShaderFolder)
 					path.erase(0, dirLen);
@@ -58,6 +58,9 @@ namespace Rendering
 					data += buff;
 
 				hash.insert( SOCHashMap<std::string, shaderCode>::value_type(path, data));
+				
+				if(outShaderCode)
+					*outShaderCode = data;
 
 				return true;
 			}
