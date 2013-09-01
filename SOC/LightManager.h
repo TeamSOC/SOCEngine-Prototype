@@ -71,23 +71,28 @@ namespace Rendering
 				return true;
 			}
 
-			void Delete(LightForm* light)
+			void Delete(LightForm* light, bool remove)
 			{
 				for(vector<LightForm*>::iterator iter = lights.begin(); iter != lights.end(); ++iter)
 				{
 					if( (*iter) == light )
 					{
-						Utility::SAFE_DELETE(light);
+						if(remove)
+							delete (*iter);
+
 						lights.erase(iter);
 						return;
 					}
 				}
 			}
 
-			void DeleteAll()
+			void DeleteAll(bool remove)
 			{
-				for(vector<LightForm*>::iterator iter = lights.begin(); iter != lights.end(); ++iter)
-					Utility::SAFE_DELETE((*iter));
+				if(remove)
+				{
+					for(vector<LightForm*>::iterator iter = lights.begin(); iter != lights.end(); ++iter)
+						Utility::SAFE_DELETE((*iter));
+				}
 
 				lights.clear();
 			}

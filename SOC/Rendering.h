@@ -20,35 +20,7 @@
 
 #include "DX.h"
 
-//typedef VOID				SOC_void;
-typedef CHAR				SOC_char;
-typedef unsigned int		SOC_enum;
-typedef BOOL				SOC_bool;
-typedef unsigned int		SOC_bitfield;
-typedef BYTE				SOC_byte;
-typedef SHORT				SOC_short;
-typedef WORD				SOC_word;
-typedef INT					SOC_int;
-typedef DWORD				SOC_dword;
-typedef SIZE_T				SOC_sizei;
-typedef USHORT				SOC_ushort;
-typedef UWORD				SOC_uword;
-typedef UINT				SOC_uint;
-typedef FLOAT				SOC_float;
-typedef float				SOC_clampf;
-typedef FIXED				SOC_fixed;
-
-typedef PINT				SOC_intptr;
-typedef PSIZE_T				SOC_sizeiptr;
-
-//typedef INT64				SOC_int64;
-//typedef INT64				SOC_qword;
-//typedef UINT64				SOC_uint64;
-//typedef UINT64				SOC_uqword;
-
 typedef D3DXFLOAT16			SOC_float16;
-typedef double				SOC_double;
-
 typedef D3DVECTOR			SOC_Vector;
 
 typedef D3DXVECTOR2			SOC_Vector2;
@@ -62,47 +34,6 @@ typedef D3DXMATRIX			SOC_Matrix;
 typedef D3DXMATRIXA16		SOC_MatrixA16;
 
 typedef D3DXPLANE			SOC_Plane;
-
-
-#define SOC_FMT_R8G8B8		D3DFMT_R8G8B8
-#define SOC_FMT_A8R8G8B8	D3DFMT_A8R8G8B8
-
-#define SOC_FMT_A4R4G4B4	D3DFMT_A4R4G4B4
-#define SOC_FMT_A8			D3DFMT_A8
-
-#define SOC_FMT_X4R4G4B4	D3DFMT_X4R4G4B4
-#define SOC_FMT_A8B8G8R8	D3DFMT_A8B8G8R8
-
-#define SOC_FMT_G16R16		 D3DFMT_G16R16
-#define SOC_FMT_A16B16G16R16 D3DFMT_A16B16G16R16
-
-#define SOC_FMT_D32			D3DFMT_D32
-#define SOC_FMT_D24X8		D3DFMT_D24X8
-#define SOC_FMT_D16			D3DFMT_D16
-#define SOC_FMT_VERTEXDATA	D3DFMT_VERTEXDATA
-#define SOC_FMT_INDEX16		D3DFMT_INDEX16
-#define SOC_FMT_INDEX32		D3DFMT_INDEX32
-
-#define SOC_FMT_R16F		D3DFMT_R16F
-#define SOC_FMT_R32F		D3DFMT_R32F
-#define SOC_FMT_G32R32F		D3DFMT_G32R32F
-
-#define SOC_USAGE_DEPTHSTENCIL			D3DUSAGE_DEPTHSTENCIL
-#define SOC_USAGE_DMAP					D3DUSAGE_DMAP
-#define SOC_USAGE_DONOTCLIP				D3DUSAGE_DONOTCLIP
-#define SOC_USAGE_DYNAMIC				D3DUSAGE_DYNAMIC
-#define SOC_USAGE_RENDERTARGET			D3DUSAGE_RENDERTARGET
-#define SOC_USAGE_SOFTWAREPROCESSING	D3DUSAGE_SOFTWAREPROCESSING
-#define SOC_USAGE_WRITEONLY				D3DUSAGE_WRITEONLY
-
-enum SOC_POOL
-{
-	SOC_POOL_DEFAULT,
-	SOC_POOL_MANAGED
-};
-
-//#define SOC_POOL_DEFAULT D3DPOOL_DEFAULT
-//#define SOC_POOL_MANAGED D3DPOOL_MANAGED
 
 #define SOCVec3Length(Const_Vector3_Ptr) \
 		D3DXVec3Length(Const_Vector3_Ptr)
@@ -155,49 +86,6 @@ enum SOC_POOL
 #define SOCM_PI				D3DX_PI
 
 #elif defined(__APPLE__) || defined(_USE_GL_DEFINES)
-
-#import <OpenGLES/ES2/gl.h>
-#import <OpenGLES/ES2/glext.h>
-
-#define ALIGN(x)			__attribute__((aligned(x)))
-
-#if defined(WIN32)
-
-#include <Windows.h>
-#include <math.h>
-#include <gl/GL.h>
-#include <gl/GLU.h>
-
-#define ALIGN(x)			__declspec(align(x))
-#endif
-
-typedef GLvoid				SOC_void;
-typedef GLbyte				SOC_char;
-typedef GLenum				SOC_enum;
-typedef GLboolean			SOC_bool;
-typedef GLbitfield			SOC_bitfield;
-typedef GLubyte				SOC_byte;
-typedef GLshort				SOC_short;
-typedef GLushort			SOC_word;
-typedef GLint				SOC_int;
-typedef GLuint				SOC_dword;
-typedef GLsizei				SOC_sizei;
-typedef GLushort			SOC_ushort;
-typedef GLuint				SOC_uint;
-typedef GLfloat 			SOC_float;
-typedef GLclampf			SOC_clampf;
-typedef unsigned long		SOC_fixed;
-
-typedef GLint*				SOC_intptr;
-typedef GLsizei*			SOC_sizeiptr;
-
-typedef double				SOC_float16;
-typedef double				SOC_double;
-
-//typedef GLint64				SOC_int64;
-//typedef GLint64				SOC_qword;
-//typedef GLuint64			SOC_uint64;
-//typedef GLuint64			SOC_uqword;
 
 struct SOC_Vector2
 {

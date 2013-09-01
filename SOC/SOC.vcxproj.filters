@@ -111,12 +111,6 @@
     <Filter Include="Engine\Device\Application\Form">
       <UniqueIdentifier>{e0d16ee9-170d-4fbb-b21c-559f58f3c580}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Device\Graphics\Form\DX">
-      <UniqueIdentifier>{d15b0059-0604-4084-a116-d161ebd1d372}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Device\Graphics\Form\GL">
-      <UniqueIdentifier>{fe8109a7-ee13-49c4-83fd-2c747420076d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Device\Application\Windows">
       <UniqueIdentifier>{ff62a7cb-05aa-4aae-93ba-0885e1d55832}</UniqueIdentifier>
     </Filter>
@@ -174,6 +168,15 @@
     <Filter Include="Engine\Rendering\Shader\Shader\GL">
       <UniqueIdentifier>{3a5d34a4-a988-4f92-8604-5315ac6037ae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Rendering\Mesh\Mesh">
+      <UniqueIdentifier>{3c315de4-85d6-407a-b864-4ff52aca5259}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Device\Graphics\DX">
+      <UniqueIdentifier>{d15b0059-0604-4084-a116-d161ebd1d372}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Device\Graphics\GL">
+      <UniqueIdentifier>{fe8109a7-ee13-49c4-83fd-2c747420076d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AABB.cpp">
@@ -221,9 +224,6 @@
     <ClCompile Include="Frustum.cpp">
       <Filter>Engine\Rendering\Camera\Frustum</Filter>
     </ClCompile>
-    <ClCompile Include="MeshRenderer.cpp">
-      <Filter>Engine\Rendering\Mesh\Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="MeshFilter.cpp">
       <Filter>Engine\Rendering\Mesh\Filter</Filter>
     </ClCompile>
@@ -243,7 +243,7 @@
       <Filter>Engine\Device\Application\Form</Filter>
     </ClCompile>
     <ClCompile Include="DX.cpp">
-      <Filter>Engine\Device\Graphics\Form\DX</Filter>
+      <Filter>Engine\Device\Graphics\DX</Filter>
     </ClCompile>
     <ClCompile Include="Windows.cpp">
       <Filter>Engine\Device\Application\Windows</Filter>
@@ -283,6 +283,12 @@
     </ClCompile>
     <ClCompile Include="ShaderDX.cpp">
       <Filter>Engine\Rendering\Shader\Shader\DX</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Engine\Rendering\Mesh\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshRenderer.cpp">
+      <Filter>Engine\Rendering\Mesh\Renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -340,9 +346,6 @@
     <ClInclude Include="Frustum.h">
       <Filter>Engine\Rendering\Camera\Frustum</Filter>
     </ClInclude>
-    <ClInclude Include="MeshRenderer.h">
-      <Filter>Engine\Rendering\Mesh\Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="MeshFilter.h">
       <Filter>Engine\Rendering\Mesh\Filter</Filter>
     </ClInclude>
@@ -361,14 +364,11 @@
     <ClInclude Include="SOCHashMap.h">
       <Filter>Engine\Common\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Rendering.h">
-      <Filter>Engine\Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="Application.h">
       <Filter>Engine\Device\Application\Form</Filter>
     </ClInclude>
     <ClInclude Include="DX.h">
-      <Filter>Engine\Device\Graphics\Form\DX</Filter>
+      <Filter>Engine\Device\Graphics\DX</Filter>
     </ClInclude>
     <ClInclude Include="Windows.h">
       <Filter>Engine\Device\Application\Windows</Filter>
@@ -420,6 +420,18 @@
     </ClInclude>
     <ClInclude Include="ShaderDX.h">
       <Filter>Engine\Rendering\Shader\Shader\DX</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Engine\Rendering\Mesh\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshRenderer.h">
+      <Filter>Engine\Rendering\Mesh\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering.h">
+      <Filter>Engine\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Device.h">
+      <Filter>Engine\Device</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

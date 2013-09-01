@@ -71,7 +71,7 @@ namespace Rendering
 
 	}
 
-	void Object::DeleteChild(Object *child)
+	void Object::DeleteChild(Object *child, bool remove)
 	{
 		vector<Object*>::iterator iter;
 
@@ -79,17 +79,22 @@ namespace Rendering
 		{
 			if((*iter) == child)
 			{
-				Utility::SAFE_DELETE(*iter);
+				if(remove)
+					Utility::SAFE_DELETE(*iter);
+
 				childs.erase(iter);
 				return;
 			}
 		}
 	}
 
-	void Object::DeleteAllChilds()
+	void Object::DeleteAllChilds(bool remove)
 	{
-		for(vector<Object*>::iterator iter = childs.begin(); iter != childs.end(); ++iter)
-			Utility::SAFE_DELETE(*iter);
+		if(remove)
+		{
+			for(vector<Object*>::iterator iter = childs.begin(); iter != childs.end(); ++iter)
+				Utility::SAFE_DELETE(*iter);
+		}
 	
 		childs.clear();
 	}

@@ -67,8 +67,8 @@ namespace Rendering
 		void AddChild(Object *child, bool copy = false);
 		void AddChild(Object *child, int renderQueueOrder, bool copy = false);
 
-		void DeleteChild(Object *child);
-		void DeleteAllChilds();
+		void DeleteChild(Object *child, bool remove);
+		void DeleteAllChilds(bool remove);
 
 	public:
 		void LookAt(Object *target);
