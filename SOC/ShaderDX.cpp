@@ -8,7 +8,7 @@ namespace Rendering
 	namespace Shader
 	{
 
-		ShaderDX::ShaderDX(void) : ShaderForm()
+		ShaderDX::ShaderDX(const char *name) : ShaderForm(name)
 		{
 			shader = NULL;
 		}
@@ -19,7 +19,7 @@ namespace Rendering
 				shader->Release();
 		}
 
-		bool ShaderDX::Load(string shaderCode)
+		bool ShaderDX::Compile(string shaderCode)
 		{
 			LPD3DXBUFFER error = nullptr;
 			SOC_dword flags = 0;
@@ -51,47 +51,47 @@ namespace Rendering
 			return success; 
 		}
 
-		bool ShaderDX::SetMatrix(char *parameter, SOC_Matrix *m)
+		bool ShaderDX::SetVariable(char *parameter, SOC_Matrix *m)
 		{
 			return SUCCEEDED(shader->SetMatrix(parameter, m));
 		}
 
-		bool ShaderDX::SetMatrixAry(char *parameter, SOC_Matrix *ary, SOC_uint count)
+		bool ShaderDX::SetVariable(char *parameter, SOC_Matrix *ary, SOC_uint count)
 		{
 			return SUCCEEDED(shader->SetMatrixArray(parameter, ary, count));
 		}
 
-		bool ShaderDX::SetVector(char *parameter, SOC_Vector4 *v)
+		bool ShaderDX::SetVariable(char *parameter, SOC_Vector4 *v)
 		{
 			return SUCCEEDED(shader->SetVector(parameter, v));
 		}
 
-		bool ShaderDX::SetVectorAry(char *parameter, SOC_Vector4 *ary, SOC_uint count)
+		bool ShaderDX::SetVariable(char *parameter, SOC_Vector4 *ary, SOC_uint count)
 		{
 			return SUCCEEDED(shader->SetVectorArray(parameter, ary, count));
 		}
 
-		bool ShaderDX::SetBool(char *parameter, bool b)
+		bool ShaderDX::SetVariable(char *parameter, bool b)
 		{
 			return SUCCEEDED(shader->SetBool(parameter, b));
 		}
 
-		bool ShaderDX::SetFloat(char *parameter, float f)
+		bool ShaderDX::SetVariable(char *parameter, float f)
 		{
 			return SUCCEEDED(shader->SetFloat(parameter, f));
 		}
 
-		bool ShaderDX::SetFloatAry(char *parameter, float *ary, SOC_uint count)
+		bool ShaderDX::SetVariable(char *parameter, float *ary, SOC_uint count)
 		{
 			return SUCCEEDED(shader->SetFloatArray(parameter, ary, count));
 		}
 
-		bool ShaderDX::SetInt(char *parameter, int i)
+		bool ShaderDX::SetVariable(char *parameter, int i)
 		{
 			return SUCCEEDED(shader->SetInt(parameter, i));
 		}
 
-		bool ShaderDX::SetIntAry(char *parameter, int *ary, SOC_uint count)
+		bool ShaderDX::SetVariable(char *parameter, int *ary, SOC_uint count)
 		{
 			return SUCCEEDED(shader->SetIntArray(parameter, ary, count));
 		}
@@ -101,15 +101,15 @@ namespace Rendering
 			return SUCCEEDED(shader->SetTechnique(technique));
 		}
 
-		bool ShaderDX::SetTexture(char *parameter, Texture::Texture *texture)
+		bool ShaderDX::SetVariable(char *parameter, Texture::Texture *texture)
 		{
 			LPDIRECT3DTEXTURE9 tex = texture->GetTexture();
 			return SUCCEEDED( shader->SetTexture(parameter, tex) );
 		}
 
-		bool ShaderDX::Begin(SOC_uint *numPasses)
+		bool ShaderDX::Begin()
 		{
-			return SUCCEEDED( shader->Begin(numPasses, NULL) );
+			return SUCCEEDED( shader->Begin(&this->numPass, NULL) );
 		}
 
 		bool ShaderDX::BeginPass(SOC_uint pass)
@@ -126,6 +126,5 @@ namespace Rendering
 		{
 			return SUCCEEDED( shader->End() );
 		}
-
 	}
 }

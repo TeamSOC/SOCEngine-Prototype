@@ -24,6 +24,8 @@ namespace Rendering
 
 	public:
 		void Delete(std::string path, bool inResourceFolder = true);
+		void Delete(Texture::TextureForm* texture, bool remove);
+
 		void DeleteAll();
 	};
 

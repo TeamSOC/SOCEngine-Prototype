@@ -61,10 +61,25 @@ namespace Rendering
 		hash.erase(iter);
 	}
 
+	void TextureManager::Delete(Texture::TextureForm* texture, bool remove)
+	{
+		hash_map<string, Texture::TextureForm*>::iterator iter;
+		for(iter = hash.begin(); iter != hash.end(); ++iter)
+		{
+			if( (*iter).second == texture )
+			{
+				if(remove)
+					delete texture;
+
+				hash.erase(iter);
+				return;
+			}
+		}
+	}
+
 	void TextureManager::DeleteAll()
 	{
-		for(hash_map<string, Texture::TextureForm*>::iterator iter = hash.begin();
-			iter != hash.end(); ++iter)
+		for(hash_map<string, Texture::TextureForm*>::iterator iter = hash.begin();iter != hash.end(); ++iter)
 			Utility::SAFE_DELETE(iter->second);
 
 		hash.clear();
