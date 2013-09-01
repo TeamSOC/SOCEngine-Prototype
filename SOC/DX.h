@@ -67,6 +67,8 @@ namespace Device
 		public:
 			bool DX::Initialize()
 			{
+				d3dHandle = Direct3DCreate9( D3D_SDK_VERSION );
+
 				if(FAILED(d3dHandle->CreateDevice( D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, d3dpp.hDeviceWindow, D3DCREATE_HARDWARE_VERTEXPROCESSING, &d3dpp, &device)))
 					return false;
 

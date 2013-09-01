@@ -48,6 +48,9 @@ namespace Rendering
 				numOfVertex = 0;
 				radius = 0.0f;
 				triangleType = SOC_TRIANGLE_LIST;
+
+				vertexBuffer = nullptr;
+				indexBuffer = nullptr;
 			}
 
 			~MeshFilter()
@@ -57,9 +60,9 @@ namespace Rendering
 		private:
 			void CalcVertexBufferSize()
 			{
-				vertexBufferSize = sizeof(SOC_Vector3) * 2;
-				//vertex, normal´Â  ±âº» ¤·¤·.
+				vertexBufferSize = sizeof(SOC_Vector3);
 
+				if(normals)			vertexBufferSize += sizeof(SOC_Vector3);
 				if(uv) 				vertexBufferSize += sizeof(SOC_Vector2);
 				if(uv2)				vertexBufferSize += sizeof(SOC_Vector2);
 
@@ -89,7 +92,7 @@ namespace Rendering
 		public:
 			bool Create(SOC_Vector3 *vertices, SOC_Vector3 *normals, SOC_Vector2 *uv, SOC_Vector2 *uv2,	SOC_Vector3 *tangents, SOC_Vector3 *binomals, Color *colors, int numOfVertex, std::pair<count, WORD*> indices, SOC_TRIANGLE type, bool isDynamic)
 			{
-				if(vertices == NULL || normals == NULL) return false;
+				if(vertices == NULL ) return false;
 
 				this->triangleType = type;
 				this->numOfVertex = numOfVertex;
@@ -104,12 +107,8 @@ namespace Rendering
 				if(uv != NULL)
 					SetData(this->uv2, uv2, SOC_Vector2());
 
-				if(tangents && binomals)
-				{
-					SetData(this->tangents, tangents, SOC_Vector3());
-					SetData(this->binomals, binomals, SOC_Vector3());
-				}
-
+				SetData(this->tangents, tangents, SOC_Vector3());
+				SetData(this->binomals, binomals, SOC_Vector3());
 				SetData(this->colors, colors, Color());
 
 				CalcVertexBufferSize();

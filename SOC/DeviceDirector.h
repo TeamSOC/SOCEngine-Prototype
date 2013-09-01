@@ -55,10 +55,11 @@ namespace Device
 		bool Initialize(PRESENT_INTERVAL interval, WindowsInitOption &options)
 		{
 			app = new Application::Windows(options.rect, options.instance, options.name, options.windowMode, options.isChild, options.parentHandle);
-			graphics = new Graphics::DX(interval, app);
 
 			if( app->Initialize() == false)
 				return false;
+
+			graphics = new Graphics::DX(interval, app);
 
 			if(graphics->Initialize() == false)
 			{

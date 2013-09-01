@@ -186,6 +186,12 @@
     <Filter Include="Source\aa">
       <UniqueIdentifier>{11ec5c53-5e16-46f5-8723-5d39a24627a9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Rendering\Shader\Manager\DX">
+      <UniqueIdentifier>{22b83591-ba11-43dd-943d-399cd7392051}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Shader\Manager\GL">
+      <UniqueIdentifier>{045b511c-3b4f-4adc-ae96-d5570c5c1556}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AABB.cpp">
@@ -235,9 +241,6 @@
     </ClCompile>
     <ClCompile Include="MeshFilter.cpp">
       <Filter>Engine\Rendering\Mesh\Filter</Filter>
-    </ClCompile>
-    <ClCompile Include="ShaderManager.cpp">
-      <Filter>Engine\Rendering\Shader\Manager</Filter>
     </ClCompile>
     <ClCompile Include="Skybox.cpp">
       <Filter>Engine\Rendering\Skybox</Filter>
@@ -305,6 +308,9 @@
     <ClCompile Include="Scene.cpp">
       <Filter>Source\aa</Filter>
     </ClCompile>
+    <ClCompile Include="ShaderManagerDX.cpp">
+      <Filter>Engine\Rendering\Shader\Manager\DX</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABB.h">
@@ -363,9 +369,6 @@
     </ClInclude>
     <ClInclude Include="MeshFilter.h">
       <Filter>Engine\Rendering\Mesh\Filter</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderManager.h">
-      <Filter>Engine\Rendering\Shader\Manager</Filter>
     </ClInclude>
     <ClInclude Include="SingleTon.h">
       <Filter>Engine\Common\Utility</Filter>
@@ -453,6 +456,12 @@
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Source\aa</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderManagerDX.h">
+      <Filter>Engine\Rendering\Shader\Manager\DX</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderManager.h">
+      <Filter>Engine\Rendering\Shader\Manager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

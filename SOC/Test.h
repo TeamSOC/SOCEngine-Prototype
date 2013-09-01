@@ -34,10 +34,12 @@ public:
 		Material *mat = new Material("TestDiffuse");
 
 		std::string shaderCode;
-		shaderMgr->LoadShaderFromFile("TestDiffuse.fx", &shaderCode, true);
+		shaderMgr->LoadShaderFromFile("TestDiffuse", &shaderCode, true);
 
 		Shader::Shader *shader = new Shader::Shader("TestDiffuse");
-		shader->Compile(shaderCode);
+
+		if(shader->Compile(shaderCode) == false)
+			return;
 
 		testShader = shader;
 		mat->AddShader(shader);

@@ -14,8 +14,18 @@ enum PRESENT_INTERVAL
 #include <d3d9.h>
 #include <d3dx9.h>
 
+
 #pragma comment(lib, "d3d9.lib")
+
+#if _DEBUG
+
+#pragma comment(lib, "d3dx9d.lib")
+
+#else
+
 #pragma comment(lib, "d3dx9.lib")
+
+#endif
 
 #define SOC_FMT_R8G8B8		D3DFMT_R8G8B8
 #define SOC_FMT_A8R8G8B8	D3DFMT_A8R8G8B8

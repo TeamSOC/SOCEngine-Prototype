@@ -58,6 +58,10 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -105,7 +109,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="ShaderDX.cpp" />
     <ClCompile Include="ShaderForm.cpp" />
-    <ClCompile Include="ShaderManager.cpp" />
+    <ClCompile Include="ShaderManagerDX.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="SpotLight.cpp" />
@@ -152,6 +156,7 @@
     <ClInclude Include="ShaderDX.h" />
     <ClInclude Include="ShaderForm.h" />
     <ClInclude Include="ShaderManager.h" />
+    <ClInclude Include="ShaderManagerDX.h" />
     <ClInclude Include="SingleTon.h" />
     <ClInclude Include="Size.h" />
     <ClInclude Include="Skybox.h" />
