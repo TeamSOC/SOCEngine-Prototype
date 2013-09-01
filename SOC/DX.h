@@ -3,12 +3,6 @@
 #include "GraphicsForm.h"
 #include "Windows.h"
 
-#include <d3d9.h>
-#include <d3dx9.h>
-
-#pragma comment(lib, "d3d9.lib")
-#pragma comment(lib, "d3dx9.lib")
-
 namespace Device
 {
 	namespace Graphics
@@ -102,6 +96,29 @@ namespace Device
 
 					device->Clear(count, &d3dRect, flags, d3dColor, z, stencil);
 				}
+			}
+
+			bool CreateVertexBuffer(int bufferSize, SOC_dword usage, SOC_POOL pool, void** outBuffer)
+			{
+				LPDIRECT3DVERTEXBUFFER9 *buffer = (LPDIRECT3DVERTEXBUFFER9*)outBuffer;
+				return SUCCEEDED( device->CreateVertexBuffer(bufferSize, usage, 0, pool == SOC_POOL_DEFAULT ? D3DPOOL_DEFAULT : D3DPOOL_MANAGED, buffer, NULL) );
+			}
+
+			bool CreateIndexBuffer(int bufferSize, SOC_POOL pool, void** outBuffer)
+			{
+				D3DPOOL d3dPool = pool == SOC_POOL_DEFAULT ? D3DPOOL_DEFAULT : D3DPOOL_MANAGED;				
+				return SUCCEEDED( device->CreateIndexBuffer( bufferSize, D3DUSAGE_WRITEONLY, D3DFMT_INDEX16, d3dPool, (LPDIRECT3DINDEXBUFFER9*)outBuffer, NULL) );;
+			}
+
+			bool SetIndices( void *indexBuffer )
+			{
+				LPDIRECT3DINDEXBUFFER9 idxBuffer = (LPDIRECT3DINDEXBUFFER9)indexBuffer;
+				return SUCCEEDED( device->SetIndices(idxBuffer) );
+			}
+
+			bool DrawIndexedPrimitive(SOC_TRIANGLE type, SOC_int baseVertexIdx, SOC_uint minVertexIdx, SOC_uint numVertices, SOC_uint startIdx, SOC_uint primitiveCount)
+			{
+				return SUCCEEDED( device->DrawIndexedPrimitive((D3DPRIMITIVETYPE)type, baseVertexIdx, minVertexIdx, numVertices, startIdx, primitiveCount) );
 			}
 
 		public:
