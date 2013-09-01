@@ -14,7 +14,7 @@ namespace Rendering
 
 		public:
 			VertexBufferDX(int vertexBufferSize, Device::Graphics::GraphicsForm *graphics) 
-				: VertexBufferForm(vertexBufferSize)
+				: VertexBufferForm(vertexBufferSize, graphics)
 			{
 				vertexBuffer = NULL;
 				device = dynamic_cast<Device::Graphics::DX*>( graphics )->GetD3DDevice();
@@ -32,7 +32,7 @@ namespace Rendering
 		public:
 			bool Create(SOC_dword usage, SOC_POOL pool)
 			{
-				return SUCCEEDED( device->CreateVertexBuffer(vertexBufferSize, usage, 0, pool == SOC_POOL_DEFAULT ? D3DPOOL_DEFAULT : D3DPOOL_MANAGED, &vertexBuffer, NULL) );
+				return graphics->CreateVertexBuffer(vertexBufferSize, usage, pool, (void**)&vertexBuffer);
 			}
 
 			bool Lock(void **inputData)
@@ -43,6 +43,12 @@ namespace Rendering
 			bool UnLock()
 			{
 				return SUCCEEDED( vertexBuffer->Unlock() );
+			}
+
+		public:
+			void* GetBuffer()
+			{
+				return vertexBuffer;
 			}
 		};
 	}

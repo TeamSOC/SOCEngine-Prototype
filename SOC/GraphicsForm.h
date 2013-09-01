@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "Utility.h"
 #include "Color.h"
+#include "Device.h"
 
 namespace Device
 {
@@ -43,6 +44,10 @@ namespace Device
 
 		public:
 			virtual bool Clear(unsigned int count, const Common::Rect<int> *rect, clearFlag flags, Rendering::Color &color, float z, unsigned int stencil) = 0;
+			virtual bool CreateVertexBuffer(int bufferSize, SOC_dword usage, SOC_POOL pool, void** outBuffer) = 0;
+			virtual bool CreateIndexBuffer(int bufferSize, SOC_POOL pool, void** outBuffer) = 0;
+			virtual bool SetIndices( void *indexBuffer ) = 0;
+			virtual bool DrawIndexedPrimitive(SOC_TRIANGLE type, SOC_int baseVertexIdx, SOC_uint minVertexIdx, SOC_uint numVertices, SOC_uint startIdx, SOC_uint primitiveCount) = 0;
 		};
 	}
 }

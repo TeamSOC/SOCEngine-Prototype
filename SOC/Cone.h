@@ -39,7 +39,7 @@ namespace Intersection
 
 			SOC_Vector3 CmV = sphere.center - center;
 
-			if(SOCVec3Length(&Cmv) < range)
+			if(SOCVec3Length(&CmV) < range)
 				return false;
 
 			SOC_Vector3 D = CmV + (sphere.radius * invSin) * axis;

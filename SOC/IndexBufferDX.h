@@ -10,12 +10,12 @@ namespace Rendering
 		{
 		private:
 			LPDIRECT3DINDEXBUFFER9 indexBuffer;
-			LPDIRECT3DDEVICE9 device;
+//			LPDIRECT3DDEVICE9 device;
 
 		public:
 			IndexBufferDX(int count, Device::Graphics::GraphicsForm *graphics) : IndexBufferForm(count, graphics)
 			{
-				device = dynamic_cast<Device::Graphics::DX*>( graphics )->GetD3DDevice();
+//				device = dynamic_cast<Device::Graphics::DX*>( graphics )->GetD3DDevice();
 				indexBuffer = NULL;
 			}
 
@@ -28,18 +28,23 @@ namespace Rendering
 		public:
 			bool Create(SOC_POOL pool)
 			{
-				D3DPOOL d3dPool = pool == SOC_POOL_DEFAULT ? D3DPOOL_DEFAULT : D3DPOOL_MANAGED;
-				return SUCCEEDED( device->CreateIndexBuffer( 0, D3DUSAGE_WRITEONLY, D3DFMT_INDEX16, d3dPool, &indexBuffer, NULL) );
+				return graphics->CreateIndexBuffer(sizeof(SOC_word) * count, pool, (void**)&indexBuffer);
 			}
 
 			bool Lock(void** inputData)
 			{
-				return SUCCEEDED( indexBuffer->Lock( sizeof(SOC_word) * count, 0, inputData, NULL) );
+				return SUCCEEDED( indexBuffer->Lock( 0, sizeof(SOC_word) * count, inputData, NULL) );
 			}
 
 			bool UnLock()
 			{
 				return SUCCEEDED( indexBuffer->Unlock() );
+			}
+
+		public:
+			void* GetBuffer()
+			{
+				return indexBuffer;
 			}
 		};
 

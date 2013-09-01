@@ -8,14 +8,16 @@ namespace Rendering
 	{
 		class VertexBufferForm
 		{
-		public:
+		protected:
 			int vertexBufferSize;
+			Device::Graphics::GraphicsForm *graphics;
 
 		public:
-			VertexBufferForm(int verTexBufferSize, Device::Graphics::GraphicsForm *graphics = NULL)
+			VertexBufferForm(int verTexBufferSize, Device::Graphics::GraphicsForm *graphics)
 			{
 				//NULL
 				this->vertexBufferSize = verTexBufferSize;
+				this->graphics = graphics;
 			}
 
 			~VertexBufferForm(void);
@@ -30,6 +32,7 @@ namespace Rendering
 			{
 				return vertexBufferSize;
 			}
+			virtual void* GetBuffer() = 0;
 		};
 	}
 }
