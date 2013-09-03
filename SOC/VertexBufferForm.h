@@ -10,14 +10,16 @@ namespace Rendering
 		{
 		protected:
 			int vertexBufferSize;
+			int numOfVertex;
 			Device::Graphics::GraphicsForm *graphics;
 
 		public:
-			VertexBufferForm(int verTexBufferSize, Device::Graphics::GraphicsForm *graphics)
+			VertexBufferForm(int vertexBufferSize, int numOfVertex, Device::Graphics::GraphicsForm *graphics)
 			{
 				//NULL
-				this->vertexBufferSize = verTexBufferSize;
+				this->vertexBufferSize = vertexBufferSize;
 				this->graphics = graphics;
+				this->numOfVertex = numOfVertex;
 			}
 
 			virtual ~VertexBufferForm(void)
@@ -31,11 +33,20 @@ namespace Rendering
 			virtual bool UnLock() = 0;
 
 		public:
-			int GetVertexBufferSize()
+			int GetNumOfVertex()
+			{
+				return numOfVertex;
+			}
+			int GetLength()
+			{
+				return vertexBufferSize * numOfVertex;
+			}
+			int GetSize()
 			{
 				return vertexBufferSize;
 			}
-			virtual void* GetBuffer() = 0;
+
+			virtual void* GetDeviceBuffer() = 0;
 		};
 	}
 }

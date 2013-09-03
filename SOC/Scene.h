@@ -42,11 +42,33 @@ public:
 		cam = new Camera(Device::DeviceDirector::GetInstance(), NULL, &rootObjects, lightMgr, NULL);
 
 		test->Init(shaderMgr);
+
+		SOC_Vector3 v = SOC_Vector3(0, 0, -0.5f);
+		cam->SetPosition(v);
+		cam->LookAt(SOC_Vector3(0, 0, 1));
 	}
 
 	void loop()
 	{
-		test->Render(NULL);
+		Device::Graphics::GraphicsForm *graphics = Device::DeviceDirector::GetInstance()->GetGraphics();
+
+		Device::Graphics::GraphicsForm::clearFlag flags = Device::Graphics::GraphicsForm::CLEAR_FLAG_TARGET | Device::Graphics::GraphicsForm::CLEAR_FLAG_ZBUFFER;
+		graphics->Clear(flags, Color::blue());
+
+		bool b;
+		b = graphics->BeginScene();
+		{
+			SOC_Matrix viewMat;
+			SOC_Matrix projectionMat;
+			cam->GetViewMatrix(&viewMat);
+			cam->GetPerspectiveMatrix(&projectionMat, 0);
+
+//			test->SetMat(&viewMat, &projectionMat);
+			test->Render(NULL);
+		}
+		b = graphics->EndScene();
+
+		graphics->Presnet();
 	}
 
 

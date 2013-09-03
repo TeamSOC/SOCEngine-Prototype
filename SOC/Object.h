@@ -104,6 +104,7 @@ namespace Rendering
 		void SetRotation(SOC_Quaternion quaternion);				
 		void SetScale(SOC_Vector3 scale);
 		void SetEulerAngles(SOC_Vector3 euler);
+		void SetDirection(SOC_Vector3 dir);
 
 	private:
 		void Roll(float angle);

@@ -104,16 +104,21 @@ namespace Device
 				return success;
 			}
 
-			bool CreateVertexBuffer(int bufferSize, SOC_dword usage, SOC_POOL pool, void** outBuffer)
+			bool Clear(clearFlag flags, Rendering::Color &color)
 			{
-				LPDIRECT3DVERTEXBUFFER9 *buffer = (LPDIRECT3DVERTEXBUFFER9*)outBuffer;
-				return SUCCEEDED( device->CreateVertexBuffer(bufferSize, usage, 0, pool == SOC_POOL_DEFAULT ? D3DPOOL_DEFAULT : D3DPOOL_MANAGED, buffer, NULL) );
+				return Clear(0, NULL, flags, color, 1.0f, 0L);
 			}
 
-			bool CreateIndexBuffer(int bufferSize, SOC_POOL pool, void** outBuffer)
+			bool CreateVertexBuffer(int bufferLength, SOC_dword usage, SOC_POOL pool, void** outBuffer)
+			{
+				LPDIRECT3DVERTEXBUFFER9 *buffer = (LPDIRECT3DVERTEXBUFFER9*)outBuffer;
+				return SUCCEEDED( device->CreateVertexBuffer(bufferLength, usage, 0, pool == SOC_POOL_DEFAULT ? D3DPOOL_DEFAULT : D3DPOOL_MANAGED, buffer, NULL) );
+			}
+
+			bool CreateIndexBuffer(int bufferLength, SOC_POOL pool, void** outBuffer)
 			{
 				D3DPOOL d3dPool = pool == SOC_POOL_DEFAULT ? D3DPOOL_DEFAULT : D3DPOOL_MANAGED;				
-				return SUCCEEDED( device->CreateIndexBuffer( bufferSize, D3DUSAGE_WRITEONLY, D3DFMT_INDEX16, d3dPool, (LPDIRECT3DINDEXBUFFER9*)outBuffer, NULL) );;
+				return SUCCEEDED( device->CreateIndexBuffer( bufferLength, D3DUSAGE_WRITEONLY, D3DFMT_INDEX16, d3dPool, (LPDIRECT3DINDEXBUFFER9*)outBuffer, NULL) );;
 			}
 
 			bool SetIndices( void *indexBuffer )
@@ -124,7 +129,38 @@ namespace Device
 
 			bool DrawIndexedPrimitive(SOC_TRIANGLE type, SOC_int baseVertexIdx, SOC_uint minVertexIdx, SOC_uint numVertices, SOC_uint startIdx, SOC_uint primitiveCount)
 			{
-				return SUCCEEDED( device->DrawIndexedPrimitive((D3DPRIMITIVETYPE)type, baseVertexIdx, minVertexIdx, numVertices, startIdx, primitiveCount) );
+				D3DPRIMITIVETYPE d3dPrimitiType = (D3DPRIMITIVETYPE)type;
+				return SUCCEEDED( device->DrawIndexedPrimitive(d3dPrimitiType, baseVertexIdx, minVertexIdx, numVertices, startIdx, primitiveCount) );
+			}
+
+			bool SetVertexStream(SOC_uint stream, void *deviceVertexBuffer, SOC_uint stride)
+			{
+				LPDIRECT3DVERTEXBUFFER9 vb = (LPDIRECT3DVERTEXBUFFER9)deviceVertexBuffer;
+				return SUCCEEDED(device->SetStreamSource( stream, vb, 0, stride));
+			}
+
+			bool SetVertexStremFrequency(SOC_uint stream, SOC_uint frequency)
+			{
+				if(frequency == 0)
+					frequency = 1;
+
+				frequency = stream == 0 ? D3DSTREAMSOURCE_INDEXEDDATA | frequency : D3DSTREAMSOURCE_INSTANCEDATA | frequency;
+				return SUCCEEDED( device->SetStreamSourceFreq(stream, frequency) );
+			}
+
+			bool BeginScene()
+			{
+				return SUCCEEDED(	device->BeginScene() );
+			}
+
+			 bool EndScene()
+			{
+				return SUCCEEDED( device->EndScene() );
+			}
+
+			void Presnet()
+			{
+				device->Present(NULL, NULL, NULL, NULL);
 			}
 
 		public:

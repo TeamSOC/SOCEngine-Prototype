@@ -47,8 +47,16 @@ namespace Rendering
 					SOC_uint triangleCount = filter->GetTriangleCount();
 					SOC_TRIANGLE type = filter->GetTriangleType();
 
-					graphics->SetIndices(idxBuffer);
-					graphics->DrawIndexedPrimitive(type, 0, 0, numOfVertex, 0, triangleCount);
+					bool b;
+
+					Buffer::VertexBuffer *vb = filter->GetVertexBuffer();
+
+					b = graphics->SetVertexStream(0, vb->GetDeviceBuffer(), vb->GetSize());
+ 					b = graphics->SetIndices(idxBuffer);
+					b = graphics->DrawIndexedPrimitive(type, 0, 0, numOfVertex, 0, 12);
+
+					int a = 5;
+					a = 3;
 				}
 				endFunc(renderer);
 			}

@@ -28,7 +28,7 @@ namespace Rendering
 
 			Color *colors;
 
-			std::pair<count, WORD*>  indices;
+			std::pair<count, SOC_dword*>  indices;
 
 			Buffer::VertexBuffer	*vertexBuffer;
 			Buffer::IndexBuffer		*indexBuffer;
@@ -73,14 +73,14 @@ namespace Rendering
 			}
 
 			template <typename VertexBufferData, typename CreateType>
-			bool SetData(VertexBufferData data, VertexBufferData inputData, CreateType createType)
+			bool SetVertexData(VertexBufferData *out, VertexBufferData inputData, CreateType createType)
 			{
 				if(inputData == NULL)
 					return false;
 
-				Utility::SAFE_ARRARY_DELETE(data);
-				data = new CreateType[this->numOfVertex];
-				memcpy(data, inputData, sizeof(CreateType) * numOfVertex);
+				Utility::SAFE_ARRARY_DELETE(*out);
+				*out = new CreateType[this->numOfVertex];
+				memcpy(*out, inputData, sizeof(CreateType) * numOfVertex);
 
 				//for(int i=0; i<numOfVertex; ++i)
 				//{
@@ -90,28 +90,32 @@ namespace Rendering
 			}
 
 		public:
-			bool Create(SOC_Vector3 *vertices, SOC_Vector3 *normals, SOC_Vector2 *uv, SOC_Vector2 *uv2,	SOC_Vector3 *tangents, SOC_Vector3 *binomals, Color *colors, int numOfVertex, std::pair<count, WORD*> indices, SOC_TRIANGLE type, bool isDynamic)
+			bool Create(SOC_Vector3 *vertices, SOC_Vector3 *normals, SOC_Vector2 *uv, SOC_Vector2 *uv2,	SOC_Vector3 *tangents, SOC_Vector3 *binomals, Color *colors, int numOfVertex, std::pair<count, SOC_dword*> indices, SOC_TRIANGLE type, bool isDynamic)
 			{
 				if(vertices == NULL ) return false;
 
 				this->triangleType = type;
 				this->numOfVertex = numOfVertex;
 
-				SetData(this->vertices, vertices, SOC_Vector3());
-				SetData(this->normals, normals, SOC_Vector3());
-				SetData(this->uv, uv, SOC_Vector2());
-
-				SetData(this->indices.second, indices.second, SOC_word(0));
-				this->indices.first = indices.first;
+				SetVertexData(&this->vertices, vertices, SOC_Vector3());
+				SetVertexData(&this->normals, normals, SOC_Vector3());
+				SetVertexData(&this->uv, uv, SOC_Vector2());
 
 				if(uv != NULL)
-					SetData(this->uv2, uv2, SOC_Vector2());
+					SetVertexData(&this->uv2, uv2, SOC_Vector2());
 
-				SetData(this->tangents, tangents, SOC_Vector3());
-				SetData(this->binomals, binomals, SOC_Vector3());
-				SetData(this->colors, colors, Color());
+				SetVertexData(&this->tangents, tangents, SOC_Vector3());
+				SetVertexData(&this->binomals, binomals, SOC_Vector3());
+				SetVertexData(&this->colors, colors, Color());
 
 				CalcVertexBufferSize();
+
+				//SetData(&this->indices.second, indices.second, SOC_word(0));
+				//this->indices.first = indices.first;
+
+				this->indices.second = new SOC_dword[indices.first];
+				this->indices.first = indices.first;
+				memcpy(this->indices.second, indices.second, sizeof(SOC_dword) * indices.first);
 
 				if(vertexBuffer || indexBuffer)
 				{
@@ -121,10 +125,7 @@ namespace Rendering
 
 				Device::Graphics::GraphicsForm *gp = Device::DeviceDirector::GetInstance()->GetGraphics();
 
-				Utility::SAFE_DELETE(vertexBuffer);
-				Utility::SAFE_DELETE(indexBuffer);
-
-				vertexBuffer = new Buffer::VertexBuffer( vertexBufferSize * numOfVertex, gp );
+				vertexBuffer = new Buffer::VertexBuffer( vertexBufferSize, numOfVertex, gp );
 				indexBuffer = new Buffer::IndexBuffer( indices.first, gp);
 
 				if( CreateVertexBuffer(isDynamic) == false )
@@ -141,10 +142,10 @@ namespace Rendering
 			{
 				SOC_dword usage = SOC_USAGE_WRITEONLY | (isDynamic ? SOC_USAGE_DYNAMIC : 0);
 
-				if( vertexBuffer->Create( usage, SOC_POOL_DEFAULT) == false )
+				if( vertexBuffer->Create( usage, SOC_POOL_MANAGED) == false )
 					return false;
 
-				void *vertexBufferData;
+				void *vertexBufferData = nullptr;
 				if( vertexBuffer->Lock(&vertexBufferData) == false )
 					return false;
 
@@ -173,9 +174,11 @@ namespace Rendering
 					}
 
 					/* end */
-
-					*( (SOC_Vector3*)vertexBufferData ) = normals[i];
-					vertexBufferData = (SOC_Vector3*)vertexBufferData + 1;
+					if(normals)
+					{
+						*( (SOC_Vector3*)vertexBufferData ) = normals[i];
+						vertexBufferData = (SOC_Vector3*)vertexBufferData + 1;
+					}
 
 					if(uv)
 					{
@@ -207,7 +210,8 @@ namespace Rendering
 
 				}
 
-				vertexBuffer->UnLock();
+				if( vertexBuffer->UnLock() == false)
+					return false;
 				radius = maxRadius;
 				bounds.SetMinMax(minSize, maxSize);
 
@@ -215,15 +219,16 @@ namespace Rendering
 			}
 			bool CreateIndexBuffer()
 			{
-				if( indexBuffer->Create(SOC_POOL_DEFAULT) == false)
+				if( indexBuffer->Create(SOC_POOL_MANAGED) == false)
 					return false;
 
-				WORD *indexBufferData;
+				WORD *indexBufferData = nullptr;
 				if( indexBuffer->Lock((void**)&indexBufferData) == false)
 					return false;
 
-				memcpy(indexBufferData, this->indices.second, sizeof(WORD) * indexBuffer->GetCount());
-				indexBuffer->UnLock();
+				memcpy(indexBufferData, this->indices.second, sizeof(SOC_dword) * indexBuffer->GetCount());
+				if( indexBuffer->UnLock() == false)
+					return false;
 
 				return true;
 			}
@@ -243,7 +248,7 @@ namespace Rendering
 			}
 			int GetTriangleCount()
 			{
-				return indices.first;
+				return indices.first / 3;
 			}
 			SOC_TRIANGLE GetTriangleType()
 			{

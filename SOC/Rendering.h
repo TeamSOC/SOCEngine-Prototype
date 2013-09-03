@@ -73,6 +73,9 @@ typedef D3DXPLANE			SOC_Plane;
 #define SOCMatrixRotationQuaternion(Out_Matrix_Ptr, In_Const_Quaternion_Ptr) \
 		D3DXMatrixRotationQuaternion(Out_Matrix_Ptr, In_Const_Quaternion_Ptr)
 
+#define SOCMatrixMultiply(Out_Matrix_Ptr, In_Const_Matrix_1, In_Const_Matrix_2) \
+		D3DXMatrixMultiply(Out_Matrix_Ptr, In_Const_Matrix_1, In_Const_Matrix_2)
+
 #define SOCVec3TransformCoord(Out_Vector3_Ptr, In_Const_Vector_Ptr, In_Const_Matrix_Ptr) \
 		D3DXVec3TransformCoord(Out_Vector3_Ptr, In_Const_Vector_Ptr, In_Const_Matrix_Ptr)
 #define SOCVec3TransformCoordArray(Out_Vector3_Ptr, In_UInt_OutStride, In_Const_Vector3_Ptr, In_UInt_InStride, In_Const_Matrix_Ptr, In_UInt_N) \
@@ -82,6 +85,7 @@ typedef D3DXPLANE			SOC_Plane;
 		D3DXPlaneFromPoints(Out_Plane_Ptr, In_Const_Vector3_Ptr_1, In_Const_Vector3_Ptr_2, In_Const_Vector3_Ptr_3)
 #define SOCPlaneDotCoord(Out_Plane_Ptr, In_Const_Vector3_Ptr) \
 		D3DXPlaneDotCoord(Out_Plane_Ptr, In_Const_Vector3_Ptr)
+
 
 #define SOCM_PI				D3DX_PI
 

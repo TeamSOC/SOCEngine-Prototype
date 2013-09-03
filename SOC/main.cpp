@@ -35,6 +35,8 @@ INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )
 		}
 	}
 
+	Device::DeviceDirector::GetInstance()->GetApplication()->Destroy();
+
 	return 0;
 }
 

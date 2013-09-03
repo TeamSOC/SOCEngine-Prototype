@@ -268,6 +268,9 @@ namespace Rendering
 	void Object::GetWorldMatrix(SOC_Matrix *outMatrix)
 	{
 		SOC_Matrix mat;
+
+		SOCMatrixIdentity(&mat);
+
 		for(Object *o = this; o != NULL; o = o->parent)
 			mat *= o->matrix;
 
@@ -341,6 +344,12 @@ namespace Rendering
 
 		SOCQuaternionRotationMatrix(&rotation, &rotationMatrix); //ƒı≈Õ¥œæ ±∏«‘.
 		UpdateMatrix();
+	}
+
+	void Object::SetDirection(SOC_Vector3 dir)
+	{
+
+
 	}
 
 	void Object::UpdateWorldTransform()

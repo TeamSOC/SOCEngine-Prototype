@@ -9,7 +9,7 @@
 
 namespace Rendering
 {
-	class Camera : private Object
+	class Camera : public Object
 	{
 	public:
 		enum TYPE { TYPE_PERSPECTIVE, TYPE_ORTHOGRAPHIC };

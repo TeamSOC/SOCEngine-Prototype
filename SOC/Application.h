@@ -6,10 +6,11 @@ namespace Device
 {
 	namespace Application
 	{
-		static Common::Rect<int>	rect;
-
 		class Application
 		{
+		protected:
+			Common::Rect<int> rect;
+
 		public:
 			Application(void)
 			{
@@ -22,12 +23,12 @@ namespace Device
 			virtual void Run() = 0;
 
 		public:
-			static Common::Rect<int> GetRect()
+			Common::Rect<int> GetRect()
 			{
 				return rect;
 			}
 
-			static Common::Size<int> GetSize()
+			Common::Size<int> GetSize()
 			{
 				return rect.size;
 			}

@@ -25,35 +25,50 @@ namespace Rendering
 	public:
 		void Begin()
 		{
+			bool b = false;
 			std::vector<Shader::Shader*>::iterator iter;
 			for( iter = shaders.begin(); iter != shaders.end(); ++iter )
-				(*iter)->Begin();
+			{
+				b = (*iter)->Begin();
+			}
+
+			if(b == false)
+				b = true;
 		}
 		void BeginPass()
 		{
 			int count = 0;
 			std::vector<Shader::Shader*>::iterator iter;
+			bool b = false;
 
 			for( iter = shaders.begin(); iter != shaders.end(); ++iter )
 			{
 				count = (*iter)->GetNumPasses();
 
 				for(int i=0; i < count; ++i)
-					(*iter)->BeginPass(i);
+				{
+					b = (*iter)->BeginPass(i);
+				}
 			}
+
+			if(b == false)
+				b = true;
 		}
 		void End()
 		{
 			std::vector<Shader::Shader*>::iterator iter;
 			for( iter = shaders.begin(); iter != shaders.end(); ++iter )
+			{
 				(*iter)->End();
-
+			}
 		}
 		void EndPass()
 		{
 			std::vector<Shader::Shader*>::iterator iter;
 			for( iter = shaders.begin(); iter != shaders.end(); ++iter )
+			{
 				(*iter)->EndPass();
+			}
 		}
 
 	public:
