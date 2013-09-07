@@ -4,12 +4,13 @@ namespace Rendering
 {
 	namespace Shader
 	{
-		ShaderForm::ShaderForm(const char *name)
+		ShaderForm::ShaderForm(Device::Graphics::GraphicsForm *graphics, const char *name)
 		{
 			compiled = false;
 			numPass = 0;
 
 			this->name = name;
+			this->graphics = graphics;
 		}
 
 		ShaderForm::~ShaderForm(void)

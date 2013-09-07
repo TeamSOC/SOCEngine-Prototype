@@ -36,7 +36,8 @@ public:
 		std::string shaderCode;
 		shaderMgr->LoadShaderFromFile("TestDiffuse", &shaderCode, true);
 
-		Shader::Shader *shader = new Shader::Shader("TestDiffuse");
+		Device::Graphics::GraphicsForm *graphics = Device::DeviceDirector::GetInstance()->GetGraphics();
+		Shader::Shader *shader = new Shader::Shader(graphics, "TestDiffuse");
 
 		if(shader->Compile(shaderCode) == false)
 			return;
@@ -48,50 +49,28 @@ public:
 		CreateBox(mesh->GetFilter());
 		shader->SetTechnique("TestDiffuse");
 
-		SetPosition(SOC_Vector3(0, 0.0f, -5.0f));
+		SetPosition(SOC_Vector3(0, 0.0f, 0.0f));
 	}
 
 	void CreateBox(Mesh::MeshFilter *filter)
 	{ 
-		SOC_Vector3 v[8];
+		SOC_Vector3 v[3];
 
-		v[0] = SOC_Vector3( -1,  1,   1);
-		v[1] = SOC_Vector3(  1,  1,   1);
-		v[2] = SOC_Vector3(  1,  1,  -1);
-		v[3] = SOC_Vector3( -1,  1,  -1);
+		v[0] = SOC_Vector3(   0.0f, 0,   0.5f);
+		v[1] = SOC_Vector3(   0.5f,   0.5,   0.5f);
+		v[2] = SOC_Vector3(  -0.5f,   0.5,  0.5f);
 
-		v[4] = SOC_Vector3( -1,  -1,  1);
-		v[5] = SOC_Vector3(  1,  -1,  1);
-		v[6] = SOC_Vector3(  1,  -1, -1);
-		v[7] = SOC_Vector3( -1,  -1, -1);
+		std::pair<Mesh::MeshFilter::count, SOC_word*> indices;
+		indices.first = 3;
+		indices.second = new SOC_word[3];
 
-		//v[3] = SOC_Vector3(1, 1, 0);
-		//v[4] = SOC_Vector3(1, 0, 0);
-		//v[5] = SOC_Vector3(1, 0, 0);
+		indices.second[0]  = 0;
+		indices.second[1]  = 1;
+		indices.second[2]  = 2;
 
-		std::pair<Mesh::MeshFilter::count, SOC_dword*> indices;
-		indices.first = 36;
-		indices.second = new SOC_dword[36];
-
-		indices.second[0] = 0; 		indices.second[1]  = 1;		indices.second[2]  = 2;
-		indices.second[3] = 0; 		indices.second[4]  = 2;		indices.second[5]  = 3;
-
-		indices.second[6] = 4; 		indices.second[7]  = 6;		indices.second[8]  = 5;
-		indices.second[9] = 4; 		indices.second[10] = 7;		indices.second[11] = 6;
-
-		indices.second[12] = 0; 	indices.second[13] = 3;		indices.second[14] = 7;
-		indices.second[15] = 0; 	indices.second[16] = 7;		indices.second[17] = 4;
-
-		indices.second[18] = 1; 	indices.second[19] = 5;		indices.second[20] = 6;
-		indices.second[21] = 1; 	indices.second[22] = 6;		indices.second[23] = 2;
-
-		indices.second[24] = 3; 	indices.second[25] = 2;		indices.second[26] = 6;
-		indices.second[27] = 3; 	indices.second[28] = 6;		indices.second[29] = 7;
-
-		indices.second[30] = 0; 	indices.second[31] = 4;		indices.second[32] = 5;
-		indices.second[33] = 0; 	indices.second[34] = 5;		indices.second[35] = 1;
-
-		filter->Create(v, NULL, NULL, NULL, NULL, NULL, NULL, 8, indices, SOC_TRIANGLE_LIST, false);
+//		filter->Create(v, NULL, NULL, NULL, NULL, NULL, NULL, 8, indices, SOC_TRIANGLE_LIST, false);
+		filter->Create(v, nullptr ,nullptr, nullptr, nullptr, nullptr,
+			3, indices, SOC_TRIANGLE_LIST, false);
 	}
 
 public:
@@ -100,13 +79,21 @@ public:
 		SOC_Matrix worldMat;
 		GetWorldMatrix(&worldMat);
 
-		SOC_Matrix viewProjection;
-		SOCMatrixMultiply(&viewProjection, viewMat, projectionMat);
+		static float angle = 0.0f;
+
+		angle += 0.2f * SOCM_PI / 180.0f;
+		if( angle > 2 * SOCM_PI )
+			angle -= 2 * SOCM_PI;
+
+		D3DXMatrixRotationY(&worldMat, angle);
+
+		SOC_Matrix wvp;
+		SOCMatrixMultiply(&wvp, &worldMat, viewMat);
+		SOCMatrixMultiply(&wvp, &wvp, projectionMat);
 
 		bool b;
 
-		b = testShader->SetVariable("worldMatrix", &worldMat);
-		b = testShader->SetVariable("viewProjection", &viewProjection);
+		b = testShader->SetVariable("worldViewProjection", &wvp);
 	}
 
 	bool Update()

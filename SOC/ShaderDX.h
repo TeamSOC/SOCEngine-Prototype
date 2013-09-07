@@ -13,7 +13,7 @@ namespace Rendering
 			bool compiled;
 
 		public:
-			ShaderDX(const char *name = nullptr);
+			ShaderDX(Device::Graphics::GraphicsForm *graphics, const char *name = nullptr);
 			~ShaderDX(void);
 
 		public:
@@ -36,6 +36,7 @@ namespace Rendering
 			bool BeginPass(SOC_uint pass);
 			bool EndPass();
 			bool End();
+
 		};
 	}
 }

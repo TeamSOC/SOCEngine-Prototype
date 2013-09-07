@@ -20,15 +20,14 @@ namespace Rendering
 			SOC_Vector3* vertices;
 			SOC_Vector3* normals;
 
-			SOC_Vector2* uv;
-			SOC_Vector2* uv2;
-
 			SOC_Vector3* tangents;
 			SOC_Vector3* binomals;
 
+			std::vector<SOC_Vector2*> texcoord;
+
 			Color *colors;
 
-			std::pair<count, SOC_dword*>  indices;
+			std::pair<count, SOC_word*>  indices;
 
 			Buffer::VertexBuffer	*vertexBuffer;
 			Buffer::IndexBuffer		*indexBuffer;
@@ -41,8 +40,12 @@ namespace Rendering
 
 			SOC_TRIANGLE triangleType;
 
+		private:
+			Device::Graphics::GraphicsForm	*graphics;
+			VertexDeclaration				*decl;
+
 		public:
-			MeshFilter(void) : vertices(NULL), normals(NULL), uv(NULL), uv2(NULL), tangents(NULL), binomals(NULL), colors(NULL)
+			MeshFilter(Device::Graphics::GraphicsForm *graphics) : vertices(NULL), normals(NULL), tangents(NULL), binomals(NULL), colors(NULL), decl(nullptr)
 			{
 				vertexBufferSize = 0;
 				numOfVertex = 0;
@@ -51,6 +54,7 @@ namespace Rendering
 
 				vertexBuffer = nullptr;
 				indexBuffer = nullptr;
+				this->graphics = graphics;
 			}
 
 			~MeshFilter()
@@ -63,8 +67,9 @@ namespace Rendering
 				vertexBufferSize = sizeof(SOC_Vector3);
 
 				if(normals)			vertexBufferSize += sizeof(SOC_Vector3);
-				if(uv) 				vertexBufferSize += sizeof(SOC_Vector2);
-				if(uv2)				vertexBufferSize += sizeof(SOC_Vector2);
+				
+				for(std::vector<SOC_Vector2*>::iterator iter = texcoord.begin(); iter != texcoord.end(); ++iter)
+					vertexBufferSize += sizeof(SOC_Vector2);
 
 				if(tangents)		vertexBufferSize += sizeof(SOC_Vector3);
 				if(binomals)		vertexBufferSize += sizeof(SOC_Vector3);
@@ -90,7 +95,26 @@ namespace Rendering
 			}
 
 		public:
-			bool Create(SOC_Vector3 *vertices, SOC_Vector3 *normals, SOC_Vector2 *uv, SOC_Vector2 *uv2,	SOC_Vector3 *tangents, SOC_Vector3 *binomals, Color *colors, int numOfVertex, std::pair<count, SOC_dword*> indices, SOC_TRIANGLE type, bool isDynamic)
+			struct MeshFilterOption
+			{
+				SOC_Vector3 *vertices;
+				SOC_Vector3 *normals;
+				SOC_Vector3 *tangents;
+				SOC_Vector3 *binomals;
+				std::vector<SOC_Vector2*> *texcoord;
+				Color *colors;
+				int numOfVertex;
+				std::pair<count, SOC_word*> indices;
+				SOC_TRIANGLE type;
+				bool isDynamic;
+
+				MeshFilterOption() : vertices(nullptr), normals(nullptr), tangents(nullptr), binomals(nullptr), texcoord(nullptr), colors(nullptr), numOfVertex(0), isDynamic(false){}
+			};
+
+		public:
+			bool Create(SOC_Vector3 *vertices, SOC_Vector3 *normals, SOC_Vector3 *tangents,
+						SOC_Vector3 *binomals, std::vector<SOC_Vector2*> *texcoord, Color *colors, 
+						int numOfVertex, std::pair<count, SOC_word*> indices, SOC_TRIANGLE type, bool isDynamic)
 			{
 				if(vertices == NULL ) return false;
 
@@ -99,39 +123,47 @@ namespace Rendering
 
 				SetVertexData(&this->vertices, vertices, SOC_Vector3());
 				SetVertexData(&this->normals, normals, SOC_Vector3());
-				SetVertexData(&this->uv, uv, SOC_Vector2());
-
-				if(uv != NULL)
-					SetVertexData(&this->uv2, uv2, SOC_Vector2());
-
 				SetVertexData(&this->tangents, tangents, SOC_Vector3());
 				SetVertexData(&this->binomals, binomals, SOC_Vector3());
 				SetVertexData(&this->colors, colors, Color());
 
-				CalcVertexBufferSize();
-
-				//SetData(&this->indices.second, indices.second, SOC_word(0));
-				//this->indices.first = indices.first;
-
-				this->indices.second = new SOC_dword[indices.first];
-				this->indices.first = indices.first;
-				memcpy(this->indices.second, indices.second, sizeof(SOC_dword) * indices.first);
-
-				if(vertexBuffer || indexBuffer)
+				if(texcoord)
 				{
-					Utility::SAFE_DELETE(vertexBuffer);
-					Utility::SAFE_DELETE(indexBuffer);
+					std::vector<SOC_Vector2*>::iterator iter = this->texcoord.begin();
+					for(; iter != this->texcoord.end(); ++iter)
+						Utility::SAFE_ARRARY_DELETE((*iter));
+					this->texcoord.clear();
+
+					int count = texcoord->size();
+					for(int i=0; i<count; ++i)
+					{
+						SOC_Vector2 *ary = nullptr;// = new SOC_Vector2[numOfVertex];				
+						SetVertexData(&ary, (*texcoord)[i], SOC_Vector2());
+						this->texcoord.push_back(ary);
+					}
 				}
 
-				Device::Graphics::GraphicsForm *gp = Device::DeviceDirector::GetInstance()->GetGraphics();
+				CalcVertexBufferSize();
 
-				vertexBuffer = new Buffer::VertexBuffer( vertexBufferSize, numOfVertex, gp );
-				indexBuffer = new Buffer::IndexBuffer( indices.first, gp);
+				this->indices.second = new SOC_word[indices.first];
+				this->indices.first = indices.first;
+				memcpy(this->indices.second, indices.second, sizeof(SOC_word) * indices.first);
+
+				Utility::SAFE_DELETE(vertexBuffer);
+				Utility::SAFE_DELETE(indexBuffer);
+
+				vertexBuffer = new Buffer::VertexBuffer( vertexBufferSize, numOfVertex, graphics );
+				indexBuffer = new Buffer::IndexBuffer( indices.first, graphics);
 
 				if( CreateVertexBuffer(isDynamic) == false )
 					return false;
 
 				if( CreateIndexBuffer() == false )
+					return false;				
+
+				decl = CreateVertexDeclaration();
+
+				if( decl == nullptr )
 					return false;
 
 				return true; 
@@ -142,7 +174,7 @@ namespace Rendering
 			{
 				SOC_dword usage = SOC_USAGE_WRITEONLY | (isDynamic ? SOC_USAGE_DYNAMIC : 0);
 
-				if( vertexBuffer->Create( usage, SOC_POOL_MANAGED) == false )
+				if( vertexBuffer->Create( usage, SOC_POOL_DEFAULT) == false )
 					return false;
 
 				void *vertexBufferData = nullptr;
@@ -180,25 +212,6 @@ namespace Rendering
 						vertexBufferData = (SOC_Vector3*)vertexBufferData + 1;
 					}
 
-					if(uv)
-					{
-						*( (SOC_Vector2*)vertexBufferData ) = uv[i];
-						vertexBufferData = (SOC_Vector2*)vertexBufferData + 1;
-
-						if(uv2) //uv가 없으면 uv2도 없는거임 ㅇㅇ
-						{
-							*( (SOC_Vector2*)vertexBufferData ) = uv2[i];
-							vertexBufferData = (SOC_Vector2*)vertexBufferData + 1;
-						}
-					}
-
-					if(colors)
-					{
-						SOC_Vector4 vec4 = SOC_Vector4(colors[i].r, colors[i].g, colors[i].b, colors[i].a);
-						*( (SOC_Vector4*)vertexBufferData ) = vec4;
-						vertexBufferData = (SOC_Vector4*)vertexBufferData + 1;
-					}
-
 					if(tangents && binomals)
 					{
 						*( (SOC_Vector3*)vertexBufferData ) = tangents[i];
@@ -208,10 +221,23 @@ namespace Rendering
 						vertexBufferData = (SOC_Vector3*)vertexBufferData + 1;
 					}
 
+					if(colors)
+					{
+						SOC_Vector4 vec4 = SOC_Vector4(colors[i].r, colors[i].g, colors[i].b, colors[i].a);
+						*( (SOC_Vector4*)vertexBufferData ) = vec4;
+						vertexBufferData = (SOC_Vector4*)vertexBufferData + 1;
+					}
+
+					for(std::vector<SOC_Vector2*>::iterator iter = texcoord.begin(); iter != texcoord.end(); ++iter)
+					{
+						*( (SOC_Vector2*)vertexBufferData ) = (*iter)[i];
+						vertexBufferData = (SOC_Vector2*)vertexBufferData + 1;
+					}
 				}
 
 				if( vertexBuffer->UnLock() == false)
 					return false;
+
 				radius = maxRadius;
 				bounds.SetMinMax(minSize, maxSize);
 
@@ -219,19 +245,95 @@ namespace Rendering
 			}
 			bool CreateIndexBuffer()
 			{
-				if( indexBuffer->Create(SOC_POOL_MANAGED) == false)
+				if( indexBuffer->Create(SOC_POOL_DEFAULT) == false)
 					return false;
 
-				WORD *indexBufferData = nullptr;
+				SOC_word *indexBufferData = nullptr;
 				if( indexBuffer->Lock((void**)&indexBufferData) == false)
 					return false;
 
-				memcpy(indexBufferData, this->indices.second, sizeof(SOC_dword) * indexBuffer->GetCount());
+				memcpy(indexBufferData, this->indices.second, sizeof(SOC_word) * indexBuffer->GetCount());
 				if( indexBuffer->UnLock() == false)
 					return false;
 
 				return true;
 			}
+			VertexDeclaration* CreateVertexDeclaration()
+			{
+				VertexElements ves;
+//				ves.description = description;
+				std::string description = "P";
+				VertexElement e = VertexElement(0, 0, SOC_VERTEX_DECLTYPE_FLOAT3, SOC_VERTEX_USAGE_POSITION, 0);
+
+				std::vector<VertexElement> *v = &ves.vertexElement;
+
+				//add position declaraction
+				v->push_back(e);
+				e.offset = sizeof(SOC_Vector3);
+
+				if(normals)
+				{
+					e.usage = SOC_VERTEX_USAGE_NORMAL;
+					v->push_back(e);
+
+					e.offset += sizeof(SOC_Vector3);
+					description += "N";
+				}
+
+				if(tangents)
+				{
+					e.usage = SOC_VERTEX_USAGE_TANGENT;
+					v->push_back(e);
+
+					e.offset += sizeof(SOC_Vector3);
+					description += "T";
+				}
+
+				if(binomals)
+				{
+					e.usage = SOC_VERTEX_USAGE_BINORMAL;
+					v->push_back(e);
+
+					e.offset += sizeof(SOC_Vector3);
+					description += "B";
+				}
+
+				if(colors)
+				{
+					e.usage = SOC_VERTEX_USAGE_COLOR;
+					e.type = SOC_VERTEX_DECLTYPE_COLOR;
+
+					v->push_back(e);
+
+					e.offset += sizeof(SOC_Vector4);
+					description += "C";
+				}
+
+				if(texcoord.size() != 0)
+				{
+					e.usage = SOC_VERTEX_USAGE_TEXCOORD;
+					e.type = SOC_VERTEX_DECLTYPE_FLOAT2;
+				}
+
+				int size = texcoord.size();
+				for(int i=0; i<size; ++i)
+				{
+					e.usageIndex = i;
+					v->push_back(e);
+
+					e.offset += sizeof(SOC_Vector2);
+					description += "T";
+					description += i;
+				}
+
+				ves.description = description.c_str();
+
+				return graphics->CreateVertexDeclation(&ves);
+			}
+			//bool CreateInstancingVertexDeclaration(const char* description)
+			//{
+
+			//}
 
 		public:
 			Buffer::VertexBuffer* GetVertexBuffer()
@@ -253,6 +355,10 @@ namespace Rendering
 			SOC_TRIANGLE GetTriangleType()
 			{
 				return triangleType;
+			}
+			VertexDeclaration* GetDeclaration()
+			{
+				return decl;
 			}
 		};
 

@@ -28,12 +28,12 @@ namespace Rendering
 		public:
 			bool Create(SOC_POOL pool)
 			{
-				return graphics->CreateIndexBuffer(sizeof(SOC_dword) * count, pool, (void**)&indexBuffer);
+				return graphics->CreateIndexBuffer(sizeof(SOC_word) * count, pool, (void**)&indexBuffer);
 			}
 
 			bool Lock(void** inputData)
 			{
-				return SUCCEEDED( indexBuffer->Lock( 0, sizeof(SOC_dword) * count, inputData, NULL) );
+				return SUCCEEDED( indexBuffer->Lock( 0, sizeof(SOC_word) * count, inputData, NULL) );
 			}
 
 			bool UnLock()

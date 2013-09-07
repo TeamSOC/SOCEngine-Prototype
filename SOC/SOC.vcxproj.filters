@@ -192,6 +192,9 @@
     <Filter Include="Engine\Rendering\Shader\Manager\GL">
       <UniqueIdentifier>{045b511c-3b4f-4adc-ae96-d5570c5c1556}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Device\Graphics\VertexElements">
+      <UniqueIdentifier>{aca77eab-3ae9-481d-b34a-fbefd30df3e0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AABB.cpp">
@@ -310,6 +313,9 @@
     </ClCompile>
     <ClCompile Include="ShaderManagerDX.cpp">
       <Filter>Engine\Rendering\Shader\Manager\DX</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexDeclaration.cpp">
+      <Filter>Engine\Device\Graphics\VertexElements</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -462,6 +468,9 @@
     </ClInclude>
     <ClInclude Include="ShaderManager.h">
       <Filter>Engine\Rendering\Shader\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexDeclaration.h">
+      <Filter>Engine\Device\Graphics\VertexElements</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

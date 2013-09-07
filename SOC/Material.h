@@ -11,10 +11,12 @@ namespace Rendering
 		std::string name;
 		std::vector<Shader::Shader*> shaders;
 
+		Shader::Shader* useShader;
+
 	public:
-		Material(const char *name = nullptr)
+		Material(const char *name = nullptr) : useShader(nullptr)
 		{
-			this->name = name;
+			this->name = name;			
 		}
 
 		~Material(void)
@@ -25,55 +27,51 @@ namespace Rendering
 	public:
 		void Begin()
 		{
-			bool b = false;
-			std::vector<Shader::Shader*>::iterator iter;
-			for( iter = shaders.begin(); iter != shaders.end(); ++iter )
-			{
-				b = (*iter)->Begin();
-			}
-
-			if(b == false)
-				b = true;
+			useShader->Begin();
 		}
-		void BeginPass()
+		void BeginPass(int pass = 0)
 		{
-			int count = 0;
-			std::vector<Shader::Shader*>::iterator iter;
-			bool b = false;
-
-			for( iter = shaders.begin(); iter != shaders.end(); ++iter )
-			{
-				count = (*iter)->GetNumPasses();
-
-				for(int i=0; i < count; ++i)
-				{
-					b = (*iter)->BeginPass(i);
-				}
-			}
-
-			if(b == false)
-				b = true;
+			useShader->BeginPass(pass);
 		}
 		void End()
 		{
-			std::vector<Shader::Shader*>::iterator iter;
-			for( iter = shaders.begin(); iter != shaders.end(); ++iter )
-			{
-				(*iter)->End();
-			}
+			useShader->End();
 		}
 		void EndPass()
 		{
-			std::vector<Shader::Shader*>::iterator iter;
-			for( iter = shaders.begin(); iter != shaders.end(); ++iter )
-			{
-				(*iter)->EndPass();
-			}
+			useShader->EndPass();
 		}
 
 	public:
+		bool SelectUseShader(SOC_uint idx)
+		{
+			if(idx > shaders.size())
+				return false;
+
+			useShader = shaders[idx];
+			return true;
+		}
+
+		bool SelectUseShader( std::string name )
+		{
+			std::vector< Shader::Shader* >::iterator iter;
+			for(iter = shaders.begin(); iter != shaders.end(); ++iter)
+			{
+				if((*iter)->GetName() == name)
+				{
+					useShader = (*iter);
+					return true;
+				}
+			}
+
+			return false;
+		}
+
 		void AddShader( Shader::Shader *shader )
 		{
+			if(useShader == nullptr)
+				useShader = shader;
+
 			shaders.push_back( shader );
 		}
 		void DeleteShader( Shader::Shader *shader )
@@ -105,18 +103,28 @@ namespace Rendering
 			(*(shaders.begin() + idx))->SetVariable(parameter, value, count);
 		}
 
+		template<typename Type>
+		void SetVariable(char *parameter, Type value)
+		{
+			useShader->SetVariable(parameter, value);
+		}
+		template<typename Type>
+		void SetVariable(char *parameter, Type value, SOC_uint count)
+		{
+			useShader->SetVariable(parameter, value, count);
+		}
+
 	public:
 		int GetShaderCount()
 		{
 			return shaders.size();
 		}
-		//static Material* Copy(Material *material)
-		//{
-		//	Material *m = new Material();
-		//	(*m) = (*material);
 
-		//	return m;
-		//}
+		SOC_uint GetUseShaderPass()
+		{
+			return useShader->GetNumPasses();
+		}
+
 		const char* GetName()
 		{
 			return name.c_str();

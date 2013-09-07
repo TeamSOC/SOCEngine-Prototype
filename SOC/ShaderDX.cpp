@@ -8,7 +8,7 @@ namespace Rendering
 	namespace Shader
 	{
 
-		ShaderDX::ShaderDX(const char *name) : ShaderForm(name)
+		ShaderDX::ShaderDX(Device::Graphics::GraphicsForm *graphics, const char *name) : ShaderForm(graphics, name)
 		{
 			shader = NULL;
 		}
@@ -23,7 +23,7 @@ namespace Rendering
 		{
 			LPD3DXBUFFER error = nullptr;
 			SOC_dword flags = 0;
-			LPDIRECT3DDEVICE9 device = dynamic_cast<Graphics::DX* >(DeviceDirector::GetInstance()->GetGraphics() )->GetD3DDevice();
+			LPDIRECT3DDEVICE9 device = dynamic_cast<Device::Graphics::DX*>(graphics)->GetD3DDevice();
 			bool success = true;
 
 #if _DEBUG
@@ -48,6 +48,7 @@ namespace Rendering
 			}
 #endif
 			compiled = success;
+
 			return success; 
 		}
 

@@ -24,7 +24,7 @@ namespace Rendering
 				:beginFunc(nullptr), endFunc(nullptr)
 			{
 				this->graphics	= graphics;
-				this->filter	= filter == nullptr ? new MeshFilter() : filter;
+				this->filter	= filter == nullptr ? new MeshFilter(graphics) : filter;
 				this->renderer	= renderer == nullptr ? new MeshRenderer(&beginFunc, &endFunc) : renderer;
 			}
 
@@ -51,12 +51,11 @@ namespace Rendering
 
 					Buffer::VertexBuffer *vb = filter->GetVertexBuffer();
 
+					b = graphics->SetVertexDeclaration( filter->GetDeclaration() );
 					b = graphics->SetVertexStream(0, vb->GetDeviceBuffer(), vb->GetSize());
  					b = graphics->SetIndices(idxBuffer);
-					b = graphics->DrawIndexedPrimitive(type, 0, 0, numOfVertex, 0, 12);
 
-					int a = 5;
-					a = 3;
+					b = graphics->DrawIndexedPrimitive(type, 0, 0, numOfVertex, 0, 1);
 				}
 				endFunc(renderer);
 			}

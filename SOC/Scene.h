@@ -43,9 +43,8 @@ public:
 
 		test->Init(shaderMgr);
 
-		SOC_Vector3 v = SOC_Vector3(0, 0, -0.5f);
-		cam->SetPosition(v);
-		cam->LookAt(SOC_Vector3(0, 0, 1));
+		cam->SetPosition(SOC_Vector3(0, 0, 2.0f));
+		cam->LookAt(SOC_Vector3(0, 0, -5));
 	}
 
 	void loop()
@@ -63,7 +62,7 @@ public:
 			cam->GetViewMatrix(&viewMat);
 			cam->GetPerspectiveMatrix(&projectionMat, 0);
 
-//			test->SetMat(&viewMat, &projectionMat);
+			test->SetMat(&viewMat, &projectionMat);
 			test->Render(NULL);
 		}
 		b = graphics->EndScene();

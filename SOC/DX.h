@@ -2,6 +2,8 @@
 
 #include "GraphicsForm.h"
 #include "Windows.h"
+#include "SOCHashMap.h"
+#include <string>
 
 namespace Device
 {
@@ -12,6 +14,7 @@ namespace Device
 		private:
 			float elapse;
 			float  fps;	
+			SOCHashMap<const char *, LPDIRECT3DVERTEXDECLARATION9> declMap;
 
 		private:
 			LPDIRECT3D9			d3dHandle;
@@ -131,6 +134,7 @@ namespace Device
 			{
 				D3DPRIMITIVETYPE d3dPrimitiType = (D3DPRIMITIVETYPE)type;
 				return SUCCEEDED( device->DrawIndexedPrimitive(d3dPrimitiType, baseVertexIdx, minVertexIdx, numVertices, startIdx, primitiveCount) );
+//				return SUCCEEDED( device->DrawPrimitive(d3dPrimitiType, 0, primitiveCount) );
 			}
 
 			bool SetVertexStream(SOC_uint stream, void *deviceVertexBuffer, SOC_uint stride)
@@ -147,6 +151,58 @@ namespace Device
 				frequency = stream == 0 ? D3DSTREAMSOURCE_INDEXEDDATA | frequency : D3DSTREAMSOURCE_INSTANCEDATA | frequency;
 				return SUCCEEDED( device->SetStreamSourceFreq(stream, frequency) );
 			}
+
+			VertexDeclaration* CreateVertexDeclation( VertexElements *ve )
+			{
+				LPDIRECT3DVERTEXDECLARATION9 decl = declMap[ve->description.c_str()];
+
+				if(decl)
+					return decl;
+
+				int size = ve->vertexElement.size();
+				D3DVERTEXELEMENT9 *elements = new D3DVERTEXELEMENT9[size + 1];
+
+				for(int i=0; i<size; ++i)
+				{
+					VertexElement *e = &ve->vertexElement[i];
+					e->GetD3DElemnts( &(elements[i]) );
+				}
+
+				//decl end
+				//D3DDECL_END()
+				elements[size].Stream = 0xFF;
+				elements[size].Offset = elements[size].Usage = 
+					elements[size].UsageIndex = elements[size].Method = 0;
+				elements[size].Type = D3DDECLTYPE_UNUSED;
+				//DONE
+
+				if( SUCCEEDED(device->CreateVertexDeclaration(elements, &decl) ) )
+				{
+					SOCHashMap<const char *, LPDIRECT3DVERTEXDECLARATION9>::value_type value(ve->description.c_str(), decl);
+					declMap.insert(value);
+				}
+
+				return decl;
+			}
+
+			bool SetVertexDeclaration( const char *description )
+			{
+				LPDIRECT3DVERTEXDECLARATION9 decl = declMap[description];
+				
+				if(decl == nullptr)
+					return false;
+				
+				return SUCCEEDED( device->SetVertexDeclaration( decl ) );
+			}
+
+			bool SetVertexDeclaration( VertexDeclaration *decl )
+			{				
+				if(decl == nullptr)
+					return false;
+				
+				return SUCCEEDED( device->SetVertexDeclaration( decl ) );
+			}
+
 
 			bool BeginScene()
 			{

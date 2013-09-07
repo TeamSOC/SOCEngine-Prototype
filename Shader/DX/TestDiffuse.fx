@@ -22,8 +22,7 @@
 //--------------------------------------------------------------//
 string TestDiffuse_Pass_0_Model : ModelData = "..\\..\\..\\Program Files (x86)\\AMD\\RenderMonkey 1.82\\Examples\\Media\\Models\\Sphere.3ds";
 
-float4x4 worldMatrix : World;
-float4x4 viewProjection : ViewProjection;
+float4x4 worldViewProjection : WorldViewProjection;
 
 struct VS_INPUT 
 {
@@ -41,8 +40,7 @@ VS_OUTPUT TestDiffuse_Pass_0_Vertex_Shader_vs_main( VS_INPUT Input )
 {
    VS_OUTPUT Output;
 
-   Output.Position = mul( Input.Position, worldMatrix );
-   Output.Position = mul( Output.Position, viewProjection );
+   Output.Position = mul( Input.Position, worldViewProjection );
    
    return( Output );
    

@@ -179,7 +179,7 @@ namespace Rendering
 	{
 		UpdateWorldTransform();
 
-		SOC_Vector3 dir = position - worldPosition;
+		SOC_Vector3 dir = worldPosition - position;
 		SOCVec3Normalize(&dir, &dir);
 		forward = dir;
 		up = worldUp;

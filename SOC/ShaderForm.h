@@ -16,11 +16,14 @@ namespace Rendering
 			std::string name;
 
 		protected:
+			Device::Graphics::GraphicsForm	*graphics;
+			VertexDeclaration				*declaration;
+
 			bool	 compiled;
 			SOC_uint numPass;
 
 		public:
-			ShaderForm(const char *name = nullptr);
+			ShaderForm(Device::Graphics::GraphicsForm *graphics, const char *name = nullptr);
 			~ShaderForm(void);
 
 		public:

@@ -120,6 +120,7 @@
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="VertexBufferForm.cpp" />
     <ClCompile Include="VertexBufferDX.cpp" />
+    <ClCompile Include="VertexDeclaration.cpp" />
     <ClCompile Include="Windows.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +173,7 @@
     <ClInclude Include="Utility.h" />
     <ClInclude Include="VertexBufferForm.h" />
     <ClInclude Include="VertexBufferDX.h" />
+    <ClInclude Include="VertexDeclaration.h" />
     <ClInclude Include="Windows.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
