@@ -11,20 +11,11 @@ namespace Rendering
 		class PointLight : public LightForm
 		{
 		public:
-			PointLight(Object *parent = NULL) : LightForm(parent)
-			{
-				type = LIGHTTYPE_POINT;
-			}
-
-			~PointLight(void)
-			{
-			}
+			PointLight(Object *parent = NULL);
+			~PointLight(void);
 
 		public:
-			bool Intersect(SOC_Vector3 worldPos, float radius)
-			{
-				return Intersection::Sphere::Intersection(worldPos, radius, this->GetWorldPosition(), this->radius);
-			}
+			bool Intersect(SOC_Vector3 worldPos, float radius);
 		};
 
 	}

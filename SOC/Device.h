@@ -98,6 +98,8 @@ typedef PSIZE_T				SOC_sizeiptr;
 
 typedef double				SOC_double;
 
+typedef LPDIRECT3DTEXTURE9 DeviceTexture;
+
 #elif defined(__APPLE__) || defined(_USE_GL_DEFINES)
 
 #import <OpenGLES/ES2/gl.h>

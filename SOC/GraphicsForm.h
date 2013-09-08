@@ -23,11 +23,7 @@ namespace Device
 			typedef unsigned int clearFlag;
 
 		public:
-			GraphicsForm(PRESENT_INTERVAL interval, Application::Application* app)
-			{
-				//NULL
-
-			}
+			GraphicsForm(PRESENT_INTERVAL interval, Application::Application* app);
 
 		public:
 			virtual bool Initialize() = 0;

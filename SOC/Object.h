@@ -93,11 +93,6 @@ namespace Rendering
 		void UpdateMatrix();
 	public:
 		void UpdateWorldTransform();
-		/* 쓸모 없을 듯
-		void UpdateWorldPosition();
-		void UpdateWorldScale();
-		void UpdateWorldEuler();
-		*/
 
 	public:
 		void SetPosition(SOC_Vector3 position);		
@@ -115,12 +110,9 @@ namespace Rendering
 		void GetMatrix(SOC_Matrix *outMatrix);
 		void GetWorldMatrix(SOC_Matrix *outMatrix);
 
-		int GetChildCount()
-		{ return childs.size(); }
-		Object* Getchild(int index)
-		{ return *(childs.begin()+index); }
-		float GetRadius()
-		{ return radius; }
+		int GetChildCount();
+		Object* Getchild(int index);
+		float GetRadius();
 		SOC_Vector3 GetWorldPosition();
 		SOC_Vector3 GetLocalPosition();
 

@@ -24,19 +24,7 @@ namespace Rendering
 			float specularPower;
 
 		protected:
-			LightForm(Object *parent = NULL) : Object(parent)
-			{
-				diffuse		= Color::white();
-				specular	= Color::white();
-
-				onSpecular = true;
-
-				range = 0.0f;
-				intensity = 1.0f;
-				specularPower = 20.0f;
-
-				isLight = true;
-			}
+			LightForm(Object *parent = NULL);
 
 		public:
 			virtual bool Intersect(SOC_Vector3 worldPos, float radius) = 0;

@@ -17,7 +17,6 @@ namespace Rendering
 
 		protected:
 			Device::Graphics::GraphicsForm	*graphics;
-			VertexDeclaration				*declaration;
 
 			bool	 compiled;
 			SOC_uint numPass;

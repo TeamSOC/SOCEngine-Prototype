@@ -13,43 +13,16 @@ namespace Rendering
 			LPDIRECT3DDEVICE9 device;
 
 		public:
-			VertexBufferDX(int vertexBufferSize, int numOfVertex, Device::Graphics::GraphicsForm *graphics) 
-				: VertexBufferForm(vertexBufferSize, numOfVertex, graphics)
-			{
-				vertexBuffer = NULL;
-				device = dynamic_cast<Device::Graphics::DX*>( graphics )->GetD3DDevice();
-			}
-
-			~VertexBufferDX(void)
-			{
-				if (vertexBuffer)
-				{
-					vertexBuffer->Release();
-					vertexBuffer = NULL;
-				}
-			}
+			VertexBufferDX(int vertexBufferSize, int numOfVertex, Device::Graphics::GraphicsForm *graphics);
+			~VertexBufferDX(void);
 
 		public:
-			bool Create(SOC_dword usage, SOC_POOL pool)
-			{
-				return graphics->CreateVertexBuffer(GetLength(), usage, pool, (void**)&vertexBuffer);
-			}
-
-			bool Lock(void **inputData)
-			{
-				return SUCCEEDED(vertexBuffer->Lock(0, GetLength(), inputData, NULL));
-			}
-
-			bool UnLock()
-			{
-				return SUCCEEDED( vertexBuffer->Unlock() );
-			}
+			bool Create(SOC_dword usage, SOC_POOL pool);
+			bool Lock(void **inputData);
+			bool UnLock();
 
 		public:
-			void* GetDeviceBuffer()
-			{
-				return vertexBuffer;
-			}
+			void* GetDeviceBuffer();
 		};
 	}
 }

@@ -155,4 +155,18 @@ namespace Rendering
 
 		return Color(_r,_g,_b,_a);
 	}
+
+	void Color::SetColor(Color &color)
+	{
+		r = color.r;
+		g = color.g;
+		b = color.b;
+		a = color.a;
+		CalculateColor(this);
+	}
+
+	Color& Color::GetColor()
+	{
+		return (*this); 
+	}
 }

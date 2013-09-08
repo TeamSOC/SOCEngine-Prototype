@@ -14,11 +14,8 @@ namespace Device
 		Application::Application *app;
 
 	public:
-		DeviceDirector(void) : graphics(NULL), app(NULL) {}
-		~DeviceDirector(void)
-		{
-			Destroy();
-		}
+		DeviceDirector(void);
+		~DeviceDirector(void);
 
 	public:
 #if defined(WIN32) && !defined(_USE_GL_DEFINES)
@@ -51,57 +48,19 @@ namespace Device
 				this->parentHandle = parentHandle;
 			}
 		};
-
-		bool Initialize(PRESENT_INTERVAL interval, WindowsInitOption &options)
-		{
-			app = new Application::Windows(options.rect, options.instance, options.name, options.windowMode, options.isChild, options.parentHandle);
-
-			if( app->Initialize() == false)
-				return false;
-
-			graphics = new Graphics::DX(interval, app);
-
-			if(graphics->Initialize() == false)
-			{
-				Destroy();
-				return false;
-			}
-
-			return true;
-		}
+		bool Initialize(PRESENT_INTERVAL interval, WindowsInitOption &options);
 
 #elif defined(__APPLE__) || defined(_USE_GL_DEFINES)
 
 #endif
 
-		void Run()
-		{
-			app->Run();
-		}
-
-		void Destroy()
-		{
-			delete graphics;
-			graphics = NULL;
-
-			delete app;
-			app = NULL;
-		}
+		void Run();
+		void Destroy();
 
 	public:
-		Graphics::GraphicsForm* GetGraphics()
-		{
-			return graphics;
-		}
-		Application::Application* GetApplication()
-		{
-			return app;
-		}
+		Graphics::GraphicsForm* GetGraphics();
+		Application::Application* GetApplication();
 
-		Common::Size<int>& GetSize()
-		{
-			return app->GetSize();
-		}
+		Common::Size<int>& GetSize();
 	};
-
 }

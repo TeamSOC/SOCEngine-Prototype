@@ -107,6 +107,7 @@
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="ShaderCodeGL.cpp" />
     <ClCompile Include="ShaderDX.cpp" />
     <ClCompile Include="ShaderForm.cpp" />
     <ClCompile Include="ShaderManagerDX.cpp" />
@@ -120,7 +121,6 @@
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="VertexBufferForm.cpp" />
     <ClCompile Include="VertexBufferDX.cpp" />
-    <ClCompile Include="VertexDeclaration.cpp" />
     <ClCompile Include="Windows.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -154,10 +154,13 @@
     <ClInclude Include="Rendering.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="ShaderCode.h" />
+    <ClInclude Include="ShaderCodeGL.h" />
     <ClInclude Include="ShaderDX.h" />
     <ClInclude Include="ShaderForm.h" />
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="ShaderManagerDX.h" />
+    <ClInclude Include="ShaderManagerForm.h" />
     <ClInclude Include="SingleTon.h" />
     <ClInclude Include="Size.h" />
     <ClInclude Include="Skybox.h" />

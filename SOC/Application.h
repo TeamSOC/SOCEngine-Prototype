@@ -12,10 +12,7 @@ namespace Device
 			Common::Rect<int> rect;
 
 		public:
-			Application(void)
-			{
-
-			}
+			Application(void);
 
 		public:
 			virtual bool Initialize() = 0;
@@ -23,21 +20,11 @@ namespace Device
 			virtual void Run() = 0;
 
 		public:
-			Common::Rect<int> GetRect()
-			{
-				return rect;
-			}
-
-			Common::Size<int> GetSize()
-			{
-				return rect.size;
-			}
+			Common::Rect<int> GetRect();
+			Common::Size<int> GetSize();
 
 		protected:
-			void SetRect(Common::Rect<int> r)
-			{
-				rect = r;
-			}
+			void SetRect(Common::Rect<int> r);
 		};
 
 	}

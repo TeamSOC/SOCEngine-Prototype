@@ -477,5 +477,25 @@ namespace Rendering
 		//null
 		return false;
 	}
+
+	int Object::GetChildCount()
+	{ 
+		return childs.size(); 
+	}
+	
+	Object* Object::Getchild(int index)	
+	{ 
+		return *(childs.begin()+index); 
+	}
+
+	float Object::GetRadius()
+	{
+		return radius; 
+	}
+
+	bool Object::IsLight()
+	{
+		return isLight;
+	}
 }
 

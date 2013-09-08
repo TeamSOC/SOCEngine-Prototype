@@ -14,18 +14,7 @@ namespace Rendering
 			Device::Graphics::GraphicsForm *graphics;
 
 		public:
-			VertexBufferForm(int vertexBufferSize, int numOfVertex, Device::Graphics::GraphicsForm *graphics)
-			{
-				//NULL
-				this->vertexBufferSize = vertexBufferSize;
-				this->graphics = graphics;
-				this->numOfVertex = numOfVertex;
-			}
-
-			virtual ~VertexBufferForm(void)
-			{
-
-			}
+			VertexBufferForm(int vertexBufferSize, int numOfVertex, Device::Graphics::GraphicsForm *graphics);
 
 		public:
 			virtual bool Create(SOC_dword usage, SOC_POOL pool) = 0;
@@ -33,18 +22,9 @@ namespace Rendering
 			virtual bool UnLock() = 0;
 
 		public:
-			int GetNumOfVertex()
-			{
-				return numOfVertex;
-			}
-			int GetLength()
-			{
-				return vertexBufferSize * numOfVertex;
-			}
-			int GetSize()
-			{
-				return vertexBufferSize;
-			}
+			int GetNumOfVertex();
+			int GetLength();
+			int GetSize();
 
 			virtual void* GetDeviceBuffer() = 0;
 		};

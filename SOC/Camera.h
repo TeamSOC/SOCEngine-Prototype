@@ -34,7 +34,7 @@ namespace Rendering
 		float				aspect;
 		Color				clearColor;
 		Skybox				*skybox;
-		//1. hdr을 여기서 처리하는데? 제가 어찌 압니까..
+		//1. hdr을 여기서 처리하는데?
 		/*2. 컬링 마스크처리에서 여러개의 태그를 선택할 수 있어.
 		     그럼 태그 시스템을 바꿔야 한단 소리네 하.. */
 		//3. 렌더 텍스쳐 선택. 이건 지금 할게 아니야
@@ -46,9 +46,7 @@ namespace Rendering
 		~Camera(void);
 
 	private:
-		Camera(const Camera &cam)
-		{
-		}
+		Camera(const Camera &cam){}
 
 	private:
 		void CalcAspect();

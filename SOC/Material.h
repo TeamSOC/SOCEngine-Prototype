@@ -14,82 +14,23 @@ namespace Rendering
 		Shader::Shader* useShader;
 
 	public:
-		Material(const char *name = nullptr) : useShader(nullptr)
-		{
-			this->name = name;			
-		}
-
-		~Material(void)
-		{
-			DeleteAllShader();
-		}
+		Material(const char *name = nullptr);
+		~Material(void);
 
 	public:
-		void Begin()
-		{
-			useShader->Begin();
-		}
-		void BeginPass(int pass = 0)
-		{
-			useShader->BeginPass(pass);
-		}
-		void End()
-		{
-			useShader->End();
-		}
-		void EndPass()
-		{
-			useShader->EndPass();
-		}
+		void Begin();
+		void BeginPass(int pass = 0);
+		void End();
+		void EndPass();
 
 	public:
-		bool SelectUseShader(SOC_uint idx)
-		{
-			if(idx > shaders.size())
-				return false;
+		bool SelectUseShader(SOC_uint idx);
 
-			useShader = shaders[idx];
-			return true;
-		}
+		bool SelectUseShader( std::string name );
 
-		bool SelectUseShader( std::string name )
-		{
-			std::vector< Shader::Shader* >::iterator iter;
-			for(iter = shaders.begin(); iter != shaders.end(); ++iter)
-			{
-				if((*iter)->GetName() == name)
-				{
-					useShader = (*iter);
-					return true;
-				}
-			}
-
-			return false;
-		}
-
-		void AddShader( Shader::Shader *shader )
-		{
-			if(useShader == nullptr)
-				useShader = shader;
-
-			shaders.push_back( shader );
-		}
-		void DeleteShader( Shader::Shader *shader )
-		{
-			std::vector<Shader::Shader *>::iterator iter;
-			for(iter = shaders.begin(); iter != shaders.end(); ++iter)
-			{
-				if( (*iter) == shader )
-				{
-					shaders.erase(iter);
-					return;
-				}
-			}
-		}
-		void DeleteAllShader( )
-		{
-			shaders.clear();
-		}
+		void AddShader( Shader::Shader *shader );
+		void DeleteShader( Shader::Shader *shader );
+		void DeleteAllShader( );
 
 	public:
 		template<typename Type>
@@ -115,20 +56,11 @@ namespace Rendering
 		}
 
 	public:
-		int GetShaderCount()
-		{
-			return shaders.size();
-		}
+		int GetShaderCount();
 
-		SOC_uint GetUseShaderPass()
-		{
-			return useShader->GetNumPasses();
-		}
+		SOC_uint GetUseShaderPass();
 
-		const char* GetName()
-		{
-			return name.c_str();
-		}
+		const char* GetName();
 	};
 
 }

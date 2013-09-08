@@ -1,4 +1,4 @@
-//
+﻿//
 //  SOCHashMap.h
 //  Rendering
 //

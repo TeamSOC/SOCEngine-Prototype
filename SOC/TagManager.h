@@ -14,7 +14,7 @@ namespace Rendering
 
 	public:
 		bool AddTag(std::string key, int id);
-		inline bool FindTagValue(std::string key, int *outValue);
+		bool FindTagValue(std::string key, int *outValue);
 	};
 
 }

@@ -180,9 +180,6 @@
     <Filter Include="Test">
       <UniqueIdentifier>{54c1f466-d4cc-44ca-8675-19cb514549a1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Rendering\H">
-      <UniqueIdentifier>{c2b20625-accf-4b26-8dcb-e2554cc9ccc7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\aa">
       <UniqueIdentifier>{11ec5c53-5e16-46f5-8723-5d39a24627a9}</UniqueIdentifier>
     </Filter>
@@ -194,6 +191,15 @@
     </Filter>
     <Filter Include="Engine\Device\Graphics\VertexElements">
       <UniqueIdentifier>{aca77eab-3ae9-481d-b34a-fbefd30df3e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Shader\Manager\Form">
+      <UniqueIdentifier>{c2e3ede5-f275-4cfd-a619-5c8e4f4bfe5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Shader\Code">
+      <UniqueIdentifier>{b37480fb-1a72-46b2-96dc-ff679e179ad6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Shader\Code\GL">
+      <UniqueIdentifier>{868c3bd9-81ce-436a-b676-951aa600c941}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -314,8 +320,8 @@
     <ClCompile Include="ShaderManagerDX.cpp">
       <Filter>Engine\Rendering\Shader\Manager\DX</Filter>
     </ClCompile>
-    <ClCompile Include="VertexDeclaration.cpp">
-      <Filter>Engine\Device\Graphics\VertexElements</Filter>
+    <ClCompile Include="ShaderCodeGL.cpp">
+      <Filter>Engine\Rendering\Shader\Code\GL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -471,6 +477,15 @@
     </ClInclude>
     <ClInclude Include="VertexDeclaration.h">
       <Filter>Engine\Device\Graphics\VertexElements</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderManagerForm.h">
+      <Filter>Engine\Rendering\Shader\Manager\Form</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderCodeGL.h">
+      <Filter>Engine\Rendering\Shader\Code\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderCode.h">
+      <Filter>Engine\Rendering\Shader\Code</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

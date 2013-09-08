@@ -70,7 +70,7 @@ public:
 
 //		filter->Create(v, NULL, NULL, NULL, NULL, NULL, NULL, 8, indices, SOC_TRIANGLE_LIST, false);
 		filter->Create(v, nullptr ,nullptr, nullptr, nullptr, nullptr,
-			3, indices, SOC_TRIANGLE_LIST, false);
+			3, 1, indices, SOC_TRIANGLE_LIST, false);
 	}
 
 public:

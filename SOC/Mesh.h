@@ -20,55 +20,15 @@ namespace Rendering
 			void (*endFunc)(MeshRenderer*);
 
 		public:
-			Mesh(Device::Graphics::GraphicsForm	*graphics, MeshFilter *filter = nullptr, MeshRenderer *renderer = nullptr)
-				:beginFunc(nullptr), endFunc(nullptr)
-			{
-				this->graphics	= graphics;
-				this->filter	= filter == nullptr ? new MeshFilter(graphics) : filter;
-				this->renderer	= renderer == nullptr ? new MeshRenderer(&beginFunc, &endFunc) : renderer;
-			}
-
-			~Mesh(void)
-			{
-				Utility::SAFE_DELETE(filter);
-				Utility::SAFE_DELETE(renderer);
-			}
+			Mesh(Device::Graphics::GraphicsForm	*graphics, MeshFilter *filter = nullptr, MeshRenderer *renderer = nullptr);
+			~Mesh(void);
 
 		public:
-			void Render()
-			{
-				if( (beginFunc && endFunc) == false)
-					return;
-
-				beginFunc(renderer);
-				{
-					void* idxBuffer = filter->GetIndexBuffer()->GetBuffer();
-					SOC_uint numOfVertex = filter->GetNumOfVertex();
-					SOC_uint triangleCount = filter->GetTriangleCount();
-					SOC_TRIANGLE type = filter->GetTriangleType();
-
-					bool b;
-
-					Buffer::VertexBuffer *vb = filter->GetVertexBuffer();
-
-					b = graphics->SetVertexDeclaration( filter->GetDeclaration() );
-					b = graphics->SetVertexStream(0, vb->GetDeviceBuffer(), vb->GetSize());
- 					b = graphics->SetIndices(idxBuffer);
-
-					b = graphics->DrawIndexedPrimitive(type, 0, 0, numOfVertex, 0, 1);
-				}
-				endFunc(renderer);
-			}
+			void Render();
 
 		public:
-			MeshRenderer* GetRenderer()
-			{
-				return renderer;
-			}
-			MeshFilter* GetFilter()
-			{
-				return filter;
-			}
+			MeshRenderer* GetRenderer();
+			MeshFilter* GetFilter();
 		};
 
 	}

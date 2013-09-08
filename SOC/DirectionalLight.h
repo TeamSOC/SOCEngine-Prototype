@@ -9,20 +9,11 @@ namespace Rendering
 		class DirectionalLight : public LightForm
 		{
 		public:
-			DirectionalLight(Object *parent = NULL) : LightForm(parent)
-			{
-				type = LIGHTTYPE_DIRECTIONAL;
-			}
-
-			~DirectionalLight(void)
-			{
-			}
+			DirectionalLight(Object *parent = NULL);
+			~DirectionalLight(void);
 
 		public:
-			bool Intersect(SOC_Vector3 worldPos, float radius)
-			{
-				return true;
-			}
+			bool Intersect(SOC_Vector3 worldPos, float radius);
 		};
 
 	}

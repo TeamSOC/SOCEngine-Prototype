@@ -9,16 +9,10 @@ namespace Rendering
 		class SpotLight : public LightForm
 		{
 		public:
-			SpotLight(Object *parent = NULL)  : LightForm(parent)
-			{
-				type = LIGHTTYPE_SPOT;
-			}
+			SpotLight(Object *parent = NULL);
 
 		public:
-			bool Intersect(SOC_Vector3 worldPos, float radius)
-			{
-				return true;
-			}
+			bool Intersect(SOC_Vector3 worldPos, float radius);
 		};
 
 	}

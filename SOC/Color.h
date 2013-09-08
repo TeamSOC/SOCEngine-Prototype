@@ -43,20 +43,10 @@ namespace Rendering
 		static Color Lerp(Color a, Color b, float t);
 
 	public:
-		Color& GetColor()
-		{
-			return (*this); 
-		}
+		Color& GetColor();
 
 	public:
-		void SetColor(Color &color)
-		{
-			r = color.r;
-			g = color.g;
-			b = color.b;
-			a = color.a;
-			CalculateColor(this);
-		}
+		void SetColor(Color &color);
 
 	private:
 		void CalculateColor(Color *color);

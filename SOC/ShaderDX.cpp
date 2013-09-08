@@ -41,7 +41,8 @@ namespace Rendering
 				if(ack)
 				{
 					char *str = new char[size];
-					sprintf(str, (const char*)ack, size);
+					memcpy(str, (const char*)ack, size);
+//					sprintf(str, (const char*)ack, size);
 					OutputDebugString(str);
 					delete[] str;					
 				}
