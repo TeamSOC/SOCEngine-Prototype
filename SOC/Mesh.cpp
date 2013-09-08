@@ -25,7 +25,7 @@ namespace Rendering
 
 			beginFunc(renderer);
 			{
-				void* idxBuffer = filter->GetIndexBuffer()->GetBuffer();
+				DeviceIndexBuffer idxBuffer = filter->GetIndexBuffer()->GetDeviceBuffer();
 				SOC_uint numOfVertex = filter->GetNumOfVertex();
 				SOC_uint triangleCount = filter->GetNumOfTriangle();
 				SOC_TRIANGLE type = filter->GetTriangleType();

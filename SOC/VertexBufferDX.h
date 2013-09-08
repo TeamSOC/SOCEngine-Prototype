@@ -22,7 +22,7 @@ namespace Rendering
 			bool UnLock();
 
 		public:
-			void* GetDeviceBuffer();
+			DeviceVertexBuffer GetDeviceBuffer();
 		};
 	}
 }

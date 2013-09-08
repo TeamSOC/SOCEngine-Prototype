@@ -188,7 +188,7 @@ namespace Rendering
 			return true;
 		}
 
-		VertexDeclaration* MeshFilter::CreateVertexDeclaration()
+		VertexDeclaration MeshFilter::CreateVertexDeclaration()
 		{
 			VertexElements ves;
 			//				ves.description = description;
@@ -286,7 +286,7 @@ namespace Rendering
 			return triangleType;
 		}
 
-		VertexDeclaration* MeshFilter::GetDeclaration()
+		VertexDeclaration MeshFilter::GetDeclaration()
 		{
 			return decl;
 		}

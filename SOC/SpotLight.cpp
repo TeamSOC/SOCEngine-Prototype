@@ -1,5 +1,7 @@
 #include "SpotLight.h"
 
+using namespace Intersection;
+
 namespace Rendering
 {
 	namespace Light
@@ -11,7 +13,11 @@ namespace Rendering
 
 		bool SpotLight::Intersect(SOC_Vector3 worldPos, float radius)
 		{
-			return true;
+			if(angle < 1)				angle = 1;
+			else if(angle > 179)		angle = 179;
+
+			Cone cone(angle, range, forward, GetWorldPosition());
+			return cone.Intersection(Sphere(worldPos, radius));
 		}
 	}
 }

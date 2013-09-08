@@ -91,19 +91,19 @@ namespace Device
 			return Clear(0, NULL, flags, color, 1.0f, 0L);
 		}
 
-		bool DX::CreateVertexBuffer(int bufferLength, SOC_dword usage, SOC_POOL pool, void** outBuffer)
+		bool DX::CreateVertexBuffer(int bufferLength, SOC_dword usage, SOC_POOL pool, DeviceVertexBuffer* outDeviceBuffer)
 		{
-			LPDIRECT3DVERTEXBUFFER9 *buffer = (LPDIRECT3DVERTEXBUFFER9*)outBuffer;
+			LPDIRECT3DVERTEXBUFFER9 *buffer = (LPDIRECT3DVERTEXBUFFER9*)outDeviceBuffer;
 			return SUCCEEDED( device->CreateVertexBuffer(bufferLength, usage, 0, pool == SOC_POOL_DEFAULT ? D3DPOOL_DEFAULT : D3DPOOL_MANAGED, buffer, NULL) );
 		}
 
-		bool DX::CreateIndexBuffer(int bufferLength, SOC_POOL pool, void** outBuffer)
+		bool DX::CreateIndexBuffer(int bufferLength, SOC_POOL pool, DeviceIndexBuffer* outDeviceBuffer)
 		{
 			D3DPOOL d3dPool = pool == SOC_POOL_DEFAULT ? D3DPOOL_DEFAULT : D3DPOOL_MANAGED;				
-			return SUCCEEDED( device->CreateIndexBuffer( bufferLength, D3DUSAGE_WRITEONLY, D3DFMT_INDEX16, d3dPool, (LPDIRECT3DINDEXBUFFER9*)outBuffer, NULL) );;
+			return SUCCEEDED( device->CreateIndexBuffer( bufferLength, D3DUSAGE_WRITEONLY, D3DFMT_INDEX16, d3dPool, (LPDIRECT3DINDEXBUFFER9*)outDeviceBuffer, NULL) );;
 		}
 
-		bool DX::SetIndices( void *indexBuffer )
+		bool DX::SetIndices( DeviceIndexBuffer indexBuffer )
 		{
 			LPDIRECT3DINDEXBUFFER9 idxBuffer = (LPDIRECT3DINDEXBUFFER9)indexBuffer;
 			return SUCCEEDED( device->SetIndices(idxBuffer) );
@@ -116,7 +116,7 @@ namespace Device
 			//				return SUCCEEDED( device->DrawPrimitive(d3dPrimitiType, 0, primitiveCount) );
 		}
 
-		bool DX::SetVertexStream(SOC_uint stream, void *deviceVertexBuffer, SOC_uint stride)
+		bool DX::SetVertexStream(SOC_uint stream, DeviceVertexBuffer deviceVertexBuffer, SOC_uint stride)
 		{
 			LPDIRECT3DVERTEXBUFFER9 vb = (LPDIRECT3DVERTEXBUFFER9)deviceVertexBuffer;
 			return SUCCEEDED(device->SetStreamSource( stream, vb, 0, stride));
@@ -131,7 +131,7 @@ namespace Device
 			return SUCCEEDED( device->SetStreamSourceFreq(stream, frequency) );
 		}
 
-		VertexDeclaration* DX::CreateVertexDeclation( VertexElements *ve )
+		VertexDeclaration DX::CreateVertexDeclation( VertexElements *ve )
 		{
 			LPDIRECT3DVERTEXDECLARATION9 decl = declMap[ve->description.c_str()];
 
@@ -174,7 +174,7 @@ namespace Device
 			return SUCCEEDED( device->SetVertexDeclaration( decl ) );
 		}
 
-		bool DX::SetVertexDeclaration( VertexDeclaration *decl )
+		bool DX::SetVertexDeclaration( VertexDeclaration decl )
 		{				
 			if(decl == nullptr)
 				return false;

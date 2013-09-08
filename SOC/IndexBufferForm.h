@@ -23,7 +23,7 @@ namespace Rendering
 
 		public:
 			int GetCount();
-			virtual void* GetBuffer() = 0;
+			virtual DeviceIndexBuffer GetDeviceBuffer() = 0;
 		};
 
 	}

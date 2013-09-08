@@ -18,7 +18,7 @@ namespace Rendering
 
 		bool IndexBufferDX::Create(SOC_POOL pool)
 		{
-			return graphics->CreateIndexBuffer(sizeof(SOC_word) * count, pool, (void**)&indexBuffer);
+			return graphics->CreateIndexBuffer(sizeof(SOC_word) * count, pool, &indexBuffer);
 		}
 
 		bool IndexBufferDX::Lock(void** inputData)
@@ -31,7 +31,7 @@ namespace Rendering
 			return SUCCEEDED( indexBuffer->Unlock() );
 		}
 
-		void* IndexBufferDX::GetBuffer()
+		DeviceIndexBuffer IndexBufferDX::GetDeviceBuffer()
 		{
 			return indexBuffer;
 		}

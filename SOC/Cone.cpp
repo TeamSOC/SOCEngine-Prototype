@@ -8,7 +8,16 @@ namespace Intersection
 		range = 0.0f;
 
 		axis = SOC_Vector3(0, 0, 0);
-		center = SOC_Vector3(0, 0, 0);
+		vertex = SOC_Vector3(0, 0, 0);
+	}
+
+	Cone::Cone(float angle, float range, SOC_Vector3 axis, SOC_Vector3 vertex)
+	{
+		this->angle = angle;
+		this->range = range;
+
+		this->axis = axis;
+		this->vertex = vertex;
 	}
 
 	bool Cone::Intersection(Sphere &sphere)
@@ -19,7 +28,7 @@ namespace Intersection
 		float invSin = 1.0f / sinAngle;
 		float cosSqr = cosAngle * cosAngle;
 
-		SOC_Vector3 CmV = sphere.center - center;
+		SOC_Vector3 CmV = sphere.center - vertex;
 
 		if(SOCVec3Length(&CmV) < range)
 			return false;
@@ -45,5 +54,9 @@ namespace Intersection
 		}
 
 		return false;
+	}
+	bool Cone::Intersection(Sphere &sphere, Cone &cone)
+	{
+		return cone.Intersection(sphere);
 	}
 }

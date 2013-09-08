@@ -98,7 +98,10 @@ typedef PSIZE_T				SOC_sizeiptr;
 
 typedef double				SOC_double;
 
-typedef LPDIRECT3DTEXTURE9 DeviceTexture;
+typedef LPDIRECT3DTEXTURE9			 DeviceTexture;
+typedef LPDIRECT3DVERTEXBUFFER9		 DeviceVertexBuffer;
+typedef LPDIRECT3DINDEXBUFFER9		 DeviceIndexBuffer;
+typedef LPDIRECT3DVERTEXDECLARATION9 VertexDeclaration;
 
 #elif defined(__APPLE__) || defined(_USE_GL_DEFINES)
 
@@ -144,5 +147,7 @@ typedef double				SOC_double;
 //typedef GLint64				SOC_qword;
 //typedef GLuint64			SOC_uint64;
 //typedef GLuint64			SOC_uqword;
+
+typedef void* VertexDeclaration;
 
 #endif

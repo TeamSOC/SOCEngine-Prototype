@@ -85,13 +85,3 @@ struct VertexElements
 		this->vertexElement = ve;
 	}
 };
-
-#if defined(WIN32) && !defined(_USE_GL_DEFINES)
-
-typedef IDirect3DVertexDeclaration9 VertexDeclaration;
-
-#elif defined(__APPLE__) || defined(_USE_GL_DEFINES)
-
-typedef void* VertexDeclaration;
-
-#endif

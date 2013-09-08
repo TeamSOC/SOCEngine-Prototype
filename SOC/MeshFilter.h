@@ -43,7 +43,7 @@ namespace Rendering
 
 		private:
 			Device::Graphics::GraphicsForm	*graphics;
-			VertexDeclaration				*decl;
+			VertexDeclaration				decl;
 
 		public:
 			MeshFilter(Device::Graphics::GraphicsForm *graphics);
@@ -91,7 +91,7 @@ namespace Rendering
 		private:
 			bool CreateVertexBuffer(bool isDynamic);
 			bool CreateIndexBuffer();
-			VertexDeclaration* CreateVertexDeclaration();
+			VertexDeclaration CreateVertexDeclaration();
 
 		public:
 			Buffer::VertexBuffer* GetVertexBuffer();
@@ -99,7 +99,7 @@ namespace Rendering
 			int GetNumOfVertex();
 			int GetNumOfTriangle();
 			SOC_TRIANGLE GetTriangleType();
-			VertexDeclaration* GetDeclaration();
+			VertexDeclaration GetDeclaration();
 		};
 
 	}

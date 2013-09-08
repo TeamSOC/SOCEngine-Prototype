@@ -33,15 +33,15 @@ namespace Device
 			bool Clear(unsigned int count, const Common::Rect<int> *rect, clearFlag flags, Rendering::Color &color, float z, unsigned int stencil);
 			bool Clear(clearFlag flags, Rendering::Color &color);
 
-			bool CreateVertexBuffer(int bufferLength, SOC_dword usage, SOC_POOL pool, void** outBuffer);
-			bool CreateIndexBuffer(int bufferLength, SOC_POOL pool, void** outBuffer);
-			VertexDeclaration* CreateVertexDeclation( VertexElements *ve );
+			bool CreateVertexBuffer(int bufferLength, SOC_dword usage, SOC_POOL pool, DeviceVertexBuffer* outDeviceBuffer);
+			bool CreateIndexBuffer(int bufferLength, SOC_POOL pool, DeviceIndexBuffer* outDeviceBuffer);
+			VertexDeclaration CreateVertexDeclation( VertexElements *ve );
 
-			bool SetIndices( void *indexBuffer );
-			bool SetVertexStream(SOC_uint stream, void *deviceVertexBuffer, SOC_uint stride);
+			bool SetIndices( DeviceIndexBuffer indexBuffer );
+			bool SetVertexStream(SOC_uint stream, DeviceVertexBuffer deviceVertexBuffer, SOC_uint stride);
 			bool SetVertexStremFrequency(SOC_uint stream, SOC_uint frequency);
 			bool SetVertexDeclaration( const char *description );
-			bool SetVertexDeclaration( VertexDeclaration *decl );
+			bool SetVertexDeclaration( VertexDeclaration decl );
 
 			bool DrawIndexedPrimitive(SOC_TRIANGLE type, SOC_int baseVertexIdx, SOC_uint minVertexIdx, SOC_uint numVertices, SOC_uint startIdx, SOC_uint primitiveCount);
 

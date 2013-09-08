@@ -26,7 +26,7 @@ namespace Rendering
 			int GetLength();
 			int GetSize();
 
-			virtual void* GetDeviceBuffer() = 0;
+			virtual DeviceVertexBuffer GetDeviceBuffer() = 0;
 		};
 	}
 }
