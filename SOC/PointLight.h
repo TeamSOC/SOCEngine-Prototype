@@ -13,9 +13,6 @@ namespace Rendering
 		public:
 			PointLight(Object *parent = NULL);
 			~PointLight(void);
-
-		public:
-			bool Intersect(SOC_Vector3 worldPos, float radius);
 		};
 
 	}

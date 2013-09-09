@@ -14,7 +14,7 @@ namespace Rendering
 		{
 		}
 
-		bool DirectionalLight::Intersect(SOC_Vector3 worldPos, float radius)
+		bool DirectionalLight::Intersect(Intersection::Sphere &sphere)
 		{
 			return true;
 		}

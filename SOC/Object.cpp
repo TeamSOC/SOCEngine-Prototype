@@ -3,6 +3,7 @@
 #include "Utility.h"
 
 using namespace std;
+using namespace Intersection;
 
 namespace Rendering
 {
@@ -11,7 +12,7 @@ namespace Rendering
 		this->parent = parent;
 
 		if(parent)
-     		 root = parent->root;
+			root = parent->root;
 		else root = this;
 
 		forward = SOC_Vector3(0.0f, 0.0f, 1.0f);
@@ -26,16 +27,17 @@ namespace Rendering
 		for(Object *o = this; o != NULL; o = o->parent)
 		{
 			position += o->localPosition;
-		
+
 			scale.x *= o->localScale.x;
 			scale.y *= o->localScale.y;
 			scale.z *= o->localScale.z;
-	
+
 			eulerAngles += localEulerAngles;
 		}
 
 		radius = 50.0f; // default
 		isLight = false;
+		culled = false;
 	}
 
 	Object::~Object(void)
@@ -96,7 +98,7 @@ namespace Rendering
 			for(vector<Object*>::iterator iter = childs.begin(); iter != childs.end(); ++iter)
 				Utility::SAFE_DELETE(*iter);
 		}
-	
+
 		childs.clear();
 	}
 
@@ -110,14 +112,6 @@ namespace Rendering
 		for(iter = childs.begin(); iter != childs.end(); ++iter)
 			(*iter)->Update();
 	}
-
-	//Object* Object::Copy(Object *obj)
-	//{
-	//	Object *o = new Object(NULL);
-	//	(*o) = (*obj);
-
-	//	return o;
-	//}
 
 	vector<Object*> Object::_FindChild(std::string str, FIND_ENUM e, bool one)
 	{
@@ -151,7 +145,7 @@ namespace Rendering
 		vector<Object*> v = _FindChild(name, FIND_ENUM_NAME, true);
 		return v.size() == 0 ? NULL : v[0];
 	}
-	
+
 	Object* Object::FindChildWithTag(string tag)
 	{
 		vector<Object*> v = _FindChild(tag, FIND_ENUM_TAG, true);
@@ -174,7 +168,7 @@ namespace Rendering
 		target->UpdateWorldTransform();
 		LookAt(target->position, worldUp);
 	}
-	
+
 	void Object::LookAt(SOC_Vector3 worldPosition, SOC_Vector3 worldUp)
 	{
 		UpdateWorldTransform();
@@ -348,8 +342,8 @@ namespace Rendering
 
 	void Object::SetDirection(SOC_Vector3 dir)
 	{
-
-
+		SOC_Vector3 p = GetWorldPosition() + dir;
+		LookAt(p);
 	}
 
 	void Object::UpdateWorldTransform()
@@ -359,11 +353,11 @@ namespace Rendering
 		for(Object *o = this; o != NULL; o = o->parent)
 		{
 			p += o->localPosition;
-		
+
 			s.x *= o->localScale.x;
 			s.y *= o->localScale.y;
 			s.z *= o->localScale.z;
-	
+
 			e += localEulerAngles;
 		}
 
@@ -381,8 +375,8 @@ namespace Rendering
 		matrix._33 *= localScale.z;
 
 		SOC_Vector3 p = SOC_Vector3(-SOCVec3Dot(&right, &localPosition),
-									-SOCVec3Dot(&up, &localPosition),
-									-SOCVec3Dot(&forward, &localPosition));
+			-SOCVec3Dot(&up, &localPosition),
+			-SOCVec3Dot(&forward, &localPosition));
 
 		matrix._41 = p.x;
 		matrix._42 = p.y;
@@ -460,10 +454,27 @@ namespace Rendering
 		return (parent == this->parent); 
 	}
 
+	bool Object::Culling(Frustum *frustum)
+	{
+		culled = frustum->In(GetWorldPosition(), radius);
+
+		if(culled == false)
+		{
+			for(vector<Object*>::iterator iter = childs.begin(); iter != childs.end(); ++iter)
+				(*iter)->Culling(frustum);
+		}
+
+		return culled;
+	}
 
 	bool Object::GetUse()
 	{
 		return use;
+	}
+
+	bool Object::Culled()
+	{
+		return culled;
 	}
 
 	bool Object::Update()
@@ -472,17 +483,37 @@ namespace Rendering
 		return false;
 	}
 
-	bool Object::Render(std::vector<Object*> *lights)
+	void Object::Render(std::vector<Object*> *lights)
+	{
+		if(culled)	return;
+
+		Sphere thisObject(GetWorldPosition(), radius);
+		std::vector<Object*> intersectLights;
+
+		for(std::vector<Object*>::iterator iter = lights->begin(); iter != lights->end(); ++iter)
+		{
+			if((*iter)->Intersect(thisObject))
+				intersectLights.push_back((*iter));
+		}
+
+		_Render(&intersectLights);
+	}
+
+	bool Object::Intersect(Intersection::Sphere &sphere)
+	{
+		return sphere.Intersection(GetWorldPosition(), radius);
+	}
+
+	void Object::_Render(std::vector<Object*> *lights)
 	{
 		//null
-		return false;
 	}
 
 	int Object::GetChildCount()
 	{ 
 		return childs.size(); 
 	}
-	
+
 	Object* Object::Getchild(int index)	
 	{ 
 		return *(childs.begin()+index); 

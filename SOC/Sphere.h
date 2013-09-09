@@ -19,6 +19,7 @@ namespace Intersection
 		static bool Intersection(SOC_Vector3 p1, float radius1, SOC_Vector3 p2, float radius2);
 
 		bool Intersection(Sphere &sphere);
+		bool Intersection(SOC_Vector3 center, float radius);
 	};
 
 }

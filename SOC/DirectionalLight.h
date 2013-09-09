@@ -13,7 +13,7 @@ namespace Rendering
 			~DirectionalLight(void);
 
 		public:
-			bool Intersect(SOC_Vector3 worldPos, float radius);
+			bool Intersect(Intersection::Sphere &sphere);
 		};
 
 	}

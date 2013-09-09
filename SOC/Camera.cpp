@@ -121,21 +121,18 @@ namespace Rendering
 
 		//추후 작업.		
 
-		vector<Object*> objects;
-		
 		for(vector<Object*>::iterator iter = sceneObjects->begin(); iter != sceneObjects->end(); ++iter)
-		{
-			//일단은 프로스텀만 건짐. 나머진 그 이후에 생각하지 뭐..
-			if( frustum->In( (*iter) ) )
-				objects.push_back((*iter));		
-		}
+			(*iter)->Culling(frustum);
 
 		vector<Object*> lights;
 		sceneLights->Intersect(frustum, &lights);
 		//월드 상의 빛에서 절두체에 겹치는거 모두 찾음.
 
-		for(vector<Object*>::iterator objIter = objects.begin(); objIter != objects.end(); ++objIter)
-			(*objIter)->Render(&lights);
+		for(vector<Object*>::iterator iter = sceneObjects->begin(); iter != sceneObjects->end(); ++iter)
+			(*iter)->Render(&lights);
+
+		//for(vector<Object*>::iterator objIter = objects.begin(); objIter != objects.end(); ++objIter)
+		//	(*objIter)->Render(&lights);
 
 		return true;
 	}

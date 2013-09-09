@@ -19,7 +19,9 @@ namespace Rendering
 
 			for(vector<LightForm*>::iterator iter = lights.begin(); iter != lights.end(); ++iter)
 			{
-				if( frustum->In( *iter ) )
+				SOC_Vector3 worldP = (*iter)->GetWorldPosition();
+				float radius = (*iter)->GetRadius();
+				if( frustum->In( worldP, radius ) )
 				{
 					out->push_back( *iter );
 					intersect = true;
@@ -35,7 +37,9 @@ namespace Rendering
 
 			for(vector<LightForm*>::iterator iter = lights.begin(); iter != lights.end(); ++iter)
 			{
-				if( frustum->In( *iter ) )
+				SOC_Vector3 worldP = (*iter)->GetWorldPosition();
+				float radius = (*iter)->GetRadius();
+				if( frustum->In( worldP, radius ) )
 				{
 					intersect = true;
 					break;

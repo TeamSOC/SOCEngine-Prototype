@@ -16,7 +16,7 @@ namespace Rendering
 			SpotLight(Object *parent = NULL);
 
 		public:
-			bool Intersect(SOC_Vector3 worldPos, float radius);
+			bool Intersect(Intersection::Sphere &sphere);
 		};
 
 	}

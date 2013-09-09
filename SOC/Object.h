@@ -5,6 +5,8 @@
 #include <string>
 
 #include "Rendering.h"
+#include "Frustum.h"
+#include "Sphere.h"
 
 namespace Rendering
 {
@@ -15,6 +17,7 @@ namespace Rendering
 		std::vector<Object*> childs;
 		bool use;
 		bool isLight;
+		bool culled;
 
 	protected:
 		SOC_Vector3 forward;
@@ -51,7 +54,12 @@ namespace Rendering
 
 	public:
 		virtual bool Update();
-		virtual bool Render(std::vector<Object*> *lights);
+		void Render(std::vector<Object*> *lights);
+
+		virtual bool Intersect(Intersection::Sphere &sphere);
+
+	protected:
+		virtual void _Render(std::vector<Object*> *lights);
 
 	private:
 		enum FIND_ENUM{FIND_ENUM_NAME, FIND_ENUM_TAG};
@@ -88,6 +96,7 @@ namespace Rendering
 		void Billboard(Object *camera, SOC_Matrix *outMatrix);
 
 		bool IsChildOf(Object *parent);
+		bool Culling(Frustum *frustum);
 
 	protected:
 		void UpdateMatrix();
@@ -119,6 +128,7 @@ namespace Rendering
 		void SetUse(bool is);
 		bool GetUse();
 		bool IsLight();
+		bool Culled();
 
 	public:
 		void UpdateChild();

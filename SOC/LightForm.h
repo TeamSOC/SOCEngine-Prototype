@@ -25,9 +25,6 @@ namespace Rendering
 
 		protected:
 			LightForm(Object *parent = NULL);
-
-		public:
-			virtual bool Intersect(SOC_Vector3 worldPos, float radius) = 0;
 		};
 	}
 }

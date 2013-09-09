@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Rendering.h"
-#include "Object.h"
 
 namespace Rendering
 {
@@ -21,7 +20,6 @@ namespace Rendering
 	public:
 		void Make(SOC_Matrix *viewProjection);
 		bool In(SOC_Vector3 &v, float radius = 0.0f);
-		bool In(Object* obj);
 
 	public:
 		SOC_Vector3 GetPosition();

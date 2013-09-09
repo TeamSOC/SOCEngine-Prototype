@@ -13,9 +13,9 @@ namespace Rendering
 		{
 		}
 
-		bool PointLight::Intersect(SOC_Vector3 worldPos, float radius)
-		{
-			return Intersection::Sphere::Intersection(worldPos, radius, this->GetWorldPosition(), this->radius);
-		}
+		//bool PointLight::Intersect(Intersection::Sphere &sphere)
+		//{
+		//애초에 그냥 구 충돌인데 다른게 있나?
+		//}
 	}
 }

@@ -11,13 +11,14 @@ namespace Rendering
 			type = LIGHTTYPE_SPOT;
 		}
 
-		bool SpotLight::Intersect(SOC_Vector3 worldPos, float radius)
+		bool SpotLight::Intersect(Intersection::Sphere &sphere)
 		{
 			if(angle < 1)				angle = 1;
 			else if(angle > 179)		angle = 179;
 
 			Cone cone(angle, range, forward, GetWorldPosition());
-			return cone.Intersection(Sphere(worldPos, radius));
+
+			return cone.Intersection(sphere);
 		}
 	}
 }
