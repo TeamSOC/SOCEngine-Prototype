@@ -59,7 +59,7 @@ namespace Rendering
 			{
 				c->renderQueue = (*iter)->renderQueue == renderQueue ? renderQueue + 1 : renderQueue;
 				childs.insert(iter + 1, c);
-				return;
+				radius = Object::CalcRadius(this, c);
 			}
 		}
 	}
@@ -71,7 +71,7 @@ namespace Rendering
 		c->renderQueue = (*(childs.end() - 1))->renderQueue + 1;
 		c->parent = this;
 		childs.push_back(c);
-
+		radius = Object::CalcRadius(this, c);
 	}
 
 	void Object::DeleteChild(Object *child, bool remove)
@@ -527,6 +527,14 @@ namespace Rendering
 	bool Object::IsLight()
 	{
 		return isLight;
+	}
+
+	float Object::CalcRadius(Object *parent, Object *child)
+	{
+		float distance = SOCVec3Length(&(parent->GetWorldPosition() - child->GetWorldPosition()));
+		float totalR = distance + child->radius;
+
+		return totalR > parent->radius ? totalR : parent->radius;
 	}
 }
 

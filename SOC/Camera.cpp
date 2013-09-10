@@ -131,9 +131,6 @@ namespace Rendering
 		for(vector<Object*>::iterator iter = sceneObjects->begin(); iter != sceneObjects->end(); ++iter)
 			(*iter)->Render(&lights);
 
-		//for(vector<Object*>::iterator objIter = objects.begin(); objIter != objects.end(); ++objIter)
-		//	(*objIter)->Render(&lights);
-
 		return true;
 	}
 
@@ -146,4 +143,6 @@ namespace Rendering
 	{
 		return mainCamera;
 	}
+
+
 }

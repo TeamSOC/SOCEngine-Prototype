@@ -64,6 +64,7 @@ namespace Rendering
 	private:
 		enum FIND_ENUM{FIND_ENUM_NAME, FIND_ENUM_TAG};
 		std::vector<Object*> _FindChild(std::string str, FIND_ENUM e, bool one);
+		static float CalcRadius(Object *parent, Object *child);
 
 	public:
 		std::vector<Object*> FindChilds(std::string name);
