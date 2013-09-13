@@ -201,6 +201,18 @@
     <Filter Include="Engine\Rendering\Shader\Code\GL">
       <UniqueIdentifier>{868c3bd9-81ce-436a-b676-951aa600c941}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Scene">
+      <UniqueIdentifier>{0d0e23fb-fbe5-492c-ae3a-e27adac08eb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Math">
+      <UniqueIdentifier>{49e7df99-1206-42a2-90ad-efcd4e81cbb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Common\Container">
+      <UniqueIdentifier>{b716aaad-0918-4bc0-8342-889273fe9ee2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Scene\Base">
+      <UniqueIdentifier>{5a0219a5-2496-4dc8-9aa4-5271b95f8217}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AABB.cpp">
@@ -314,14 +326,17 @@
     <ClCompile Include="Test.cpp">
       <Filter>Test</Filter>
     </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>Source\aa</Filter>
-    </ClCompile>
     <ClCompile Include="ShaderManagerDX.cpp">
       <Filter>Engine\Rendering\Shader\Manager\DX</Filter>
     </ClCompile>
     <ClCompile Include="ShaderCodeGL.cpp">
       <Filter>Engine\Rendering\Shader\Code\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Engine\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseScene.cpp">
+      <Filter>Engine\Scene\Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -454,9 +469,6 @@
     <ClInclude Include="MeshRenderer.h">
       <Filter>Engine\Rendering\Mesh\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Rendering.h">
-      <Filter>Engine\Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="Device.h">
       <Filter>Engine\Device</Filter>
     </ClInclude>
@@ -465,9 +477,6 @@
     </ClInclude>
     <ClInclude Include="Test.h">
       <Filter>Test</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Source\aa</Filter>
     </ClInclude>
     <ClInclude Include="ShaderManagerDX.h">
       <Filter>Engine\Rendering\Shader\Manager\DX</Filter>
@@ -486,6 +495,27 @@
     </ClInclude>
     <ClInclude Include="ShaderCode.h">
       <Filter>Engine\Rendering\Shader\Code</Filter>
+    </ClInclude>
+    <ClInclude Include="TScene.h">
+      <Filter>Source\aa</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Engine\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform.h">
+      <Filter>Engine\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderingMath.h">
+      <Filter>Engine\Rendering\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering.h">
+      <Filter>Engine\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Container.h">
+      <Filter>Engine\Common\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseScene.h">
+      <Filter>Engine\Scene\Base</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

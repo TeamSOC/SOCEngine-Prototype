@@ -84,6 +84,7 @@
   <ItemGroup>
     <ClCompile Include="AABB.cpp" />
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="BaseScene.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Cone.cpp" />
@@ -126,9 +127,11 @@
   <ItemGroup>
     <ClInclude Include="AABB.h" />
     <ClInclude Include="Application.h" />
+    <ClInclude Include="BaseScene.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Cone.h" />
+    <ClInclude Include="Container.h" />
     <ClInclude Include="Device.h" />
     <ClInclude Include="DeviceDirector.h" />
     <ClInclude Include="DX.h" />
@@ -151,8 +154,11 @@
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="Rect.h" />
+    <ClInclude Include="Platform.h" />
     <ClInclude Include="Rendering.h" />
+    <ClInclude Include="RenderingMath.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="TScene.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderCode.h" />
     <ClInclude Include="ShaderCodeGL.h" />

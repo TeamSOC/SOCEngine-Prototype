@@ -148,10 +148,13 @@ namespace Rendering
 
 	Color Color::Lerp(Color a, Color b, float t)
 	{
-		float _a = Math::Tool::Lerp(a.a, b.a, t);
-		float _r = Math::Tool::Lerp(a.r, b.r, t);
-		float _g = Math::Tool::Lerp(a.g, b.g, t);
-		float _b = Math::Tool::Lerp(a.b, b.b, t);		
+#define LERP(a, b, t)\
+	a - (a * t) + (b * t)
+
+		float _a = LERP(a.a, b.a, t);
+		float _r = LERP(a.r, b.r, t);
+		float _g = LERP(a.g, b.g, t);
+		float _b = LERP(a.b, b.b, t);		
 
 		return Color(_r,_g,_b,_a);
 	}

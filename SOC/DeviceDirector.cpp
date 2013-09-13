@@ -2,19 +2,42 @@
 
 namespace Device
 {
+#if defined(WIN32) && !defined(_USE_GL_DEFINES)
+	DeviceDirector::WindowsInitOption::WindowsInitOption(HINSTANCE hInst)
+	{
+		rect = Common::Rect<int>(0, 0, 800, 800);
+		instance = hInst;
+		name = "TEST";
+		windowMode = true;
+		isChild = false;
+		parentHandle = NULL;
+	}
+
+	DeviceDirector::WindowsInitOption::WindowsInitOption(Common::Rect<int> rect, HINSTANCE instance, const char* name, bool windowMode, bool isChild, HWND parentHandle)
+	{
+		this->rect = rect;
+		this->instance = instance;
+		this->name = name;
+		this->windowMode = windowMode;
+		this->isChild = isChild;
+		this->parentHandle = parentHandle;
+	}
+#elif defined(__APPLE__) || defined(_USE_GL_DEFINES)
+
+#endif
+
 	DeviceDirector::DeviceDirector(void) : graphics(NULL), app(NULL)
 	{
+		scene = nullptr;
+		nextScene = nullptr;
 
+		fps = 0.0f;
+		elapse = 0.0f;
 	}
 
 	DeviceDirector::~DeviceDirector(void)
 	{
 		Destroy();
-	}
-
-	void DeviceDirector::Run()
-	{
-		app->Run();
 	}
 
 	void DeviceDirector::Destroy()
@@ -26,6 +49,35 @@ namespace Device
 		app = NULL;
 	}
 
+	void DeviceDirector::CalculateElapse()
+	{
+		static float		lastTime;
+		float				now;
+		static unsigned int	staticTime = GetTickCount();
+
+		now = (float)(GetTickCount() - staticTime) / 1000;
+
+		elapse = now - lastTime;
+		elapse = Utility::Max((float)0, elapse);
+
+		lastTime = now;
+	}
+
+	void DeviceDirector::CalculateFPS()
+	{
+		static int frameCnt = 0;
+		static float elapsed = 0;
+
+		frameCnt++;
+		elapsed += elapse;
+
+		if( elapsed >= 1.f )
+		{
+			fps = (float)frameCnt / elapsed;
+			elapsed = 0;
+			frameCnt = 0;
+		}
+	}
 
 	Graphics::GraphicsForm* DeviceDirector::GetGraphics()
 	{
@@ -40,6 +92,21 @@ namespace Device
 	Common::Size<int>& DeviceDirector::GetSize()
 	{
 		return app->GetSize();
+	}
+
+	void DeviceDirector::SetScene(BaseScene* scene)
+	{
+		this->scene = scene;
+	}
+
+	void DeviceDirector::SetNextScene(BaseScene *scene)
+	{
+		nextScene  = scene;
+	}
+
+	BaseScene* DeviceDirector::GetScene()
+	{
+		return scene;
 	}
 
 #if defined(WIN32) && !defined(_USE_GL_DEFINES)
@@ -60,6 +127,39 @@ namespace Device
 		}
 
 		return true;
+	}
+
+	void DeviceDirector::Run()
+	{
+		MSG msg;
+		ZeroMemory( &msg, sizeof( msg ) );
+
+		while( msg.message != WM_QUIT )
+		{
+			if( PeekMessage( &msg, NULL, 0U, 0U, PM_REMOVE ) )
+			{
+				TranslateMessage( &msg );
+				DispatchMessage( &msg );
+			}
+			else
+			{
+				if(scene)
+				{
+					BaseScene::STATE state = scene->GetState();
+
+					if(state == BaseScene::STATE_LOOP)
+						scene->Run(elapse);
+					else if(state == BaseScene::STATE_INIT)
+						scene->Initialize();
+					else
+					{
+						scene->Destroy();
+						scene = nextScene;
+					}
+				}
+				else continue;				
+			}
+		}
 	}
 
 #elif defined(__APPLE__) || defined(_USE_GL_DEFINES)

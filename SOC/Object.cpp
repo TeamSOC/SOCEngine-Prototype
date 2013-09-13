@@ -44,112 +44,31 @@ namespace Rendering
 	{
 	}
 
-	void Object::AddChild(Object *child, int renderQueue, bool copy/* = false */)
+	Object* Object::AddObject(Object *child, int renderQueue, bool copy/* = false */)
 	{
-		if(renderQueue < 0)
-			return;
-
-		Object *c = copy == false ? child : new Object(*this);
-
-		vector<Object*>::iterator iter;
-
-		for(iter = childs.begin(); iter != childs.end(); ++iter)
-		{
-			if( (*iter)->renderQueue <= renderQueue )
-			{
-				c->renderQueue = (*iter)->renderQueue == renderQueue ? renderQueue + 1 : renderQueue;
-				childs.insert(iter + 1, c);
-				radius = Object::CalcRadius(this, c);
-			}
-		}
-	}
-
-	void Object::AddChild(Object *child, bool copy/* = false */)
-	{
-		Object *c = copy == false ? child : new Object(this);// Object::Copy(this);
-
-		c->renderQueue = (*(childs.end() - 1))->renderQueue + 1;
-		c->parent = this;
-		childs.push_back(c);
+		Object *c =  Container::AddObject(child, renderQueue, copy);
 		radius = Object::CalcRadius(this, c);
+
+		return c;
 	}
 
-	void Object::DeleteChild(Object *child, bool remove)
+	Object* Object::AddObject(Object *child, bool copy/* = false */)
 	{
-		vector<Object*>::iterator iter;
+		Object *c =  Container::AddObject(child, copy);
+		radius = Object::CalcRadius(this, c);
 
-		for(iter = childs.begin(); iter != childs.end(); ++iter)
-		{
-			if((*iter) == child)
-			{
-				if(remove)
-					Utility::SAFE_DELETE(*iter);
-
-				childs.erase(iter);
-				return;
-			}
-		}
+		return c;
 	}
 
-	void Object::DeleteAllChilds(bool remove)
-	{
-		if(remove)
-		{
-			for(vector<Object*>::iterator iter = childs.begin(); iter != childs.end(); ++iter)
-				Utility::SAFE_DELETE(*iter);
-		}
-
-		childs.clear();
-	}
-
-	void Object::UpdateChild()
+	void Object::UpdateChild(float delta)
 	{
 		if(use == false)
 			return;
 
 		vector<Object*>::iterator iter;
 
-		for(iter = childs.begin(); iter != childs.end(); ++iter)
-			(*iter)->Update();
-	}
-
-	vector<Object*> Object::_FindChild(std::string str, FIND_ENUM e, bool one)
-	{
-		vector<Object*> v;
-		vector<Object*>::iterator iter;
-
-		for(iter = childs.begin(); iter != childs.end(); ++iter)
-		{
-			string *findItem = e == FIND_ENUM_NAME ? &(*iter)->name : &(*iter)->tag;
-			if( (*findItem) == str )
-			{
-				v.push_back((*iter));
-				if(one) return v;
-			}
-		}
-		return v;
-	}
-
-	vector<Object*> Object::FindChilds(string name)
-	{
-		return _FindChild(name, FIND_ENUM_NAME, false);
-	}
-
-	vector<Object*> Object::FindChildsWithTag(string tag)
-	{
-		return _FindChild(name, FIND_ENUM_TAG, false);
-	}
-
-	Object* Object::FindChild(string name)
-	{
-		vector<Object*> v = _FindChild(name, FIND_ENUM_NAME, true);
-		return v.size() == 0 ? NULL : v[0];
-	}
-
-	Object* Object::FindChildWithTag(string tag)
-	{
-		vector<Object*> v = _FindChild(tag, FIND_ENUM_TAG, true);
-		return v.size() == 0 ? NULL : v[0];
+		for(iter = objects.begin(); iter != objects.end(); ++iter)
+			(*iter)->Update(delta);
 	}
 
 	void Object::LookAt(Object *target)
@@ -206,8 +125,9 @@ namespace Rendering
 		rotationMatrix._44 = 1.0f;
 
 		SOCQuaternionRotationMatrix(&rotation, &rotationMatrix); //ƒı≈Õ¥œæ ±∏«‘
-		localEulerAngles = Math::Tool::QuaternionToEuler(rotation); // ø¿¿œ∑Ø ±∏«‘
+		localEulerAngles = SOCQuaternionToEuler(rotation); // ø¿¿œ∑Ø ±∏«‘
 		UpdateMatrix();
+		
 	}
 
 	void Object::Rotate(SOC_Vector3 eulerAngles)
@@ -221,7 +141,7 @@ namespace Rendering
 		SOC_Quaternion q;
 		SOCQuaternionRotationAxis(&q, &axis, angle);
 
-		SOC_Vector3 euler = Math::Tool::QuaternionToEuler(q);
+		SOC_Vector3 euler = SOCQuaternionToEuler(q);
 		euler += this->localEulerAngles;
 
 		SetEulerAngles(euler);
@@ -289,7 +209,7 @@ namespace Rendering
 		forward = SOC_Vector3(rotationMatrix._13, rotationMatrix._23, rotationMatrix._33);
 		//3√‡ ±∏«‘
 
-		localEulerAngles = Math::Tool::QuaternionToEuler(quaternion);
+		localEulerAngles = SOCQuaternionToEuler(quaternion);
 
 		//ø¿¿œ∑Ø ±∏«‘.
 		UpdateMatrix();
@@ -303,7 +223,7 @@ namespace Rendering
 
 	void Object::SetEulerAngles(SOC_Vector3 euler)
 	{
-		euler = Math::Tool::EulerNormalize(euler);
+		euler = SOCEulerNormalize(euler);
 		localEulerAngles = euler; //ø¿¿œ∑Ø ±∏«‘.
 
 		Yaw(euler.y);
@@ -361,7 +281,7 @@ namespace Rendering
 			e += localEulerAngles;
 		}
 
-		eulerAngles = Math::Tool::EulerNormalize(e);
+		eulerAngles = SOCEulerNormalize(e);
 		position = p;
 		scale = s;
 	}
@@ -460,7 +380,7 @@ namespace Rendering
 
 		if(culled == false)
 		{
-			for(vector<Object*>::iterator iter = childs.begin(); iter != childs.end(); ++iter)
+			for(vector<Object*>::iterator iter = objects.begin(); iter != objects.end(); ++iter)
 				(*iter)->Culling(frustum);
 		}
 
@@ -477,7 +397,7 @@ namespace Rendering
 		return culled;
 	}
 
-	bool Object::Update()
+	bool Object::Update(float delta)
 	{
 		//null
 		return false;
@@ -507,16 +427,6 @@ namespace Rendering
 	void Object::_Render(std::vector<Object*> *lights)
 	{
 		//null
-	}
-
-	int Object::GetChildCount()
-	{ 
-		return childs.size(); 
-	}
-
-	Object* Object::Getchild(int index)	
-	{ 
-		return *(childs.begin()+index); 
 	}
 
 	float Object::GetRadius()

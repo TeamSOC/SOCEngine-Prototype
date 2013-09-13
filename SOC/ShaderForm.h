@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Rendering.h"
+#include "Platform.h"
 #include "DeviceDirector.h"
 #include "Texture.h"
 #include <string>

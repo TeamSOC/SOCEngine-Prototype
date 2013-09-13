@@ -29,8 +29,6 @@ namespace Device
 			bool Initialize();
 			void Destroy();
 
-			void Run();
-
 		public:
 			bool IsChild();
 			bool IsWindowMode();

@@ -17,7 +17,6 @@ namespace Device
 		public:
 			virtual bool Initialize() = 0;
 			virtual void Destroy() = 0;
-			virtual void Run() = 0;
 
 		public:
 			Common::Rect<int> GetRect();

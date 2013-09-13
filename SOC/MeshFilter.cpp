@@ -119,7 +119,7 @@ namespace Rendering
 				vertexBufferData = (SOC_Vector3*)vertexBufferData + 1;
 
 				/* calculate radius */
-				rad = Math::Tool::Distance(SOC_Vector3(0, 0, 0), vertices[i]);
+				rad = SOCVec3Length(&vertices[i]);
 
 				if( maxRadius < rad )
 					maxRadius = rad;

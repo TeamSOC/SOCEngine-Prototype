@@ -28,10 +28,6 @@ namespace Device
 		public:
 			virtual bool Initialize() = 0;
 
-		protected:
-			virtual void CalcElapse() = 0;
-			virtual void CalculateFPS() = 0;
-
 		public:
 			virtual bool Clear(clearFlag flags, Rendering::Color &color) = 0;
 			virtual bool Clear(unsigned int count, const Common::Rect<int> *rect, clearFlag flags, Rendering::Color &color, float z, unsigned int stencil) = 0;
@@ -49,7 +45,7 @@ namespace Device
 
 			virtual bool BeginScene() = 0;
 			virtual bool EndScene() = 0;
-			virtual void Presnet() = 0;
+			virtual void Present() = 0;
 		};
 	}
 }

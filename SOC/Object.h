@@ -4,17 +4,17 @@
 #include <vector>
 #include <string>
 
-#include "Rendering.h"
+#include "Platform.h"
 #include "Frustum.h"
 #include "Sphere.h"
 
+#include "Container.h"
+
 namespace Rendering
 {
-	class Object
+	class Object : public Container<Object>
 	{
 	protected:
-		int renderQueue;
-		std::vector<Object*> childs;
 		bool use;
 		bool isLight;
 		bool culled;
@@ -44,16 +44,11 @@ namespace Rendering
 		Object *root;
 
 	public:
-		std::string name;
-		std::string tag;
-		std::string layer;
-
-	public:
 		Object(Object* parent = NULL);
 		virtual ~Object(void);
 
 	public:
-		virtual bool Update();
+		virtual bool Update(float delta);
 		void Render(std::vector<Object*> *lights);
 
 		virtual bool Intersect(Intersection::Sphere &sphere);
@@ -62,22 +57,13 @@ namespace Rendering
 		virtual void _Render(std::vector<Object*> *lights);
 
 	private:
-		enum FIND_ENUM{FIND_ENUM_NAME, FIND_ENUM_TAG};
-		std::vector<Object*> _FindChild(std::string str, FIND_ENUM e, bool one);
+//		enum FIND_ENUM{FIND_ENUM_NAME, FIND_ENUM_TAG};
+//		std::vector<Object*> _FindChild(std::string str, FIND_ENUM e, bool one);
 		static float CalcRadius(Object *parent, Object *child);
 
 	public:
-		std::vector<Object*> FindChilds(std::string name);
-		std::vector<Object*> FindChildsWithTag(std::string tag);
-
-		Object* FindChild(std::string name);
-		Object* FindChildWithTag(std::string tag);
-
-		void AddChild(Object *child, bool copy = false);
-		void AddChild(Object *child, int renderQueueOrder, bool copy = false);
-
-		void DeleteChild(Object *child, bool remove);
-		void DeleteAllChilds(bool remove);
+		Object* AddObject(Object *child, bool copy = false);
+		Object* AddObject(Object *child, int renderQueueOrder, bool copy = false);
 
 	public:
 		void LookAt(Object *target);
@@ -120,8 +106,9 @@ namespace Rendering
 		void GetMatrix(SOC_Matrix *outMatrix);
 		void GetWorldMatrix(SOC_Matrix *outMatrix);
 
-		int GetChildCount();
-		Object* Getchild(int index);
+//		int GetChildCount();
+//		Object* Getchild(int index);
+
 		float GetRadius();
 		SOC_Vector3 GetWorldPosition();
 		SOC_Vector3 GetLocalPosition();
@@ -132,10 +119,13 @@ namespace Rendering
 		bool Culled();
 
 	public:
-		void UpdateChild();
+		void UpdateChild(float delta);
 
 	public:
-		static Object* Copy(Object *obj);
+		static Object* Copy(Object *obj)
+		{
+			return nullptr;
+		}
 	};
 
 }

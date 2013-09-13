@@ -29,11 +29,6 @@ namespace Utility
 		b    = temp;
 	}
 
-	inline float Lerp(float a, float b, float t)
-	{
-		return a - (a*t) + (b*t);
-	}
-
 	inline int nextPOT(int x)
 	{
 		x = x - 1;

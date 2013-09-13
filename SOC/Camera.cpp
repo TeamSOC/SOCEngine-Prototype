@@ -1,6 +1,7 @@
 #include "Camera.h"
-#include "DeviceDirector.h"
 #include "Light.h"
+#include "DeviceDirector.h"
+#include "Scene.h"
 
 using namespace Common;
 using namespace std;
@@ -12,9 +13,7 @@ namespace Rendering
 {
 	static Camera *mainCamera = NULL;
 
-	Camera::Camera(Device::DeviceDirector* device, Skybox *skybox, 
-		std::vector<Object*>* objectRoots, LightManager* sceneLightMgr, 
-		Object *parent/* = NULL*/)
+	Camera::Camera(Skybox *skybox, Object *parent/* = NULL*/)
 	{
 		FOV = 60;
 		clippingNear = 0.1f;
@@ -29,9 +28,8 @@ namespace Rendering
 
 		frustum = new Frustum(0.0f);
 		this->skybox = skybox;
-		this->device = device;
-		this->sceneObjects = sceneObjects;
-		this->sceneLights = sceneLights;
+		this->sceneObjects = Scene::GetNowScene()->GetRootObjects();
+		this->sceneLights = Scene::GetNowScene()->GetLightManager();
 
 		clearFlag = CLEAR_FLAG_SOLIDCOLOR;
 
@@ -110,7 +108,7 @@ namespace Rendering
 		CalcAspect();
 	}
 
-	bool Camera::Render()
+	bool Camera::Run(float delta)
 	{
 		SOC_Matrix projMat, worldMat;
 		GetProjectionMatrix(&projMat);
@@ -122,7 +120,10 @@ namespace Rendering
 		//추후 작업.		
 
 		for(vector<Object*>::iterator iter = sceneObjects->begin(); iter != sceneObjects->end(); ++iter)
+		{
+			(*iter)->Update(delta);
 			(*iter)->Culling(frustum);
+		}
 
 		vector<Object*> lights;
 		sceneLights->Intersect(frustum, &lights);
@@ -144,5 +145,18 @@ namespace Rendering
 		return mainCamera;
 	}
 
+	void Camera::GetViewMatrix(SOC_Matrix *outMatrix)
+	{
+		GetMatrix(outMatrix);
+	}
 
+	void Camera::GetViewProjectionMatrix(SOC_Matrix *outMatrix, float farGap)
+	{
+		SOC_Matrix proj;
+
+		GetMatrix(outMatrix); // view Matrix
+		GetProjectionMatrix(&proj, farGap);
+
+		SOCMatrixMultiply(outMatrix, outMatrix, &proj);
+	}
 }

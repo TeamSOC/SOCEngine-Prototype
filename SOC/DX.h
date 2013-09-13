@@ -12,8 +12,6 @@ namespace Device
 		class DX : public GraphicsForm
 		{
 		private:
-			float elapse;
-			float  fps;	
 			SOCHashMap<const char *, LPDIRECT3DVERTEXDECLARATION9> declMap;
 
 		private:
@@ -47,14 +45,10 @@ namespace Device
 
 			bool BeginScene();
 			bool EndScene();
-			void Presnet();
+			void Present();
 
 		public:
 			LPDIRECT3DDEVICE9 GetD3DDevice();
-
-		public:
-			void CalcElapse();
-			void CalculateFPS();
 		};
 
 	}

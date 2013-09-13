@@ -69,11 +69,6 @@ namespace Device
 			else PostQuitMessage(0);
 		}
 
-		void Windows::Run()
-		{
-
-		}
-
 		bool Windows::IsChild()
 		{
 			return options == (WS_CHILD | WS_VISIBLE | WS_CLIPCHILDREN);

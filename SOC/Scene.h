@@ -1,75 +1,40 @@
 #pragma once
 
-#include "LightManager.h"
-#include "TextureManager.h"
-#include "ShaderManager.h"
-#include "Light.h"
-#include "Test.h"
-#include "Camera.h"
+#include "Rendering.h"
+#include "Container.h"
+#include "BaseScene.h"
 
-using namespace Rendering;
-
-class TestScene
+class Scene : public BaseScene, public Container<Rendering::Object>
 {
-private:
-	Light::LightManager *lightMgr;
-	TextureManager *textureMgr;
-	Shader::ShaderManager *shaderMgr;
-	Camera *cam;
-	std::vector<Object*> rootObjects;
+public:
+	bool destroyMgr;
 
-private:
-	Test *test;
+protected:
+	Device::Graphics::GraphicsForm			*graphics;
+	Rendering::Light::LightManager			*lightMgr;
+	Rendering::Texture::TextureManager		*textureMgr;
+	Rendering::Shader::ShaderManager		*shaderMgr;
 
 public:
-	TestScene(void)
-	{
-	}
+	Scene(void);
+	~Scene(void);
 
-	~TestScene(void)
-	{
-	}
+private:
+	void Initialize();
+	void Run(float dt);
+	void Destroy();
 
 public:
-	void init()
-	{
-		test = new Test();
-		rootObjects.push_back( test );
+	virtual void OnInitialize() = 0;
+	virtual void OnPreview(float dt) = 0;
+	virtual void OnUpdate(float dt) = 0;
+	virtual void OnPost(float dt) = 0;
+	virtual void OnDestroy() = 0;
 
-		lightMgr = new Light::LightManager();
-		textureMgr = new TextureManager();
-		shaderMgr = new Shader::ShaderManager();
-		cam = new Camera(Device::DeviceDirector::GetInstance(), NULL, &rootObjects, lightMgr, NULL);
-
-		test->Init(shaderMgr);
-
-		cam->SetPosition(SOC_Vector3(0, 0, 2.0f));
-		cam->LookAt(SOC_Vector3(0, 0, -5));
-	}
-
-	void loop()
-	{
-		Device::Graphics::GraphicsForm *graphics = Device::DeviceDirector::GetInstance()->GetGraphics();
-
-		Device::Graphics::GraphicsForm::clearFlag flags = Device::Graphics::GraphicsForm::CLEAR_FLAG_TARGET | Device::Graphics::GraphicsForm::CLEAR_FLAG_ZBUFFER;
-		graphics->Clear(flags, Color::blue());
-
-		bool b;
-		b = graphics->BeginScene();
-		{
-			SOC_Matrix viewMat;
-			SOC_Matrix projectionMat;
-			cam->GetViewMatrix(&viewMat);
-			cam->GetPerspectiveMatrix(&projectionMat, 0);
-
-			test->SetMat(&viewMat, &projectionMat);
-			test->Render(NULL);
-		}
-		b = graphics->EndScene();
-
-		graphics->Presnet();
-	}
-
-
+public:
+	Rendering::Light::LightManager* GetLightManager();
+	Rendering::Texture::TextureManager* GetTextureManager();
+	Rendering::Shader::ShaderManager* GetShaderManager();
+	std::vector<Rendering::Object*>* GetRootObjects();
+//	static Scene* GetNowScene();
 };
-

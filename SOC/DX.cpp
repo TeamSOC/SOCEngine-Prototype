@@ -193,7 +193,7 @@ namespace Device
 			return SUCCEEDED( device->EndScene() );
 		}
 
-		void DX::Presnet()
+		void DX::Present()
 		{
 			device->Present(NULL, NULL, NULL, NULL);
 		}
@@ -203,35 +203,6 @@ namespace Device
 			return device;
 		}
 
-		void DX::CalcElapse()
-		{
-			static float		lastTime;
-			float				now;
-			static unsigned int	staticTime = GetTickCount();
 
-
-			now = (float)(GetTickCount() - staticTime) / 1000;
-
-			elapse = now - lastTime;
-			elapse = Utility::Max((float)0, elapse);
-
-			lastTime = now;
-		}
-
-		void DX::CalculateFPS()
-		{
-			static int frameCnt = 0;
-			static float elapsed = 0;
-
-			frameCnt++;
-			elapsed += elapse;
-
-			if( elapsed >= 1.f )
-			{
-				fps = (float)frameCnt / elapsed;
-				elapsed = 0;
-				frameCnt = 0;
-			}
-		}
 	}
 }

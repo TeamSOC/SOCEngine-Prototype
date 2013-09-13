@@ -5,7 +5,6 @@
 #include "Frustum.h"
 #include "Skybox.h"
 #include "LightManager.h"
-#include "DeviceDirector.h"
 
 namespace Rendering
 {
@@ -18,7 +17,6 @@ namespace Rendering
 
 	private:
 		Frustum *frustum;
-		Device::DeviceDirector *device;
 
 	private:
 		Common::Rect<float>	  normalizedViewPortRect;
@@ -40,9 +38,7 @@ namespace Rendering
 		//3. 렌더 텍스쳐 선택. 이건 지금 할게 아니야
 
 	public:
-		Camera(Device::DeviceDirector *device, Skybox *skybox, 
-			std::vector<Object*>* objectRoots, Light::LightManager* sceneLightMgr, 
-			Object *parent = NULL);
+		Camera(Skybox *skybox, Object *parent = NULL);
 		~Camera(void);
 
 	private:
@@ -58,10 +54,11 @@ namespace Rendering
 		void GetPerspectiveMatrix(SOC_Matrix *outMatrix, float farGap);
 		void GetOrthoGraphicMatrix(SOC_Matrix *outMatrix);
 		void GetProjectionMatrix(SOC_Matrix *outMatrix, float farGap = 0);
-		void GetViewMatrix(SOC_Matrix *outMatrix){GetMatrix(outMatrix);}
+		void GetViewMatrix(SOC_Matrix *outMatrix);
+		void GetViewProjectionMatrix(SOC_Matrix *outMatrix, float farGap = 0);
 
 	public:
-		bool Render();
+		bool Run(float delta);
 
 	public:
 		void SetViewPort(Common::Rect<float> rect);
