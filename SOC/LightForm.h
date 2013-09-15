@@ -27,7 +27,7 @@ namespace Rendering
 
 		//public:
 		//	virtual bool Intersect(Intersection::Sphere &sphere) = 0;
-		//Move Object.
+		//Move Object
 		};
 	}
 }
