@@ -7,6 +7,7 @@ namespace Rendering
 {
 	namespace Shader
 	{
+		using namespace BasicParameters;
 
 		ShaderDX::ShaderDX(Device::Graphics::GraphicsForm *graphics, const char *name) : ShaderForm(graphics, name)
 		{
@@ -42,7 +43,7 @@ namespace Rendering
 				{
 					char *str = new char[size];
 					memcpy(str, (const char*)ack, size);
-//					sprintf(str, (const char*)ack, size);
+					//					sprintf(str, (const char*)ack, size);
 					OutputDebugString(str);
 					delete[] str;					
 				}
@@ -53,57 +54,57 @@ namespace Rendering
 			return success; 
 		}
 
-		bool ShaderDX::SetVariable(char *parameter, SOC_Matrix *m)
+		bool ShaderDX::SetVariable(const char *parameter, SOC_Matrix *m)
 		{
 			return SUCCEEDED(shader->SetMatrix(parameter, m));
 		}
 
-		bool ShaderDX::SetVariable(char *parameter, SOC_Matrix *ary, SOC_uint count)
+		bool ShaderDX::SetVariable(const char *parameter, SOC_Matrix *ary, SOC_uint count)
 		{
 			return SUCCEEDED(shader->SetMatrixArray(parameter, ary, count));
 		}
 
-		bool ShaderDX::SetVariable(char *parameter, SOC_Vector4 *v)
+		bool ShaderDX::SetVariable(const char *parameter, SOC_Vector4 *v)
 		{
 			return SUCCEEDED(shader->SetVector(parameter, v));
 		}
 
-		bool ShaderDX::SetVariable(char *parameter, SOC_Vector4 *ary, SOC_uint count)
+		bool ShaderDX::SetVariable(const char *parameter, SOC_Vector4 *ary, SOC_uint count)
 		{
 			return SUCCEEDED(shader->SetVectorArray(parameter, ary, count));
 		}
 
-		bool ShaderDX::SetVariable(char *parameter, bool b)
+		bool ShaderDX::SetVariable(const char *parameter, bool b)
 		{
 			return SUCCEEDED(shader->SetBool(parameter, b));
 		}
 
-		bool ShaderDX::SetVariable(char *parameter, float f)
+		bool ShaderDX::SetVariable(const char *parameter, float f)
 		{
 			return SUCCEEDED(shader->SetFloat(parameter, f));
 		}
 
-		bool ShaderDX::SetVariable(char *parameter, float *ary, SOC_uint count)
+		bool ShaderDX::SetVariable(const char *parameter, float *ary, SOC_uint count)
 		{
 			return SUCCEEDED(shader->SetFloatArray(parameter, ary, count));
 		}
 
-		bool ShaderDX::SetVariable(char *parameter, int i)
+		bool ShaderDX::SetVariable(const char *parameter, int i)
 		{
 			return SUCCEEDED(shader->SetInt(parameter, i));
 		}
 
-		bool ShaderDX::SetVariable(char *parameter, int *ary, SOC_uint count)
+		bool ShaderDX::SetVariable(const char *parameter, int *ary, SOC_uint count)
 		{
 			return SUCCEEDED(shader->SetIntArray(parameter, ary, count));
 		}
 
-		bool ShaderDX::SetTechnique(char *technique)
+		bool ShaderDX::SetTechnique(const char *technique)
 		{
 			return SUCCEEDED(shader->SetTechnique(technique));
 		}
 
-		bool ShaderDX::SetVariable(char *parameter, Texture::Texture *texture)
+		bool ShaderDX::SetVariable(const char *parameter, Texture::Texture *texture)
 		{
 			LPDIRECT3DTEXTURE9 tex = texture->GetTexture();
 			return SUCCEEDED( shader->SetTexture(parameter, tex) );
@@ -127,6 +128,44 @@ namespace Rendering
 		bool ShaderDX::End()
 		{
 			return SUCCEEDED( shader->End() );
+		}
+
+		bool ShaderDX::IsParameterUsed(const char *paramter, const char *technique)
+		{
+			return shader->IsParameterUsed(paramter, technique);
+		}
+
+		void ShaderDX::GetRequiredParameters(SOC_byte *outMatrixParamters, SOC_byte *outLightParameters, char *technique)
+		{
+			if(IsParameterUsed(worldMat, technique))
+				requiredMatrixParam |= REQUIRED_MATRIX_WORLD;
+
+			if(IsParameterUsed(viewMat, technique))
+				requiredMatrixParam |= REQUIRED_MATRIX_VIEW;
+
+			if(IsParameterUsed(projMat, technique))
+				requiredMatrixParam |= REQUIRED_MATRIX_PROJECTION;
+
+			if(IsParameterUsed(viewProjMat, technique))
+				requiredMatrixParam |= REQUIRED_MATRIX_VP;
+
+			if(IsParameterUsed(worldViewProjMat, technique))
+				requiredMatrixParam |= REQUIRED_MATRIX_WVP;
+
+			if(IsParameterUsed(lightDiffuseColor, technique))
+				requiredLightParam |= REQUIRED_LIGHT_DIFFUSE;
+
+			if(IsParameterUsed(lightSpecularColor, technique))
+				requiredLightParam |= REQUIRED_LIGHT_SPECULAR;
+
+			if(IsParameterUsed(ambientColor, technique))
+				requiredLightParam |= REQUIRED_LIGHT_AMBIENT_COLOR;
+
+			if(outMatrixParamters)
+				*outMatrixParamters = requiredMatrixParam;
+
+			if(outLightParameters)
+				*outLightParameters = requiredLightParam;
 		}
 	}
 }

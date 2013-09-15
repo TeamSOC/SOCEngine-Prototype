@@ -26,6 +26,7 @@ namespace Rendering
 		public:
 			void Render();
 
+
 		public:
 			MeshRenderer* GetRenderer();
 			MeshFilter* GetFilter();

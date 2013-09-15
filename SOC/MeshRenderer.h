@@ -24,13 +24,15 @@ namespace Rendering
 			void DeleteAllMaterial();
 			Material* FindMaterial(const char *name);
 
+			void ConnectTransform(Shader::TransformParameters *transform, Shader::LightParameters *light);
+
 		private:
 			static void Begin(MeshRenderer *renderer);
 			static void End(MeshRenderer *renderer);
 
 		public:
 			SOC_uint GetMaterialCount();
-			Material* GetMaterial(int idx);
+			Material* GetMaterial(int idx = 0);
 		};
 
 	}

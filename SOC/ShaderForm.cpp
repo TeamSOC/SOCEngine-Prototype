@@ -32,5 +32,15 @@ namespace Rendering
 		{
 			return name.c_str();
 		}
+
+		SOC_byte ShaderForm::GetRequiredMatrixParameters()
+		{
+			return requiredMatrixParam;
+		}
+
+		SOC_byte ShaderForm::GetRequiredLightParameters()
+		{
+			return requiredLightParam;
+		}
 	}
 }

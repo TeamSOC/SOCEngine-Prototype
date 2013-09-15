@@ -15,6 +15,8 @@ namespace Rendering
 				(*beginFunc)	= this->Begin;
 				(*endFunc)		= this->End;
 			}
+
+
 		}
 
 		MeshRenderer::~MeshRenderer(void)
@@ -100,5 +102,12 @@ namespace Rendering
 		{
 			return *( materials.begin() + idx );
 		}
+
+		void MeshRenderer::ConnectTransform(Shader::TransformParameters *transform, Shader::LightParameters *light)
+		{
+			for(std::vector<Material*>::iterator iter = materials.begin(); iter != materials.end(); ++iter)
+			(*iter)->SetUseShaderRequiredParameters(transform, light);
+		}
+
 	}
 }

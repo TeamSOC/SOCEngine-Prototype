@@ -10,8 +10,10 @@ namespace Rendering
 	private:
 		std::string name;
 		std::vector<Shader::Shader*> shaders;
-
 		Shader::Shader* useShader;
+
+	public:
+		Color ambientColor;
 
 	public:
 		Material(const char *name = nullptr);
@@ -30,7 +32,7 @@ namespace Rendering
 
 		void AddShader( Shader::Shader *shader );
 		void DeleteShader( Shader::Shader *shader );
-		void DeleteAllShader( );
+		void DeleteAllShader();
 
 	public:
 		template<typename Type>
@@ -43,7 +45,6 @@ namespace Rendering
 		{
 			(*(shaders.begin() + idx))->SetVariable(parameter, value, count);
 		}
-
 		template<typename Type>
 		void SetVariable(char *parameter, Type value)
 		{
@@ -57,10 +58,13 @@ namespace Rendering
 
 	public:
 		int GetShaderCount();
-
 		SOC_uint GetUseShaderPass();
-
 		const char* GetName();
+
+		bool GetShaderRequiredParameters(unsigned int index, SOC_byte *outMatrixParameters, SOC_byte *outLightParameters);
+		bool GetUseShaderRequiredParameters(SOC_byte *outMatrixParameters, SOC_byte *outLightParameters);
+
+		void SetUseShaderRequiredParameters(Shader::TransformParameters *transform, Shader::LightParameters *light);
 	};
 
 }
