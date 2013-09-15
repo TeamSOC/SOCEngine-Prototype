@@ -85,8 +85,3 @@ vector<Object*>* Scene::GetRootObjects()
 {
 	return &objects;
 }
-
-//Scene* Scene::GetNowScene()
-//{
-//	return nowScene;
-//}

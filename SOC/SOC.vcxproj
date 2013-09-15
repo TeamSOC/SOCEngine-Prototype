@@ -116,7 +116,6 @@
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="SpotLight.cpp" />
     <ClCompile Include="TagManager.cpp" />
-    <ClCompile Include="Test.cpp" />
     <ClCompile Include="TextureDX.cpp" />
     <ClCompile Include="TextureForm.cpp" />
     <ClCompile Include="TextureManager.cpp" />
@@ -158,7 +157,6 @@
     <ClInclude Include="Rendering.h" />
     <ClInclude Include="RenderingMath.h" />
     <ClInclude Include="Scene.h" />
-    <ClInclude Include="TScene.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderCode.h" />
     <ClInclude Include="ShaderCodeGL.h" />
@@ -174,7 +172,6 @@
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="SpotLight.h" />
     <ClInclude Include="TagManager.h" />
-    <ClInclude Include="Test.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureDX.h" />
     <ClInclude Include="TextureForm.h" />

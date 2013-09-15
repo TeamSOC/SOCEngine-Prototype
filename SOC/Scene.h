@@ -36,5 +36,4 @@ public:
 	Rendering::Texture::TextureManager* GetTextureManager();
 	Rendering::Shader::ShaderManager* GetShaderManager();
 	std::vector<Rendering::Object*>* GetRootObjects();
-//	static Scene* GetNowScene();
 };
