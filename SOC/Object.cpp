@@ -346,19 +346,14 @@ namespace Rendering
 		return localPosition;
 	}
 
-	void Object::Billboard(Object *camera, SOC_Matrix *outMatrix)
+	void Object::Billboard(SOC_Matrix *camWorldMat, SOC_Matrix *outMatrix)
 	{
-		//ƒ´∏ﬁ∂Û ±∏«ˆ ¿Ã»ƒø° ¿€æ˜.
-		SOC_Matrix mat;
-		SOCMatrixIdentity(&mat);
+		SOC_Matrix mat = *camWorldMat;
 
-		SOC_Matrix camWorldMat;
-		camera->GetWorldMatrix(&camWorldMat);
-
-		mat._11 = camWorldMat._11;
-		mat._13 = camWorldMat._13;
-		mat._31 = camWorldMat._31;
-		mat._33 = camWorldMat._33;
+		mat._11 = camWorldMat->_11;
+		mat._13 = camWorldMat->_13;
+		mat._31 = camWorldMat->_31;
+		mat._33 = camWorldMat->_33;
 
 		SOCMatrixInverse(&mat, NULL, &mat);
 		*outMatrix = mat;
@@ -403,7 +398,7 @@ namespace Rendering
 		return false;
 	}
 
-	void Object::Render(std::vector<Object*> *lights)
+	void Object::Render(std::vector<Object*> *lights, SOC_Matrix *viewMat, SOC_Matrix *projMat, SOC_Vector3 dir)
 	{
 		if(culled)	return;
 
@@ -416,7 +411,7 @@ namespace Rendering
 				intersectLights.push_back((*iter));
 		}
 
-		_Render(&intersectLights);
+		_Render(&intersectLights, viewMat, projMat, dir);
 	}
 
 	bool Object::Intersect(Intersection::Sphere &sphere)
@@ -424,7 +419,7 @@ namespace Rendering
 		return sphere.Intersection(GetWorldPosition(), radius);
 	}
 
-	void Object::_Render(std::vector<Object*> *lights)
+	void Object::_Render(std::vector<Object*> *lights, SOC_Matrix *viewMat, SOC_Matrix *projMat, SOC_Vector3 &dir)
 	{
 		//null
 	}
@@ -445,6 +440,11 @@ namespace Rendering
 		float totalR = distance + child->radius;
 
 		return totalR > parent->radius ? totalR : parent->radius;
+	}
+
+	Object* Object::Copy(Object *obj)
+	{
+		return new Object(*obj);
 	}
 }
 

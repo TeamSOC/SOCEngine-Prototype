@@ -35,7 +35,7 @@ namespace Rendering
 		SOC_Vector3 eulerAngles;
 		SOC_Vector3 localEulerAngles;
 
-		SOC_MatrixA16 matrix;
+		SOC_Matrix matrix;
 
 		float radius;
 
@@ -49,16 +49,16 @@ namespace Rendering
 
 	public:
 		virtual bool Update(float delta);
-		void Render(std::vector<Object*> *lights);
+//		virtual void UpdateCameraTransform(SOC_Matrix *viewMat, SOC_Matrix *projMat, SOC_Vector3 dir);
+
+		void Render(std::vector<Object*> *lights, SOC_Matrix *viewMat, SOC_Matrix *projMat, SOC_Vector3 dir);
 
 		virtual bool Intersect(Intersection::Sphere &sphere);
 
 	protected:
-		virtual void _Render(std::vector<Object*> *lights);
+		virtual void _Render(std::vector<Object*> *lights, SOC_Matrix *viewMat, SOC_Matrix *projMat, SOC_Vector3 &dir);
 
 	private:
-//		enum FIND_ENUM{FIND_ENUM_NAME, FIND_ENUM_TAG};
-//		std::vector<Object*> _FindChild(std::string str, FIND_ENUM e, bool one);
 		static float CalcRadius(Object *parent, Object *child);
 
 	public:
@@ -80,7 +80,7 @@ namespace Rendering
 		void TranslateWithForwardVec(float units);
 		void TranslateWithRightVec(float units);
 
-		void Billboard(Object *camera, SOC_Matrix *outMatrix);
+		void Billboard(SOC_Matrix *camWorldMat, SOC_Matrix *outMatrix);
 
 		bool IsChildOf(Object *parent);
 		bool Culling(Frustum *frustum);
@@ -106,9 +106,6 @@ namespace Rendering
 		void GetMatrix(SOC_Matrix *outMatrix);
 		void GetWorldMatrix(SOC_Matrix *outMatrix);
 
-//		int GetChildCount();
-//		Object* Getchild(int index);
-
 		float GetRadius();
 		SOC_Vector3 GetWorldPosition();
 		SOC_Vector3 GetLocalPosition();
@@ -122,10 +119,7 @@ namespace Rendering
 		void UpdateChild(float delta);
 
 	public:
-		static Object* Copy(Object *obj)
-		{
-			return nullptr;
-		}
+		static Object* Copy(Object *obj);
 	};
 
 }
