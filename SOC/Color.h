@@ -1,5 +1,7 @@
 #pragma once
 
+#include "RenderingMath.h"
+
 namespace Rendering
 {
 	struct Color
@@ -44,6 +46,7 @@ namespace Rendering
 
 	public:
 		Color& GetColor();
+		SOC_Vector4 GetVector();
 
 	public:
 		void SetColor(Color &color);

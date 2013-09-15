@@ -172,4 +172,15 @@ namespace Rendering
 	{
 		return (*this); 
 	}
+
+	SOC_Vector4 Color::GetVector()
+	{
+		SOC_Vector4 color;
+		color.x = r;
+		color.y = g;
+		color.z = b;
+		color.w = a;
+
+		return color;
+	}
 }
