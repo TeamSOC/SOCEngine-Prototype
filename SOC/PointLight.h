@@ -13,6 +13,10 @@ namespace Rendering
 		public:
 			PointLight(Object *parent = NULL);
 			~PointLight(void);
+
+		//public:
+		//	bool PointLight::Intersect(Intersection::Sphere &sphere);
+		//now, spherhe intersection check in Object.
 		};
 
 	}

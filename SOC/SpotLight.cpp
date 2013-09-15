@@ -9,10 +9,13 @@ namespace Rendering
 		SpotLight::SpotLight(Object *parent)  : LightForm(parent)
 		{
 			type = LIGHTTYPE_SPOT;
+			spotAngle = 1.0f;
 		}
 
 		bool SpotLight::Intersect(Intersection::Sphere &sphere)
 		{
+			float angle = spotAngle;
+
 			if(angle < 1)				angle = 1;
 			else if(angle > 179)		angle = 179;
 

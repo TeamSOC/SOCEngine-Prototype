@@ -9,8 +9,8 @@ namespace Rendering
 	{
 		class SpotLight : public LightForm
 		{
-		public:
-			float angle;
+		private:
+			float spotAngle;
 
 		public:
 			SpotLight(Object *parent = NULL);

@@ -4,8 +4,6 @@
 #include "Utility.h"
 #include "Frustum.h"
 
-#define MAX_LIGHT 8
-
 using namespace std;
 
 namespace Rendering
