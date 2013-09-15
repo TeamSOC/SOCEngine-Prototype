@@ -28,8 +28,12 @@ namespace Rendering
 
 		frustum = new Frustum(0.0f);
 		this->skybox = skybox;
-		this->sceneObjects = Scene::GetNowScene()->GetRootObjects();
-		this->sceneLights = Scene::GetNowScene()->GetLightManager();
+
+		Scene *scene = dynamic_cast<Scene*>(DeviceDirector::GetInstance()->GetScene());
+		
+		this->sceneObjects = scene->GetRootObjects();
+		this->sceneLights = scene->GetLightManager();
+//		DeviceDirector::GetInstance()->GetScene()
 
 		clearFlag = CLEAR_FLAG_SOLIDCOLOR;
 
@@ -110,27 +114,26 @@ namespace Rendering
 
 	bool Camera::Run(float delta)
 	{
-		SOC_Matrix projMat, worldMat;
+		SOC_Matrix projMat, viewMat;
 		GetProjectionMatrix(&projMat);
-		GetWorldMatrix(&worldMat);
+		GetWorldMatrix(&viewMat);
 
 		Clear();		
-		frustum->Make(&(worldMat * projMat));
+		frustum->Make(&(viewMat * projMat));
 
-		//추후 작업.		
-
-		for(vector<Object*>::iterator iter = sceneObjects->begin(); iter != sceneObjects->end(); ++iter)
-		{
-			(*iter)->Update(delta);
-			(*iter)->Culling(frustum);
-		}
+		//추후 작업.	
 
 		vector<Object*> lights;
 		sceneLights->Intersect(frustum, &lights);
 		//월드 상의 빛에서 절두체에 겹치는거 모두 찾음.
 
 		for(vector<Object*>::iterator iter = sceneObjects->begin(); iter != sceneObjects->end(); ++iter)
-			(*iter)->Render(&lights);
+		{
+			(*iter)->Update(delta);
+//			(*iter)->UpdateCameraTransform(&viewMat, &projMat, forward);
+			(*iter)->Culling(frustum);
+			(*iter)->Render(&lights, &viewMat, &projMat, forward);
+		}
 
 		return true;
 	}

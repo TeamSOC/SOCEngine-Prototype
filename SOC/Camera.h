@@ -20,6 +20,8 @@ namespace Rendering
 
 	private:
 		Common::Rect<float>	  normalizedViewPortRect;
+
+	public:
 		std::vector<Object*>* sceneObjects;
 		Light::LightManager* sceneLights;
 
