@@ -31,11 +31,11 @@ private:
 	std::vector<Object*> _FindObject(std::string str, FIND_ENUM e, bool one)
 	{
 		std::vector<Object*> v;
-		std::vector<Object*>::iterator iter;
+		typename std::vector<Object*>::iterator iter;
 
 		for(iter = objects.begin(); iter != objects.end(); ++iter)
 		{
-			string *findItem = e == FIND_ENUM_NAME ? &(*iter)->name : &(*iter)->tag;
+			std::string *findItem = e == FIND_ENUM_NAME ? &(*iter)->name : &(*iter)->tag;
 			if( (*findItem) == str )
 			{
 				v.push_back((*iter));
@@ -58,13 +58,13 @@ public:
 
 	Object* FindObject(std::string name)
 	{
-		vector<Object*> v = _FindObject(name, FIND_ENUM_NAME, true);
+		std::vector<Object*> v = _FindObject(name, FIND_ENUM_NAME, true);
 		return v.size() == 0 ? NULL : v[0];
 	}
 
 	Object* FindObjectWithTag(std::string tag)
 	{
-		vector<Object*> v = _FindObject(tag, FIND_ENUM_TAG, true);
+		std::vector<Object*> v = _FindObject(tag, FIND_ENUM_TAG, true);
 		return v.size() == 0 ? NULL : v[0];
 	}
 
@@ -74,7 +74,7 @@ public:
 		{
 			Object *c = copy == false ? child : new Object(*child);
 
-			vector<Object*>::iterator iter;
+			typename std::vector<Object*>::iterator iter;
 
 			for(iter = objects.begin(); iter != objects.end(); ++iter)
 			{
@@ -100,7 +100,7 @@ public:
 
 	void DeleteObject(Object *child, bool remove)
 	{
-		vector<Object*>::iterator iter;
+		typename std::vector<Object*>::iterator iter;
 
 		for(iter = objects.begin(); iter != objects.end(); ++iter)
 		{
@@ -120,7 +120,7 @@ public:
 	{
 		if(remove)
 		{
-			for(vector<Object*>::iterator iter = objects.begin(); iter != objects.end(); ++iter)
+			for(typename std::vector<Object*>::iterator iter = objects.begin(); iter != objects.end(); ++iter)
 				Utility::SAFE_DELETE(*iter);
 		}
 
@@ -138,12 +138,12 @@ public:
 		return *(objects.begin()+index); 
 	}
 
-	static Object* Copy()
-	{
-		Object *obj = new Object();
-		*obj = *this;
-
-		return obj;
-	}
+//	static Object* Copy()
+//	{
+//		Object *obj = new Object();
+//		*obj = *this;
+//
+//		return obj;
+//	}
 };
 

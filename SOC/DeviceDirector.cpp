@@ -1,4 +1,5 @@
 #include "DeviceDirector.h"
+#include "Timer.h"
 
 namespace Device
 {
@@ -51,16 +52,10 @@ namespace Device
 
 	void DeviceDirector::CalculateElapse()
 	{
-		static float		lastTime;
-		float				now;
-		static unsigned int	staticTime = GetTickCount();
+		static BaseTimer	staticTimer;
 
-		now = (float)(GetTickCount() - staticTime) / 1000;
-
-		elapse = now - lastTime;
+		staticTimer.CheckElapsed(elapse);
 		elapse = Utility::Max((float)0, elapse);
-
-		lastTime = now;
 	}
 
 	void DeviceDirector::CalculateFPS()
@@ -89,7 +84,7 @@ namespace Device
 		return app;
 	}
 
-	Common::Size<int>& DeviceDirector::GetSize()
+	Common::Size<int> DeviceDirector::GetSize()
 	{
 		return app->GetSize();
 	}

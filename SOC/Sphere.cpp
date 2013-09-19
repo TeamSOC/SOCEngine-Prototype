@@ -43,6 +43,7 @@ namespace Intersection
 
 	bool Sphere::Intersection(SOC_Vector3 center, float radius)
 	{
-		return Sphere::Intersection( (*this), Sphere(center, radius) );
+		Sphere sphere(center, radius);
+		return Sphere::Intersection( (*this), sphere);
 	}
 }

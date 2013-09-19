@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef WIN32
+
 #include "Application.h"
 //#include "Device.h"
 #include <Windows.h>
@@ -36,3 +38,5 @@ namespace Device
 		};
 	}
 }
+
+#endif

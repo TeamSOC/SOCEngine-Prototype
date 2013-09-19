@@ -100,7 +100,7 @@ namespace Rendering
 
 	bool Material::GetShaderRequiredParameters(unsigned int index, SOC_byte *outMatrixParameters, SOC_byte *outLightParameters)
 	{
-		if(index < 0 || index > shaders.size())
+		if(index > shaders.size())
 			return false;
 
 		Shader::Shader *shader = (*(shaders.begin() + index));
@@ -134,7 +134,10 @@ namespace Rendering
 			useShader->SetVariable(BasicParameters::worldViewProjMat, transform->worldViewProjMatrix);
 
 		if( REQUIRED_LIGHT_AMBIENT_COLOR & lp )
-			useShader->SetVariable(BasicParameters::ambientColor, &this->ambientColor.GetVector());
+		{
+			SOC_Vector4 vector = this->ambientColor.GetVector();
+			useShader->SetVariable(BasicParameters::ambientColor, &vector);
+		}
 
 		int count = light->count;
 

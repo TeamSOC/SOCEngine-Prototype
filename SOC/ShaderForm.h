@@ -5,6 +5,8 @@
 #include "Texture.h"
 #include <string>
 
+#define DEFAULT_TECHNIQUE "SOC"
+
 namespace Rendering
 {
 	namespace Shader
@@ -127,10 +129,11 @@ namespace Rendering
 
 		public:
 			ShaderForm(Device::Graphics::GraphicsForm *graphics, const char *name = nullptr);
-			~ShaderForm(void);
+			virtual ~ShaderForm(void);
 
 		public:
 			virtual bool Compile(std::string &shaderCode) = 0;
+			virtual void GetRequiredParameters(SOC_byte *outMatrixParamters, SOC_byte *outLightParameters, char *technique) = 0;
 
 			virtual bool SetVariable(const char *parameter, SOC_Matrix *m) = 0;
 			virtual bool SetVariable(const char *parameter, SOC_Matrix *ary, SOC_uint count) = 0;

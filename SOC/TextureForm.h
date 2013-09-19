@@ -14,7 +14,7 @@ namespace Rendering
 
 		public:
 			TextureForm(void);
-			~TextureForm(void);
+			virtual ~TextureForm(void);
 
 		public:
 			virtual bool Create(const char *path) = 0;

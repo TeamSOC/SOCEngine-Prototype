@@ -120,6 +120,49 @@ typedef LPDIRECT3DVERTEXDECLARATION9 VertexDeclaration;
 #define ALIGN(x)			__declspec(align(x))
 #endif
 
+#define SOC_FMT_R8G8B8		D3DFMT_R8G8B8
+#define SOC_FMT_A8R8G8B8	D3DFMT_A8R8G8B8
+
+#define SOC_FMT_A4R4G4B4	D3DFMT_A4R4G4B4
+#define SOC_FMT_A8			D3DFMT_A8
+
+#define SOC_FMT_X4R4G4B4	D3DFMT_X4R4G4B4
+#define SOC_FMT_A8B8G8R8	D3DFMT_A8B8G8R8
+
+#define SOC_FMT_G16R16		 D3DFMT_G16R16
+#define SOC_FMT_A16B16G16R16 D3DFMT_A16B16G16R16
+
+#define SOC_FMT_D32			D3DFMT_D32
+#define SOC_FMT_D24X8		D3DFMT_D24X8
+#define SOC_FMT_D16			D3DFMT_D16
+#define SOC_FMT_VERTEXDATA	D3DFMT_VERTEXDATA
+#define SOC_FMT_INDEX16		D3DFMT_INDEX16
+#define SOC_FMT_INDEX32		D3DFMT_INDEX32
+
+#define SOC_FMT_R16F		D3DFMT_R16F
+#define SOC_FMT_R32F		D3DFMT_R32F
+#define SOC_FMT_G32R32F		D3DFMT_G32R32F
+
+#define SOC_USAGE_DEPTHSTENCIL			D3DUSAGE_DEPTHSTENCIL
+#define SOC_USAGE_DMAP					D3DUSAGE_DMAP
+#define SOC_USAGE_DONOTCLIP				D3DUSAGE_DONOTCLIP
+#define SOC_USAGE_DYNAMIC				D3DUSAGE_DYNAMIC
+#define SOC_USAGE_RENDERTARGET			D3DUSAGE_RENDERTARGET
+#define SOC_USAGE_SOFTWAREPROCESSING	D3DUSAGE_SOFTWAREPROCESSING
+#define SOC_USAGE_WRITEONLY				D3DUSAGE_WRITEONLY
+
+enum SOC_POOL
+{
+	SOC_POOL_DEFAULT,
+	SOC_POOL_MANAGED
+};
+
+enum SOC_TRIANGLE
+{
+	SOC_TRIANGLE_LIST,
+	SOC_TRIANGLE_STRIP
+};
+
 typedef GLvoid				SOC_void;
 typedef GLbyte				SOC_char;
 typedef GLenum				SOC_enum;
@@ -148,6 +191,9 @@ typedef double				SOC_double;
 //typedef GLuint64			SOC_uint64;
 //typedef GLuint64			SOC_uqword;
 
-typedef void* VertexDeclaration;
+typedef void*						 DeviceTexture;
+typedef void*						 DeviceVertexBuffer;
+typedef void*						 DeviceIndexBuffer;
+typedef void* 						 VertexDeclaration;
 
 #endif

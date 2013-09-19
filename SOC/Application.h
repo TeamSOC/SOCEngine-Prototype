@@ -13,6 +13,7 @@ namespace Device
 
 		public:
 			Application(void);
+			virtual ~Application();
 
 		public:
 			virtual bool Initialize() = 0;

@@ -13,9 +13,9 @@ namespace Rendering
 		{
 		}
 
-		bool PointLight::Intersect(Intersection::Sphere &sphere)
-		{
-			return true;
-		}
+//		bool PointLight::Intersect(Intersection::Sphere &sphere)
+//		{
+//			return true;
+//		}
 	}
 }

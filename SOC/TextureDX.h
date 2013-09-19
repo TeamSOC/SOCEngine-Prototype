@@ -17,10 +17,10 @@ namespace Rendering
 			~TextureDX(void);
 
 		public:
-			bool Create(const char *path);
+			virtual bool Create(const char *path);
 
 		public:
-			DeviceTexture GetTexture();
+			virtual DeviceTexture GetTexture();
 		};
 	}
 }

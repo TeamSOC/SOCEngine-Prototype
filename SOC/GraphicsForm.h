@@ -24,6 +24,7 @@ namespace Device
 
 		public:
 			GraphicsForm(PRESENT_INTERVAL interval, Application::Application* app);
+			virtual ~GraphicsForm() = 0;
 
 		public:
 			virtual bool Initialize() = 0;

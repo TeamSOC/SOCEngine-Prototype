@@ -4,8 +4,6 @@
 
 namespace Rendering
 {
-#define DEFAULT_TECHNIQUE "SOC"
-
 	namespace Shader
 	{
 		class ShaderDX : public ShaderForm
