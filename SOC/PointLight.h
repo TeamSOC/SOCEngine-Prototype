@@ -10,6 +10,7 @@ namespace Rendering
 		{
 		public:
 			PointLight();
+			~PointLight();
 
 		public:
 			virtual bool Intersect(Intersection::Sphere &sphere);

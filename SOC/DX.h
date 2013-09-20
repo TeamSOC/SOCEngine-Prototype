@@ -22,7 +22,7 @@ namespace Device
 
 		public:
 			DX(PresentInterval interval, Application::Application *app);
-			~DX(void);
+			virtual ~DX(void);
 
 		public:
 			bool DX::Initialize();

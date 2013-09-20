@@ -9,6 +9,10 @@ namespace Rendering
 			type = LIGHTTYPE_DIRECTIONAL;
 		}
 
+		DirectionalLight::~DirectionalLight()
+		{
+		}
+
 		bool DirectionalLight::Intersect(Intersection::Sphere &sphere)
 		{
 			return true;

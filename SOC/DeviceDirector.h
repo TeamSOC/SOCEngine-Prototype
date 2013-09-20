@@ -55,7 +55,7 @@ namespace Device
 		Graphics::GraphicsForm* GetGraphics();
 		Application::Application* GetApplication();
 
-		inline Common::Size<int> GetSize();
+		Common::Size<int>& GetSize();
 
 		void SetScene(BaseScene* scene);
 		void SetNextScene(BaseScene *scene);

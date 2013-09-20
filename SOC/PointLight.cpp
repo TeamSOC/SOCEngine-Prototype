@@ -10,13 +10,14 @@ namespace Rendering
 			type = LIGHTTYPE_POINT;
 		}
 
+		PointLight::~PointLight(void)
+		{
+		}
+
 		bool PointLight::Intersect(Intersection::Sphere &sphere)
 		{
 			return sphere.Intersection(ownerTransform->GetWorldPosition(), range);
 		}
 
-		PointLight::~PointLight(void)
-		{
-		}
 	}
 }

@@ -84,7 +84,7 @@ namespace Device
 		return app;
 	}
 
-	Common::Size<int> DeviceDirector::GetSize()
+	Common::Size<int>& DeviceDirector::GetSize()
 	{
 		return app->GetSize();
 	}

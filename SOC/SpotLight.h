@@ -14,6 +14,7 @@ namespace Rendering
 
 		public:
 			SpotLight();
+			~SpotLight();
 
 		public:
 			virtual bool Intersect(Intersection::Sphere &sphere);

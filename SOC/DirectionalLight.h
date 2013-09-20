@@ -10,6 +10,7 @@ namespace Rendering
 		{
 		public:
 			DirectionalLight();
+			~DirectionalLight();
 
 		public:
 			virtual bool Intersect(Intersection::Sphere &sphere);
