@@ -97,13 +97,21 @@
     <ClCompile Include="LayerManager.cpp" />
     <ClCompile Include="LightForm.cpp" />
     <ClCompile Include="LightManager.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="main.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch/pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">pch/pch.h</PrecompiledHeaderFile>
+    </ClCompile>
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Math.cpp" />
+    <ClCompile Include="Memory\Allocator.cpp" />
+    <ClCompile Include="Memory\Slab.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshFilter.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="pch\pch.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -144,10 +152,16 @@
     <ClInclude Include="LightManager.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Math.h" />
+    <ClInclude Include="Memory\Allocator.h" />
+    <ClInclude Include="Memory\Interface.h" />
+    <ClInclude Include="Memory\MacroDefine.h" />
+    <ClInclude Include="Memory\Slab.h" />
+    <ClInclude Include="Memory\Type.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshFilter.h" />
     <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="pch\pch.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="Rect.h" />

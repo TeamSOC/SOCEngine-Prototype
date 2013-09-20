@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="헤더 파일">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="Engine">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
@@ -201,6 +197,13 @@
     <Filter Include="Engine\Rendering\Shader\Code\GL">
       <UniqueIdentifier>{868c3bd9-81ce-436a-b676-951aa600c941}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Memory">
+      <UniqueIdentifier>{6b8c2233-57a5-4026-bf37-bfac3e2b2cbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pch">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AABB.cpp">
@@ -322,6 +325,15 @@
     </ClCompile>
     <ClCompile Include="ShaderCodeGL.cpp">
       <Filter>Engine\Rendering\Shader\Code\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\Allocator.cpp">
+      <Filter>Engine\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\Slab.cpp">
+      <Filter>Engine\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="pch\pch.cpp">
+      <Filter>pch</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -486,6 +498,24 @@
     </ClInclude>
     <ClInclude Include="ShaderCode.h">
       <Filter>Engine\Rendering\Shader\Code</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Allocator.h">
+      <Filter>Engine\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Interface.h">
+      <Filter>Engine\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\MacroDefine.h">
+      <Filter>Engine\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Slab.h">
+      <Filter>Engine\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Type.h">
+      <Filter>Engine\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="pch\pch.h">
+      <Filter>pch</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
