@@ -1,3 +1,5 @@
+#ifdef WIN32
+
 #include "Windows.h"
 
 namespace Device
@@ -83,3 +85,5 @@ namespace Device
 		}
 	}
 }
+
+#endif

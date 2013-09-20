@@ -1,5 +1,6 @@
 #pragma once
 
+#include "DeviceDirector.h"
 #include "Platform.h"
 
 namespace Rendering

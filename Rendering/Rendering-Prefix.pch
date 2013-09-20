@@ -1,0 +1,18 @@
+//
+//  Rendering-Prefix.pch
+//  Rendering
+//
+//  Created by Jiman Jeong on 13. 9. 17..
+//  Copyright (c) 2013년 SOC. All rights reserved.
+//
+
+#import <Availability.h>
+
+#ifndef __IPHONE_5_0
+#warning "This project uses features only available in iOS SDK 5.0 and later."
+#endif
+
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#endif

@@ -14,4 +14,13 @@ namespace Rendering
 
 #elif defined(__APPLE__) || defined(_USE_GL_DEFINES)
 
+#include "TextureGL.h"
+
+namespace Rendering {
+	namespace Texture
+	{
+		typedef TextureGL Texture;
+	}
+}
+
 #endif

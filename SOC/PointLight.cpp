@@ -14,5 +14,9 @@ namespace Rendering
 		{
 			return sphere.Intersection(ownerTransform->GetWorldPosition(), range);
 		}
+
+		PointLight::~PointLight(void)
+		{
+		}
 	}
 }

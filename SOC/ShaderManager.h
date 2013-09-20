@@ -13,4 +13,14 @@ namespace Rendering
 
 #elif defined(__APPLE__) || defined(_USE_GL_DEFINES)
 
+#include "ShaderManagerGL.h"
+
+namespace Rendering
+{
+	namespace Shader
+	{
+		typedef ShaderManagerGL ShaderManager;
+	}
+}
+
 #endif
