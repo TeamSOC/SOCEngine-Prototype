@@ -9,6 +9,11 @@ namespace Device
 
 		}
 
+		Application::~Application(void)
+		{
+
+		}
+
 		Common::Rect<int> Application::GetRect()
 		{
 			return rect;

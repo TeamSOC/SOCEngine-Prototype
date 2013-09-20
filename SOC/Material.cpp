@@ -143,7 +143,7 @@ namespace Rendering
 
 		if(REQUIRED_LIGHT_HAS_LIGHT & lp)
 		{
-			useShader->SetVariable(BasicParameters::viewPos, light->viewPos);
+			useShader->SetVariable(BasicParameters::viewPos, &light->viewPos);
 			useShader->SetVariable(BasicParameters::lightPos, light->lightposAry, count);
 			useShader->SetVariable(BasicParameters::lightRange, light->rangeAry, count);
 			useShader->SetVariable(BasicParameters::lightType, light->typeAry, count);

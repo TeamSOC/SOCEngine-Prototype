@@ -132,7 +132,7 @@ namespace Rendering
 
 		bool ShaderDX::IsParameterUsed(const char *paramter, const char *technique)
 		{
-			return shader->IsParameterUsed(paramter, technique);
+			return SUCCEEDED(shader->IsParameterUsed(paramter, technique));
 		}
 
 		void ShaderDX::GetRequiredParameters(SOC_byte *outMatrixParamters, SOC_byte *outLightParameters, char *technique)

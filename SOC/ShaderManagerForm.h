@@ -12,7 +12,10 @@ namespace Rendering
 		class ShaderManagerForm
 		{
 		public:
-			virtual ~ShaderManagerForm();
+			virtual ~ShaderManagerForm()
+			{
+
+			}
 			
 		protected:
 			const char *shaderDir;

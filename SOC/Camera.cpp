@@ -21,12 +21,10 @@ namespace Rendering
 		camType    = Type::Perspective;
 		clearColor = Color(1.0f, 0.5f,0.5f,1.0f);
 
-		frustum = new Frustum(0.0f);
-		
+		frustum = new Frustum(0.0f);		
 		this->skybox = nullptr;
 
 		clearFlag = ClearFlag::FlagSolidColor;
-//		Device::DeviceDirector::GetInstance()->GetScene()
 	}
 
 	Camera::~Camera(void)

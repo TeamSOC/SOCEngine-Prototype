@@ -13,6 +13,11 @@ namespace Rendering
 			spotAngle = 1.0f;
 		}
 
+		SpotLight::~SpotLight()
+		{
+
+		}
+
 		bool SpotLight::Intersect(Intersection::Sphere &sphere)
 		{
 			float angle = spotAngle;

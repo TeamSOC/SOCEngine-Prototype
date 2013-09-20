@@ -98,8 +98,6 @@ namespace Rendering
 			virtual bool EndPass() = 0;
 			virtual bool End() = 0;
 
-			virtual void GetRequiredParameters(SOC_byte *outMatrixParamters, SOC_byte *outLightParameters, char *technique = DEFAULT_TECHNIQUE) = 0;
-
 		public:
 			bool IsCompiled();
 			SOC_uint GetNumPasses();
