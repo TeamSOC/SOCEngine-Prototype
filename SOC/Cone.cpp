@@ -11,7 +11,7 @@ namespace Intersection
 		vertex = SOC_Vector3(0, 0, 0);
 	}
 
-	Cone::Cone(float angle, float range, SOC_Vector3 axis, SOC_Vector3 vertex)
+	Cone::Cone(float angle, float range, SOC_Vector3& axis, SOC_Vector3& vertex)
 	{
 		this->angle = angle;
 		this->range = range;

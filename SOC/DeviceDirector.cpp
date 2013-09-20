@@ -111,7 +111,7 @@ namespace Device
 
 #if defined(WIN32) && !defined(_USE_GL_DEFINES)
 
-	bool DeviceDirector::Initialize(PRESENT_INTERVAL interval, WindowsInitOption &options)
+	bool DeviceDirector::Initialize(PresentInterval interval, WindowsInitOption &options)
 	{
 		app = new Application::Windows(options.rect, options.instance, options.name, options.windowMode, options.isChild, options.parentHandle);
 
@@ -148,7 +148,10 @@ namespace Device
 					BaseScene::STATE state = scene->GetState();
 
 					if(state == BaseScene::STATE_LOOP)
-						scene->Run(elapse);
+					{
+						scene->Update(elapse);
+						scene->Render();
+					}
 					else if(state == BaseScene::STATE_INIT)
 						scene->Initialize();
 					else

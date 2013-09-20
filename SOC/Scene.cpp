@@ -8,7 +8,7 @@ using namespace std;
 
 //static Scene* nowScene = nullptr;
 
-Scene::Scene(void) : BaseScene()
+Scene::Scene(void) : BaseScene(), Container()
 {
 	destroyMgr = true;
 }
@@ -24,29 +24,39 @@ void Scene::Initialize()
 	textureMgr		= new TextureManager();
 	shaderMgr		= new ShaderManager();
 	graphics		= Device::DeviceDirector::GetInstance()->GetGraphics();
+	cameraMgr		= new CameraManager();
 
 	NextState();
 	OnInitialize();
 }
 
-void Scene::Run(float dt)
+void Scene::Update(float dt)
 {
-	Camera *camera = Camera::GetMainCamera();
+	for(vector<Object*>::iterator iter = objects.begin(); iter != objects.end(); ++iter)
+		(*iter)->Update(dt);
+}
 
-	if(camera == nullptr)
+void Scene::Render()
+{
+	Camera *mainCam = cameraMgr->GetMainCamera();
+
+	if(mainCam == nullptr)
 		return;
 
 	graphics->BeginScene();
 	{
-		OnPreview(dt);
+		OnRenderPreview();
 
-		OnUpdate(dt);
-		camera->Run(dt);
+		//for(vector<Camera*>::iterator iter = cameraMgr->GetIteratorBegin(); iter != cameraMgr->GetIteratorEnd(); ++iter)
+		//	(*iter)->Run(dt);
+		
+		Camera::SceneRender(mainCam, &objects, lightMgr);
+		//일단은, 이렇게 처리하고 추후에 각 카메라마다 RTT 세팅해준뒤, 그걸 처리하도록 해야할듯.
+		//추후 조정이 필요함.
 
-		OnPost(dt);
+		OnRenderPost();
 	}
 	graphics->EndScene();
-
 	graphics->Present();
 }
 
@@ -62,6 +72,7 @@ void Scene::Destroy()
 	Utility::SAFE_DELETE(lightMgr);
 	Utility::SAFE_DELETE(shaderMgr);
 	Utility::SAFE_DELETE(textureMgr);
+	Utility::SAFE_DELETE(cameraMgr);
 
 	OnDestroy();
 }
@@ -84,4 +95,9 @@ ShaderManager* Scene::GetShaderManager()
 vector<Object*>* Scene::GetRootObjects()
 {
 	return &objects;
+}
+
+CameraManager* Scene::GetCameraManager()
+{
+	return cameraMgr;
 }

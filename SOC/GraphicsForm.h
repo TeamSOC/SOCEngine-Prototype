@@ -13,24 +13,24 @@ namespace Device
 		class GraphicsForm
 		{
 		public:
-			enum CLEAR_FLAG
+			enum ClearFlagType
 			{
-				CLEAR_FLAG_TARGET	= 1,
-				CLEAR_FLAG_ZBUFFER	= 2,
-				CLEAR_FLAG_STENCIL	= 4
+				FlagTarget	= 1,
+				FlagZBuffer	= 2,
+				FlagStencil	= 4
 			};
 
-			typedef unsigned int clearFlag;
+			typedef SOC_dword ClearFlag;
 
 		public:
-			GraphicsForm(PRESENT_INTERVAL interval, Application::Application* app);
+			GraphicsForm(PresentInterval interval, Application::Application* app);
 
 		public:
 			virtual bool Initialize() = 0;
 
 		public:
-			virtual bool Clear(clearFlag flags, Rendering::Color &color) = 0;
-			virtual bool Clear(unsigned int count, const Common::Rect<int> *rect, clearFlag flags, Rendering::Color &color, float z, unsigned int stencil) = 0;
+			virtual bool Clear(ClearFlag flags, Rendering::Color &color) = 0;
+			virtual bool Clear(unsigned int count, const Common::Rect<int> *rect, ClearFlag flags, Rendering::Color &color, float z, unsigned int stencil) = 0;
 
 			virtual bool CreateVertexBuffer(int bufferLength, SOC_dword usage, SOC_POOL pool, DeviceVertexBuffer* outBuffer) = 0;
 			virtual bool CreateIndexBuffer(int bufferLength, SOC_POOL pool, DeviceIndexBuffer* outBuffer) = 0;

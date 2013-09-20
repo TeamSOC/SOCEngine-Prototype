@@ -8,6 +8,7 @@ class Container
 {
 protected:
 	int order;
+	bool clone;
 	std::vector<Object*> objects;
 
 public:
@@ -19,6 +20,7 @@ public:
 	Container(void)
 	{
 		order = 0;
+		clone = false;
 	}
 
 	~Container(void)
@@ -31,11 +33,11 @@ private:
 	std::vector<Object*> _FindObject(std::string str, FIND_ENUM e, bool one)
 	{
 		std::vector<Object*> v;
-		std::vector<Object*>::iterator iter;
+		typename std::vector<Object*>::iterator iter;
 
 		for(iter = objects.begin(); iter != objects.end(); ++iter)
 		{
-			string *findItem = e == FIND_ENUM_NAME ? &(*iter)->name : &(*iter)->tag;
+			std::string *findItem = e == FIND_ENUM_NAME ? &(*iter)->name : &(*iter)->tag;
 			if( (*findItem) == str )
 			{
 				v.push_back((*iter));
@@ -58,13 +60,13 @@ public:
 
 	Object* FindObject(std::string name)
 	{
-		vector<Object*> v = _FindObject(name, FIND_ENUM_NAME, true);
+		std::vector<Object*> v = _FindObject(name, FIND_ENUM_NAME, true);
 		return v.size() == 0 ? NULL : v[0];
 	}
 
 	Object* FindObjectWithTag(std::string tag)
 	{
-		vector<Object*> v = _FindObject(tag, FIND_ENUM_TAG, true);
+		std::vector<Object*> v = _FindObject(tag, FIND_ENUM_TAG, true);
 		return v.size() == 0 ? NULL : v[0];
 	}
 
@@ -74,13 +76,14 @@ public:
 		{
 			Object *c = copy == false ? child : new Object(*child);
 
-			vector<Object*>::iterator iter;
+			typename std::vector<Object*>::iterator iter;
 
 			for(iter = objects.begin(); iter != objects.end(); ++iter)
 			{
 				if( (*iter)->order <= order )
 				{
 					c->order = (*iter)->order == order ? order + 1 : order;
+					c->clone = copy;
 					objects.insert(iter + 1, c);
 					return c;
 				}
@@ -94,13 +97,14 @@ public:
 		Object *c = copy == false ? child : new Object(*child);
 
 		c->order = (*(objects.end() - 1))->order + 1;
+		c->clone = copy;
 		objects.push_back(c);
 		return c;
 	}
 
 	void DeleteObject(Object *child, bool remove)
 	{
-		vector<Object*>::iterator iter;
+		typename std::vector<Object*>::iterator iter;
 
 		for(iter = objects.begin(); iter != objects.end(); ++iter)
 		{
@@ -116,11 +120,11 @@ public:
 
 	}
 
-	void DeleteAllObjects(bool remove)
+	void DeleteAllObjects(bool deleteClone)
 	{
-		if(remove)
+		for(typename std::vector<Object*>::iterator iter = objects.begin(); iter != objects.end(); ++iter)
 		{
-			for(vector<Object*>::iterator iter = objects.begin(); iter != objects.end(); ++iter)
+			if( deleteClone && clone )
 				Utility::SAFE_DELETE(*iter);
 		}
 
@@ -137,13 +141,4 @@ public:
 	{
 		return *(objects.begin()+index); 
 	}
-
-	static Object* Copy()
-	{
-		Object *obj = new Object();
-		*obj = *this;
-
-		return obj;
-	}
 };
-

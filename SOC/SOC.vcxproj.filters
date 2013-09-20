@@ -207,6 +207,21 @@
     <Filter Include="Engine\Scene\Base">
       <UniqueIdentifier>{5a0219a5-2496-4dc8-9aa4-5271b95f8217}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Rendering\Light\Parameters">
+      <UniqueIdentifier>{8ed848ac-4889-44ae-9c41-8d7123eb1f36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component">
+      <UniqueIdentifier>{7464027b-acff-41c8-ad1e-26c59d8f6e39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Camera\Manager">
+      <UniqueIdentifier>{e3857afd-edc1-4180-9807-6bc1adebc9e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Transform">
+      <UniqueIdentifier>{b24e1788-85fd-4929-a1fb-13be582c5282}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Transform\OutParameters">
+      <UniqueIdentifier>{d42b87e4-c6cd-4d47-895a-e202d907e70b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AABB.cpp">
@@ -328,6 +343,21 @@
     </ClCompile>
     <ClCompile Include="BaseScene.cpp">
       <Filter>Engine\Scene\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="LightParameters.cpp">
+      <Filter>Engine\Rendering\Light\Parameters</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformParameters.cpp">
+      <Filter>Engine\Rendering\Transform\OutParameters</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraManager.cpp">
+      <Filter>Engine\Rendering\Camera\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Engine\Rendering\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Engine\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -496,11 +526,29 @@
     <ClInclude Include="Rendering.h">
       <Filter>Engine\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="Container.h">
-      <Filter>Engine\Common\Container</Filter>
-    </ClInclude>
     <ClInclude Include="BaseScene.h">
       <Filter>Engine\Scene\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="LightParameters.h">
+      <Filter>Engine\Rendering\Light\Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformParameters.h">
+      <Filter>Engine\Rendering\Transform\OutParameters</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraManager.h">
+      <Filter>Engine\Rendering\Camera\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Engine\Rendering\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Engine\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.hpp">
+      <Filter>Engine\Rendering\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Container.h">
+      <Filter>Engine\Common\Container</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

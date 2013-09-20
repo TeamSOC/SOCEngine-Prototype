@@ -21,15 +21,15 @@ namespace Device
 			D3DPRESENT_PARAMETERS d3dpp;
 
 		public:
-			DX(PRESENT_INTERVAL interval, Application::Application *app);
+			DX(PresentInterval interval, Application::Application *app);
 			~DX(void);
 
 		public:
 			bool DX::Initialize();
 
 		public:
-			bool Clear(unsigned int count, const Common::Rect<int> *rect, clearFlag flags, Rendering::Color &color, float z, unsigned int stencil);
-			bool Clear(clearFlag flags, Rendering::Color &color);
+			bool Clear(unsigned int count, const Common::Rect<int> *rect, ClearFlag flags, Rendering::Color &color, float z, unsigned int stencil);
+			bool Clear(ClearFlag flags, Rendering::Color &color);
 
 			bool CreateVertexBuffer(int bufferLength, SOC_dword usage, SOC_POOL pool, DeviceVertexBuffer* outDeviceBuffer);
 			bool CreateIndexBuffer(int bufferLength, SOC_POOL pool, DeviceIndexBuffer* outDeviceBuffer);

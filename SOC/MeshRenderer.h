@@ -24,7 +24,7 @@ namespace Rendering
 			void DeleteAllMaterial();
 			Material* FindMaterial(const char *name);
 
-			void ConnectTransform(Shader::TransformParameters *transform, Shader::LightParameters *light);
+			void ConnectRequiredParameters(TransformParameters *transform, Light::LightParameters *light);
 
 		private:
 			static void Begin(MeshRenderer *renderer);

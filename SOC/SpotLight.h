@@ -9,14 +9,14 @@ namespace Rendering
 	{
 		class SpotLight : public LightForm
 		{
-		private:
+		public:
 			float spotAngle;
 
 		public:
-			SpotLight(Object *parent = NULL);
+			SpotLight();
 
 		public:
-			bool Intersect(Intersection::Sphere &sphere);
+			virtual bool Intersect(Intersection::Sphere &sphere);
 		};
 
 	}

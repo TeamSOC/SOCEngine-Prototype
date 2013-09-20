@@ -9,11 +9,10 @@ namespace Rendering
 		class DirectionalLight : public LightForm
 		{
 		public:
-			DirectionalLight(Object *parent = NULL);
-			~DirectionalLight(void);
+			DirectionalLight();
 
 		public:
-			bool Intersect(Intersection::Sphere &sphere);
+			virtual bool Intersect(Intersection::Sphere &sphere);
 		};
 
 	}

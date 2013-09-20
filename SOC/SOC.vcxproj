@@ -86,7 +86,9 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="BaseScene.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="Component.cpp" />
     <ClCompile Include="Cone.cpp" />
     <ClCompile Include="DeviceDirector.cpp" />
     <ClCompile Include="DX.cpp" />
@@ -98,6 +100,7 @@
     <ClCompile Include="LayerManager.cpp" />
     <ClCompile Include="LightForm.cpp" />
     <ClCompile Include="LightManager.cpp" />
+    <ClCompile Include="LightParameters.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Math.cpp" />
@@ -119,6 +122,8 @@
     <ClCompile Include="TextureDX.cpp" />
     <ClCompile Include="TextureForm.cpp" />
     <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="TransformParameters.cpp" />
     <ClCompile Include="VertexBufferForm.cpp" />
     <ClCompile Include="VertexBufferDX.cpp" />
     <ClCompile Include="Windows.cpp" />
@@ -128,7 +133,9 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="BaseScene.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraManager.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="Component.h" />
     <ClInclude Include="Cone.h" />
     <ClInclude Include="Container.h" />
     <ClInclude Include="Device.h" />
@@ -144,12 +151,14 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightForm.h" />
     <ClInclude Include="LightManager.h" />
+    <ClInclude Include="LightParameters.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshFilter.h" />
     <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="Object.hpp" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="Rect.h" />
@@ -176,6 +185,8 @@
     <ClInclude Include="TextureDX.h" />
     <ClInclude Include="TextureForm.h" />
     <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="Transform.h" />
+    <ClInclude Include="TransformParameters.h" />
     <ClInclude Include="Utility.h" />
     <ClInclude Include="VertexBufferForm.h" />
     <ClInclude Include="VertexBufferDX.h" />

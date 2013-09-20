@@ -1,4 +1,5 @@
 #include "LightManager.h"
+#include "Object.h"
 
 namespace Rendering
 {
@@ -13,14 +14,14 @@ namespace Rendering
 		{
 		}
 
-		bool LightManager::Intersect(Frustum *frustum, std::vector<Object*> *out)
+		bool LightManager::Intersect(Frustum *frustum, std::vector<LightForm*> *out)
 		{
 			bool intersect = false;
 
 			for(vector<LightForm*>::iterator iter = lights.begin(); iter != lights.end(); ++iter)
 			{
 				SOC_Vector3 worldP = (*iter)->GetWorldPosition();
-				float radius = (*iter)->GetRadius();
+				float radius = (*iter)->range;
 				if( frustum->In( worldP, radius ) )
 				{
 					out->push_back( *iter );
@@ -31,14 +32,14 @@ namespace Rendering
 			return intersect;
 		}
 
-		bool LightManager::Intersect(Frustum *frustum, Object* light)
+		bool LightManager::Intersect(Frustum *frustum, LightForm* light)
 		{
 			bool intersect = false;
 
 			for(vector<LightForm*>::iterator iter = lights.begin(); iter != lights.end(); ++iter)
 			{
 				SOC_Vector3 worldP = (*iter)->GetWorldPosition();
-				float radius = (*iter)->GetRadius();
+				float radius = (*iter)->range;
 				if( frustum->In( worldP, radius ) )
 				{
 					intersect = true;
@@ -51,9 +52,6 @@ namespace Rendering
 
 		bool LightManager::AddLight(LightForm* light)
 		{
-			if(light->IsLight() == false)
-				return false;
-
 			lights.push_back(light);
 			return true;
 		}

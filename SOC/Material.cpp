@@ -115,7 +115,7 @@ namespace Rendering
 		return true;
 	}
 
-	void Material::SetUseShaderRequiredParameters(Shader::TransformParameters *transform, Shader::LightParameters *light)
+	void Material::SetUseShaderRequiredParameters(TransformParameters *transform, Light::LightParameters *light)
 	{
 		using namespace Shader;
 
@@ -144,6 +144,7 @@ namespace Rendering
 			useShader->SetVariable(BasicParameters::lightPos, light->lightposAry, count);
 			useShader->SetVariable(BasicParameters::lightRange, light->rangeAry, count);
 			useShader->SetVariable(BasicParameters::lightType, light->typeAry, count);
+			useShader->SetVariable(BasicParameters::lightDir, light->lightDirAry, count);
 
 			useShader->SetVariable(BasicParameters::lightSpotAngle, light->spotAngleAry, count);
 			//아 모르겠다 지가 알아서 걸르것지 --;

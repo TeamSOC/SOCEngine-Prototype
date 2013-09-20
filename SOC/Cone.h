@@ -15,7 +15,7 @@ namespace Intersection
 
 	public:
 		Cone(void);
-		Cone(float angle, float range, SOC_Vector3 axis, SOC_Vector3 vertex);
+		Cone(float angle, float range, SOC_Vector3 &axis, SOC_Vector3 &vertex);
 
 	public:
 		static bool Intersection(Sphere &sphere, Cone &cone);

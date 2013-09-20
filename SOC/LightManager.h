@@ -20,8 +20,8 @@ namespace Rendering
 			~LightManager(void);
 
 		public:
-			bool Intersect(Frustum *frustum, std::vector<Object*> *out);
-			bool Intersect(Frustum *frustum, Object* light);
+			bool Intersect(Frustum *frustum, std::vector<LightForm*> *out);
+			bool Intersect(Frustum *frustum, LightForm* light);
 
 		public:
 			bool AddLight(LightForm* light);

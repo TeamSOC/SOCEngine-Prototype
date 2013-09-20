@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Object.h"
+#include "RenderingMath.h"
+#include "Sphere.h"
+#include "Component.h"
 
 namespace Rendering
 {
@@ -8,26 +10,29 @@ namespace Rendering
 	{
 #define MAX_LIGHT 8
 
-		class LightForm : public Object
+		class LightForm : public Component
 		{
 		public:
-			enum TYPE{ LIGHTTYPE_DIRECTIONAL = 0, LIGHTTYPE_POINT, LIGHTTYPE_SPOT };
-			TYPE type;
-		protected:
-			Color diffuse;
-			Color specular;
+			static const Component::Type ComponentType = Component::Type::Light;
 
-			bool onSpecular;
-
+		public:
+			enum LightType{ LIGHTTYPE_DIRECTIONAL = 0, LIGHTTYPE_POINT, LIGHTTYPE_SPOT };
+			LightType type;
+		
+		public:
+			Color diffuseColor;
+			Color specularColor;
+		
 			float range;
 			float specularPower;
 
 		protected:
-			LightForm(Object *parent = NULL);
+			LightForm();
 
-		//public:
-		//	virtual bool Intersect(Intersection::Sphere &sphere) = 0;
-		//Move Object
+		public:
+			virtual bool Intersect(Intersection::Sphere &sphere) = 0;
+			SOC_Vector3& GetWorldPosition();
+			SOC_Vector3& GetDirection();
 		};
 	}
 }

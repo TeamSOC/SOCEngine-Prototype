@@ -42,7 +42,7 @@ namespace Device
 			WindowsInitOption(HINSTANCE hInst);
 			WindowsInitOption(Common::Rect<int> rect, HINSTANCE instance, const char* name, bool windowMode, bool isChild, HWND parentHandle);
 		};
-		bool Initialize(PRESENT_INTERVAL interval, WindowsInitOption &options);
+		bool Initialize(PresentInterval interval, WindowsInitOption &options);
 
 #elif defined(__APPLE__) || defined(_USE_GL_DEFINES)
 

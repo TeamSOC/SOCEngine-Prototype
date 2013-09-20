@@ -3,12 +3,18 @@
 #include "Platform.h"
 #include "DeviceDirector.h"
 #include "Texture.h"
+
+#include "TransformParameters.h"
+#include "LightParameters.h"
+
 #include <string>
 
 namespace Rendering
 {
 	namespace Shader
 	{
+#define DEFAULT_TECHNIQUE "SOC"
+
 		enum REQUIRED_MATRIX
 		{
 			REQUIRED_MATRIX_WORLD			= 1,
@@ -43,73 +49,11 @@ namespace Rendering
 	
 			static const char *viewPos				= "viewPos";
 			static const char *lightPos				= "lightPos";
+			static const char *lightDir				= "lightDir";
 			static const char *lightRange			= "lightRange";
 			static const char *lightType			= "lightType";
 			static const char *lightSpotAngle		= "lightSpotAngle";
 		}
-
-		struct TransformParameters
-		{
-			SOC_Matrix *worldMatrix;
-			SOC_Matrix *viewMatrix;
-			SOC_Matrix *projMatrix;
-
-			SOC_Matrix *viewProjMatrix;
-			SOC_Matrix *worldViewProjMatrix;
-
-			TransformParameters() : worldMatrix(nullptr), viewMatrix(nullptr), projMatrix(nullptr), viewProjMatrix(nullptr), worldViewProjMatrix(nullptr)
-			{}
-			TransformParameters(SOC_Matrix *worldMat, SOC_Matrix *viewMat, SOC_Matrix *projMat, SOC_Matrix *viewProjMat, SOC_Matrix *worldViewProjMat)
-			{
-				worldMatrix = worldMat;
-				viewMatrix = viewMat;
-				projMatrix = projMat;
-				viewProjMatrix = viewProjMat;
-				worldViewProjMatrix = worldViewProjMat;
-			}
-		};
-
-		struct LightParameters
-		{
-			SOC_Vector4 *diffuseColorAry;
-			SOC_Vector4 *specularColorAry;
-
-			float *rangeAry;
-			float *specularPowerAry;
-
-			SOC_Vector4 *lightposAry;
-			SOC_Vector4  viewPos;
-
-			float *spotAngleAry;
-			int *typeAry;
-
-			int count;
-
-			LightParameters() : diffuseColorAry(nullptr), specularColorAry(nullptr), rangeAry(nullptr),
-				specularPowerAry(nullptr), lightposAry(nullptr), spotAngleAry(nullptr), typeAry(nullptr)
-			{
-				count = 0;
-				viewPos = SOC_Vector4(0, 0, 0, 0);
-			}
-
-			LightParameters(int *typeAry,
-				SOC_Vector4 *diffuseColorAry, float *rangeAry, SOC_Vector4 *lightposAry,
-				SOC_Vector4 &viewPos, SOC_Vector4 *specularColorAry, float *specularPowerAry,
-				float *spotAngleAry)
-			{
-				this->diffuseColorAry = diffuseColorAry;
-				this->rangeAry = rangeAry;
-
-				this->lightposAry = lightposAry;
-				this->viewPos = viewPos;
-
-				this->specularColorAry = specularColorAry;
-				this->specularPowerAry = specularPowerAry;
-
-				this->spotAngleAry = spotAngleAry;
-				this->typeAry = typeAry;
-			}
-		};
 
 		class ShaderForm
 		{
@@ -150,6 +94,8 @@ namespace Rendering
 			virtual bool BeginPass(SOC_uint pass) = 0;
 			virtual bool EndPass() = 0;
 			virtual bool End() = 0;
+
+			virtual void GetRequiredParameters(SOC_byte *outMatrixParamters, SOC_byte *outLightParameters, char *technique = DEFAULT_TECHNIQUE) = 0;
 
 		public:
 			bool IsCompiled();

@@ -4,7 +4,7 @@ namespace Device
 {
 	namespace Graphics
 	{
-		GraphicsForm::GraphicsForm(PRESENT_INTERVAL interval, Application::Application* app)
+		GraphicsForm::GraphicsForm(PresentInterval interval, Application::Application* app)
 		{
 			//NULL
 

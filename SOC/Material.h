@@ -64,7 +64,7 @@ namespace Rendering
 		bool GetShaderRequiredParameters(unsigned int index, SOC_byte *outMatrixParameters, SOC_byte *outLightParameters);
 		bool GetUseShaderRequiredParameters(SOC_byte *outMatrixParameters, SOC_byte *outLightParameters);
 
-		void SetUseShaderRequiredParameters(Shader::TransformParameters *transform, Shader::LightParameters *light);
+		void SetUseShaderRequiredParameters(TransformParameters *transform, Light::LightParameters *light);
 	};
 
 }

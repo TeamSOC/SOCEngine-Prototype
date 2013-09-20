@@ -3,13 +3,17 @@
 #include "MeshFilter.h"
 #include "MeshRenderer.h"
 #include "Device.h"
+#include "Component.h"
 
 namespace Rendering
 {
 	namespace Mesh
 	{
-		class Mesh
+		class Mesh : public Component
 		{
+		public:
+			static const Component::Type ComponentType = Component::Type::Mesh;
+
 		private:
 			MeshFilter						*filter;
 			MeshRenderer					*renderer;
@@ -20,12 +24,11 @@ namespace Rendering
 			void (*endFunc)(MeshRenderer*);
 
 		public:
-			Mesh(Device::Graphics::GraphicsForm	*graphics, MeshFilter *filter = nullptr, MeshRenderer *renderer = nullptr);
+			Mesh(void);
 			~Mesh(void);
 
 		public:
-			void Render();
-
+			virtual void Render(Rendering::TransformParameters *transform, Rendering::Light::LightParameters *light);
 
 		public:
 			MeshRenderer* GetRenderer();

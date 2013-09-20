@@ -1,15 +1,15 @@
 #include "Mesh.h"
+#include "Transform.h"
 
 namespace Rendering
 {
 	namespace Mesh
 	{
-		Mesh::Mesh(Device::Graphics::GraphicsForm	*graphics, MeshFilter *filter, MeshRenderer *renderer)
-			:beginFunc(nullptr), endFunc(nullptr)
+		Mesh::Mesh(void) : beginFunc(nullptr), endFunc(nullptr)
 		{
-			this->graphics	= graphics;
-			this->filter	= filter == nullptr ? new MeshFilter(graphics) : filter;
-			this->renderer	= renderer == nullptr ? new MeshRenderer(&beginFunc, &endFunc) : renderer;
+			this->graphics	= Device::DeviceDirector::GetInstance()->GetGraphics();
+			this->filter	= new MeshFilter(graphics);
+			this->renderer	= new MeshRenderer(&beginFunc, &endFunc);
 		}
 
 		Mesh::~Mesh(void)
@@ -18,10 +18,12 @@ namespace Rendering
 			Utility::SAFE_DELETE(renderer);
 		}
 
-		void Mesh::Render()
+		void Mesh::Render(Rendering::TransformParameters *transform, Rendering::Light::LightParameters *light)
 		{
 			if( (beginFunc && endFunc) == false)
 				return;
+
+			renderer->ConnectRequiredParameters(transform, light);
 
 			beginFunc(renderer);
 			{
@@ -30,15 +32,13 @@ namespace Rendering
 				SOC_uint triangleCount = filter->GetNumOfTriangle();
 				SOC_TRIANGLE type = filter->GetTriangleType();
 
-				bool b;
-
 				Buffer::VertexBuffer *vb = filter->GetVertexBuffer();
 
-				b = graphics->SetVertexDeclaration( filter->GetDeclaration() );
-				b = graphics->SetVertexStream(0, vb->GetDeviceBuffer(), vb->GetSize());
-				b = graphics->SetIndices(idxBuffer);
+				graphics->SetVertexDeclaration( filter->GetDeclaration() );
+				graphics->SetVertexStream(0, vb->GetDeviceBuffer(), vb->GetSize());
+				graphics->SetIndices(idxBuffer);
 
-				b = graphics->DrawIndexedPrimitive(type, 0, 0, numOfVertex, 0, triangleCount);
+				graphics->DrawIndexedPrimitive(type, 0, 0, numOfVertex, 0, triangleCount);
 			}
 			endFunc(renderer);
 		}

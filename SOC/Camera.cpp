@@ -1,6 +1,4 @@
 #include "Camera.h"
-#include "Light.h"
-#include "DeviceDirector.h"
 #include "Scene.h"
 
 using namespace Common;
@@ -8,12 +6,9 @@ using namespace std;
 using namespace Rendering::Light;
 using namespace Device;
 
-
 namespace Rendering
 {
-	static Camera *mainCamera = NULL;
-
-	Camera::Camera(Skybox *skybox, Object *parent/* = NULL*/)
+	Camera::Camera()
 	{
 		FOV = 60;
 		clippingNear = 0.1f;
@@ -23,52 +18,40 @@ namespace Rendering
 		Size<int> windowSize = DeviceDirector::GetInstance()->GetApplication()->GetSize();
 		aspect = (float)windowSize.w / (float)windowSize.h;
 
-		camType    = TYPE_PERSPECTIVE;
+		camType    = Type::Perspective;
 		clearColor = Color(1.0f, 0.5f,0.5f,1.0f);
 
 		frustum = new Frustum(0.0f);
-		this->skybox = skybox;
-
-		Scene *scene = dynamic_cast<Scene*>(DeviceDirector::GetInstance()->GetScene());
 		
-		this->sceneObjects = scene->GetRootObjects();
-		this->sceneLights = scene->GetLightManager();
-//		DeviceDirector::GetInstance()->GetScene()
+		this->skybox = nullptr;
 
-		clearFlag = CLEAR_FLAG_SOLIDCOLOR;
-
-		if(mainCamera == NULL)
-			mainCamera = this;
-
-		isLight = false;
+		clearFlag = ClearFlag::FlagSolidColor;
+//		Device::DeviceDirector::GetInstance()->GetScene()
 	}
 
 	Camera::~Camera(void)
 	{
 		Utility::SAFE_DELETE(frustum);
-
-		if( mainCamera == this )
-			mainCamera = NULL;
 	}
 
 	void Camera::Clear()
 	{
 		//defulat is 'target clear option'.
-//		Graphics flag = Graphics::CLEAR_FLAG_TARGET;
-		Graphics::GraphicsForm::clearFlag flag = Graphics::GraphicsForm::CLEAR_FLAG_TARGET;
+//		Graphics flag = Graphics::FlagTarget;
+		Graphics::GraphicsForm::ClearFlag flag = Graphics::GraphicsForm::FlagTarget;
 
-		if( clearFlag == CLEAR_FLAG_DONT_CLAR )
+		if( clearFlag == ClearFlag::FlagDontClear )
 			return;
 
-		if( clearFlag == CLEAR_FLAG_SKYBOX )
+		if( clearFlag == ClearFlag::FlagSkybox )
 		{
 			//skybox Rendering
 			skybox->Render();
 			return;
 		}
 
-		else if( clearFlag == CLEAR_FLAG_SOLIDCOLOR )
-			flag |= Graphics::GraphicsForm::CLEAR_FLAG_ZBUFFER;
+		else if( clearFlag == ClearFlag::FlagSolidColor )
+			flag |= Graphics::GraphicsForm::FlagZBuffer;
 
 		DeviceDirector::GetInstance()->GetGraphics()->Clear( 0, NULL, flag, clearColor, 1.0f, 0);
 	}
@@ -97,7 +80,7 @@ namespace Rendering
 	}
 	void Camera::GetProjectionMatrix(SOC_Matrix *outMatrix, float farGap /* =0 */)
 	{
-		if(camType == TYPE_PERSPECTIVE)
+		if(camType == Type::Perspective)
 		{
 			GetPerspectiveMatrix(outMatrix, farGap);
 			return;
@@ -112,52 +95,46 @@ namespace Rendering
 		CalcAspect();
 	}
 
-	bool Camera::Run(float delta)
+	void Camera::SceneUpdate(float dt, std::vector<Object*> *sceneObjects)
 	{
-		SOC_Matrix projMat, viewMat;
-		GetProjectionMatrix(&projMat);
-		GetWorldMatrix(&viewMat);
+		for(vector<Object*>::iterator iter = sceneObjects->begin(); iter != sceneObjects->end(); ++iter)
+			(*iter)->Update(dt);
+	}
 
-		Clear();		
-		frustum->Make(&(viewMat * projMat));
+	void Camera::SceneRender(Camera *cam, std::vector<Object*> *sceneObjects, Light::LightManager* sceneLights)
+	{
+		SOC_Matrix projMat, viewMat, viewProjMat;
+		cam->GetProjectionMatrix(&projMat);
+		cam->ownerTransform->GetWorldMatrix(&viewMat);
+		viewProjMat = viewMat * projMat;
+
+		cam->Clear();		
+		cam->frustum->Make(&(viewMat * projMat));
 
 		//추후 작업.	
 
-		vector<Object*> lights;
-		sceneLights->Intersect(frustum, &lights);
+		vector<LightForm*> lights;
+		sceneLights->Intersect(cam->frustum, &lights);
 		//월드 상의 빛에서 절두체에 겹치는거 모두 찾음.
 
 		for(vector<Object*>::iterator iter = sceneObjects->begin(); iter != sceneObjects->end(); ++iter)
 		{
-			(*iter)->Update(delta);
-//			(*iter)->UpdateCameraTransform(&viewMat, &projMat, forward);
-			(*iter)->Culling(frustum);
-			(*iter)->Render(&lights, &viewMat, &projMat, forward);
+//			(*iter)->Update(delta);
+			(*iter)->Culling(cam->frustum);
+			(*iter)->Render(&lights, &viewMat, &projMat, &viewProjMat);
 		}
-
-		return true;
-	}
-
-	void Camera::SetMainCamera(Camera *camera)
-	{
-		mainCamera = camera;
-	}
-
-	Camera* Camera::GetMainCamera()
-	{
-		return mainCamera;
 	}
 
 	void Camera::GetViewMatrix(SOC_Matrix *outMatrix)
 	{
-		GetMatrix(outMatrix);
+		ownerTransform->GetMatrix(outMatrix);
 	}
 
 	void Camera::GetViewProjectionMatrix(SOC_Matrix *outMatrix, float farGap)
 	{
 		SOC_Matrix proj;
 
-		GetMatrix(outMatrix); // view Matrix
+		ownerTransform->GetMatrix(outMatrix); // view Matrix
 		GetProjectionMatrix(&proj, farGap);
 
 		SOCMatrixMultiply(outMatrix, outMatrix, &proj);

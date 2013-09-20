@@ -1,10 +1,10 @@
 #pragma once
 
-enum PRESENT_INTERVAL
+enum PresentInterval
 {
-	PRESENT_INTERVAL_DEFAULT,
-	PRESENT_INTERVAL_IMMEDIATE,
-	PRESENT_INTERVAL_VERTICALSYNC
+	Default,
+	Immediate,
+	VerticalSync
 };
 
 #if defined(WIN32) && !defined(_USE_GL_DEFINES)

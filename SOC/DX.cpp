@@ -4,7 +4,7 @@ namespace Device
 {
 	namespace Graphics
 	{
-		DX::DX(PRESENT_INTERVAL interval, Application::Application *app) 
+		DX::DX(PresentInterval interval, Application::Application *app) 
 			: GraphicsForm(interval, app)
 		{
 			ZeroMemory(&d3dpp, sizeof(d3dpp));
@@ -13,9 +13,9 @@ namespace Device
 
 			d3dpp.Windowed = win->IsWindowMode();
 
-			if(interval == PRESENT_INTERVAL_DEFAULT)
+			if(interval == PresentInterval::Default)
 				d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_DEFAULT;
-			else if( interval == PRESENT_INTERVAL_IMMEDIATE )
+			else if( interval == PresentInterval::Immediate )
 				d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
 			else d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_ONE;
 
@@ -58,14 +58,14 @@ namespace Device
 			return true;
 		}
 
-		bool DX::Clear(unsigned int count, const Common::Rect<int> *rect, clearFlag flags, Rendering::Color &color, float z, unsigned int stencil)
+		bool DX::Clear(unsigned int count, const Common::Rect<int> *rect, ClearFlag flags, Rendering::Color &color, float z, unsigned int stencil)
 		{				
 			D3DCOLOR d3dColor = D3DCOLOR_COLORVALUE(color.r, color.g, color.b, color.a);
 
 			//SOC_dword flag;
-			//if(flags & CLEAR_FLAG_TARGET)
+			//if(flags & FlagTarget)
 			//	flag |= D3DCLEAR_TARGET;
-			//if(flags & CLEAR_FLAG_STENCIL)
+			//if(flags & FlagStencil)
 			//	flag |= D3DCLEAR_STENCIL
 
 			bool success = false;
@@ -86,7 +86,7 @@ namespace Device
 			return success;
 		}
 
-		bool DX::Clear(clearFlag flags, Rendering::Color &color)
+		bool DX::Clear(ClearFlag flags, Rendering::Color &color)
 		{
 			return Clear(0, NULL, flags, color, 1.0f, 0L);
 		}

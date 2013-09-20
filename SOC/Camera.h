@@ -1,36 +1,35 @@
 #pragma once
 
-#include "Object.h"
-#include "Rect.h"
+#include "Transform.h"
 #include "Frustum.h"
 #include "Skybox.h"
 #include "LightManager.h"
+#include "Component.h"
 
 namespace Rendering
 {
-	class Camera : public Object
+	class Camera : public Component
 	{
 	public:
-		enum TYPE { TYPE_PERSPECTIVE, TYPE_ORTHOGRAPHIC };
-		enum CLEAR_FLAG { CLEAR_FLAG_SKYBOX, CLEAR_FLAG_SOLIDCOLOR, CLEAR_FLAG_TARGET, CLEAR_FLAG_DONT_CLAR };
+		static const Component::Type ComponentType = Component::Type::Camera;
+
+	public:
+		enum Type { Perspective, Orthographic };
+		enum ClearFlag { FlagSkybox, FlagSolidColor, FlagTarget, FlagDontClear };
 		//CLEAR_FLAG_DEPTHONLY는 제외함. 어떻게 구현하라는건지 잘 모르겠음 -ㅠ-;
 
 	private:
-		Frustum *frustum;
+		Frustum		*frustum;
 
 	private:
 		Common::Rect<float>	  normalizedViewPortRect;
-
-	public:
-		std::vector<Object*>* sceneObjects;
-		Light::LightManager* sceneLights;
 
 	public:  //굳이 private로 할 필요는 없지.
 		float				FOV;
 		float				clippingNear;
 		float				clippingFar;
-		CLEAR_FLAG			clearFlag;
-		TYPE				camType;
+		ClearFlag			clearFlag;
+		Type				camType;
 		float				aspect;
 		Color				clearColor;
 		Skybox				*skybox;
@@ -40,16 +39,11 @@ namespace Rendering
 		//3. 렌더 텍스쳐 선택. 이건 지금 할게 아니야
 
 	public:
-		Camera(Skybox *skybox, Object *parent = NULL);
+		Camera();
 		~Camera(void);
 
 	private:
-		Camera(const Camera &cam){}
-
-	private:
 		void CalcAspect();
-
-	public:
 		void Clear();
 
 	public:
@@ -60,13 +54,10 @@ namespace Rendering
 		void GetViewProjectionMatrix(SOC_Matrix *outMatrix, float farGap = 0);
 
 	public:
-		bool Run(float delta);
+		static void SceneUpdate(float dt, std::vector<Object*> *sceneObjects);
+		static void SceneRender(Camera *cam, std::vector<Object*> *sceneObjects, Light::LightManager* sceneLights);
 
 	public:
 		void SetViewPort(Common::Rect<float> rect);
-		
-		static void SetMainCamera(Camera *camera);
-		static Camera* GetMainCamera();
 	};
-
 }
