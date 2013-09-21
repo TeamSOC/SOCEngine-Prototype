@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="헤더 파일">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="Engine">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
@@ -222,6 +218,12 @@
     <Filter Include="Engine\Rendering\Transform\OutParameters">
       <UniqueIdentifier>{d42b87e4-c6cd-4d47-895a-e202d907e70b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Memory">
+      <UniqueIdentifier>{3304b49e-1164-4ba2-92e1-00b9a842b570}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pch">
+      <UniqueIdentifier>{60fddc8b-0924-4416-bbec-bede115c6f07}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AABB.cpp">
@@ -358,6 +360,15 @@
     </ClCompile>
     <ClCompile Include="Component.cpp">
       <Filter>Engine\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\Allocator.cpp">
+      <Filter>Engine\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\Slab.cpp">
+      <Filter>Engine\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="pch\pch.cpp">
+      <Filter>pch</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -549,6 +560,24 @@
     </ClInclude>
     <ClInclude Include="Container.h">
       <Filter>Engine\Common\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Allocator.h">
+      <Filter>Engine\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Interface.h">
+      <Filter>Engine\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\MacroDefine.h">
+      <Filter>Engine\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Slab.h">
+      <Filter>Engine\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Type.h">
+      <Filter>Engine\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="pch\pch.h">
+      <Filter>pch</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
