@@ -10,8 +10,9 @@ namespace Memory {
 #define TAG_MASK			0x00ffffff	// 3byte
 #define MEM_POSTFREE_BIT	0x1
 
-	const int THREAD_SHIFT = 24;
-	const int MEMORY_SHIFT = 24;
+	const int THREAD_SHIFT	= 24;
+	const int MEMORY_SHIFT	= 24;
+	const int POSTFREE_MAX	= 1024;
 
 	class Allocator
 	{
@@ -35,7 +36,7 @@ namespace Memory {
 		int		ExtractSize(void* ptr);
 		int		ExtractRealSize(void* ptr);
 		int		ExtractTag(void* ptr);
-		char	GetMemOP(void* ptr);	// memory 관련 진행동작을 표시(디버깅용)
+		char	ExtractMemOP(void* ptr);	// memory 관련 진행동작을 표시(디버깅용)
 		void	SetMemOP(void* ptr, char op);
 		unsigned int* GetRealMemory(void* ptr) { return (unsigned int*)ptr -2; }
 		unsigned int* GetMemory(void* ptr) { return (unsigned int*)ptr; }
@@ -49,5 +50,7 @@ namespace Memory {
 		int m_maxAlign;
 		size_t m_allocedMemoryRealSize;
 		CSlab** m_ppFreeListArray;
+
+		System::MWSRQueue<void, POSTFREE_MAX> m_postFreeQueue;
 	};
 }

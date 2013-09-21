@@ -224,6 +224,9 @@
     <Filter Include="pch">
       <UniqueIdentifier>{60fddc8b-0924-4416-bbec-bede115c6f07}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\System">
+      <UniqueIdentifier>{be912858-873a-435f-a886-662130014b03}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AABB.cpp">
@@ -578,6 +581,9 @@
     </ClInclude>
     <ClInclude Include="pch\pch.h">
       <Filter>pch</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Queue.h">
+      <Filter>Engine\System</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

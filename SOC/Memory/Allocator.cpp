@@ -96,7 +96,7 @@ namespace Memory {
 		}
 
 		// note : this mean is the wrong access
-		char memOP = GetMemOP(ptr);
+		char memOP = ExtractMemOP(ptr);
 		if ((memOP & MEM_POSTFREE_BIT) != 0)
 		{
 			// perform to GarbageCollecter
@@ -111,13 +111,25 @@ namespace Memory {
 	//this free func is usable in other threads.
 	void Allocator::PostponeFree(void* ptr)
 	{
-		// this is not implemented yet.
+		if (m_threadID != ExtractThreadID(ptr))
+		{
+			// thread info is not same
+			return;
+		}
+
+		SetMemOP(ptr, MEM_POSTFREE_BIT);
+		m_postFreeQueue.Push(ptr);
 	}
 
 	bool Allocator::GarbageCollect()
 	{
-		// this is not implemented yet.
-		return false;
+		void* ptr = nullptr;
+		while ((ptr = m_postFreeQueue.Pop(nullptr)) != nullptr)
+		{
+			FreeInternal(ptr);
+		}
+
+		return true;
 	}
 
 	void Allocator::FreeInternal(void* ptr)
@@ -226,7 +238,7 @@ namespace Memory {
 		return *(pMem +1) & TAG_MASK;
 	}
 
-	char Allocator::GetMemOP(void* ptr)
+	char Allocator::ExtractMemOP(void* ptr)
 	{
 		unsigned int* pMem = (unsigned int*)ptr -2;
 		return (char)( (*(pMem +1) & MEMORY_MASK) >> MEMORY_SHIFT );
