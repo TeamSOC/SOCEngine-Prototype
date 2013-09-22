@@ -6,6 +6,7 @@
 
 #include "TransformParameters.h"
 #include "LightParameters.h"
+#include "BasicParameterNames.h"
 
 #include <string>
 
@@ -16,46 +17,6 @@ namespace Rendering
 	namespace Shader
 	{
 #define DEFAULT_TECHNIQUE "SOC"
-
-		enum REQUIRED_MATRIX
-		{
-			REQUIRED_MATRIX_WORLD			= 1,
-			REQUIRED_MATRIX_VIEW			= 2,
-			REQUIRED_MATRIX_PROJECTION		= 4,
-			REQUIRED_MATRIX_VP				= 8,	//View * Projection
-			REQUIRED_MATRIX_WVP				= 16	//World * View * Projection
-		};
-
-		//Specular light or other light should autonomously set. 
-		enum REQUIRED_LIGHT
-		{
-			REQUIRED_LIGHT_DIFFUSE = 1,
-			REQUIRED_LIGHT_AMBIENT_COLOR = 2,
-			REQUIRED_LIGHT_SPECULAR = 4,
-			REQUIRED_LIGHT_HAS_LIGHT = REQUIRED_LIGHT_DIFFUSE | REQUIRED_LIGHT_SPECULAR
-		};
-
-		namespace BasicParameters
-		{
-			static const char *worldMat				= "worldMat";
-			static const char *viewMat				= "viewMat";
-			static const char *projMat				= "projMat";
-			static const char *viewProjMat			= "viewProjMat";
-			static const char *worldViewProjMat		= "worldViewProjMat";
-
-			static const char *ambientColor			= "ambientColor";
-
-			static const char *lightDiffuseColor	= "lightDiffuesColor";
-			static const char *lightSpecularColor	= "lightSpecularColor";
-			static const char *lightSpecularPower   = "lightSpecularPower";
-	
-			static const char *viewPos				= "viewPos";
-			static const char *lightPos				= "lightPos";
-			static const char *lightDir				= "lightDir";
-			static const char *lightRange			= "lightRange";
-			static const char *lightType			= "lightType";
-			static const char *lightSpotAngle		= "lightSpotAngle";
-		}
 
 		class ShaderForm
 		{

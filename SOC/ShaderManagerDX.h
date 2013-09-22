@@ -20,9 +20,9 @@ namespace Rendering
 			~ShaderManagerDX(void);
 
 		public:
-			bool LoadShaderFromFile( std::string path, shaderCode *outShaderCode, bool inShaderFolder);
-			bool FindShader(std::string path, std::string *outShaderCode, bool inResourceFolder);
-			void DeleteAll();
+			virtual bool LoadShaderFromFile( std::string path, shaderCode *outShaderCode, bool inShaderFolder);
+			virtual bool FindShader(std::string path, std::string *outShaderCode, bool inResourceFolder);
+			virtual void DeleteAll();
 		};
 
 	}

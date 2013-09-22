@@ -2,7 +2,6 @@
 #include "DeviceDirector.h"
 /// header of HSB
 #include "pch/pch.h"
-///
 
 using namespace Device::Application;
 using namespace Common;

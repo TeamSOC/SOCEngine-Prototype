@@ -1,4 +1,4 @@
-//
+﻿//
 //  Timer.h
 //  Rendering
 //
