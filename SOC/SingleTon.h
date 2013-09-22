@@ -19,7 +19,7 @@ namespace Utility
 			return instance;
 		}
 
-		void DeleteSingleTon()
+		static void DeleteSingleTon()
 		{
 			Utility::SAFE_DELETE(instance);
 		}
