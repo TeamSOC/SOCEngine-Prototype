@@ -126,6 +126,7 @@ namespace Device
 
 	void DeviceDirector::Run()
 	{
+		Timer::GetDefaultTimer();
 		MSG msg;
 		ZeroMemory( &msg, sizeof( msg ) );
 

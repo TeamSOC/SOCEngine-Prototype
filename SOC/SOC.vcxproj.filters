@@ -230,6 +230,9 @@
     <Filter Include="Engine\Rendering\Shader\Shader\Parameters">
       <UniqueIdentifier>{0942fc76-3a32-4c2d-8b6a-cde88194e106}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Common\Timer">
+      <UniqueIdentifier>{006beb02-4c25-4ad8-affc-b95c387b51a4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AABB.cpp">
@@ -378,6 +381,9 @@
     </ClCompile>
     <ClCompile Include="BasicParameterNames.cpp">
       <Filter>Engine\Rendering\Shader\Shader\Parameters</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Engine\Common\Timer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -593,6 +599,9 @@
     </ClInclude>
     <ClInclude Include="BasicParameterNames.h">
       <Filter>Engine\Rendering\Shader\Shader\Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Engine\Common\Timer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
