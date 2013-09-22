@@ -7,8 +7,6 @@ namespace Rendering
 {
 	namespace Shader
 	{
-		using namespace BasicParameters;
-
 		ShaderDX::ShaderDX(Device::Graphics::GraphicsForm *graphics, const char *name) : ShaderForm(graphics, name)
 		{
 			shader = NULL;
@@ -137,28 +135,28 @@ namespace Rendering
 
 		void ShaderDX::GetRequiredParameters(SOC_byte *outMatrixParamters, SOC_byte *outLightParameters, char *technique)
 		{
-			if(IsParameterUsed(worldMat, technique))
+			if(IsParameterUsed(BasicParameterNames::GetWorldMatrix(), technique))
 				requiredMatrixParam |= REQUIRED_MATRIX_WORLD;
 
-			if(IsParameterUsed(viewMat, technique))
+			if(IsParameterUsed(BasicParameterNames::GetViewMatrix(), technique))
 				requiredMatrixParam |= REQUIRED_MATRIX_VIEW;
 
-			if(IsParameterUsed(projMat, technique))
+			if(IsParameterUsed(BasicParameterNames::GetProjMatrix(), technique))
 				requiredMatrixParam |= REQUIRED_MATRIX_PROJECTION;
 
-			if(IsParameterUsed(viewProjMat, technique))
+			if(IsParameterUsed(BasicParameterNames::GetViewProjMatrix(), technique))
 				requiredMatrixParam |= REQUIRED_MATRIX_VP;
 
-			if(IsParameterUsed(worldViewProjMat, technique))
+			if(IsParameterUsed(BasicParameterNames::GetWorldViewProjMatrix(), technique))
 				requiredMatrixParam |= REQUIRED_MATRIX_WVP;
 
-			if(IsParameterUsed(lightDiffuseColor, technique))
+			if(IsParameterUsed(BasicParameterNames::GetLightDiffuseColor(), technique))
 				requiredLightParam |= REQUIRED_LIGHT_DIFFUSE;
 
-			if(IsParameterUsed(lightSpecularColor, technique))
+			if(IsParameterUsed(BasicParameterNames::GetLightSpecularColor(), technique))
 				requiredLightParam |= REQUIRED_LIGHT_SPECULAR;
 
-			if(IsParameterUsed(ambientColor, technique))
+			if(IsParameterUsed(BasicParameterNames::GetAmbientColor(), technique))
 				requiredLightParam |= REQUIRED_LIGHT_AMBIENT_COLOR;
 
 			if(outMatrixParamters)

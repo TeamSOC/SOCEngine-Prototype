@@ -222,6 +222,9 @@
     <Filter Include="Engine\Rendering\Transform\OutParameters">
       <UniqueIdentifier>{d42b87e4-c6cd-4d47-895a-e202d907e70b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Rendering\Shader\Shader\BasicParameters">
+      <UniqueIdentifier>{4d6ccc57-1e27-44f8-970c-619840e6ec52}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AABB.cpp">
@@ -358,6 +361,9 @@
     </ClCompile>
     <ClCompile Include="Component.cpp">
       <Filter>Engine\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicParameterNames.cpp">
+      <Filter>Engine\Rendering\Shader\Shader\BasicParameters</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -549,6 +555,9 @@
     </ClInclude>
     <ClInclude Include="Container.h">
       <Filter>Engine\Common\Container</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicParameterNames.h">
+      <Filter>Engine\Rendering\Shader\Shader\BasicParameters</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

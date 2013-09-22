@@ -122,44 +122,46 @@ namespace Rendering
 		SOC_byte mp = useShader->GetRequiredMatrixParameters();
 		SOC_byte lp = useShader->GetRequiredLightParameters();
 		
+		
+
 		if ( REQUIRED_MATRIX_WORLD & mp )
-			useShader->SetVariable(BasicParameters::worldMat, transform->worldMatrix);
+			useShader->SetVariable(BasicParameterNames::GetWorldMatrix(), transform->worldMatrix);
 		if ( REQUIRED_MATRIX_VIEW & mp )
-			useShader->SetVariable(BasicParameters::viewMat, transform->viewMatrix);
+			useShader->SetVariable(BasicParameterNames::GetViewMatrix(), transform->viewMatrix);
 		if ( REQUIRED_MATRIX_PROJECTION & mp )
-			useShader->SetVariable(BasicParameters::projMat, transform->projMatrix);
+			useShader->SetVariable(BasicParameterNames::GetProjMatrix(), transform->projMatrix);
 		if ( REQUIRED_MATRIX_VP & mp )
-			useShader->SetVariable(BasicParameters::viewProjMat, transform->viewProjMatrix);
+			useShader->SetVariable(BasicParameterNames::GetViewProjMatrix(), transform->viewProjMatrix);
 		if ( REQUIRED_MATRIX_WVP & mp )
-			useShader->SetVariable(BasicParameters::worldViewProjMat, transform->worldViewProjMatrix);
+			useShader->SetVariable(BasicParameterNames::GetWorldViewProjMatrix(), transform->worldViewProjMatrix);
 
 		if( REQUIRED_LIGHT_AMBIENT_COLOR & lp )
 		{
 			SOC_Vector4 vector = this->ambientColor.GetVector();
-			useShader->SetVariable(BasicParameters::ambientColor, &vector);
+			useShader->SetVariable(BasicParameterNames::GetAmbientColor(), &vector);
 		}
 
 		int count = light->count;
 
 		if(REQUIRED_LIGHT_HAS_LIGHT & lp)
 		{
-			useShader->SetVariable(BasicParameters::viewPos, &light->viewPos);
-			useShader->SetVariable(BasicParameters::lightPos, light->lightposAry, count);
-			useShader->SetVariable(BasicParameters::lightRange, light->rangeAry, count);
-			useShader->SetVariable(BasicParameters::lightType, light->typeAry, count);
-			useShader->SetVariable(BasicParameters::lightDir, light->lightDirAry, count);
+			useShader->SetVariable(BasicParameterNames::GetViewPos(), &light->viewPos);
+			useShader->SetVariable(BasicParameterNames::GetLightPos(), light->lightposAry, count);
+			useShader->SetVariable(BasicParameterNames::GetLightRange(), light->rangeAry, count);
+			useShader->SetVariable(BasicParameterNames::GetLightType(), light->typeAry, count);
+			useShader->SetVariable(BasicParameterNames::GetLightDir(), light->lightDirAry, count);
 
-			useShader->SetVariable(BasicParameters::lightSpotAngle, light->spotAngleAry, count);
+			useShader->SetVariable(BasicParameterNames::GetLightSpotAngle(), light->spotAngleAry, count);
 			//아 모르겠다 지가 알아서 걸르것지 --;
 		}
 
 		if( REQUIRED_LIGHT_DIFFUSE & lp )
-			useShader->SetVariable(BasicParameters::lightDiffuseColor, light->diffuseColorAry, count);
+			useShader->SetVariable(BasicParameterNames::GetLightDiffuseColor(), light->diffuseColorAry, count);
 
 		if( REQUIRED_LIGHT_SPECULAR & lp )
 		{
-			useShader->SetVariable(BasicParameters::lightSpecularColor, light->specularColorAry, count);
-			useShader->SetVariable(BasicParameters::lightSpecularPower, light->specularPowerAry, count);
+			useShader->SetVariable(BasicParameterNames::GetLightSpecularColor(), light->specularColorAry, count);
+			useShader->SetVariable(BasicParameterNames::GetLightSpecularPower(), light->specularPowerAry, count);
 		}
 	}
 }
