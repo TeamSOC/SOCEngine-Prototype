@@ -41,11 +41,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\NvTriStrip\include;$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
-    <LibraryPath>..\NvTriStrip\lib\Release;$(DXSDK_DIR)Lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Program Files\Autodesk\FBX\FBX SDK\2014.1\include;..\NvTriStrip\include;$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files\Autodesk\FBX\FBX SDK\2014.1\lib\vs2012\x86\debug;..\NvTriStrip\lib\Release;$(DXSDK_DIR)Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Program Files\Autodesk\FBX\FBX SDK\2014.1\include;..\NvTriStrip\include;$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files\Autodesk\FBX\FBX SDK\2014.1\lib\vs2012\x86\release;..\NvTriStrip\lib\Release;$(DXSDK_DIR)Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
