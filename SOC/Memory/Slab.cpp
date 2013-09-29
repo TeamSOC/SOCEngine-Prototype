@@ -1,7 +1,7 @@
 #include "../pch/pch.h"
 
 namespace Memory {
-	CSlab::CSlab(size_t classSize, size_t bufferSize)
+	CSlab::CSlab(SOC_SIZE_T classSize, SOC_SIZE_T bufferSize)
 		: m_classSize(classSize)
 		, m_bufferSize(bufferSize)
 		, m_totalMemoryBytes(0)
@@ -40,25 +40,25 @@ namespace Memory {
 			return nullptr;
 		}
 
-		size_t allocSize = m_bufferSize * m_classSize;
+		SOC_SIZE_T allocSize = m_bufferSize * m_classSize;
 		if (OVERFLOWCHECK_ADD(m_totalMemoryBytes, allocSize))
 		{
 			//crash
 			return nullptr;
 		}
 
-		char* pMemory = (char*)malloc(m_classSize * m_bufferSize);
+		char* pMemory = (char*)malloc(allocSize);
 		if (pMemory == nullptr)
 		{
 			//crash
 			return nullptr;
 		}
 
-		memset(pMemory, FREE_PATTERN, m_bufferSize * m_classSize);
+		memset(pMemory, FREE_PATTERN, allocSize);
 
-		for (size_t i=0; i<m_bufferSize; ++i)
+		for (SOC_SIZE_T i=0; i<m_bufferSize; ++i)
 		{
-			char* ptr = pMemory + i*m_classSize;
+			char* ptr = pMemory + i * m_classSize;
 			*(PINT_PTR)ptr = (INT_PTR)(ptr + m_classSize);
 		}
 
@@ -66,18 +66,19 @@ namespace Memory {
 
 		m_vMemory.push_back(pMemory);
 
-		m_totalMemoryBytes += (m_bufferSize * m_classSize);
+		m_totalMemoryBytes += allocSize;
 		return pMemory;
 	}
 
-/*			
-¾îÂ÷ÇÇ m_bufferSize º¯¼ö°¡ ÇöÀç ½ÇÁ¦·Î ÇÒ´ç¹ÞÀ» ¼ö ÀÖ´Â ¸Þ¸ð¸®ÀÇ ÃÑ·®À» ¶æÇÏ¹Ç·Î.. 
-m_allocatedMemoryBytes <= m_bufferSize ÀÌ´Ù.
-¿À¹öÇÃ·Î¿ì°¡ °É¸°´Ù¸é m_bufferSize¸¦ ´Ã¸± ¶§ °É¸± °ÍÀÌ¹Ç·Î
-if (m_pFree != nullptr) ¾È¿¡¼­ ¸Þ¸ð¸® ¿À¹öÇÃ·Î¿ì °Ë»ç¸¦ ÇÒ ÇÊ¿ä´Â ¾øÀ» °ÍÀÌ´Ù.
+/*
+// Note :
+Ã¦Ã“Â¬ËœÂ«Â« m_bufferSize âˆ«Ã˜ÂºË†âˆžÂ° Â«Ë†Â¿Ã Î©Â«Â¡Â¶âˆ‘Å’ Â«â€œÂ¥ÃÏ€ï¬Â¿Âª ÂºË† Â¿Ã·Â¥Â¬ âˆï¬âˆï£¿âˆÃ†Â¿Â« âˆšâ€”âˆ‘Ã†Â¿Âª âˆ‚ÃŠÂ«Å“Ï€Â«âˆ‘Å’.. 
+m_allocatedMemoryBytes <= m_bufferSize Â¿ÃƒÂ¥Å¸.
+Ã¸Â¿Ï€Ë†Â«âˆšâˆ‘Å’Ã¸ÃâˆžÂ° âˆžâ€¦âˆâˆžÂ¥Å¸âˆÃˆ m_bufferSizeâˆÂ¶ Â¥âˆšâˆÂ± âˆ‚ÃŸ âˆžâ€¦âˆÂ± âˆžÃ•Â¿ÃƒÏ€Â«âˆ‘Å’
+if (m_pFree != nullptr) Ã¦Â»Ã¸Â°Âºâ‰  âˆï¬âˆï£¿âˆÃ† Ã¸Â¿Ï€Ë†Â«âˆšâˆ‘Å’Ã¸Ã âˆžÃ€ÂªÃâˆÂ¶ Â«â€œ Â«Â Ã¸â€°Â¥Â¬ Ã¦Â¯Â¿Âª âˆžÃ•Â¿ÃƒÂ¥Å¸.
 
-½ÇÁ¦·Î Å« ¸Þ¸ð¸®¸¦ ÇÒ´ç ¹ÞÀ¸¸é ±×°É ´Ù ½á¾ß ´Ù½Ã ¸Þ¸ð¸® ÇÒ´çÀ» ´õ ÇÑ´Ù.
-±×·¸±â ¶§¹®¿¡ ºÎÇÏ°¡ °É¸®´Â ÀÏÀº ¾øÀ» °ÍÀÌ´Ù.
+Î©Â«Â¡Â¶âˆ‘Å’ â‰ˆÂ´ âˆï¬âˆï£¿âˆÃ†âˆÂ¶ Â«â€œÂ¥Ã Ï€ï¬Â¿âˆâˆÃˆ Â±â—Šâˆžâ€¦ Â¥Å¸ Î©Â·Ã¦ï¬‚ Â¥Å¸Î©âˆš âˆï¬âˆï£¿âˆÃ† Â«â€œÂ¥ÃÂ¿Âª Â¥Ä± Â«â€”Â¥Å¸.
+Â±â—Šâˆ‘âˆÂ±â€š âˆ‚ÃŸÏ€Ã†Ã¸Â° âˆ«Å’Â«Å“âˆžÂ° âˆžâ€¦âˆÃ†Â¥Â¬ Â¿Å“Â¿âˆ« Ã¦Â¯Â¿Âª âˆžÃ•Â¿ÃƒÂ¥Å¸.
 */
 	void* CSlab::GetMemory()
 	{

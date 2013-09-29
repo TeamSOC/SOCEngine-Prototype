@@ -11,23 +11,23 @@ namespace Memory {
 	class CSlab
 	{
 	public:
-		CSlab(size_t classSize, size_t bufferSize);
+		CSlab(SOC_SIZE_T classSize, SOC_SIZE_T bufferSize);
 		~CSlab();
 
 		void* GetMemory();
 		void PutMemory(void* ptr);
-		int GetClassSize() { return m_classSize; }
-		int GetAllocatedMemorySize() { return m_allocatedMemoryBytes; }
-		int GetAllMemorySize() { return m_bufferSize; }
+		SOC_SIZE_T GetClassSize() { return m_classSize; }
+		SOC_SIZE_T GetAllocatedMemorySize() { return m_allocatedMemoryBytes; }
+		SOC_SIZE_T GetAllMemorySize() { return m_bufferSize; }
 
 	private:
 		char* CreateMemory();
 
 	private:
-		size_t m_classSize;
-		size_t m_bufferSize;
-		size_t m_totalMemoryBytes;
-		size_t m_allocatedMemoryBytes;
+		SOC_SIZE_T m_classSize;
+		SOC_SIZE_T m_bufferSize;
+		SOC_SIZE_T m_totalMemoryBytes;
+		SOC_SIZE_T m_allocatedMemoryBytes;
 		char* m_pFree;
 		char* m_pCache;
 

@@ -3,13 +3,13 @@
 
 namespace Memory {
 
-	Allocator::Allocator(int threadID, int threadMax, int minAlign, int maxAlign, int bufferSize)
+	Allocator::Allocator(SOC_INT32 threadID, SOC_INT32 threadMax, SOC_INT32 minAlign, SOC_INT32 maxAlign, SOC_SIZE_T bufferSize)
 		: m_threadID(threadID)
 		, m_threadMax(threadMax)
 		, m_minAlign(minAlign)
 		, m_maxAlign(maxAlign)
 		, m_allocedMemoryRealSize(0)
-		, m_lowWaterMark(std::numeric_limits<unsigned int>::max())
+		, m_lowWaterMark(std::numeric_limits<SOC_INT32>::max())
 	{
 		// for instance.. number of between 3 and 10 is not [10 - 3 = 7]. 
 		// that is 8.
@@ -18,8 +18,8 @@ namespace Memory {
 		m_ppFreeListArray = (CSlab**)malloc(m_alignCount * sizeof(CSlab*));
 		for (int i=0; i<m_alignCount; ++i)
 		{
-			int memorySize = 1 << (i + minAlign);
-			m_ppFreeListArray[i] = new CSlab(memorySize, bufferSize);
+			SOC_INT32 align = 1 << (i + minAlign);
+			m_ppFreeListArray[i] = new CSlab(align, bufferSize);
 		}
 	}
 
@@ -36,10 +36,16 @@ namespace Memory {
 		free(m_ppFreeListArray);
 	}
 
-	void* Allocator::Alloc(size_t size, int tag)
+	void* Allocator::Alloc(SOC_SIZE_T size, SOC_INT32 tag)
 	{
 		// note : (thread | size) + tag
-		int realSize = size + sizeof(int) * 2;
+        // if 64 bit, following below.
+        // size + 4 byte + (2byte | 6 byte)
+        // but no RAM memory not supported yet.
+        // so i select max allocatable memory is 4GB.
+        // size + 4 byte + (1 byte | 3 byte)
+        
+		SOC_SIZE_T realSize = size + 4 * 2;
 
 		if (OVERFLOWCHECK_ADD(m_allocedMemoryRealSize, realSize))
 		{
@@ -49,14 +55,14 @@ namespace Memory {
 		CSlab* pSlab = GetSlab(realSize);
 		m_allocedMemoryRealSize += realSize;
 
-		unsigned int* pMem = nullptr;
+		SOC_INT32* pMem = nullptr;
 		if (pSlab != nullptr)
 		{
-			pMem = (unsigned int*)pSlab->GetMemory();
+			pMem = (SOC_INT32*)pSlab->GetMemory();
 		}
 		else
 		{
-			pMem = (unsigned int*)malloc(realSize);
+			pMem = (SOC_INT32*)malloc(realSize);
 			memset(pMem, FREE_PATTERN, realSize);
 		}
 
@@ -67,19 +73,19 @@ namespace Memory {
 			return nullptr;
 		}
 
-		// max allocatable : 16777216 byte. 
+		// in 32 bit, max allocatable : 16777216 byte.
 		// this is 2^24 : 3 byte.
-		// this form is [threadID | size][tag][we use byte]
+		// this form is [we will use byte][tag][threadID | size]
 		*pMem = ((m_threadID << THREAD_SHIFT) | size);
 		*(pMem +1) = tag & TAG_MASK;
 
 		return CheckAlloc(pMem +2);
 	}
 
-	bool Allocator::Free(void* ptr, int tag, int& threadID)
+	bool Allocator::Free(void* ptr, SOC_INT32 tag, SOC_INT32& threadID)
 	{
-		// all free to delayed object in here.
-
+        GarbageCollect();
+        
 		if (tag != ExtractTag(ptr))
 		{
 			// note : not matched memory tag
@@ -88,7 +94,7 @@ namespace Memory {
 			return false;
 		}
 
-		int alloc_threadID = ExtractThreadID(ptr);
+		SOC_INT32 alloc_threadID = ExtractThreadID(ptr);
 		if (alloc_threadID != m_threadID)
 		{
 			threadID = alloc_threadID;
@@ -99,6 +105,7 @@ namespace Memory {
 		char memOP = ExtractMemOP(ptr);
 		if ((memOP & MEM_POSTFREE_BIT) != 0)
 		{
+            GarbageCollect();
 			// perform to GarbageCollecter
 			// crash
 			return true;
@@ -134,8 +141,8 @@ namespace Memory {
 
 	void Allocator::FreeInternal(void* ptr)
 	{
-		int realSize = ExtractRealSize(ptr);
-		int alloc_threadID = ExtractThreadID(ptr);
+		SOC_SIZE_T realSize = ExtractRealSize(ptr);
+		SOC_INT32 alloc_threadID = ExtractThreadID(ptr);
 
 		if (m_threadID != alloc_threadID)
 		{
@@ -151,7 +158,7 @@ namespace Memory {
 		}
 
 		m_allocedMemoryRealSize -= realSize;
-		unsigned int* pMem = GetRealMemory(ptr);
+		void* pMem = GetRealMemory(ptr);
 		CSlab* pSlab = GetSlab(realSize);
 
 		if (pSlab != nullptr)
@@ -166,7 +173,7 @@ namespace Memory {
 
 	void* Allocator::CheckAlloc(void* ptr)
 	{
-		int threadID = ExtractThreadID(ptr);
+		SOC_INT32 threadID = ExtractThreadID(ptr);
 		if (threadID >= m_threadMax)
 		{
 			//error. loging and need to crash
@@ -182,11 +189,11 @@ namespace Memory {
 		return ptr;
 	}
 
-	CSlab* Allocator::GetSlab( int requiredSize )
+	CSlab* Allocator::GetSlab(SOC_SIZE_T requiredSize)
 	{
 		int poolIndex = 0;
 
-		int requiredSizeTemp = requiredSize -1;
+		SOC_SIZE_T requiredSizeTemp = requiredSize -1;
 		while (true) // detecting the alignment.
 		{
 			if ( (requiredSizeTemp >> (poolIndex + m_minAlign)) == 0) 
@@ -208,45 +215,45 @@ namespace Memory {
 		return m_ppFreeListArray[poolIndex];
 	}
 
-	int Allocator::ExtractThreadID(void* ptr)
+	SOC_INT32 Allocator::ExtractThreadID(void* ptr)
 	{
-		unsigned int* pMem = (unsigned int*)ptr -2;
-		int threadID = (*pMem & THREAD_MASK) >> THREAD_SHIFT;
+		SOC_INT32* pMem = (SOC_INT32*)ptr -2;
+		SOC_INT32 threadID = (*pMem & THREAD_MASK) >> THREAD_SHIFT;
 
 		return threadID;
 	}
 
-	int Allocator::ExtractSize(void* ptr)
+	SOC_SIZE_T Allocator::ExtractSize(void* ptr)
 	{
-		unsigned int* pMem = (unsigned int*)ptr -2;
-		size_t size = (*pMem & SIZE_MASK);
+		SOC_INT32* pMem = (SOC_INT32*)ptr -2;
+		SOC_SIZE_T size = (*pMem & SIZE_MASK);
 
 		return size;
 	}
 
-	int Allocator::ExtractRealSize(void* ptr)
+	SOC_SIZE_T Allocator::ExtractRealSize(void* ptr)
 	{
-		unsigned int* pMem = (unsigned int*)ptr -2;
-		size_t size = (*pMem & SIZE_MASK) + sizeof(int) *2;
+		SOC_INT32* pMem = (SOC_INT32*)ptr -2;
+		SOC_SIZE_T size = (*pMem & SIZE_MASK) + 4 * 2;
 
 		return size;
 	}
 
-	int Allocator::ExtractTag(void* ptr)
+	SOC_INT32 Allocator::ExtractTag(void* ptr)
 	{
-		unsigned int* pMem = (unsigned int*)ptr -2;
+		SOC_INT32* pMem = (SOC_INT32*)ptr -2;
 		return *(pMem +1) & TAG_MASK;
 	}
 
 	char Allocator::ExtractMemOP(void* ptr)
 	{
-		unsigned int* pMem = (unsigned int*)ptr -2;
-		return (char)( (*(pMem +1) & MEMORY_MASK) >> MEMORY_SHIFT );
+		SOC_INT32* pMem = (SOC_INT32*)ptr -1;
+		return (char)( (*pMem & MEMORY_MASK) >> MEMORY_SHIFT );
 	}
 
 	void Allocator::SetMemOP(void* ptr, char op)
 	{
-		unsigned int* pMem = (unsigned int*)ptr -1;
+		SOC_INT32* pMem = (SOC_INT32*)ptr -1;
 		*pMem = *pMem | (op << MEMORY_SHIFT);
 	}
 }
