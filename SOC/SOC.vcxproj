@@ -95,6 +95,7 @@
     <ClCompile Include="Cone.cpp" />
     <ClCompile Include="DeviceDirector.cpp" />
     <ClCompile Include="DX.cpp" />
+    <ClCompile Include="FBXLoader.cpp" />
     <ClCompile Include="GraphicsForm.cpp" />
     <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="Frustum.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="Device.h" />
     <ClInclude Include="DeviceDirector.h" />
     <ClInclude Include="DX.h" />
+    <ClInclude Include="FBXLoader.h" />
     <ClInclude Include="GraphicsForm.h" />
     <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="Frustum.h" />

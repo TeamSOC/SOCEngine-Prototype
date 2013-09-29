@@ -4,6 +4,7 @@
 #include "MeshRenderer.h"
 #include "Device.h"
 #include "Component.h"
+#include "FBXLoader.h"
 
 namespace Rendering
 {
