@@ -5,7 +5,7 @@ namespace Rendering
 	Material::Material(const char *name) : useShader(nullptr)
 	{
 		this->name = name;			
-		ambientColor = Color(0.1f, 0.1f, 0.1f, 1.0f);
+		elements.ambientColor = Color(0.1f, 0.1f, 0.1f, 1.0f);
 	}
 
 	Material::~Material(void)
@@ -137,7 +137,7 @@ namespace Rendering
 
 		if( REQUIRED_LIGHT_AMBIENT_COLOR & lp )
 		{
-			SOC_Vector4 vector = this->ambientColor.GetVector();
+			SOC_Vector4 vector = elements.ambientColor.GetVector();
 			useShader->SetVariable(BasicParameterNames::GetAmbientColor(), &vector);
 		}
 

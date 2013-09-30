@@ -612,5 +612,8 @@
     <ClInclude Include="FBXLoader.h">
       <Filter>Engine\Rendering\FBX Loader</Filter>
     </ClInclude>
+    <ClInclude Include="MaterialElements.h">
+      <Filter>Engine\Rendering\Material</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

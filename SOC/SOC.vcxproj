@@ -163,6 +163,7 @@
     <ClInclude Include="LightManager.h" />
     <ClInclude Include="LightParameters.h" />
     <ClInclude Include="Material.h" />
+    <ClInclude Include="MaterialElements.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Memory\Allocator.h" />
     <ClInclude Include="Memory\Interface.h" />

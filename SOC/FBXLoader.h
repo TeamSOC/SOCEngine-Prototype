@@ -5,6 +5,8 @@
 #include <fbxsdk.h>
 #pragma comment(lib, "libfbxsdk-md.lib")
 
+#include "MaterialElements.h"
+
 namespace Rendering
 {
 	namespace Loader
@@ -138,16 +140,12 @@ namespace Rendering
 					{}
 					else if(type == FbxNodeAttribute::eSkeleton)
 					{}
-					else if(type == FbxNodeAttribute::eCamera)
-					{}
-					else if(type == FbxNodeAttribute::eNurbs)
-					{}
-					else if(type == FbxNodeAttribute::ePatch)
-					{}
 					else
 					{
 
 					}
+
+					//camera nurb patch 지원 안함
 				}
 
 				int childCount = node->GetChildCount();
@@ -159,91 +157,53 @@ namespace Rendering
 				return true;
 			}
 
-			bool AssignMesh(FbxNode *node)
+			bool AssignMesh(FbxMesh *mesh)
 			{
-				if(node == nullptr)
-					return false;
-
-				FbxMesh *mesh = node->GetMesh();
-
-				if(mesh == nullptr)
-					return false;
-
+				//vertex buffer aryCount
+				int vertexCount = mesh->GetControlPointsCount();
 				int polygonCount = mesh->GetPolygonCount();
-				int controlPointCount = mesh->GetControlPointsCount();
 
-				FbxVector4 *controlPoints = mesh->GetControlPoints();
-
-				int vertexIndex = 0;
-
-				if( polygonCount < 0 || controlPointCount < 0 )
-					return false;
-
-				//AssignMaterials
-
-				//vertex
-				for(int i=0; i<controlPointCount; ++i)
-				{
-					//이해 ㄴㄴ 인게 아래가 예제코드야
-					//controlPoint[i][0] push to vertex
-					// ''            [1] push to vertex
-					// ''            [2] push to vertex
-					//mesh.mutable_vertex_list.pushback(vertex)
-					//뭐지 이게 대체
-				}
-
+				//인덱스 개수 측정
+				SOC_uint indexedsCount = 0;
 				for(int i=0; i<polygonCount; ++i)
 				{
-					//int list idxlist
+					int polygonSize = mesh->GetPolygonSize(i);
 
-					int count = mesh->GetLayerCount();
-					for(int j=0; j<count; ++j)
+					if(polygonSize == 3)
+						indexedsCount += 3;
+					else if(polygonSize == 4) //4각형은 3각형 2개로 분할
+						indexedsCount += 6;
+					else //오각형
 					{
-						//material index
-						FbxLayerElementMaterial *fbxMaterials = mesh->GetLayer(j)->GetMaterials();
-						if(fbxMaterials != nullptr)
-						{
-							FbxLayerElement::EMappingMode mode = fbxMaterials->GetMappingMode();
-							FbxLayerElement::EReferenceMode refMode = fbxMaterials->GetReferenceMode();
-
-							if(mode == FbxLayerElement::eByPolygon)
-							{
-								if(refMode == FbxLayerElement::eIndexToDirect)
-								{
-									int materialIdx = fbxMaterials->GetIndexArray().GetAt(i);
-									//mesh mutable material index push materialidx
-								}
-							}
-						}
+						return false;
 					}
-
-					int polyGonSize = mesh->GetPolygonSize(i);
-					for(int j=0; j<polyGonSize; ++j, ++vertexIndex)
-					{
-						int ctrlPointIdx = mesh->GetPolygonVertex(i, j);
-						//FbxVector4 point = ctrlPoints[ctrlPointIdx];
-
-						//vertex idx
-						//vertex idx push back ctrl point idx
-						int size = mesh->GetLayerCount();
-						for(int k=0; k<size; ++k)
-						{
-							FbxLayer *layer = mesh->GetLayer(k);
-							if(layer != __nullptr)
-							{
-								//assign normals
-								//assign uvs
-								//assign vertex colors
-							}
-						}
-					}
-					//mesh mutable vertex list push back vertexidx
 				}
 
-				//blend shape
-				//assign blend shapes
-				//skin
-				//assign skins
+				//meshinfo.vertexcscount vertexcount
+				//mi.vtxs = new vtx[vsize];
+				//mi.idxcount = idxcount
+				//mi.idex = new uint[count]
+
+				//버텍스
+				for(int i=0; i<vertexCount; ++i)
+				{
+					//control point가 vertex인듯 용어가 뭐이래 ㅗ
+					FbxVector4 v = mesh->GetControlPointAt(i);
+					//데이터 세팅
+				}
+
+				
+
+				return true;
+			}
+
+			bool AssignBone(FbxSkeleton *skeleton)
+			{
+				if(skeleton == nullptr)
+					return false;
+
+				FbxNode *boneNode = skeleton->GetNode();
+
 
 				return true;
 			}
