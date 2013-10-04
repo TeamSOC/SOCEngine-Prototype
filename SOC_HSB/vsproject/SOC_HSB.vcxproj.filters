@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="System">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="System\Lock">
+      <UniqueIdentifier>{d1340f3a-5cfe-42ca-9e22-9df32abee1df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pch">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Memory">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="main">
+      <UniqueIdentifier>{7a23dfb3-9eb0-41a7-a92b-5876f627e0d8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Memory\Allocator.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Memory\Slab.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pch\pch.cpp">
+      <Filter>pch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\Converter.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\Lock\Lock.cpp">
+      <Filter>System\Lock</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Memory\Allocator.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Memory\Interface.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Memory\MacroDefine.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Memory\Slab.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pch\pch.h">
+      <Filter>pch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Converter.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Interface.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Queue.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Type.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Lock\Lock.h">
+      <Filter>System\Lock</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
