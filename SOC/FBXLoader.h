@@ -147,6 +147,10 @@ namespace Rendering
 				int polygonCount		= fbxMesh->GetPolygonCount();
 				int vertexCount			= 0;
 
+				std::vector<int> boneIndices;
+				BuildskinningMesh(fbxMesh, boneIndices);
+				bool isSkinned = boneIndices.empty() == false;
+
 				for(int polygonIdx = 0; polygonIdx < polygonCount; ++polygonIdx)
 				{
 					int polygonSize = fbxMesh->GetPolygonSize(polygonIdx);					
@@ -157,8 +161,10 @@ namespace Rendering
 
 					for(int vertexIdx = 0; vertexIdx < polygonSize; ++vertexIdx)
 					{
-						int ctrlPointIdx = fbxMesh->GetPolygonVertex(polygonIdx, vertexIdx);
+						int ctrlPointIdx = fbxMesh->GetPolygonVertex(polygonIdx, vertexIdx);						
 						FbxVector4 ctrl = ctrlPoints[ctrlPointIdx];
+
+						//ctrl이 vertex고, skinned가있으면 vertex의 boneIdx에 넣고!
 
 						for(int layerNum = 0; layerNum < layerCount; ++layerNum)
 						{
@@ -216,6 +222,45 @@ namespace Rendering
 				}
 
 				return true;
+			}
+
+			void BuildskinningMesh(FbxMesh *fbxMesh, std::vector<int> &boneIndices)
+			{
+				int skinCount = fbxMesh->GetDeformerCount(FbxDeformer::eSkin);
+
+				if(skinCount > 0)
+					boneIndices.resize(fbxMesh->GetControlPointsCount(), -1);
+
+				for(int skinIdx = 0; skinIdx < skinCount; ++skinIdx)
+				{
+					FbxSkin *fbxSkin = FbxCast<FbxSkin>(fbxMesh->GetDeformer(skinIdx, FbxDeformer::eSkin));
+
+					int clusterCount = fbxSkin->GetClusterCount();
+					if( clusterCount == 0 )
+						continue;
+
+					for(int clusterIdx = 0; clusterIdx < clusterCount; ++clusterIdx)
+					{
+						FbxCluster *fbxCluster = fbxSkin->GetCluster(clusterIdx);
+						FbxNode *bone = fbxCluster->GetLink();
+
+						if( bone == nullptr )
+							continue;
+
+						int numInfluencedVertices = fbxCluster->GetControlPointIndicesCount();
+						
+						int *indexAry = fbxCluster->GetControlPointIndices();
+						double *weightAry = fbxCluster->GetControlPointWeights();
+
+						for(int ctrlPointIdx = 0; ctrlPointIdx < numInfluencedVertices; ++ctrlPointIdx)
+						{
+							int index = indexAry[ctrlPointIdx];
+							int boneIndex = boneIndices[index];
+
+							boneIndices[index] = clusterIdx;
+						}
+					}
+				}
 			}
 
 			template <typename ElementType>
@@ -356,22 +401,17 @@ namespace Rendering
 				if( fbxProperty.IsValid() == false )
 					return false;
 
+				//무조건 텍스쳐는 1개만..
+				if(fbxProperty.GetSrcObjectCount(FbxLayeredTexture::ClassId) != 0) 
+					return false;
+
 				int textureCount = fbxProperty.GetSrcObjectCount(FbxTexture::ClassId);
 
-				for(int i = 0; i < textureCount; ++i)
+				//무조건 텍스쳐는 1개만..
+				if( textureCount == 1 )
 				{
-					FbxFileTexture *tex = FbxCast<FbxFileTexture>(fbxProperty.GetSrcObject(FbxTexture::ClassId, i));
-
-					if(tex == nullptr)
-						continue;
-
-					const char* fileName = tex->GetFileName();
-					if( fileName == nullptr )
-						continue;
-
-					//texture name
-					//textureAlpha = tex->GetAlphaSource();
-					break;
+					FbxFileTexture *texture = FbxCast<FbxFileTexture>(fbxProperty.GetSrcObject(FbxTexture::ClassId));
+					const char *textureFileName = texture->GetFileName();
 				}
 
 				return true;
