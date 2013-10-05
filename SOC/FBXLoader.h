@@ -7,6 +7,7 @@
 
 #include "MaterialElements.h"
 #include "Bone.h"
+#include <vector>
 
 using namespace fbxsdk_2014_1;
 
@@ -101,15 +102,6 @@ namespace Rendering
 
 				if(importer->IsFBX())
 				{
-					//					animStackCount = importer->GetAnimStackCount();
-
-					//for(int i = 0; i < animStackCount; ++i)
-					//{
-					//	FbxTakeInfo* takeInfo = importer->GetTakeInfo(i);
-					//	//정보를 얻어 온 다
-					//}
-
-
 					manager->GetIOSettings()->SetBoolProp(IMP_FBX_MATERIAL,        true);
 					manager->GetIOSettings()->SetBoolProp(IMP_FBX_TEXTURE,         true);
 					manager->GetIOSettings()->SetBoolProp(IMP_FBX_LINK,            true);
@@ -159,10 +151,6 @@ namespace Rendering
 				int triangleAry[] = {0, 1, 2};
 				int rectangleAry[] = {0, 1, 2, 0, 2, 3};
 
-				//				for(int sub = 0; sub < layerCount; ++sub)
-				//				{
-
-
 				for(int polygonIdx = 0; polygonIdx < polygonCount; ++polygonIdx)
 				{
 					int polygonSize = fbxMesh->GetPolygonSize(polygonIdx);					
@@ -187,175 +175,92 @@ namespace Rendering
 
 						for(int layerNum = 0; layerNum < layerCount; ++layerNum)
 						{
-							FbxLayer *layer = fbxMesh->GetLayer(layerNum);
-							bool normal = true;
-							if(normal)
-							{
-								FbxLayerElementNormal *fbxNormal = layer->GetNormals();
-								if(fbxNormal)
-								{
-									mode = fbxNormal->GetMappingMode();
-									refMode = fbxNormal->GetReferenceMode();
+							FbxLayer *layer = fbxMesh->GetLayer(layerNum);					
 
-									if(mode == FbxLayerElement::eByControlPoint)
-									{
-										if(refMode == FbxLayerElement::eDirect)
-										{
-											int idx = ctrlPointIdx;
-											//FbxVector4 normal = fbxNormal->GetDirectArray().GetAt(ctrlPointIdx);
-											//normal data set!
-										}
-										else if(refMode == FbxLayerElement::eIndexToDirect)
-										{
-											int idx = fbxNormal->GetIndexArray().GetAt(ctrlPointIdx);
-											//FbxVector4 normal = fbxNormal->GetDirectArray().GetAt(ctrlPointIdx);
-
-										}
-									}
-									else if(mode == FbxLayerElement::eByPolygonVertex)
-									{
-										if(refMode == FbxLayerElement::eDirect)
-										{
-											//int idx = vertexIdx; vid가 아니라, 따로 아에 새로 해야하는 모양
-										}
-										else if(refMode == FbxLayerElement::eIndexToDirect)
-										{
-											//int idx = fbxNormal->GetIndexArray().GetAt(vertexIdx);
-										}
-									}
-								}
-							}
-
-							if(true)
-							{
-								FbxLayerElementUV *fbxUV = layer->GetUVs();
-								int uvCount = layer->GetUVSetCount();
-								if(fbxUV)
-								{
-									mode = fbxUV->GetMappingMode();
-									refMode = fbxUV->GetReferenceMode();
-
-									if(mode == FbxLayerElement::eByControlPoint)
-									{
-										if(refMode == FbxLayerElement::eDirect)
-										{
-											//FbxVector2 uv = fbxUV->GetDirectArray().GetAt(ctrlPointIdx);
-											int idx = ctrlPointIdx;
-										}
-										else if(refMode == FbxLayerElement::eIndexToDirect)
-										{
-											//int index = fbxUV->GetIndexArray().GetAt(ctrlPointIdx);
-											//FbxVector2 v = fbxUV->GetDirectArray().GetAt(index);
-											int idx = fbxUV->GetIndexArray().GetAt(ctrlPointIdx);
-										}
-									}
-									else if(mode == FbxLayerElement::eByPolygonVertex)
-									{
-										if(refMode == FbxLayerElement::eDirect || refMode == FbxLayerElement::eIndexToDirect)
-										{
-											//i = polygonCount
-											//k = polygonSize
-											int idx = fbxMesh->GetTextureUVIndex(polygonIdx, vertexIdx);
-											FbxVector2 v = fbxUV->GetDirectArray().GetAt(idx);
-										}
-									}
-								}
-							}
+							ParseNormals(layer, ctrlPointIdx, 0); //굳이 레이어 참조 안해도 되는듯
+							ParseUV(layer, fbxMesh, ctrlPointIdx, polygonIdx, vertexIdx);
 						}
 					}
-
-					//for(int vertexIdx = 0; vertexIdx < polygonSize; ++vertexIdx)
-					//{
-					//	int ctrlPoint = fbxMesh->GetPolygonVertex(polygonIdx, vertexIdx);
-					//	FbxVector4 ctrl = ctrlPoints[ctrlPoint];
-					//	//ctrl multnormalize(ctrl);
-
-					//	//isSkinned
-					//	//v.boneIdx = boneIndices[ctrlPoint];
-
-
-					//}
-					//}
 				}
 
-				//SOC_uint indexCount = 0;
-				//for(int i=0; i<polygonCount; ++i)
-				//{
-				//	int polySize = fbxMesh->GetPolygonSize(i);
-
-				//	if(polySize == 3)
-				//		indexCount += 3;
-				//	else if(polySize == 4)
-				//		indexCount += 6;
-				//	else return false;
-				//}
-
-				//SOC_uint idx = 0;
-				//for(int i=0; i<polygonCount; ++i)
-				//{
-				//	int polySize = fbxMesh->GetPolygonSize(i);
-
-				//	if(polySize == 3)
-				//	{
-				//		int ti;
-				//		for(int j=0; j<3; ++j)
-				//			ti = fbxMesh->GetPolygonVertex(i, j);
-				//		//vi.idx[idx] = ti
-				//		//idx ++
-				//		idx += 3;
-				//	}
-				//	else // is 4
-				//	{
-				//		int ary[] = {0, 1, 2, 0, 2, 3};
-				//		for(int j=0; j<6; ++j)
-				//			fbxMesh->GetPolygonVertex(i, ary[j]);
-
-				//		idx += 6;
-				//	}
-				//}
 
 				return true;
 			}
 
-			//bool AssignMesh(FbxMesh *mesh)
-			//{
-			//	//vertex buffer aryCount
-			//	int vertexCount = mesh->GetControlPointsCount();
-			//	int polygonCount = mesh->GetPolygonCount();
+			template <typename ElementType>
+			bool ParseElements(ElementType* e, int ctrlPointIdx, int vertexCount)
+			{
+				if(e == nullptr)
+					return false;
 
-			//	//인덱스 개수 측정
-			//	SOC_uint indexedsCount = 0;
-			//	for(int i=0; i<polygonCount; ++i)
-			//	{
-			//		int polygonSize = mesh->GetPolygonSize(i);
+				int index = -1;
+				FbxLayerElement::EMappingMode mappingMode = e->GetMappingMode();;
+				FbxLayerElement::EReferenceMode refMode = e->GetReferenceMode();;
 
-			//		if(polygonSize == 3)
-			//			indexedsCount += 3;
-			//		else if(polygonSize == 4) //4각형은 3각형 2개로 분할
-			//			indexedsCount += 6;
-			//		else //오각형
-			//		{
-			//			return false;
-			//		}
-			//	}
+				if(mappingMode == FbxLayerElement::eByControlPoint)
+				{
+					if(refMode == FbxLayerElement::eDirect)
+						index = ctrlPointIdx;
+					else if(refMode == FbxLayerElement::eIndexToDirect)
+						index = e->GetIndexArray().GetAt(ctrlPointIdx);
+				}
+				else if(mappingMode == FbxLayerElement::eByPolygonVertex)
+				{
+					if(refMode == FbxLayerElement::eDirect)
+						index = vertexCount;
+					else if(refMode == FbxLayerElement::eIndexToDirect)
+						index = e->GetIndexArray().GetAt(vertexCount);
+				}
 
-			//	//meshinfo.vertexcscount vertexcount
-			//	//mi.vtxs = new vtx[vsize];
-			//	//mi.idxcount = idxcount
-			//	//mi.idex = new uint[count]
+				return index != -1;
+			}
 
-			//	//버텍스
-			//	for(int i=0; i<vertexCount; ++i)
-			//	{
-			//		//control point가 vertex인듯 용어가 뭐이래 ㅗ
-			//		FbxVector4 v = mesh->GetControlPointAt(i);
-			//		//데이터 세팅
-			//	}
+			bool ParseNormals(FbxLayer *layer, int ctrlPointIdx, int vertexCount)
+			{
+				return ParseElements<FbxLayerElementNormal>(layer->GetNormals(), ctrlPointIdx, vertexCount);
+			}
 
+			bool ParseUV(FbxLayer *layer, FbxMesh *fbxMesh, int ctrlPointIdx, int polygonIdx, int vertexIdx)
+			{
+				FbxLayerElementUV *fbxUV = layer->GetUVs();
 
+				if(fbxUV == nullptr)
+					return false;
 
-			//	return true;
-			//}
+				FbxLayerElement::EMappingMode mappingMode = fbxUV->GetMappingMode();;
+				FbxLayerElement::EReferenceMode refMode = fbxUV->GetReferenceMode();;
+				int index = -1;
+
+				if(mappingMode == FbxLayerElement::eByControlPoint)
+				{
+					if(refMode == FbxLayerElement::eDirect)
+						index = ctrlPointIdx;
+					else if(refMode == FbxLayerElement::eIndexToDirect)
+						index = fbxUV->GetIndexArray().GetAt(ctrlPointIdx);
+				}
+				else if(mappingMode == FbxLayerElement::eByPolygonVertex)
+				{
+					if(refMode == FbxLayerElement::eDirect || refMode == FbxLayerElement::eIndexToDirect)
+						index = fbxMesh->GetTextureUVIndex(polygonIdx, vertexIdx);
+				}
+
+				return index != -1;
+			}
+
+			bool ParseVertexColor(FbxLayer *layer, int ctrlPointIdx, int vertexCount)
+			{
+				return ParseElements<FbxLayerElementVertexColor>(layer->GetVertexColors(), ctrlPointIdx, vertexCount);
+			}
+
+			bool ParseTangents(FbxLayer *layer, int ctrlPointIdx, int vertexCount)
+			{
+				return ParseElements<FbxLayerElementTangent>(layer->GetTangents(), ctrlPointIdx, vertexCount);
+			}
+
+			bool ParseBinomals(FbxLayer *layer, int ctrlPointIdx, int vertexCount)
+			{
+				return ParseElements<FbxLayerElementBinormal>(layer->GetBinormals(), ctrlPointIdx, vertexCount);
+			}
 
 			bool IsSkeleton(FbxNode *node)
 			{
