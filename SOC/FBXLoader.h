@@ -136,53 +136,67 @@ namespace Rendering
 			{
 				if(fbxMesh == nullptr)
 					return false;
-
-				FbxNode *node = fbxMesh->GetNode();
-				const char *meshName = fbxMesh->GetNameOnly();
-				FbxVector4 *ctrlPoints = fbxMesh->GetControlPoints();
-
-				int ctrlPtCount = fbxMesh->GetControlPointsCount();
-				int polygonCount = fbxMesh->GetPolygonCount();
-				if(ctrlPtCount == 0)
+				
+				if(fbxMesh->GetControlPointsCount() == 0)
 					return false;
 
-				int layerCount = fbxMesh->GetLayerCount();
+				const char *meshName = fbxMesh->GetNameOnly();
 
-				int triangleAry[] = {0, 1, 2};
-				int rectangleAry[] = {0, 1, 2, 0, 2, 3};
+				FbxVector4 *ctrlPoints	= fbxMesh->GetControlPoints();
+				int layerCount			= fbxMesh->GetLayerCount();
+				int polygonCount		= fbxMesh->GetPolygonCount();
+				int vertexCount			= 0;
+				bool materialAllSame = false;
+				std::vector<int> materialID;
+
+				for(int i=0; i<layerCount; ++i)
+				{
+					FbxLayerElementMaterial *layerMaterials = fbxMesh->GetLayer(i)->GetMaterials();
+					if(layerMaterials != nullptr)
+					{
+						if(layerMaterials->GetMappingMode() != FbxLayerElement::eAllSame)
+						{
+							materialAllSame = false;
+							break;
+						}
+
+						materialID.push_back( layerMaterials->GetIndexArray().GetAt(0) );
+					}
+				}
 
 				for(int polygonIdx = 0; polygonIdx < polygonCount; ++polygonIdx)
 				{
 					int polygonSize = fbxMesh->GetPolygonSize(polygonIdx);					
 
-					if(polygonSize > 4)
+					//애초에 삼각형이 아니면 막아버리자
+					if(polygonSize != 3)
 						return false;
 
-					int count = polygonSize == 4 ? 6 : 3;
-					int *ary  = polygonSize == 4 ? triangleAry : rectangleAry;
-
-					for(int vertexIdx = 0; vertexIdx < count; ++vertexIdx)
+					for(int vertexIdx = 0; vertexIdx < polygonSize; ++vertexIdx)
 					{
-						int ctrlPointIdx = fbxMesh->GetPolygonVertex(polygonIdx, ary[vertexIdx]);
+						int ctrlPointIdx = fbxMesh->GetPolygonVertex(polygonIdx, vertexIdx);
 						FbxVector4 ctrl = ctrlPoints[ctrlPointIdx];
-
-						//	//ctrl multnormalize(ctrl);
-						//	//isSkinned
-						//	//v.boneIdx = boneIndices[ctrlPoint];
-
-						FbxLayerElement::EMappingMode mode;
-						FbxLayerElement::EReferenceMode refMode;
 
 						for(int layerNum = 0; layerNum < layerCount; ++layerNum)
 						{
-							FbxLayer *layer = fbxMesh->GetLayer(layerNum);					
+							FbxLayer *layer = fbxMesh->GetLayer(layerNum);		
 
-							ParseNormals(layer, ctrlPointIdx, 0); //굳이 레이어 참조 안해도 되는듯
 							ParseUV(layer, fbxMesh, ctrlPointIdx, polygonIdx, vertexIdx);
-						}
-					}
-				}
 
+							ParseNormals(layer, ctrlPointIdx, vertexCount); //굳이 레이어 참조 안해도 되는듯
+							ParseBinomals(layer, ctrlPointIdx, vertexCount);
+							ParseTangents(layer, ctrlPointIdx, vertexCount);
+							ParseVertexColor(layer, ctrlPointIdx, vertexCount);
+
+
+						}
+
+						++vertexCount;
+						//굳이 메테리얼은 버텍스 마다 돌 필요가 없지않나
+						//걍 따로 빼주지 뭐 ㅇ 얼마나 느려지겠다고 ㅋ
+					}
+					
+				}
 
 				return true;
 			}
@@ -320,7 +334,7 @@ namespace Rendering
 				return true;
 			}
 
-			bool ParseTexture(FbxSurfaceMaterial *fbxMaterial, FbxProperty fbxProperty)
+			bool ParseTexture(FbxProperty fbxProperty)
 			{
 				if( fbxProperty.IsValid() == false )
 					return false;
