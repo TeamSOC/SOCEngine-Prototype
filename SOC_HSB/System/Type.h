@@ -10,8 +10,8 @@
 #else
     typedef int32_t SOC_INT32;
     typedef int64_t SOC_INT64;
-	typedef unsigned int32_t SOC_UINT32;
-	typedef unsigned int64_t SOC_UINT64;
+	typedef uint32_t SOC_UINT32;
+	typedef uint64_t SOC_UINT64;
 #endif
 
 #if defined(_WIN64)
