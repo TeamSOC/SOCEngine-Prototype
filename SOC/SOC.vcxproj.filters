@@ -236,6 +236,9 @@
     <Filter Include="Engine\Rendering\FBX Loader">
       <UniqueIdentifier>{51c56a7f-8895-4222-8dae-5a15d6cc5c5b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Rendering\Bone">
+      <UniqueIdentifier>{3305679d-91e2-4625-b1b2-603337ad5871}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AABB.cpp">
@@ -390,6 +393,9 @@
     </ClCompile>
     <ClCompile Include="FBXLoader.cpp">
       <Filter>Engine\Rendering\FBX Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="Bone.cpp">
+      <Filter>Engine\Rendering\Bone</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -614,6 +620,9 @@
     </ClInclude>
     <ClInclude Include="MaterialElements.h">
       <Filter>Engine\Rendering\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Bone.h">
+      <Filter>Engine\Rendering\Bone</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

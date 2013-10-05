@@ -16,5 +16,10 @@ namespace Rendering
 		{
 			return size;
 		}
+
+		float TextureForm::GetAlpha()
+		{
+			return alpha;
+		}
 	}
 }

@@ -11,6 +11,7 @@ namespace Rendering
 		{
 		protected:
 			Common::Size<int> size;
+			float alpha;
 
 		public:
 			TextureForm(void);
@@ -22,6 +23,7 @@ namespace Rendering
 		public:
 			Common::Size<int> GetSize();
 			virtual DeviceTexture GetTexture() = 0;
+			float GetAlpha();
 		};
 	}
 }
