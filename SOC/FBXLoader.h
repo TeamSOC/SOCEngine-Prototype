@@ -146,23 +146,6 @@ namespace Rendering
 				int layerCount			= fbxMesh->GetLayerCount();
 				int polygonCount		= fbxMesh->GetPolygonCount();
 				int vertexCount			= 0;
-				bool materialAllSame = false;
-				std::vector<int> materialID;
-
-				for(int i=0; i<layerCount; ++i)
-				{
-					FbxLayerElementMaterial *layerMaterials = fbxMesh->GetLayer(i)->GetMaterials();
-					if(layerMaterials != nullptr)
-					{
-						if(layerMaterials->GetMappingMode() != FbxLayerElement::eAllSame)
-						{
-							materialAllSame = false;
-							break;
-						}
-
-						materialID.push_back( layerMaterials->GetIndexArray().GetAt(0) );
-					}
-				}
 
 				for(int polygonIdx = 0; polygonIdx < polygonCount; ++polygonIdx)
 				{
@@ -182,20 +165,54 @@ namespace Rendering
 							FbxLayer *layer = fbxMesh->GetLayer(layerNum);		
 
 							ParseUV(layer, fbxMesh, ctrlPointIdx, polygonIdx, vertexIdx);
-
-							ParseNormals(layer, ctrlPointIdx, vertexCount); //굳이 레이어 참조 안해도 되는듯
-							ParseBinomals(layer, ctrlPointIdx, vertexCount);
-							ParseTangents(layer, ctrlPointIdx, vertexCount);
-							ParseVertexColor(layer, ctrlPointIdx, vertexCount);
-
-
 						}
+
+						//게임은 0번 레이어만 쓴다.  굳이 다중 레이어를 쓰지 않는다고 한다.
+						FbxLayer *layer = fbxMesh->GetLayer(0);
+						ParseNormals(layer, ctrlPointIdx, vertexCount);
+						ParseBinomals(layer, ctrlPointIdx, vertexCount);
+						ParseTangents(layer, ctrlPointIdx, vertexCount);
+						ParseVertexColor(layer, ctrlPointIdx, vertexCount);
 
 						++vertexCount;
 						//굳이 메테리얼은 버텍스 마다 돌 필요가 없지않나
 						//걍 따로 빼주지 뭐 ㅇ 얼마나 느려지겠다고 ㅋ
 					}
 					
+				}
+
+				FbxNode *node = fbxMesh->GetNode();
+				int materialCount = node->GetSrcObjectCount(FbxSurfaceMaterial::ClassId);
+				for(int materialIdx = 0; materialIdx < materialCount; materialIdx)
+				{
+					FbxSurfaceMaterial *fbxMaterial = FbxCast<FbxSurfaceMaterial>(node->GetSrcObject(FbxSurfaceMaterial::ClassId, materialIdx));
+
+					if(fbxMaterial == nullptr)
+						continue;
+
+					ParseMaterialElements(fbxMaterial);
+
+					FbxProperty fbxProperty;
+					fbxProperty = fbxMaterial->FindProperty(FbxSurfaceMaterial::sDiffuse);
+					ParseTexture(fbxProperty);
+
+					fbxProperty = fbxMaterial->FindProperty(FbxSurfaceMaterial::sEmissive);
+					ParseTexture(fbxProperty);
+
+					fbxProperty = fbxMaterial->FindProperty(FbxSurfaceMaterial::sSpecular);
+					ParseTexture(fbxProperty);
+
+					fbxProperty = fbxMaterial->FindProperty(FbxSurfaceMaterial::sSpecularFactor);
+					ParseTexture(fbxProperty);
+
+					fbxProperty = fbxMaterial->FindProperty(FbxSurfaceMaterial::sBump);
+					ParseTexture(fbxProperty);
+
+					fbxProperty = fbxMaterial->FindProperty(FbxSurfaceMaterial::sBumpFactor);
+					ParseTexture(fbxProperty);
+
+					fbxProperty = fbxMaterial->FindProperty(FbxSurfaceMaterial::sTransparentColor);
+					ParseTexture(fbxProperty);					
 				}
 
 				return true;
@@ -334,7 +351,7 @@ namespace Rendering
 				return true;
 			}
 
-			bool ParseTexture(FbxProperty fbxProperty)
+			bool ParseTexture(FbxProperty &fbxProperty)
 			{
 				if( fbxProperty.IsValid() == false )
 					return false;
