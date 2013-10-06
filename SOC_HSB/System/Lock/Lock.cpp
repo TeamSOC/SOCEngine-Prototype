@@ -1,5 +1,6 @@
 #include "../../pch/pch.h"
 
+namespace SOC_System {
 namespace Lock {
 
 	CriticalSectionLock::CriticalSectionLock(unsigned int spinCount)
@@ -41,4 +42,6 @@ namespace Lock {
         pthread_mutex_unlock(&m_key);
 #endif
 	}
+
+}
 }

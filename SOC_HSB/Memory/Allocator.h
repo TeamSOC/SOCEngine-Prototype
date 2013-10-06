@@ -51,6 +51,6 @@ namespace Memory {
 		SOC_INT32 m_lowWaterMark;
 		CSlab** m_ppFreeListArray;
 
-		System::MWSRQueue<void, POSTFREE_MAX> m_postFreeQueue;
+		SOC_System::MWSRQueue<void, POSTFREE_MAX> m_postFreeQueue;
 	};
 }

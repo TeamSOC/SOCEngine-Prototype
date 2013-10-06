@@ -102,12 +102,15 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../pch/pch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="..\System\Counter.cpp" />
     <ClCompile Include="..\System\Lock\Lock.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../../pch/pch.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../../pch/pch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="..\System\Object.cpp" />
+    <ClCompile Include="..\System\Thread\Thread.cpp" />
     <ClCompile Include="main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../pch/pch.h</PrecompiledHeaderFile>
@@ -119,12 +122,18 @@
     <ClInclude Include="..\Memory\Allocator.h" />
     <ClInclude Include="..\Memory\Interface.h" />
     <ClInclude Include="..\Memory\MacroDefine.h" />
+    <ClInclude Include="..\Memory\MemoryPool.h" />
     <ClInclude Include="..\Memory\Slab.h" />
     <ClInclude Include="..\pch\pch.h" />
     <ClInclude Include="..\System\Converter.h" />
+    <ClInclude Include="..\System\Counter.h" />
     <ClInclude Include="..\System\Interface.h" />
     <ClInclude Include="..\System\Lock\Lock.h" />
+    <ClInclude Include="..\System\Object.h" />
     <ClInclude Include="..\System\Queue.h" />
+    <ClInclude Include="..\System\Singleton.h" />
+    <ClInclude Include="..\System\Thread\Interface.h" />
+    <ClInclude Include="..\System\Thread\Thread.h" />
     <ClInclude Include="..\System\Type.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

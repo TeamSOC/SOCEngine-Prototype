@@ -1,6 +1,6 @@
 #pragma once
 
-namespace System {
+namespace SOC_System {
 
 template<typename T>
 T MakePowerOf2(T n)
@@ -21,8 +21,6 @@ template <typename T, unsigned int MAX_SIZE>
 class MWSRQueue
 {
 private:
-    Lock::CriticalSectionLock m_lock;
-
 	volatile unsigned long m_first;
 	volatile unsigned long m_size;
 	unsigned long m_last;
@@ -44,6 +42,8 @@ public:
 
 	void Push(T* pData)
 	{
+		static Lock::CriticalSectionLock lock;
+
 		unsigned long idx = 0;
 		unsigned long next = 0;
 #if defined(_WIN32) || defined(_WIN64)
@@ -51,7 +51,7 @@ public:
 #else
 		unsigned long size = 0;
         {
-            TYPED_SCOPE_LOCK(m_lock);
+            TYPED_SCOPE_LOCK(lock);
             ++m_size;
         }
 #endif
@@ -71,7 +71,7 @@ public:
 		} while(InterlockedCompareExchange(&m_first, next, idx) != idx);
 #else
         {
-            TYPED_SCOPE_LOCK(m_lock);
+            TYPED_SCOPE_LOCK(lock);
             temp = m_first;
             if (m_first == idx)
                 m_first = next;
@@ -91,6 +91,8 @@ public:
 			return nullptr;
 		if (m_last >= MAX_SIZE)
 			return nullptr;
+
+		static Lock::CriticalSectionLock lock;
 
 		T* pData = nullptr;
 		while ((pData = m_pData[m_last]) == nullptr) // like a simple spin lock
@@ -114,7 +116,7 @@ public:
 		InterlockedDecrement(&m_size);
 #else
         {
-            TYPED_SCOPE_LOCK(m_lock);
+            TYPED_SCOPE_LOCK(lock);
             --m_size;
         }
 #endif

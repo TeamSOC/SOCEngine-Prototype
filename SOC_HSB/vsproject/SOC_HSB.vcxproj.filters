@@ -19,6 +19,9 @@
     <Filter Include="main">
       <UniqueIdentifier>{7a23dfb3-9eb0-41a7-a92b-5876f627e0d8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="System\Thread">
+      <UniqueIdentifier>{e9fc4c27-c5cc-476e-99cd-d66c9f1b6707}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -38,6 +41,15 @@
     </ClCompile>
     <ClCompile Include="..\System\Lock\Lock.cpp">
       <Filter>System\Lock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\Thread\Thread.cpp">
+      <Filter>System\Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\Counter.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\Object.cpp">
+      <Filter>System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +82,24 @@
     </ClInclude>
     <ClInclude Include="..\System\Lock\Lock.h">
       <Filter>System\Lock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Memory\MemoryPool.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Thread\Interface.h">
+      <Filter>System\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Thread\Thread.h">
+      <Filter>System\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Object.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Counter.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Singleton.h">
+      <Filter>System</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

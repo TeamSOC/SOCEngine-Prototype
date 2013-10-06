@@ -1,5 +1,6 @@
 #pragma once
 
+namespace SOC_System {
 namespace Lock {
 
 	// 'I' mean is interface
@@ -89,6 +90,8 @@ namespace Lock {
 			T& m_lock;
 		};
 	}
+
+}
 }
 
 #define TYPED_SCOPE_LOCK(lock) Lock::Helper::TypedScopedLock<Lock::CriticalSectionLock> __lock(lock, __FILE__, __LINE__)
