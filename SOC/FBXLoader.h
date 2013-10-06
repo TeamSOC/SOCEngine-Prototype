@@ -175,7 +175,7 @@ namespace Rendering
 				if( /*animation*/ true)
 				{
 
-					ParseSkeleton(fbxSkeleton, nullptr);
+					BuildSkeleton(fbxSkeleton, nullptr);
 				}
 
 				return true;
@@ -202,6 +202,9 @@ namespace Rendering
 				BuildskinningMesh(fbxMesh, boneIndices);
 				bool isSkinned = boneIndices.empty() == false;
 
+				int indexBuffercount = polygonCount * 3;
+				//총 인덱스 갯수.
+
 				for(int polygonIdx = 0; polygonIdx < polygonCount; ++polygonIdx)
 				{
 					int polygonSize = fbxMesh->GetPolygonSize(polygonIdx);					
@@ -212,7 +215,8 @@ namespace Rendering
 
 					for(int vertexIdx = 0; vertexIdx < polygonSize; ++vertexIdx)
 					{
-						int ctrlPointIdx = fbxMesh->GetPolygonVertex(polygonIdx, vertexIdx);						
+						int ctrlPointIdx = fbxMesh->GetPolygonVertex(polygonIdx, vertexIdx);
+						//이놈이 index인듯..
 						FbxVector4 ctrl = ctrlPoints[ctrlPointIdx];
 
 						//ctrl이 vertex고, skinned가있으면 vertex의 boneIdx에 넣고!
@@ -220,7 +224,6 @@ namespace Rendering
 						for(int layerNum = 0; layerNum < layerCount; ++layerNum)
 						{
 							FbxLayer *layer = fbxMesh->GetLayer(layerNum);		
-
 							ParseUV(layer, fbxMesh, ctrlPointIdx, polygonIdx, vertexIdx);
 						}
 
@@ -436,7 +439,7 @@ namespace Rendering
 				}
 			}
 
-			bool ParseSkeleton(FbxSkeleton *skeleton, std::vector<Animation::Bone*> *outBones)
+			bool BuildSkeleton(FbxSkeleton *skeleton, std::vector<Animation::Bone*> *outBones)
 			{
 				if(skeleton == nullptr)
 					return false;
