@@ -71,14 +71,9 @@ namespace Rendering
 				return scene != nullptr;
 			}
 
-			bool LoadScene(const char *fileName, const char *password = nullptr)
+			bool LoadScene(const char *fileName, const char *password = nullptr, FbxScene **outScene = nullptr)
 			{
-				int fileMajor, fileMinor, fileRevision;
 				int sdkMajor, sdkMinor, sdkRevision;
-
-				//				int  animStackCount;
-				bool status;
-				//				char password[1024];
 
 				//파일의 버젼번호는 sdk에 의해 생성됩니다?
 				//Get the file version number generate by the FBX SDK
@@ -86,33 +81,33 @@ namespace Rendering
 
 				//임포터를 생성합니다.
 				FbxImporter* importer = FbxImporter::Create(manager, "");
+				if(importer == nullptr)
+					return false;
+
+				FbxIOSettings *ioSetting = manager->GetIOSettings();
+				ioSetting->SetBoolProp(IMP_FBX_MATERIAL,        true);
+				ioSetting->SetBoolProp(IMP_FBX_TEXTURE,         true);
+				ioSetting->SetBoolProp(IMP_FBX_LINK,            true);
+				ioSetting->SetBoolProp(IMP_FBX_SHAPE,           true);
+				ioSetting->SetBoolProp(IMP_FBX_GOBO,            true);
+				ioSetting->SetBoolProp(IMP_FBX_ANIMATION,       true);
+				ioSetting->SetBoolProp(IMP_FBX_GLOBAL_SETTINGS, true);
+
 
 				//파일 이름을 제공하여 임포터를 초기화 시킵니다.
 				bool importStatus = importer->Initialize(fileName, -1, manager->GetIOSettings());
-
-				//디버깅 용도이긴 한데, 뭐 굳이 느리진 않을테니 걍 둠
-				//누가 지워주겠지
-				importer->GetFileVersion(fileMajor, fileMinor, fileRevision);
-
 				if(importStatus == false)
 				{
 					FbxString error = importer->GetStatus().GetErrorString();
 					// error 내용은, error Buffer에
 				}
 
-				if(importer->IsFBX())
-				{
-					manager->GetIOSettings()->SetBoolProp(IMP_FBX_MATERIAL,        true);
-					manager->GetIOSettings()->SetBoolProp(IMP_FBX_TEXTURE,         true);
-					manager->GetIOSettings()->SetBoolProp(IMP_FBX_LINK,            true);
-					manager->GetIOSettings()->SetBoolProp(IMP_FBX_SHAPE,           true);
-					manager->GetIOSettings()->SetBoolProp(IMP_FBX_GOBO,            true);
-					manager->GetIOSettings()->SetBoolProp(IMP_FBX_ANIMATION,       true);
-					manager->GetIOSettings()->SetBoolProp(IMP_FBX_GLOBAL_SETTINGS, true);
-				}
+				//디버깅 용도이긴 한데, 뭐 굳이 느리진 않을테니 걍 둠
+				//누가 지워주겠지
+				int fileMajor, fileMinor, fileRevision;
+				importer->GetFileVersion(fileMajor, fileMinor, fileRevision);
 
-				status = importer->Import(scene);
-
+				bool status = importer->Import(scene);
 				if(status == false && 
 					importer->GetStatus().GetCode() == FbxStatus::ePasswordError)
 				{
@@ -123,20 +118,76 @@ namespace Rendering
 
 					status = importer->Import(scene);
 
-					if(status == false && importer->GetStatus().GetCode() == FbxStatus::ePasswordError)
-						return false;
+					FbxStatus::EStatusCode code = importer->GetStatus().GetCode();
+					if(code == FbxStatus::ePasswordError)
+						return false;//디버깅 용도
 				}
 
 				importer->Destroy();
 
+				if(outScene)
+					(*outScene) = scene;
+
 				return status;
 			}
+
+			bool Decode()
+			{
+				if(scene == nullptr)
+					return false;
+
+				FbxNode *rootNode = scene->GetRootNode();
+				int childCount = rootNode->GetChildCount();
+
+				FbxMesh *fbxMesh		 = nullptr;
+				FbxSkeleton *fbxSkeleton = nullptr;
+
+				for(int childIdx = 0; childIdx < childCount; ++childIdx)
+				{
+					FbxNode *childNode = rootNode->GetChild(childIdx);
+					FbxNodeAttribute *nodeAttribute = childNode->GetNodeAttribute();
+
+					if(nodeAttribute == nullptr)
+						continue;
+
+					FbxNodeAttribute::EType attributeType = nodeAttribute->GetAttributeType();
+
+					if(attributeType == FbxNodeAttribute::eMesh)
+						fbxMesh = childNode->GetMesh();
+					else if(attributeType == FbxNodeAttribute::eSkeleton)
+						fbxSkeleton = childNode->GetSkeleton();
+
+					if(fbxMesh != nullptr && fbxSkeleton != nullptr)
+						break;
+				}
+
+				if(fbxSkeleton == nullptr)
+				{
+					FbxNode *skeletonNode = FindSkeletonRoot(rootNode);
+					if(skeletonNode != nullptr)
+						fbxSkeleton = skeletonNode->GetSkeleton();
+				}
+
+				BuildMesh(fbxMesh);
+
+//				bool animation = 
+
+				if( /*animation*/ true)
+				{
+
+					ParseSkeleton(fbxSkeleton, nullptr);
+				}
+
+				return true;
+			}
+
+		private:
 
 			bool BuildMesh(FbxMesh *fbxMesh)
 			{
 				if(fbxMesh == nullptr)
 					return false;
-				
+
 				if(fbxMesh->GetControlPointsCount() == 0)
 					return false;
 
@@ -184,7 +235,7 @@ namespace Rendering
 						//굳이 메테리얼은 버텍스 마다 돌 필요가 없지않나
 						//걍 따로 빼주지 뭐 ㅇ 얼마나 느려지겠다고 ㅋ
 					}
-					
+
 				}
 
 				FbxNode *node = fbxMesh->GetNode();
@@ -248,7 +299,7 @@ namespace Rendering
 							continue;
 
 						int numInfluencedVertices = fbxCluster->GetControlPointIndicesCount();
-						
+
 						int *indexAry = fbxCluster->GetControlPointIndices();
 						double *weightAry = fbxCluster->GetControlPointWeights();
 
@@ -385,7 +436,7 @@ namespace Rendering
 				}
 			}
 
-			bool ParseBone(FbxSkeleton *skeleton, std::vector<Animation::Bone*> *outBones)
+			bool ParseSkeleton(FbxSkeleton *skeleton, std::vector<Animation::Bone*> *outBones)
 			{
 				if(skeleton == nullptr)
 					return false;
