@@ -34,25 +34,25 @@ namespace Rendering
 			if(colors)			vertexBufferSize += sizeof(SOC_Vector4);
 		}
 
-		bool MeshFilter::Create(MeshFilterOption &option)
+		bool MeshFilter::Create(MeshFilterElements &option, bool copy)
 		{
-			return Create(option.vertices, option.normals, option.tangents, option.binomals, option.texcoord, option.colors, option.numOfVertex, option.numOfTriangle, option.indices, option.type, option.isDynamic);
+			return Create(option.vertices, option.normals, option.tangents, option.binomals, option.texcoord, option.colors, option.numOfVertex, option.numOfTriangle, option.indices, option.type, option.isDynamic, copy);
 		}
 
 		bool MeshFilter::Create(SOC_Vector3 *vertices, SOC_Vector3 *normals, SOC_Vector3 *tangents,
 			SOC_Vector3 *binomals, std::vector<SOC_Vector2*> *texcoord, Color *colors, 
-			int numOfVertex, int numOfTriangle, std::pair<count, SOC_word*> indices, SOC_TRIANGLE type, bool isDynamic)
+			int numOfVertex, int numOfTriangle, std::pair<count, SOC_word*> indices, SOC_TRIANGLE type, bool isDynamic, bool copy)
 		{
 			if(vertices == NULL ) return false;
 
 			this->triangleType = type;
 			this->numOfVertex = numOfVertex;
 
-			SetVertexData(&this->vertices, vertices, SOC_Vector3());
-			SetVertexData(&this->normals, normals, SOC_Vector3());
-			SetVertexData(&this->tangents, tangents, SOC_Vector3());
-			SetVertexData(&this->binomals, binomals, SOC_Vector3());
-			SetVertexData(&this->colors, colors, Color());
+			SetVertexData(&this->vertices, vertices, SOC_Vector3(), copy);
+			SetVertexData(&this->normals, normals, SOC_Vector3(), copy);
+			SetVertexData(&this->tangents, tangents, SOC_Vector3(), copy);
+			SetVertexData(&this->binomals, binomals, SOC_Vector3(), copy);
+			SetVertexData(&this->colors, colors, Color(), copy);
 
 			if(texcoord)
 			{
@@ -65,7 +65,7 @@ namespace Rendering
 				for(int i=0; i<count; ++i)
 				{
 					SOC_Vector2 *ary = nullptr;// = new SOC_Vector2[numOfVertex];				
-					SetVertexData(&ary, (*texcoord)[i], SOC_Vector2());
+					SetVertexData(&ary, (*texcoord)[i], SOC_Vector2(), copy);
 					this->texcoord.push_back(ary);
 				}
 			}

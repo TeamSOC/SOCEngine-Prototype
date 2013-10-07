@@ -239,6 +239,9 @@
     <Filter Include="Engine\Rendering\Bone">
       <UniqueIdentifier>{3305679d-91e2-4625-b1b2-603337ad5871}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Rendering\Mesh\Filter\FilterElements">
+      <UniqueIdentifier>{df655b02-fa85-48b3-975b-68fd4df14b3c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AABB.cpp">
@@ -396,6 +399,9 @@
     </ClCompile>
     <ClCompile Include="Bone.cpp">
       <Filter>Engine\Rendering\Bone</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshFilterElements.cpp">
+      <Filter>Engine\Rendering\Mesh\Filter\FilterElements</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -623,6 +629,9 @@
     </ClInclude>
     <ClInclude Include="Bone.h">
       <Filter>Engine\Rendering\Bone</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshFilterElements.h">
+      <Filter>Engine\Rendering\Mesh\Filter\FilterElements</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

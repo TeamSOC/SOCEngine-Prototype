@@ -6,6 +6,8 @@
 #pragma comment(lib, "libfbxsdk-md.lib")
 
 #include "MaterialElements.h"
+#include "MeshFilterElements.h"
+
 #include "Bone.h"
 #include <vector>
 
@@ -131,7 +133,7 @@ namespace Rendering
 				return status;
 			}
 
-			bool Decode()
+			bool Decode(MaterialElements *outMaterialElements, Mesh::MeshFilterElements *outMeshFliterElements)
 			{
 				if(scene == nullptr)
 					return false;
@@ -168,7 +170,7 @@ namespace Rendering
 						fbxSkeleton = skeletonNode->GetSkeleton();
 				}
 
-				BuildMesh(fbxMesh);
+				BuildMesh(fbxMesh, outMeshFliterElements, outMaterialElements);
 
 //				bool animation = 
 
@@ -183,7 +185,7 @@ namespace Rendering
 
 		private:
 
-			bool BuildMesh(FbxMesh *fbxMesh)
+			bool BuildMesh(FbxMesh *fbxMesh, Mesh::MeshFilterElements *outMeshFilterElements, MaterialElements *outMaterialElements)
 			{
 				if(fbxMesh == nullptr)
 					return false;
@@ -201,9 +203,35 @@ namespace Rendering
 				std::vector<int> boneIndices;
 				BuildskinningMesh(fbxMesh, boneIndices);
 				bool isSkinned = boneIndices.empty() == false;
+				
+				int numOfVertex = fbxMesh->GetControlPointsCount();
+				outMeshFilterElements->indices.first = polygonCount * 3;
+				outMeshFilterElements->indices.second = new SOC_word[polygonCount * 3];
+				outMeshFilterElements->numOfVertex = numOfVertex;
+				outMeshFilterElements->vertices = new SOC_Vector3[outMeshFilterElements->numOfVertex];
+				outMeshFilterElements->numOfTriangle = fbxMesh->GetPolygonCount();
+				outMeshFilterElements->isDynamic = isSkinned;
 
-				int indexBuffercount = polygonCount * 3;
-				//총 인덱스 갯수.
+				if(fbxMesh->GetLayer(0)->GetNormals() != nullptr)
+					outMeshFilterElements->normals = new SOC_Vector3[numOfVertex];
+
+				if(fbxMesh->GetLayer(0)->GetVertexColors() != nullptr)
+					outMeshFilterElements->colors = new Color[numOfVertex];
+
+				if(fbxMesh->GetLayer(0)->GetBinormals() != nullptr)
+					outMeshFilterElements->binomals = new SOC_Vector3[numOfVertex];
+
+				if(fbxMesh->GetLayer(0)->GetTangents() != nullptr)
+					outMeshFilterElements->tangents = new SOC_Vector3[numOfVertex];
+				
+				if(fbxMesh->GetLayerCount() > 0)
+					outMeshFilterElements->texcoord = new std::vector<SOC_Vector2*>[fbxMesh->GetLayerCount()];
+
+				outMeshFilterElements->type = SOC_TRIANGLE::SOC_TRIANGLE_LIST;
+				//스트립 ㅗ
+
+				SOC_word *indices = outMeshFilterElements->indices.second;
+
 
 				for(int polygonIdx = 0; polygonIdx < polygonCount; ++polygonIdx)
 				{
@@ -217,6 +245,8 @@ namespace Rendering
 					{
 						int ctrlPointIdx = fbxMesh->GetPolygonVertex(polygonIdx, vertexIdx);
 						//이놈이 index인듯..
+						indices[vertexCount] = ctrlPointIdx;
+
 						FbxVector4 ctrl = ctrlPoints[ctrlPointIdx];
 
 						//ctrl이 vertex고, skinned가있으면 vertex의 boneIdx에 넣고!
@@ -226,6 +256,8 @@ namespace Rendering
 							FbxLayer *layer = fbxMesh->GetLayer(layerNum);		
 							ParseUV(layer, fbxMesh, ctrlPointIdx, polygonIdx, vertexIdx);
 						}
+						//만약.. 만약에 도중에 비어있다면 그녀석은 스킵하고 쌓아줘야나
+						//빈 공간이 잇잖아
 
 						//게임은 0번 레이어만 쓴다.  굳이 다중 레이어를 쓰지 않는다고 한다.
 						FbxLayer *layer = fbxMesh->GetLayer(0);
