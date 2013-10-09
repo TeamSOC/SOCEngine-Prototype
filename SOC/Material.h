@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Shader.h"
+#include "MaterialElements.h"
 #include <vector>
 
 namespace Rendering
@@ -13,7 +14,7 @@ namespace Rendering
 		Shader::Shader* useShader;
 
 	public:
-		Color ambientColor;
+		MaterialElements elements;
 
 	public:
 		Material(const char *name = nullptr);
