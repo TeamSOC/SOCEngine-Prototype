@@ -25,18 +25,18 @@ namespace Rendering
 
 	Color::Color(double r, double g, double b)
 	{
-		this->r = r;
-		this->g = g;
-		this->b = b;
+		this->r = (float)r;
+		this->g = (float)g;
+		this->b = (float)b;
 		this->a = 1.0f;
 	}
 
 	Color::Color(double r, double g, double b, double a)
 	{
-		this->r = r;
-		this->g = g;
-		this->b = b;
-		this->a = a;
+		this->r = (float)r;
+		this->g = (float)g;
+		this->b = (float)b;
+		this->a = (float)a;
 	}
 
 	Color Color::operator -(Color c)

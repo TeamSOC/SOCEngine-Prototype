@@ -1,22 +1,24 @@
-#include "FBXLoader.h"
+#include "FBXImporter.h"
+
+using namespace fbxsdk_2014_1;
+#pragma warning( disable : 4244 )
 
 namespace Rendering
 {
 	namespace Importer
 	{
-
-		FBXLoader::FBXLoader(FbxManager *manager)
+		FBXImporter::FBXImporter(FbxManager *manager)
 		{
 			this->manager = manager;
 			scene = nullptr;
 		}
 
-		FBXLoader::~FBXLoader(void)
+		FBXImporter::~FBXImporter(void)
 		{
 			Destroy();
 		}
 
-		bool FBXLoader::Initialize(const char *sceneName)
+		bool FBXImporter::Initialize(const char *sceneName)
 		{
 			if(manager == nullptr)
 				return false;
@@ -52,7 +54,7 @@ namespace Rendering
 			return scene != nullptr;
 		}
 
-		bool FBXLoader::LoadScene(const char *fileName, const char *password)
+		bool FBXImporter::LoadScene(const char *fileName, const char *password)
 		{
 			int sdkMajor, sdkMinor, sdkRevision;
 
@@ -109,7 +111,7 @@ namespace Rendering
 			return status;
 		}
 
-		bool FBXLoader::Decode(MaterialElements *outMaterialElements, Mesh::MeshFilterElements *outMeshFliterElements, MaterialTextures *outTextureNames)
+		bool FBXImporter::Decode(MaterialElements *outMaterialElements, VertexBufferElements *outMeshFliterElements, MaterialTextures *outTextureNames)
 		{
 			if(scene == nullptr)
 				return false;
@@ -148,7 +150,7 @@ namespace Rendering
 
 			BuildMesh(fbxMesh, outMeshFliterElements, outMaterialElements, outTextureNames);
 
-			bool animation = 
+			bool animation = 0;
 
 			if( /*animation*/ true)
 			{
@@ -159,7 +161,7 @@ namespace Rendering
 			return true;
 		}
 
-		bool FBXLoader::BuildMesh(FbxMesh *fbxMesh, Mesh::MeshFilterElements *outMeshFilterElements, MaterialElements *outMaterialElements, MaterialTextures *outTextures)
+		bool FBXImporter::BuildMesh(FbxMesh *fbxMesh, VertexBufferElements *outMeshFilterElements, MaterialElements *outMaterialElements, MaterialTextures *outTextures)
 		{
 			if(fbxMesh == nullptr)
 				return false;
@@ -202,7 +204,6 @@ namespace Rendering
 			for(int i=0; i<layerCount; ++i)
 				outMeshFilterElements->texcoords.second[i] = new SOC_Vector2[numOfVertex];
 
-
 			if(fbxMesh->GetLayerCount() > 0)
 			{
 				outMeshFilterElements->texcoords.first = fbxMesh->GetLayerCount();
@@ -236,8 +237,13 @@ namespace Rendering
 
 					FbxVector4 ctrl = ctrlPoints[ctrlPointIdx];
 
-					vertices[vertexCount] = SOC_Vector3(ctrl[0], ctrl[1], ctrl[2]);
+					vertices[vertexCount] = SOC_Vector3((float)ctrl[0], (float)ctrl[1], (float)ctrl[2]);
 					//ctrl이 vertex고, skinned가있으면 vertex의 boneIdx에 넣고!
+					if(isSkinned)
+					{
+						//add born Index.
+						outMeshFilterElements->boneIndices.push_back(boneIndices[ctrlPointIdx]);
+					}
 
 					for(int layerNum = 0; layerNum < layerCount; ++layerNum)
 					{
@@ -274,10 +280,10 @@ namespace Rendering
 			//				outMeshFilterElements->numOfVertex = vertexCount;
 
 			FbxNode *node = fbxMesh->GetNode();
-			int materialCount = node->GetSrcObjectCount(FbxSurfaceMaterial::ClassId);
+			int materialCount = node->GetSrcObjectCount<FbxSurfaceMaterial>();
 			for(int materialIdx = 0; materialIdx < materialCount; materialIdx)
 			{
-				FbxSurfaceMaterial *fbxMaterial = FbxCast<FbxSurfaceMaterial>(node->GetSrcObject(FbxSurfaceMaterial::ClassId, materialIdx));
+				FbxSurfaceMaterial *fbxMaterial = FbxCast<FbxSurfaceMaterial>(node->GetSrcObject<FbxSurfaceMaterial>(materialIdx));
 
 				if(fbxMaterial == nullptr)
 					continue;
@@ -311,7 +317,7 @@ namespace Rendering
 			return true;
 		}
 
-		void FBXLoader::BuildskinningMesh(FbxMesh *fbxMesh, std::vector<int> &boneIndices)
+		void FBXImporter::BuildskinningMesh(FbxMesh *fbxMesh, std::vector<int> &boneIndices)
 		{
 			int skinCount = fbxMesh->GetDeformerCount(FbxDeformer::eSkin);
 
@@ -350,7 +356,7 @@ namespace Rendering
 			}
 		}
 
-		bool FBXLoader::ParseNormals(FbxLayer *layer, int ctrlPointIdx, int vertexCount, SOC_Vector3 *out)
+		bool FBXImporter::ParseNormals(FbxLayer *layer, int ctrlPointIdx, int vertexCount, SOC_Vector3 *out)
 		{
 			int index = -1;
 			bool res = ParseElements(layer->GetNormals(), ctrlPointIdx, vertexCount, &index);
@@ -359,13 +365,13 @@ namespace Rendering
 			{
 				FbxLayerElementNormal *fbxNormal = layer->GetNormals();
 				FbxVector4 v = fbxNormal->GetDirectArray().GetAt(index);
-				(*out) = SOC_Vector3(v[0], v[1], v[2]);
+				(*out) = SOC_Vector3((float)v[0], (float)v[1], (float)v[2]);
 			}
 
 			return res;
 		}
 
-		bool FBXLoader::ParseUV(FbxLayer *layer, FbxMesh *fbxMesh, int ctrlPointIdx, int polygonIdx, int vertexIdx, SOC_Vector2 *out)
+		bool FBXImporter::ParseUV(FbxLayer *layer, FbxMesh *fbxMesh, int ctrlPointIdx, int polygonIdx, int vertexIdx, SOC_Vector2 *out)
 		{
 			FbxLayerElementUV *fbxUV = layer->GetUVs();
 
@@ -395,13 +401,13 @@ namespace Rendering
 			if(index != -1)
 			{
 				FbxVector2 v = fbxUV->GetDirectArray().GetAt(index);
-				(*out) = SOC_Vector2(v[0], v[1]);
+				(*out) = SOC_Vector2((float)v[0], (float)v[1]);
 			}
 
 			return index != -1;
 		}
 
-		bool FBXLoader::ParseVertexColor(FbxLayer *layer, int ctrlPointIdx, int vertexCount, Color *out)
+		bool FBXImporter::ParseVertexColor(FbxLayer *layer, int ctrlPointIdx, int vertexCount, Color *out)
 		{
 			int index = -1;
 			bool res = ParseElements(layer->GetVertexColors(), ctrlPointIdx, vertexCount, &index);
@@ -416,7 +422,7 @@ namespace Rendering
 			return res;
 		}
 
-		bool FBXLoader::ParseTangents(FbxLayer *layer, int ctrlPointIdx, int vertexCount, SOC_Vector3 *out)
+		bool FBXImporter::ParseTangents(FbxLayer *layer, int ctrlPointIdx, int vertexCount, SOC_Vector3 *out)
 		{
 			int index = -1;
 			bool res = ParseElements(layer->GetTangents(), ctrlPointIdx, vertexCount, &index);
@@ -425,13 +431,13 @@ namespace Rendering
 			{
 				FbxLayerElementTangent *fbxTangent = layer->GetTangents();
 				FbxVector4 v = fbxTangent->GetDirectArray().GetAt(index);
-				(*out) = SOC_Vector3(v[0], v[1], v[2]);
+				(*out) = SOC_Vector3((float)v[0], (float)v[1], (float)v[2]);
 			}
 
 			return res;
 		}
 
-		bool FBXLoader::ParseBinormals(FbxLayer *layer, int ctrlPointIdx, int vertexCount, SOC_Vector3 *out)
+		bool FBXImporter::ParseBinormals(FbxLayer *layer, int ctrlPointIdx, int vertexCount, SOC_Vector3 *out)
 		{
 			int index = -1;
 			bool res = ParseElements<FbxLayerElementBinormal>(layer->GetBinormals(), ctrlPointIdx, vertexCount, &index);
@@ -440,13 +446,13 @@ namespace Rendering
 			{
 				FbxLayerElementBinormal *fbxBinormal = layer->GetBinormals();
 				FbxVector4 v = fbxBinormal->GetDirectArray().GetAt(index);
-				(*out) = SOC_Vector3(v[0], v[1], v[2]);
+				(*out) = SOC_Vector3((float)v[0], (float)v[1], (float)v[2]);
 			}
 
 			return res;
 		}
 
-		bool FBXLoader::IsSkeleton(FbxNode *node)
+		bool FBXImporter::IsSkeleton(FbxNode *node)
 		{
 			FbxNodeAttribute *attribute = node->GetNodeAttribute();
 			if(attribute == nullptr)
@@ -456,7 +462,7 @@ namespace Rendering
 				(FbxCast<FbxSkeleton>(attribute)->GetSkeletonType() == FbxSkeleton::eLimbNode);
 		}
 
-		FbxNode* FBXLoader::FindSkeletonRoot(FbxNode  *parent)
+		FbxNode* FBXImporter::FindSkeletonRoot(FbxNode  *parent)
 		{
 			FbxNode *parentNode = parent->GetParent();
 
@@ -475,7 +481,7 @@ namespace Rendering
 			return nullptr;
 		}
 
-		void FBXLoader::ParseBoneRecursive(const FbxNode* boneNode, int parentBoneIdx, std::vector<Animation::Bone*> *outBones)
+		void FBXImporter::ParseBoneRecursive(const FbxNode* boneNode, int parentBoneIdx, std::vector<Animation::Bone*> *outBones)
 		{
 			Animation::Bone *bone = new Animation::Bone;
 
@@ -493,7 +499,7 @@ namespace Rendering
 			}
 		}
 
-		bool FBXLoader::BuildSkeleton(FbxSkeleton *skeleton, std::vector<Animation::Bone*> *outBones)
+		bool FBXImporter::BuildSkeleton(FbxSkeleton *skeleton, std::vector<Animation::Bone*> *outBones)
 		{
 			if(skeleton == nullptr)
 				return false;
@@ -504,21 +510,21 @@ namespace Rendering
 			return true;
 		}
 
-		bool FBXLoader::ParseTexture(FbxProperty &fbxProperty, std::string* outFileName)
+		bool FBXImporter::ParseTexture(FbxProperty &fbxProperty, std::string* outFileName)
 		{
 			if( fbxProperty.IsValid() == false )
 				return false;
 
 			//무조건 텍스쳐는 1개만..
-			if(fbxProperty.GetSrcObjectCount(FbxLayeredTexture::ClassId) != 0) 
+			if(fbxProperty.GetSrcObjectCount<FbxSurfaceMaterial>() != 0) 
 				return false;
 
-			int textureCount = fbxProperty.GetSrcObjectCount(FbxTexture::ClassId);
+			int textureCount = fbxProperty.GetSrcObjectCount<FbxSurfaceMaterial>();
 
 			//무조건 텍스쳐는 1개만..
 			if( textureCount == 1 )
 			{
-				FbxFileTexture *texture = FbxCast<FbxFileTexture>(fbxProperty.GetSrcObject(FbxTexture::ClassId));
+				FbxFileTexture *texture = FbxCast<FbxFileTexture>(fbxProperty.GetSrcObject<FbxSurfaceMaterial>());
 				const char *textureFileName = texture->GetFileName();
 				*outFileName = textureFileName;
 			}
@@ -526,7 +532,7 @@ namespace Rendering
 			return true;
 		}
 
-		bool FBXLoader::ParseMaterialElements(FbxSurfaceMaterial *fbxMaterial, MaterialElements *out)
+		bool FBXImporter::ParseMaterialElements(FbxSurfaceMaterial *fbxMaterial, MaterialElements *out)
 		{
 			FbxClassId id = fbxMaterial->GetClassId();
 
@@ -581,7 +587,7 @@ namespace Rendering
 			return true;
 		}
 
-		void FBXLoader::Destroy()
+		void FBXImporter::Destroy()
 		{
 			if(scene)
 			{
