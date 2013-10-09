@@ -224,6 +224,15 @@
     <Filter Include="Engine\Common\Timer">
       <UniqueIdentifier>{006beb02-4c25-4ad8-affc-b95c387b51a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Rendering\Bone">
+      <UniqueIdentifier>{3305679d-91e2-4625-b1b2-603337ad5871}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Mesh\Filter\FilterElements">
+      <UniqueIdentifier>{df655b02-fa85-48b3-975b-68fd4df14b3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\FBXImporter">
+      <UniqueIdentifier>{51c56a7f-8895-4222-8dae-5a15d6cc5c5b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AABB.cpp">
@@ -366,6 +375,15 @@
     </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>Engine\Common\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Bone.cpp">
+      <Filter>Engine\Rendering\Bone</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexBufferElements.cpp">
+      <Filter>Engine\Rendering\Mesh\Filter\FilterElements</Filter>
+    </ClCompile>
+    <ClCompile Include="FBXImporter.cpp">
+      <Filter>Engine\Rendering\FBXImporter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -563,6 +581,18 @@
     </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>Engine\Common\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="Bone.h">
+      <Filter>Engine\Rendering\Bone</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialElements.h">
+      <Filter>Engine\Rendering\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexBufferElements.h">
+      <Filter>Engine\Rendering\Mesh\Filter\FilterElements</Filter>
+    </ClInclude>
+    <ClInclude Include="FBXImporter.h">
+      <Filter>Engine\Rendering\FBXImporter</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
