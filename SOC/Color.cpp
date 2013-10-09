@@ -23,6 +23,22 @@ namespace Rendering
 		this->a = a;
 	}
 
+	Color::Color(double r, double g, double b)
+	{
+		this->r = r;
+		this->g = g;
+		this->b = b;
+		this->a = 1.0f;
+	}
+
+	Color::Color(double r, double g, double b, double a)
+	{
+		this->r = r;
+		this->g = g;
+		this->b = b;
+		this->a = a;
+	}
+
 	Color Color::operator -(Color c)
 	{
 		Color color = (*this);

@@ -1,10 +1,11 @@
 #pragma once
 
 #include "Color.h"
+#include <vector>
+#include <string>
 
 namespace Rendering
 {
-
 	struct MaterialElements
 	{
 		Color ambientColor;
@@ -49,4 +50,15 @@ namespace Rendering
 		}
 	};
 
+
+	struct MaterialTextures
+	{
+		std::string diffuse;
+		std::string emissive;
+		std::string specular;
+		std::string specularFactor;
+		std::string bump;
+		std::string bumpFactor;
+		std::string transparentColor;
+	};
 }
