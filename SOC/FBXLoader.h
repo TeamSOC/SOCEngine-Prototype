@@ -223,16 +223,29 @@ namespace Rendering
 
 				if(fbxMesh->GetLayer(0)->GetTangents() != nullptr)
 					outMeshFilterElements->tangents = new SOC_Vector3[numOfVertex];
+
+				outMeshFilterElements->texcoords.second = new SOC_Vector2*[layerCount];
+				for(int i=0; i<layerCount; ++i)
+					outMeshFilterElements->texcoords.second[i] = new SOC_Vector2[numOfVertex];
 				
+
 				if(fbxMesh->GetLayerCount() > 0)
-					outMeshFilterElements->texcoord = new std::vector<SOC_Vector2*>[fbxMesh->GetLayerCount()];
+				{
+					outMeshFilterElements->texcoords.first = fbxMesh->GetLayerCount();
+					outMeshFilterElements->texcoords.second[0];
+				}
 
 				outMeshFilterElements->type = SOC_TRIANGLE::SOC_TRIANGLE_LIST;
 				//스트립 ㅗ
 
 				SOC_word *indices = outMeshFilterElements->indices.second;
-
-
+				SOC_Vector3 *vertices = outMeshFilterElements->vertices;
+				SOC_Vector3 *normals = outMeshFilterElements->normals;
+				SOC_Vector3 *binormals = outMeshFilterElements->binomals;
+				SOC_Vector3 *tangents = outMeshFilterElements->tangents;
+				Color *colors = outMeshFilterElements->colors;
+				SOC_Vector2 **texcoords = outMeshFilterElements->texcoords.second;
+				
 				for(int polygonIdx = 0; polygonIdx < polygonCount; ++polygonIdx)
 				{
 					int polygonSize = fbxMesh->GetPolygonSize(polygonIdx);					
@@ -249,22 +262,33 @@ namespace Rendering
 
 						FbxVector4 ctrl = ctrlPoints[ctrlPointIdx];
 
+						vertices[vertexCount] = SOC_Vector3(ctrl[0], ctrl[1], ctrl[2]);
 						//ctrl이 vertex고, skinned가있으면 vertex의 boneIdx에 넣고!
 
 						for(int layerNum = 0; layerNum < layerCount; ++layerNum)
 						{
 							FbxLayer *layer = fbxMesh->GetLayer(layerNum);		
-							ParseUV(layer, fbxMesh, ctrlPointIdx, polygonIdx, vertexIdx);
+
+							if( texcoords )
+								ParseUV(layer, fbxMesh, ctrlPointIdx, polygonIdx, vertexIdx, &texcoords[layerNum][vertexCount]);
 						}
 						//만약.. 만약에 도중에 비어있다면 그녀석은 스킵하고 쌓아줘야나
-						//빈 공간이 잇잖아
+						//빈 공간이 잇잖아 있으면 어때 안하면 되지 ㅎ ㅗ
 
 						//게임은 0번 레이어만 쓴다.  굳이 다중 레이어를 쓰지 않는다고 한다.
 						FbxLayer *layer = fbxMesh->GetLayer(0);
-						ParseNormals(layer, ctrlPointIdx, vertexCount);
-						ParseBinomals(layer, ctrlPointIdx, vertexCount);
-						ParseTangents(layer, ctrlPointIdx, vertexCount);
-						ParseVertexColor(layer, ctrlPointIdx, vertexCount);
+
+						if(normals)
+							ParseNormals(layer, ctrlPointIdx, vertexCount, &normals[vertexCount]);
+
+						if(binormals)
+							ParseBinormals(layer, ctrlPointIdx, vertexCount, &binormals[vertexCount]);
+
+						if(tangents)
+							ParseTangents(layer, ctrlPointIdx, vertexCount, &tangents[vertexCount]);
+
+						if(colors)
+							ParseVertexColor(layer, ctrlPointIdx, vertexCount, &colors[vertexCount]);
 
 						++vertexCount;
 						//굳이 메테리얼은 버텍스 마다 돌 필요가 없지않나
@@ -350,7 +374,7 @@ namespace Rendering
 			}
 
 			template <typename ElementType>
-			bool ParseElements(ElementType* e, int ctrlPointIdx, int vertexCount)
+			bool ParseElements(ElementType* e, int ctrlPointIdx, int vertexCount, int *outIdx)
 			{
 				if(e == nullptr)
 					return false;
@@ -374,54 +398,105 @@ namespace Rendering
 						index = e->GetIndexArray().GetAt(vertexCount);
 				}
 
+				*outIdx = index;
+
 				return index != -1;
 			}
 
-			bool ParseNormals(FbxLayer *layer, int ctrlPointIdx, int vertexCount)
+			bool ParseNormals(FbxLayer *layer, int ctrlPointIdx, int vertexCount, SOC_Vector3 *out)
 			{
-				return ParseElements<FbxLayerElementNormal>(layer->GetNormals(), ctrlPointIdx, vertexCount);
+				int index = -1;
+				bool res = ParseElements(layer->GetNormals(), ctrlPointIdx, vertexCount, &index);
+
+				if(res)
+				{
+					FbxLayerElementNormal *fbxNormal = layer->GetNormals();
+					FbxVector4 v = fbxNormal->GetDirectArray().GetAt(index);
+					(*out) = SOC_Vector3(v[0], v[1], v[2]);
+				}
+
+				return res;
 			}
 
-			bool ParseUV(FbxLayer *layer, FbxMesh *fbxMesh, int ctrlPointIdx, int polygonIdx, int vertexIdx)
+			bool ParseUV(FbxLayer *layer, FbxMesh *fbxMesh, int ctrlPointIdx, int polygonIdx, int vertexIdx, SOC_Vector2 *out)
 			{
 				FbxLayerElementUV *fbxUV = layer->GetUVs();
 
 				if(fbxUV == nullptr)
 					return false;
 
-				FbxLayerElement::EMappingMode mappingMode = fbxUV->GetMappingMode();;
-				FbxLayerElement::EReferenceMode refMode = fbxUV->GetReferenceMode();;
 				int index = -1;
 
-				if(mappingMode == FbxLayerElement::eByControlPoint)
 				{
-					if(refMode == FbxLayerElement::eDirect)
-						index = ctrlPointIdx;
-					else if(refMode == FbxLayerElement::eIndexToDirect)
-						index = fbxUV->GetIndexArray().GetAt(ctrlPointIdx);
+					FbxLayerElement::EMappingMode mappingMode = fbxUV->GetMappingMode();;
+					FbxLayerElement::EReferenceMode refMode = fbxUV->GetReferenceMode();;
+
+					if(mappingMode == FbxLayerElement::eByControlPoint)
+					{
+						if(refMode == FbxLayerElement::eDirect)
+							index = ctrlPointIdx;
+						else if(refMode == FbxLayerElement::eIndexToDirect)
+							index = fbxUV->GetIndexArray().GetAt(ctrlPointIdx);
+					}
+					else if(mappingMode == FbxLayerElement::eByPolygonVertex)
+					{
+						if(refMode == FbxLayerElement::eDirect || refMode == FbxLayerElement::eIndexToDirect)
+							index = fbxMesh->GetTextureUVIndex(polygonIdx, vertexIdx);
+					}
 				}
-				else if(mappingMode == FbxLayerElement::eByPolygonVertex)
+
+				if(index != -1)
 				{
-					if(refMode == FbxLayerElement::eDirect || refMode == FbxLayerElement::eIndexToDirect)
-						index = fbxMesh->GetTextureUVIndex(polygonIdx, vertexIdx);
+					FbxVector2 v = fbxUV->GetDirectArray().GetAt(index);
+					(*out) = SOC_Vector2(v[0], v[1]);
 				}
 
 				return index != -1;
 			}
 
-			bool ParseVertexColor(FbxLayer *layer, int ctrlPointIdx, int vertexCount)
+			bool ParseVertexColor(FbxLayer *layer, int ctrlPointIdx, int vertexCount, Color *out)
 			{
-				return ParseElements<FbxLayerElementVertexColor>(layer->GetVertexColors(), ctrlPointIdx, vertexCount);
+				int index = -1;
+				bool res = ParseElements(layer->GetVertexColors(), ctrlPointIdx, vertexCount, &index);
+
+				if(res)
+				{
+					FbxLayerElementVertexColor *fbxColor = layer->GetVertexColors();
+					FbxColor v = fbxColor->GetDirectArray().GetAt(index);
+					(*out) = Color(v.mRed, v.mGreen, v.mBlue, v.mAlpha);
+				}
+
+				return res;
 			}
 
-			bool ParseTangents(FbxLayer *layer, int ctrlPointIdx, int vertexCount)
+			bool ParseTangents(FbxLayer *layer, int ctrlPointIdx, int vertexCount, SOC_Vector3 *out)
 			{
-				return ParseElements<FbxLayerElementTangent>(layer->GetTangents(), ctrlPointIdx, vertexCount);
+				int index = -1;
+				bool res = ParseElements(layer->GetTangents(), ctrlPointIdx, vertexCount, &index);
+
+				if(res)
+				{
+					FbxLayerElementTangent *fbxTangent = layer->GetTangents();
+					FbxVector4 v = fbxTangent->GetDirectArray().GetAt(index);
+					(*out) = SOC_Vector3(v[0], v[1], v[2]);
+				}
+
+				return res;
 			}
 
-			bool ParseBinomals(FbxLayer *layer, int ctrlPointIdx, int vertexCount)
+			bool ParseBinormals(FbxLayer *layer, int ctrlPointIdx, int vertexCount, SOC_Vector3 *out)
 			{
-				return ParseElements<FbxLayerElementBinormal>(layer->GetBinormals(), ctrlPointIdx, vertexCount);
+				int index = -1;
+				bool res = ParseElements<FbxLayerElementBinormal>(layer->GetBinormals(), ctrlPointIdx, vertexCount, &index);
+
+				if(res)
+				{
+					FbxLayerElementBinormal *fbxBinormal = layer->GetBinormals();
+					FbxVector4 v = fbxBinormal->GetDirectArray().GetAt(index);
+					(*out) = SOC_Vector3(v[0], v[1], v[2]);
+				}
+
+				return res;
 			}
 
 			bool IsSkeleton(FbxNode *node)

@@ -19,7 +19,7 @@ namespace Rendering
 			SOC_Vector3 *normals;
 			SOC_Vector3 *tangents;
 			SOC_Vector3 *binomals;
-			std::vector<SOC_Vector2*> *texcoord;
+			std::pair<count, SOC_Vector2**> texcoords;
 			Color *colors;
 			int numOfVertex;
 			int numOfTriangle;

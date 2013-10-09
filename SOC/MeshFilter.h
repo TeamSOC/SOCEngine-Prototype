@@ -24,7 +24,7 @@ namespace Rendering
 			SOC_Vector3* tangents;
 			SOC_Vector3* binomals;
 
-			std::vector<SOC_Vector2*> texcoord;
+			std::pair<count, SOC_Vector2**> texcoords;
 
 			Color *colors;
 
@@ -53,14 +53,12 @@ namespace Rendering
 		private:
 			void CalcVertexBufferSize();
 			template <typename VertexBufferData, typename CreateType>
-			bool SetVertexData(VertexBufferData *out, VertexBufferData inputData, CreateType createType, bool copy)
+			bool SetVertexData(VertexBufferData *out, VertexBufferData inputData, CreateType createType, bool alloc)
 			{
 				if(inputData == NULL)
 					return false;
 
-				Utility::SAFE_ARRARY_DELETE(*out);
-
-				if(copy)
+				if(alloc == false)
 					*out = inputData;
 				else
 				{
@@ -72,10 +70,10 @@ namespace Rendering
 			}
 
 		public:
-			bool Create(MeshFilterElements &option, bool copy);
+			bool Create(MeshFilterElements &option, bool alloc);
 			bool Create(SOC_Vector3 *vertices, SOC_Vector3 *normals, SOC_Vector3 *tangents,
-						SOC_Vector3 *binomals, std::vector<SOC_Vector2*> *texcoord, Color *colors, 
-						int numOfVertex, int numOfTriangle, std::pair<count, SOC_word*> indices, SOC_TRIANGLE type, bool isDynamic, bool copy);
+						SOC_Vector3 *binomals, std::pair<count, SOC_Vector2**> texcoords, Color *colors, 
+						int numOfVertex, int numOfTriangle, std::pair<count, SOC_word*> indices, SOC_TRIANGLE type, bool isDynamic, bool alloc);
 
 		private:
 			bool CreateVertexBuffer(bool isDynamic);

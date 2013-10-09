@@ -15,6 +15,9 @@ namespace Rendering
 			vertexBuffer = nullptr;
 			indexBuffer = nullptr;
 			this->graphics = graphics;
+
+			this->texcoords.first = 0;
+			this->texcoords.second = nullptr;
 		}
 		MeshFilter::~MeshFilter()
 		{
@@ -25,8 +28,10 @@ namespace Rendering
 
 			if(normals)			vertexBufferSize += sizeof(SOC_Vector3);
 
-			for(std::vector<SOC_Vector2*>::iterator iter = texcoord.begin(); iter != texcoord.end(); ++iter)
-				vertexBufferSize += sizeof(SOC_Vector2);
+			//for(std::vector<SOC_Vector2*>::iterator iter = texcoord.begin(); iter != texcoord.end(); ++iter)
+			//	vertexBufferSize += sizeof(SOC_Vector2);
+			if(texcoords.second)
+				vertexBufferSize += sizeof(SOC_Vector2) * texcoords.first;
 
 			if(tangents)		vertexBufferSize += sizeof(SOC_Vector3);
 			if(binomals)		vertexBufferSize += sizeof(SOC_Vector3);
@@ -34,39 +39,54 @@ namespace Rendering
 			if(colors)			vertexBufferSize += sizeof(SOC_Vector4);
 		}
 
-		bool MeshFilter::Create(MeshFilterElements &option, bool copy)
+		bool MeshFilter::Create(MeshFilterElements &option, bool alloc)
 		{
-			return Create(option.vertices, option.normals, option.tangents, option.binomals, option.texcoord, option.colors, option.numOfVertex, option.numOfTriangle, option.indices, option.type, option.isDynamic, copy);
+			return Create(
+				option.vertices, option.normals, 
+				option.tangents, option.binomals, 
+				option.texcoords, option.colors, 
+				option.numOfVertex, option.numOfTriangle, 
+				option.indices, option.type, 
+				option.isDynamic, alloc);
 		}
 
 		bool MeshFilter::Create(SOC_Vector3 *vertices, SOC_Vector3 *normals, SOC_Vector3 *tangents,
-			SOC_Vector3 *binomals, std::vector<SOC_Vector2*> *texcoord, Color *colors, 
-			int numOfVertex, int numOfTriangle, std::pair<count, SOC_word*> indices, SOC_TRIANGLE type, bool isDynamic, bool copy)
+			SOC_Vector3 *binomals, std::pair<count, SOC_Vector2**> texcoords, Color *colors, 
+			int numOfVertex, int numOfTriangle, std::pair<count, SOC_word*> indices, SOC_TRIANGLE type, bool isDynamic, bool alloc)
 		{
 			if(vertices == NULL ) return false;
 
 			this->triangleType = type;
 			this->numOfVertex = numOfVertex;
 
-			SetVertexData(&this->vertices, vertices, SOC_Vector3(), copy);
-			SetVertexData(&this->normals, normals, SOC_Vector3(), copy);
-			SetVertexData(&this->tangents, tangents, SOC_Vector3(), copy);
-			SetVertexData(&this->binomals, binomals, SOC_Vector3(), copy);
-			SetVertexData(&this->colors, colors, Color(), copy);
+			SetVertexData(&this->vertices, vertices, SOC_Vector3(), alloc);
+			SetVertexData(&this->normals, normals, SOC_Vector3(), alloc);
+			SetVertexData(&this->tangents, tangents, SOC_Vector3(), alloc);
+			SetVertexData(&this->binomals, binomals, SOC_Vector3(), alloc);
+			SetVertexData(&this->colors, colors, Color(), alloc);
 
-			if(texcoord)
+			if(texcoords.first > 0)
 			{
-				std::vector<SOC_Vector2*>::iterator iter = this->texcoord.begin();
-				for(; iter != this->texcoord.end(); ++iter)
-					Utility::SAFE_ARRARY_DELETE((*iter));
-				this->texcoord.clear();
+				this->texcoords = texcoords;
 
-				int count = texcoord->size();
-				for(int i=0; i<count; ++i)
+				if(alloc)
 				{
-					SOC_Vector2 *ary = nullptr;// = new SOC_Vector2[numOfVertex];				
-					SetVertexData(&ary, (*texcoord)[i], SOC_Vector2(), copy);
-					this->texcoord.push_back(ary);
+					if(this->texcoords.second)
+					{
+						for(int i=0; i<this->texcoords.first; ++i)
+							Utility::SAFE_ARRARY_DELETE(this->texcoords.second[i]);
+						Utility::SAFE_DELETE(this->texcoords.second);
+					}
+
+					int count = texcoords.first;
+					this->texcoords.second = new SOC_Vector2*[count];
+
+					for(int i=0; i<count; ++i)
+					{
+						SOC_Vector2 *ary = nullptr;				
+						SetVertexData(&ary, texcoords.second[i], SOC_Vector2(), alloc);
+						this->texcoords.second[i] = ary;
+					}
 				}
 			}
 
@@ -156,11 +176,20 @@ namespace Rendering
 					vertexBufferData = (SOC_Vector4*)vertexBufferData + 1;
 				}
 
-				for(std::vector<SOC_Vector2*>::iterator iter = texcoord.begin(); iter != texcoord.end(); ++iter)
+				if(texcoords.second)
 				{
-					*( (SOC_Vector2*)vertexBufferData ) = (*iter)[i];
-					vertexBufferData = (SOC_Vector2*)vertexBufferData + 1;
+					for(int layer = 0; layer < texcoords.first; ++layer)
+					{
+						*( (SOC_Vector2*)vertexBufferData ) = texcoords.second[layer][i];
+						vertexBufferData = (SOC_Vector2*)vertexBufferData + 1;
+					}
 				}
+
+				//for(std::vector<SOC_Vector2*>::iterator iter = texcoord.begin(); iter != texcoord.end(); ++iter)
+				//{
+				//	*( (SOC_Vector2*)vertexBufferData ) = (*iter)[i];
+				//	vertexBufferData = (SOC_Vector2*)vertexBufferData + 1;
+				//}
 			}
 
 			if( vertexBuffer->UnLock() == false)
@@ -239,13 +268,13 @@ namespace Rendering
 				description += "C";
 			}
 
-			if(texcoord.size() != 0)
+			if(texcoords.first > 0)
 			{
 				e.usage = SOC_VERTEX_USAGE_TEXCOORD;
 				e.type = SOC_VERTEX_DECLTYPE_FLOAT2;
 			}
 
-			int size = texcoord.size();
+			int size = texcoords.first;
 			for(int i=0; i<size; ++i)
 			{
 				e.usageIndex = i;
