@@ -38,5 +38,6 @@
 #include <string>
 #include <stack>
 
+#include "PreDefine.h"
 #include "../System/Interface.h"
 #include "../Memory/Interface.h"

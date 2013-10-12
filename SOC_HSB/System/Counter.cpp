@@ -4,23 +4,26 @@ namespace SOC_System {
 
 	void Counter::operator = (SOC_LONG Value)
 	{
-		static CriticalSectionLock lock;
-		unsigned long temp = 0;
-		/*
 		while (true)
 		{
 			SOC_ULONG temp = m_count;
-
+#if defined(_WIN64) || defined(_WIN32)
+			if (InterlockedCompareExchange((SOC_ULONG*)&m_count, Value, temp) == temp)
+#else
+			// OSAtomic Exchange
+			if ()
+#endif
 			{
-				TYPED_SCOPE_LOCK(lock);
-				temp = m_count;
-				if (m_count == temp)
-					m_count = Value;
+				break;
 			}
-
-			//
+			else
+			{
+#if defined(_WIN64) || defined(_WIN32)
+				YieldProcessor();
+#else
+				//mac
+#endif
+			}
 		}
-
-		*/
 	}
 }

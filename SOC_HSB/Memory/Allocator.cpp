@@ -1,7 +1,12 @@
+//
+//  Allocator.h
+//  Created by SungBin_Hong on 13. 10. 13..
+//  Copyright (c) 2013 years Teraphonia. All rights reserved.
+//
+
 #include "../pch/pch.h"
 
-
-namespace Memory {
+namespace SOC_Memory {
 
 	Allocator::Allocator(SOC_INT32 threadID, SOC_INT32 threadMax, SOC_INT32 minAlign, SOC_INT32 maxAlign, SOC_SIZE_T bufferSize)
 		: m_threadID(threadID)
@@ -33,7 +38,7 @@ namespace Memory {
 			delete m_ppFreeListArray[i];
 		}
 
-		free(m_ppFreeListArray);
+		SAFE_FREE(m_ppFreeListArray);
 	}
 
 	void* Allocator::Alloc(SOC_SIZE_T size, SOC_INT32 tag)
@@ -82,7 +87,7 @@ namespace Memory {
 		return CheckAlloc(pMem +2);
 	}
 
-	bool Allocator::Free(void* ptr, SOC_INT32 tag, SOC_INT32& threadID)
+	bool Allocator::Free(void* ptr, SOC_INT32 tag, SOC_INT32& ref_ThreadID)
 	{
         GarbageCollect();
         
@@ -97,7 +102,7 @@ namespace Memory {
 		SOC_INT32 alloc_threadID = ExtractThreadID(ptr);
 		if (alloc_threadID != m_threadID)
 		{
-			threadID = alloc_threadID;
+			ref_ThreadID = alloc_threadID;
 			return false;
 		}
 

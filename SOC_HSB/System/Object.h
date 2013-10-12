@@ -15,8 +15,6 @@ namespace SOC_System {
 		SOC_LONG AddRef(SOC_LONG value);
 		SOC_LONG Release();
 
-		virtual void OnDestroy() {}
-
 	private:
 		Counter m_count;
 	};

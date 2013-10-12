@@ -1,3 +1,9 @@
+//
+//  MacroDefine.h
+//  Created by SungBin_Hong on 13. 10. 13..
+//  Copyright (c) 2013 years Teraphonia. All rights reserved.
+//
+
 #pragma once
 
 // This is overflow check macro
