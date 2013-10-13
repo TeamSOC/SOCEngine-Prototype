@@ -26,7 +26,8 @@ public:
 #if defined(_WIN64) || defined(_WIN32)
 			if (InterlockedCompareExchange((SOC_ULONG*)&tvalue, 1, 0) == 0)
 #else
-//
+                
+            if( InterlockedCompareExchange(&tvalue, 1, 0) == false )
 #endif
 			{
 				break;
@@ -56,7 +57,7 @@ protected:
 	{
 		TYPE * pInst = new TYPE();
 		s_pInstance = pInst;
-
+        
 		::atexit(&finalize);
 	}
 

@@ -19,6 +19,7 @@
     #include <unistd.h>
     #include <pthread.h>
     #include <assert.h>
+    #include <libkern/OSAtomic.h>
 #endif
 
 //////////////

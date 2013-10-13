@@ -21,13 +21,7 @@ public:
 #if defined(_WIN64) || defined(_WIN32)
 		return InterlockedIncrement((SOC_ULONG*)&m_count);
 #else
-		static CriticalSectionLock lock;
-		{
-			TYPED_SCOPE_LOCK(lock);
-			++m_count;
-		}
-
-		return m_count;
+        return InterlockedIncrement(&m_count);
 #endif
 	}
 	SOC_LONG operator ++ (int) // postfix ++
@@ -35,13 +29,7 @@ public:
 #if defined(_WIN64) || defined(_WIN32)
 		return InterlockedIncrement((SOC_ULONG*)&m_count) -1;
 #else
-		static CriticalSectionLock lock;
-		{
-			TYPED_SCOPE_LOCK(lock);
-			++m_count;
-		}
-
-		return m_count -1;
+		return InterlockedIncrement(&m_count) -1;
 #endif
 	}
 
@@ -50,13 +38,7 @@ public:
 #if defined(_WIN64) || defined(_WIN32)
 		return InterlockedDecrement((SOC_ULONG*)&m_count);
 #else
-		static CriticalSectionLock lock;
-		{
-			TYPED_SCOPE_LOCK(lock);
-			--m_count;
-		}
-
-		return m_count;
+        return InterlockedDecrement(&m_count);
 #endif
 	}
 
@@ -65,13 +47,7 @@ public:
 #if defined(_WIN64) || defined(_WIN32)
 		return InterlockedDecrement((SOC_ULONG*)&m_count) +1;
 #else
-		static CriticalSectionLock lock;
-		{
-			TYPED_SCOPE_LOCK(lock);
-			--m_count;
-		}
-
-		return m_count +1;
+		return InterlockedDecrement(&m_count) +1;
 #endif
 	}
 
@@ -80,11 +56,7 @@ public:
 #if defined(_WIN64) || defined(_WIN32)
 		InterlockedExchangeAdd((SOC_ULONG*)&m_count, value);
 #else
-		static CriticalSectionLock lock;
-		{
-			TYPED_SCOPE_LOCK(lock);
-			m_count += value;
-		}
+        InterlockedExchangeAdd(&m_count, value);
 #endif
 	}
 
@@ -93,11 +65,7 @@ public:
 #if defined(_WIN64) || defined(_WIN32)
 		InterlockedExchangeSubtract((SOC_ULONG*)&m_count, value);
 #else
-		static CriticalSectionLock lock;
-		{
-			TYPED_SCOPE_LOCK(lock);
-			m_count -= value;
-		}
+        InterlockedExchangeSubtract(&m_count, value);
 #endif
 	}
 
