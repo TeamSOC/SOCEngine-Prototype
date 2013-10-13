@@ -111,7 +111,7 @@ namespace Rendering
 			return status;
 		}
 
-		bool FBXImporter::Decode(MaterialElements *outMaterialElements, VertexBufferElements *outMeshFliterElements, MaterialTextures *outTextureNames)
+		bool FBXImporter::Decode(MaterialElements *outMaterialElements, MeshFilterElements *outMeshFliterElements, MaterialTextures *outTextureNames)
 		{
 			if(scene == nullptr)
 				return false;
@@ -148,20 +148,21 @@ namespace Rendering
 					fbxSkeleton = skeletonNode->GetSkeleton();
 			}
 
-			BuildMesh(fbxMesh, outMeshFliterElements, outMaterialElements, outTextureNames);
+			BuildMesh(fbxMesh, outMeshFliterElements);
+			//			ParseMaterial(fbxMesh, outMaterialElements, outTextureNames);
 
-			bool animation = 0;
+			bool animation = outMeshFliterElements->skinIndices.second != nullptr;
 
-			if( /*animation*/ true)
+			if( animation)
 			{
-
-				BuildSkeleton(fbxSkeleton, nullptr);
+				outMeshFliterElements->boneIndices = new std::vector<Animation::Bone*>;
+				BuildSkeleton(fbxSkeleton, outMeshFliterElements->boneIndices);
 			}
 
 			return true;
 		}
 
-		bool FBXImporter::BuildMesh(FbxMesh *fbxMesh, VertexBufferElements *outMeshFilterElements, MaterialElements *outMaterialElements, MaterialTextures *outTextures)
+		bool FBXImporter::BuildMesh(FbxMesh *fbxMesh, MeshFilterElements *outMeshFilterElements)
 		{
 			if(fbxMesh == nullptr)
 				return false;
@@ -174,18 +175,35 @@ namespace Rendering
 			FbxVector4 *ctrlPoints	= fbxMesh->GetControlPoints();
 			int layerCount			= fbxMesh->GetLayerCount();
 			int polygonCount		= fbxMesh->GetPolygonCount();
-			int vertexCount			= 0;
 
-			std::vector<int> boneIndices;
-			BuildskinningMesh(fbxMesh, boneIndices);
-			bool isSkinned = boneIndices.empty() == false;
+			std::vector<int> skinIndices;
+			BuildskinningMesh(fbxMesh, skinIndices);
+			bool isSkinned = skinIndices.empty() == false;
+
+			if(isSkinned)
+			{
+				outMeshFilterElements->skinIndices.first = skinIndices.size();
+				outMeshFilterElements->skinIndices.second = new int[skinIndices.size()];
+			}
+
+			int indexCount =  0;
+
+			for(int i=0; i<polygonCount; ++i)
+			{
+				int polySize = fbxMesh->GetPolygonSize(i);
+
+				if( polySize == 3 )					indexCount += 3;
+				else if(polySize == 4)				indexCount += 6;
+				else 
+					return false;
+			}
 
 			int numOfVertex = fbxMesh->GetControlPointsCount();
-			outMeshFilterElements->indices.first = polygonCount * 3;
-			outMeshFilterElements->indices.second = new SOC_word[polygonCount * 3];
+			outMeshFilterElements->indices.first = indexCount;
+			outMeshFilterElements->indices.second = new SOC_word[indexCount];
 			outMeshFilterElements->numOfVertex = numOfVertex;
 			outMeshFilterElements->vertices = new SOC_Vector3[outMeshFilterElements->numOfVertex];
-			outMeshFilterElements->numOfTriangle = fbxMesh->GetPolygonCount();
+			outMeshFilterElements->numOfTriangle = indexCount / 3;
 			outMeshFilterElements->isDynamic = isSkinned;
 
 			if(fbxMesh->GetLayer(0)->GetNormals() != nullptr)
@@ -200,14 +218,14 @@ namespace Rendering
 			if(fbxMesh->GetLayer(0)->GetTangents() != nullptr)
 				outMeshFilterElements->tangents = new SOC_Vector3[numOfVertex];
 
-			outMeshFilterElements->texcoords.second = new SOC_Vector2*[layerCount];
-			for(int i=0; i<layerCount; ++i)
-				outMeshFilterElements->texcoords.second[i] = new SOC_Vector2[numOfVertex];
-
 			if(fbxMesh->GetLayerCount() > 0)
 			{
+				outMeshFilterElements->texcoords.second = new SOC_Vector2*[layerCount];
+
+				for(int i=0; i<layerCount; ++i)
+					outMeshFilterElements->texcoords.second[i] = new SOC_Vector2[numOfVertex];
+
 				outMeshFilterElements->texcoords.first = fbxMesh->GetLayerCount();
-				outMeshFilterElements->texcoords.second[0];
 			}
 
 			outMeshFilterElements->type = SOC_TRIANGLE::SOC_TRIANGLE_LIST;
@@ -221,74 +239,114 @@ namespace Rendering
 			Color *colors = outMeshFilterElements->colors;
 			SOC_Vector2 **texcoords = outMeshFilterElements->texcoords.second;
 
+			int triangleAry[3] = { 0, 1, 2 };
+			int rectAry[6] = { 0, 1, 2, 0, 2, 3 };
+			int *ary = nullptr;
+
+			int skinIdx		= 0;
+
+			for(int i=0; i<numOfVertex; ++i)
+			{
+				FbxVector4  v = fbxMesh->GetControlPointAt(i);
+				vertices[i] = SOC_Vector3((float)v[0], (float)v[1], (float)v[2]);
+			}
+
+			int vertexCount = 0;
+
+			for(int polyIdx = 0; polyIdx < polygonCount; ++polyIdx)
+			{
+				int polySize = fbxMesh->GetPolygonSize(polyIdx);
+
+				for(int i=0; i<polySize; ++i)
+				{
+					int ctrlIdx = fbxMesh->GetPolygonVertex(polyIdx, i);					
+
+					for(int layerIdx = 0; layerIdx < layerCount; ++layerIdx)
+					{
+						FbxLayer *layer = fbxMesh->GetLayer(layerIdx);
+
+						if(texcoords)
+							ParseUV(layer, fbxMesh, ctrlIdx, polyIdx, i, &texcoords[layerIdx][ctrlIdx]);
+					}
+
+					FbxLayer *layer = fbxMesh->GetLayer(0);
+
+					if(normals)
+						ParseNormals(layer, ctrlIdx, vertexCount, &normals[ctrlIdx]);
+
+					if(binormals)
+						ParseBinormals(layer, ctrlIdx, vertexCount, &binormals[ctrlIdx]);
+
+					if(tangents)
+						ParseTangents(layer, ctrlIdx, vertexCount, &tangents[ctrlIdx]);
+
+					if(colors)
+						ParseVertexColor(layer, ctrlIdx, vertexCount, &colors[ctrlIdx]);
+
+					vertexCount++;
+				}
+			}
+
+			int index = 0;
 			for(int polygonIdx = 0; polygonIdx < polygonCount; ++polygonIdx)
 			{
 				int polygonSize = fbxMesh->GetPolygonSize(polygonIdx);					
 
-				//애초에 삼각형이 아니면 막아버리자
-				if(polygonSize != 3)
-					return false;
+				ary = polygonSize == 3 ? triangleAry : rectAry;
+				int count = polygonSize == 3 ? 3 : 6;
 
-				for(int vertexIdx = 0; vertexIdx < polygonSize; ++vertexIdx)
+				for(int vertexIdx = 0; vertexIdx < count; ++vertexIdx)
 				{
-					int ctrlPointIdx = fbxMesh->GetPolygonVertex(polygonIdx, vertexIdx);
-					//이놈이 index인듯..
-					indices[vertexCount] = ctrlPointIdx;
+					indices[index] = fbxMesh->GetPolygonVertex(polygonIdx, ary[vertexIdx]);
 
-					FbxVector4 ctrl = ctrlPoints[ctrlPointIdx];
+					//skin mesh??
 
-					vertices[vertexCount] = SOC_Vector3((float)ctrl[0], (float)ctrl[1], (float)ctrl[2]);
-					//ctrl이 vertex고, skinned가있으면 vertex의 boneIdx에 넣고!
-					if(isSkinned)
-					{
-						//add born Index.
-						outMeshFilterElements->boneIndices.push_back(boneIndices[ctrlPointIdx]);
-					}
-
-					for(int layerNum = 0; layerNum < layerCount; ++layerNum)
-					{
-						FbxLayer *layer = fbxMesh->GetLayer(layerNum);		
-
-						if( texcoords )
-							ParseUV(layer, fbxMesh, ctrlPointIdx, polygonIdx, vertexIdx, &texcoords[layerNum][vertexCount]);
-					}
-					//만약.. 만약에 도중에 비어있다면 그녀석은 스킵하고 쌓아줘야나
-					//빈 공간이 잇잖아 있으면 어때 안하면 되지 ㅎ ㅗ
-
-					//게임은 0번 레이어만 쓴다.  굳이 다중 레이어를 쓰지 않는다고 한다.
-					FbxLayer *layer = fbxMesh->GetLayer(0);
-
-					if(normals)
-						ParseNormals(layer, ctrlPointIdx, vertexCount, &normals[vertexCount]);
-
-					if(binormals)
-						ParseBinormals(layer, ctrlPointIdx, vertexCount, &binormals[vertexCount]);
-
-					if(tangents)
-						ParseTangents(layer, ctrlPointIdx, vertexCount, &tangents[vertexCount]);
-
-					if(colors)
-						ParseVertexColor(layer, ctrlPointIdx, vertexCount, &colors[vertexCount]);
-
-					++vertexCount;
-					//굳이 메테리얼은 버텍스 마다 돌 필요가 없지않나
-					//걍 따로 빼주지 뭐 ㅇ 얼마나 느려지겠다고 ㅋ
+					++index;
 				}
-
 			}
 
-			//				outMeshFilterElements->numOfVertex = vertexCount;
 
-			FbxNode *node = fbxMesh->GetNode();
-			int materialCount = node->GetSrcObjectCount<FbxSurfaceMaterial>();
+
+			return true;
+		}
+
+		void FBXImporter::ParseMaterial(fbxsdk_2014_1::FbxMesh *fbxMesh, MaterialElements *outMaterialElements, MaterialTextures *outTextures)
+		{
+			int layerCount = fbxMesh->GetLayerCount();
+			for(int layer = 0; layer < layerCount; ++layer)
+			{
+				FbxLayerElementMaterial *layerMaterial = fbxMesh->GetLayer(0)->GetMaterials();
+
+				if(layerMaterial != nullptr)
+				{
+					FbxLayerElement::EMappingMode mappingMode = layerMaterial->GetMappingMode();
+
+					if(mappingMode == FbxLayerElement::eAllSame)
+					{
+						int matID = layerMaterial->GetIndexArray().GetAt(0);
+
+						if(matID >= 0)
+						{
+							int a = 3;
+							a=5;
+						}
+					}
+					else if(mappingMode == FbxLayerElement::eByPolygon)
+					{
+
+					}
+				}
+			}
+
+			int materialCount = scene->GetMaterialCount();
 			for(int materialIdx = 0; materialIdx < materialCount; materialIdx)
 			{
-				FbxSurfaceMaterial *fbxMaterial = FbxCast<FbxSurfaceMaterial>(node->GetSrcObject<FbxSurfaceMaterial>(materialIdx));
+				FbxSurfaceMaterial *fbxMaterial = scene->GetMaterial(materialIdx);
 
 				if(fbxMaterial == nullptr)
 					continue;
 
-				ParseMaterialElements(fbxMaterial, outMaterialElements);
+				//				ParseMaterialElements(fbxMaterial, outMaterialElements);
 
 				FbxProperty fbxProperty;
 
@@ -313,8 +371,6 @@ namespace Rendering
 				fbxProperty = fbxMaterial->FindProperty(FbxSurfaceMaterial::sTransparentColor);
 				ParseTexture(fbxProperty, &outTextures->transparentColor);
 			}
-
-			return true;
 		}
 
 		void FBXImporter::BuildskinningMesh(FbxMesh *fbxMesh, std::vector<int> &boneIndices)
@@ -322,7 +378,7 @@ namespace Rendering
 			int skinCount = fbxMesh->GetDeformerCount(FbxDeformer::eSkin);
 
 			if(skinCount > 0)
-				boneIndices.resize(fbxMesh->GetControlPointsCount(), -1);
+				boneIndices.resize(fbxMesh->GetControlPointsCount());
 
 			for(int skinIdx = 0; skinIdx < skinCount; ++skinIdx)
 			{
@@ -366,6 +422,16 @@ namespace Rendering
 				FbxLayerElementNormal *fbxNormal = layer->GetNormals();
 				FbxVector4 v = fbxNormal->GetDirectArray().GetAt(index);
 				(*out) = SOC_Vector3((float)v[0], (float)v[1], (float)v[2]);
+
+				int test = fbxNormal->GetDirectArray().GetCount();
+				int test2 = fbxNormal->GetIndexArray().GetCount();
+
+
+				if( fbxNormal->GetDirectArray().GetCount() < index
+					|| index == -1)
+				{
+					res = false;
+				}
 			}
 
 			return res;

@@ -6,7 +6,7 @@
 #pragma comment(lib, "libfbxsdk-md.lib")
 
 #include "MaterialElements.h"
-#include "VertexBufferElements.h"
+#include "MeshFilterElements.h"
 
 #include "Bone.h"
 #include <vector>
@@ -28,12 +28,14 @@ namespace Rendering
 		public:
 			bool Initialize(const char *sceneName);
 			bool LoadScene(const char *fileName, const char *password = nullptr);
-			bool Decode(MaterialElements *outMaterialElements, VertexBufferElements *outMeshFliterElements, MaterialTextures *outTextureNames);
+			bool Decode(MaterialElements *outMaterialElements, MeshFilterElements *outMeshFliterElements, MaterialTextures *outTextureNames);
 			void Destroy();
 
 		private:
-			bool BuildMesh(fbxsdk_2014_1::FbxMesh *fbxMesh, VertexBufferElements *outMeshFilterElements, MaterialElements *outMaterialElements, MaterialTextures *outTextures);
-			void BuildskinningMesh(fbxsdk_2014_1::FbxMesh *fbxMesh, std::vector<int> &boneIndices);
+			bool BuildMesh(fbxsdk_2014_1::FbxMesh *fbxMesh, MeshFilterElements *outMeshFilterElements);
+			void BuildskinningMesh(fbxsdk_2014_1::FbxMesh *fbxMesh, std::vector<int> &skinIndices);
+
+			void ParseMaterial(fbxsdk_2014_1::FbxMesh *fbxMesh, MaterialElements *outMaterialElements, MaterialTextures *outTextures);
 
 			template <typename ElementType>
 			bool ParseElements(ElementType* e, int ctrlPointIdx, int vertexCount, int *outIdx)
@@ -42,8 +44,8 @@ namespace Rendering
 					return false;
 
 				int index = -1;
-				FbxLayerElement::EMappingMode mappingMode = e->GetMappingMode();;
-				FbxLayerElement::EReferenceMode refMode = e->GetReferenceMode();;
+				FbxLayerElement::EMappingMode mappingMode = e->GetMappingMode();
+				FbxLayerElement::EReferenceMode refMode = e->GetReferenceMode();
 
 				if(mappingMode == FbxLayerElement::eByControlPoint)
 				{

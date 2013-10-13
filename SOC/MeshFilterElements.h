@@ -3,10 +3,11 @@
 #include "RenderingMath.h"
 #include <vector>
 #include "Color.h"
+#include "Bone.h"
 
 namespace Rendering
 {
-	struct VertexBufferElements
+	struct MeshFilterElements
 	{
 	public:
 		typedef int count;
@@ -23,11 +24,13 @@ namespace Rendering
 		std::pair<count, SOC_word*> indices;
 		SOC_TRIANGLE type;
 		bool isDynamic;
-		std::vector<int> boneIndices;
+		std::pair<count, int*> skinIndices;
+		//std::pair<count, Animation::Bone*> boneIndices;
+		std::vector<Animation::Bone*> *boneIndices;
 
 	public:
-		VertexBufferElements(void);
-		~VertexBufferElements(void);
+		MeshFilterElements(void);
+		~MeshFilterElements(void);
 	};
 
 }
