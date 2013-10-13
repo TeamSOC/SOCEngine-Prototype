@@ -8,12 +8,15 @@
 #include "Sphere.h"
 
 #include "Container.h"
-#include "Frustum.h"
-#include "Transform.h"
 
 #include "Mesh.h"
 #include "Light.h"
 #include "Camera.h"
+
+//#include "Component.h"
+
+//#include "Frustum.h"
+//#include "Transform.h"
 
 namespace Rendering
 {
@@ -45,14 +48,56 @@ namespace Rendering
 		Object* AddObject(Object *child, bool copy = false);
 		Object* AddObject(Object *child, int renderQueueOrder, bool copy = false);
 
-		template<class ComponentType>
-		ComponentType* AddComponent();
+		template<typename ComponentType>
+		ComponentType* AddComponent()
+		{
+			if( ComponentType::ComponentType < Component::Type::User )
+			{
+				typename std::vector<Component*>::iterator iter;
+				for(iter = componenets.begin(); iter != componenets.end(); ++iter)
+				{
+					ComponentType *compareComponent = dynamic_cast<ComponentType*>(*iter);
+
+					if( compareComponent->ComponentType == ComponentType::ComponentType )
+						return compareComponent;
+				}
+			}
+
+			ComponentType *compo = new ComponentType;
+
+			//오직 유저 컴포넌트만 중복 가능
+			compo->Initialize();
+			componenets.push_back(compo);
+
+			return compo;
+		}
 
 		template<class ComponentType>
-		ComponentType* GetComponent();
+		ComponentType* GetComponent()
+		{
+			typename std::vector<Component*>::iterator iter;
+			for(iter = componenets.begin(); iter != componenets.end(); ++iter)
+			{
+				if((*iter)->ComponentType == ComponentType::ComponentType)
+					return (*iter);
+			}
+
+			return nullptr;
+		}
 
 		template<class ComponentType>
-		std::vector<ComponentType*> GetComponents();
+		std::vector<ComponentType*> GetComponents()
+		{
+			std::vector<Component*> v;
+			typename std::vector<Component*>::iterator iter;
+			for(iter = componenets.begin(); iter != componenets.end(); ++iter)
+			{
+				if((*iter)->ComponentType == ComponentType::ComponentType)
+					v.push_back((*iter));
+			}
+
+			return v;
+		}
 
 		void DeleteComponent(Component *component);
 		void DeleteAllComponent();

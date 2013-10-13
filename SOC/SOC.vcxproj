@@ -111,7 +111,8 @@
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshFilter.cpp" />
-    <ClCompile Include="VertexBufferElements.cpp" />
+    <ClCompile Include="Skeleton.cpp" />
+    <ClCompile Include="MeshFilterElements.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="PointLight.cpp" />
@@ -125,6 +126,7 @@
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="SpotLight.cpp" />
     <ClCompile Include="TagManager.cpp" />
+    <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="TextureDX.cpp" />
     <ClCompile Include="TextureForm.cpp" />
     <ClCompile Include="TextureManager.cpp" />
@@ -167,7 +169,8 @@
     <ClInclude Include="Math.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshFilter.h" />
-    <ClInclude Include="VertexBufferElements.h" />
+    <ClInclude Include="Skeleton.h" />
+    <ClInclude Include="MeshFilterElements.h" />
     <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Object.hpp" />
@@ -193,6 +196,7 @@
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="SpotLight.h" />
     <ClInclude Include="TagManager.h" />
+    <ClInclude Include="TestScene.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureDX.h" />
     <ClInclude Include="TextureForm.h" />

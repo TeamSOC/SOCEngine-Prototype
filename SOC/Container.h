@@ -72,34 +72,33 @@ public:
 
 	Object* AddObject(Object *child, bool copy = false)
 	{
-		if(order > 0)
-		{
-			Object *c = copy == false ? child : new Object(*child);
+		Object *c = copy == false ? child : new Object(*child);
 
-			typename std::vector<Object*>::iterator iter;
+		c->order = objects.size() != 0 ? (*(objects.end() - 1))->order + 1 : 0;
+		c->clone = copy;
+		objects.push_back(c);
 
-			for(iter = objects.begin(); iter != objects.end(); ++iter)
-			{
-				if( (*iter)->order <= order )
-				{
-					c->order = (*iter)->order == order ? order + 1 : order;
-					c->clone = copy;
-					objects.insert(iter + 1, c);
-					return c;
-				}
-			}
-		}
-		return nullptr;
+		return c;
 	}
 
 	Object* AddObject(Object *child, int order, bool copy = false)
 	{
 		Object *c = copy == false ? child : new Object(*child);
 
-		c->order = (*(objects.end() - 1))->order + 1;
-		c->clone = copy;
-		objects.push_back(c);
-		return c;
+		typename std::vector<Object*>::iterator iter;
+
+		for(iter = objects.begin(); iter != objects.end(); ++iter)
+		{
+			if( (*iter)->order <= order )
+			{
+				c->order = (*iter)->order == order ? order + 1 : order;
+				c->clone = copy;
+				objects.insert(iter + 1, c);
+				return c;
+			}
+		}
+
+		return nullptr;
 	}
 
 	void DeleteObject(Object *child, bool remove)
@@ -137,7 +136,7 @@ public:
 		return objects.size();
 	}
 
-	Object* GetObject(int index)
+	Object* GetObject(unsigned int index)
 	{
 		return *(objects.begin()+index); 
 	}

@@ -1,45 +1,49 @@
 
 namespace Rendering
 {
-	template<class ComponentType>
-	ComponentType* Object::AddComponent()
-	{
-		ComponentType *compo = new ComponentType;
+	//template<class ComponentType>
+	//ComponentType* AddComponent()
+	//{
+	//	typename std::vector<Component*>::iterator iter;
+	//	for(iter = componenets.begin(); iter != componenets.end(); ++iter)
+	//	{
+	//		if( (*iter)->GetComponentType() < Component::Type::User )
+	//			return dynamic_cast<ComponentType*>(*iter);
+	//	}
 
-		for(std::vector<Component*>::iterator iter = componenets.begin(); iter != componenets.end(); ++iter)
-		{
-			if( (*iter)->ComponentType != Component::Type::User )
-				return nullptr;
-		}
+	//	ComponentType *compo = new ComponentType;
 
-		//오직 유저 컴포넌트만 중복 가능
-		compo->Initialize();
-		componenets.push_back(compo);
-	}
+	//	//오직 유저 컴포넌트만 중복 가능
+	//	compo->Initialize();
+	//	componenets.push_back(compo);
 
-	template<class ComponentType>
-	ComponentType* Object::GetComponent()
-	{
-		for(std::vector<Component*>::iterator iter = componenets.begin(); iter != componenets.end(); ++iter)
-		{
-			if((*iter)->ComponentType == ComponentType::ComponentType)
-				return (*iter);
-		}
+	//	return compo;
+	//}
 
-		return nullptr;
-	}
+	//template<class ComponentType>
+	//ComponentType* Object::GetComponent()
+	//{
+	//	typename std::vector<Component*>::iterator iter;
+	//	for(iter = componenets.begin(); iter != componenets.end(); ++iter)
+	//	{
+	//		if((*iter)->ComponentType == ComponentType::ComponentType)
+	//			return (*iter);
+	//	}
 
-	template<class ComponentType>
-	std::vector<ComponentType*> Object::GetComponents()
-	{
-		std::vector<Component*> v;
+	//	return nullptr;
+	//}
 
-		for(std::vector<Component*>::iterator iter = componenets.begin(); iter != componenets.end(); ++iter)
-		{
-			if((*iter)->ComponentType == ComponentType::ComponentType)
-				v.push_back((*iter));
-		}
+	//template<class ComponentType>
+	//std::vector<ComponentType*> Object::GetComponents()
+	//{
+	//	std::vector<Component*> v;
+	//	typename std::vector<Component*>::iterator iter;
+	//	for(iter = componenets.begin(); iter != componenets.end(); ++iter)
+	//	{
+	//		if((*iter)->ComponentType == ComponentType::ComponentType)
+	//			v.push_back((*iter));
+	//	}
 
-		return v;
-	}
+	//	return v;
+	//}
 }

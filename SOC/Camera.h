@@ -59,5 +59,10 @@ namespace Rendering
 
 	public:
 		void SetViewPort(Common::Rect<float> rect);
+
+	public:
+		virtual void Initialize();
+		virtual void Destroy();
+//		virtual Component::Type GetComponentType();
 	};
 }

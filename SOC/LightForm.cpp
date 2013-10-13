@@ -26,5 +26,10 @@ namespace Rendering
 		{
 			return ownerTransform->GetForward();
 		}
+
+		//Component::Type LightForm::GetComponentType()
+		//{
+		//	return Component::Type::Light;
+		//}
 	}
 }

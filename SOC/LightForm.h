@@ -33,6 +33,7 @@ namespace Rendering
 			virtual bool Intersect(Intersection::Sphere &sphere) = 0;
 			SOC_Vector3& GetWorldPosition();
 			SOC_Vector3& GetDirection();
+//			virtual Component::Type GetComponentType();
 		};
 	}
 }

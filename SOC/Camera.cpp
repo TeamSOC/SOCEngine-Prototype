@@ -8,7 +8,17 @@ using namespace Device;
 
 namespace Rendering
 {
-	Camera::Camera()
+	Camera::Camera() : Component()
+	{
+
+	}
+
+	Camera::~Camera(void)
+	{
+	
+	}
+
+	void Camera::Initialize()
 	{
 		FOV = 60;
 		clippingNear = 0.1f;
@@ -27,7 +37,7 @@ namespace Rendering
 		clearFlag = ClearFlag::FlagSolidColor;
 	}
 
-	Camera::~Camera(void)
+	void Camera::Destroy()
 	{
 		Utility::SAFE_DELETE(frustum);
 	}
@@ -137,4 +147,9 @@ namespace Rendering
 
 		SOCMatrixMultiply(outMatrix, outMatrix, &proj);
 	}
+
+	//Component::Type Camera::GetComponentType()
+	//{
+	//	return Component::Type::Camera;
+	//}
 }

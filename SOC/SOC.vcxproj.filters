@@ -233,6 +233,12 @@
     <Filter Include="Engine\Rendering\FBXImporter">
       <UniqueIdentifier>{51c56a7f-8895-4222-8dae-5a15d6cc5c5b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Rendering\Skeleton">
+      <UniqueIdentifier>{5af621c1-f510-4c26-b9d1-f04195379f32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\TestScene">
+      <UniqueIdentifier>{2e15fc3d-0814-4323-b362-bfe42a903299}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AABB.cpp">
@@ -379,11 +385,17 @@
     <ClCompile Include="Bone.cpp">
       <Filter>Engine\Rendering\Bone</Filter>
     </ClCompile>
-    <ClCompile Include="VertexBufferElements.cpp">
+    <ClCompile Include="Skeleton.cpp">
+      <Filter>Engine\Rendering\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshFilterElements.cpp">
       <Filter>Engine\Rendering\Mesh\Filter\FilterElements</Filter>
     </ClCompile>
     <ClCompile Include="FBXImporter.cpp">
       <Filter>Engine\Rendering\FBXImporter</Filter>
+    </ClCompile>
+    <ClCompile Include="TestScene.cpp">
+      <Filter>Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -476,9 +488,6 @@
     </ClInclude>
     <ClInclude Include="TextureDX.h">
       <Filter>Engine\Rendering\Texture\DX</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Engine\Rendering\Texture</Filter>
     </ClInclude>
     <ClInclude Include="VertexBufferDX.h">
       <Filter>Engine\Rendering\Buffer\Vertex\DX</Filter>
@@ -588,11 +597,18 @@
     <ClInclude Include="MaterialElements.h">
       <Filter>Engine\Rendering\Material</Filter>
     </ClInclude>
-    <ClInclude Include="VertexBufferElements.h">
+    <ClInclude Include="Texture.h">
+      <Filter>Engine\Rendering\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="Skeleton.h">
+      <Filter>Engine\Rendering\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshFilterElements.h">
       <Filter>Engine\Rendering\Mesh\Filter\FilterElements</Filter>
     </ClInclude>
     <ClInclude Include="FBXImporter.h">
       <Filter>Engine\Rendering\FBXImporter</Filter>
     </ClInclude>
+    <ClInclude Include="TestScene.h" />
   </ItemGroup>
 </Project>

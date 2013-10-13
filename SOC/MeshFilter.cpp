@@ -39,7 +39,7 @@ namespace Rendering
 			if(colors)			vertexBufferSize += sizeof(SOC_Vector4);
 		}
 
-		bool MeshFilter::Create(VertexBufferElements &option, bool alloc)
+		bool MeshFilter::Create(MeshFilterElements &option, bool alloc)
 		{
 			return Create(
 				option.vertices, option.normals, 
@@ -67,7 +67,7 @@ namespace Rendering
 
 			if(texcoords.first > 0)
 			{
-				this->texcoords = texcoords;
+//				this->texcoords = texcoords;
 
 				if(alloc)
 				{
@@ -88,13 +88,22 @@ namespace Rendering
 						this->texcoords.second[i] = ary;
 					}
 				}
+				else this->texcoords = texcoords;
 			}
 
 			CalcVertexBufferSize();
 
-			this->indices.second = new SOC_word[indices.first];
-			this->indices.first = indices.first;
-			memcpy(this->indices.second, indices.second, sizeof(SOC_word) * indices.first);
+			if(alloc)
+			{
+				this->indices.second = new SOC_word[indices.first];
+				this->indices.first = indices.first;
+				memcpy(this->indices.second, indices.second, sizeof(SOC_word) * indices.first);
+			}
+			else
+			{
+				this->indices.second = indices.second;
+				this->indices.first = indices.first;
+			}
 
 			this->numOfTriangle = numOfTriangle;
 
@@ -220,7 +229,6 @@ namespace Rendering
 		VertexDeclaration MeshFilter::CreateVertexDeclaration()
 		{
 			VertexElements ves;
-			//				ves.description = description;
 			std::string description = "P";
 			VertexElement e = VertexElement(0, 0, SOC_VERTEX_DECLTYPE_FLOAT3, SOC_VERTEX_USAGE_POSITION, 0);
 
@@ -282,7 +290,8 @@ namespace Rendering
 
 				e.offset += sizeof(SOC_Vector2);
 				description += "T";
-				description += i;
+
+				description += ('0' + i);
 			}
 
 			ves.description = description.c_str();

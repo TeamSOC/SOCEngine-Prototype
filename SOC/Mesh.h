@@ -34,6 +34,11 @@ namespace Rendering
 		public:
 			MeshRenderer* GetRenderer();
 			MeshFilter* GetFilter();
+
+		public:
+			virtual void Initialize();
+			virtual void Destroy();
+//			virtual Component::Type GetComponentType();
 		};
 
 	}

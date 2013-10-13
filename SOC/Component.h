@@ -37,4 +37,6 @@ public:
 public:
 	void SetOwner(Rendering::Object *object);
 	Rendering::Object* GetOwner();
+
+//	virtual Type GetComponentType() = 0;
 };

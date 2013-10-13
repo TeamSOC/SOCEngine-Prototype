@@ -7,12 +7,22 @@ namespace Rendering
 	{
 		Mesh::Mesh(void) : beginFunc(nullptr), endFunc(nullptr)
 		{
+
+		}
+
+		Mesh::~Mesh(void)
+		{
+
+		}
+
+		void Mesh::Initialize()
+		{
 			this->graphics	= Device::DeviceDirector::GetInstance()->GetGraphics();
 			this->filter	= new MeshFilter(graphics);
 			this->renderer	= new MeshRenderer(&beginFunc, &endFunc);
 		}
 
-		Mesh::~Mesh(void)
+		void Mesh::Destroy()
 		{
 			Utility::SAFE_DELETE(filter);
 			Utility::SAFE_DELETE(renderer);
@@ -52,5 +62,10 @@ namespace Rendering
 		{
 			return filter;
 		}
+
+		//Component::Type Mesh::GetComponentType()
+		//{
+		//	return Component::Type::Mesh;
+		//}
 	}
 }
