@@ -1,6 +1,12 @@
+//
+//  Slab.h
+//  Created by SungBin_Hong on 13. 10. 13..
+//  Copyright (c) 2013 years Teraphonia. All rights reserved.
+//
+
 #pragma once
 
-namespace Memory {
+namespace SOC_Memory {
 
 	#define FREE_PATTERN 0xC
 

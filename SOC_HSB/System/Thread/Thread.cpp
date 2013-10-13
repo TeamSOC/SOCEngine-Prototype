@@ -1,3 +1,9 @@
+//
+//  Thread.h
+//  Created by SungBin_Hong on 13. 10. 13..
+//  Copyright (c) 2013 years Teraphonia. All rights reserved.
+//
+
 #include "../../pch/pch.h"
 
 namespace SOC_System {
@@ -24,6 +30,8 @@ Thread* Thread::g_pthreadInstance = nullptr;
 Thread::Thread(bool bCreate)
 	: m_handle(0)
 	, m_id(0)
+	, m_bExited(false)
+	, m_exitSign(true)
 {
 	if (bCreate)
 		Create();
@@ -49,7 +57,11 @@ SOC_ULONG Thread::HandleFunc(void* pData)
 	{
 		Thread* pThread = static_cast<Thread*>(pData);
 		g_pthreadInstance = pThread;
-		pThread->CallBack();
+
+		pThread->CallBack(pThread);
+
+		if (pThread)
+			pThread->Exit();
 	}
 	else
 	{

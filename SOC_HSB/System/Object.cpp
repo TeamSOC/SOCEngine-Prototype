@@ -36,7 +36,6 @@ SOC_LONG Object::Release()
 
 	if (count == 0)
 	{
-		OnDestroy();
 		delete this;
 	}
 	else if (count < 0)

@@ -111,6 +111,7 @@
     </ClCompile>
     <ClCompile Include="..\System\Object.cpp" />
     <ClCompile Include="..\System\Thread\Thread.cpp" />
+    <ClCompile Include="..\System\Thread\ThreadPool.cpp" />
     <ClCompile Include="main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../pch/pch.h</PrecompiledHeaderFile>
@@ -125,6 +126,7 @@
     <ClInclude Include="..\Memory\MemoryPool.h" />
     <ClInclude Include="..\Memory\Slab.h" />
     <ClInclude Include="..\pch\pch.h" />
+    <ClInclude Include="..\pch\PreDefine.h" />
     <ClInclude Include="..\System\Converter.h" />
     <ClInclude Include="..\System\Counter.h" />
     <ClInclude Include="..\System\Interface.h" />
@@ -134,6 +136,7 @@
     <ClInclude Include="..\System\Singleton.h" />
     <ClInclude Include="..\System\Thread\Interface.h" />
     <ClInclude Include="..\System\Thread\Thread.h" />
+    <ClInclude Include="..\System\Thread\ThreadPool.h" />
     <ClInclude Include="..\System\Type.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

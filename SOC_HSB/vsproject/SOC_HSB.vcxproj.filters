@@ -51,6 +51,9 @@
     <ClCompile Include="..\System\Object.cpp">
       <Filter>System</Filter>
     </ClCompile>
+    <ClCompile Include="..\System\Thread\ThreadPool.cpp">
+      <Filter>System\Thread</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Memory\Allocator.h">
@@ -100,6 +103,12 @@
     </ClInclude>
     <ClInclude Include="..\System\Singleton.h">
       <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pch\PreDefine.h">
+      <Filter>pch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Thread\ThreadPool.h">
+      <Filter>System\Thread</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

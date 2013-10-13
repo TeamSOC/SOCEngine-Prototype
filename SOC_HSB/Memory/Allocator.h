@@ -1,8 +1,14 @@
+//
+//  Allocator.h
+//  Created by SungBin_Hong on 13. 10. 13..
+//  Copyright (c) 2013 years Teraphonia. All rights reserved.
+//
+
 #pragma once
 
 #include <map>
 
-namespace Memory {
+namespace SOC_Memory {
 
     #define THREAD_MASK		0xff000000  // 1byte
     #define MEMORY_MASK		0xff000000	// 1byte
@@ -24,7 +30,7 @@ namespace Memory {
 
 	public:
 		void*	Alloc(SOC_SIZE_T size, SOC_INT32 tag);
-		bool	Free(void* ptr, SOC_INT32 tag, SOC_INT32& threadID);
+		bool	Free(void* ptr, SOC_INT32 tag, SOC_INT32& ref_ThreadID);
 		void	PostponeFree(void* ptr); // not yet.
 		bool	GarbageCollect();
 		long	GetAllocatedMemory() { return m_allocedMemoryRealSize; }
