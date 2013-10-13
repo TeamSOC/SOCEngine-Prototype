@@ -48,6 +48,8 @@ namespace Rendering
 			}
 #endif
 			compiled = success;
+			if(success)
+				GetRequiredParameters(&requiredMatrixParam, &requiredLightParam);
 
 			return success; 
 		}
@@ -128,9 +130,9 @@ namespace Rendering
 			return SUCCEEDED( shader->End() );
 		}
 
-		bool ShaderDX::IsParameterUsed(const char *paramter, const char *technique)
-		{
-			return SUCCEEDED(shader->IsParameterUsed(paramter, technique));
+		bool ShaderDX::IsParameterUsed(const char *parameter, const char *technique)
+		{			 
+			return (bool)shader->IsParameterUsed(parameter, technique);
 		}
 
 		void ShaderDX::GetRequiredParameters(SOC_byte *outMatrixParamters, SOC_byte *outLightParameters, char *technique)

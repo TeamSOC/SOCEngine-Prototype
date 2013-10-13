@@ -10,6 +10,8 @@ private:
 	Object *camObject;
 	Object *meshObject;
 
+	Rendering::MeshFilterElements emesh;
+
 public:
 	TestScene(void);
 	~TestScene(void);

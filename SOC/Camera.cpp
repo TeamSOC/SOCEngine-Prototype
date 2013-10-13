@@ -21,7 +21,7 @@ namespace Rendering
 	void Camera::Initialize()
 	{
 		FOV = 60;
-		clippingNear = 0.1f;
+		clippingNear = 0.0001f;
 		clippingFar = 1000.0f;
 		normalizedViewPortRect = Rect<float>(0, 0, 1, 1);
 
@@ -29,7 +29,7 @@ namespace Rendering
 		aspect = (float)windowSize.w / (float)windowSize.h;
 
 		camType    = Type::Perspective;
-		clearColor = Color(1.0f, 0.5f,0.5f,1.0f);
+		clearColor = Color(0.5f, 0.5f, 1.0f,1.0f);
 
 		frustum = new Frustum(0.0f);		
 		this->skybox = nullptr;
@@ -113,7 +113,10 @@ namespace Rendering
 	{
 		SOC_Matrix projMat, viewMat, viewProjMat;
 		cam->GetProjectionMatrix(&projMat);
-		cam->ownerTransform->GetWorldMatrix(&viewMat);
+		cam->GetViewMatrix(&viewMat);
+		//viewMat._41 *= -1;
+		//viewMat._42 *= -1;
+		//viewMat._43 *= -1;
 		viewProjMat = viewMat * projMat;
 
 		cam->Clear();		
@@ -127,7 +130,6 @@ namespace Rendering
 
 		for(vector<Object*>::iterator iter = sceneObjects->begin(); iter != sceneObjects->end(); ++iter)
 		{
-//			(*iter)->Update(delta);
 			(*iter)->Culling(cam->frustum);
 			(*iter)->Render(&lights, &viewMat, &projMat, &viewProjMat);
 		}

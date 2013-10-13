@@ -70,7 +70,6 @@ namespace Rendering
 				return false;
 
 			*outShaderCode = iter->second;
-			//				outShaderCode->insert(0, "fuck");
 			outShaderCode->erase(0, 1);
 
 			return true;

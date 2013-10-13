@@ -226,7 +226,7 @@ namespace Rendering
 
 	void Transform::SetDirection(SOC_Vector3 dir)
 	{
-		SOC_Vector3 p = GetWorldPosition() + dir;
+		SOC_Vector3 p = GetWorldPosition() - dir;
 		LookAt(p);
 	}
 
@@ -266,6 +266,11 @@ namespace Rendering
 		matrix._42 = p.y;
 		matrix._43 = p.z;
 		matrix._44 = 1.0f;
+
+		//matrix._41 = localPosition.x;
+		//matrix._42 = localPosition.y;
+		//matrix._43 = localPosition.z;
+		//matrix._44 = 1.0f;
 	}
 
 	void Transform::Roll(float angle)
@@ -342,4 +347,54 @@ namespace Rendering
 	{
 		return forward;
 	}
+	
+	SOC_Vector3 Transform::GetLocalEulerAngle()
+	{
+		return this->localEulerAngles;
+	}
+
+	SOC_Vector3 Transform::GetWorldEulerAngle()
+	{
+		SOC_Vector3 p(0,0,0);
+
+		for(Transform *o = this; o != NULL; o = o->parent)
+			p += o->localEulerAngles;
+
+		return p;
+	}
+
+	SOC_Vector3 Transform::GetLocalScale()
+	{
+		return this->localScale;
+	}
+
+	SOC_Vector3 Transform::GetWorldScale()
+	{
+		SOC_Vector3 p(1,1,1);
+
+		for(Transform *o = this; o != NULL; o = o->parent)
+		{
+			p.x *= o->localScale.x;
+			p.y *= o->localScale.y;
+			p.z *= o->localScale.z;
+		}
+
+		return p;
+	}
+
+	SOC_Quaternion Transform::GetRotation()
+	{
+		return this->rotation;
+	}
+
+	SOC_Vector3 Transform::GetRight()
+	{
+		return right;
+	}
+
+	SOC_Vector3 Transform::GetUp()
+	{
+		return up;
+	}
+
 }

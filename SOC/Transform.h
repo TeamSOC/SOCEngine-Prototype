@@ -81,6 +81,16 @@ namespace Rendering
 		SOC_Vector3 GetWorldPosition();
 		SOC_Vector3 GetLocalPosition();
 
+		SOC_Vector3 GetLocalEulerAngle();
+		SOC_Vector3 GetWorldEulerAngle();
+
+		SOC_Vector3 GetLocalScale();
+		SOC_Vector3 GetWorldScale();
+
+		SOC_Quaternion GetRotation();
+
 		SOC_Vector3 GetForward();
+		SOC_Vector3 GetRight();
+		SOC_Vector3 GetUp();
 	};
 }

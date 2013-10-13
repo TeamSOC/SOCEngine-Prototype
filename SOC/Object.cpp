@@ -97,11 +97,11 @@ namespace Rendering
 		Sphere thisObject(transform->GetWorldPosition(), transform->GetRadius());
 		std::vector<LightForm*> intersectLights;
 
-		for(std::vector<LightForm*>::iterator iter = lights->begin(); iter != lights->end(); ++iter)
-		{
-			if((*iter)->Intersect(thisObject))
-				intersectLights.push_back((*iter));
-		}
+		//for(std::vector<LightForm*>::iterator iter = lights->begin(); iter != lights->end(); ++iter)
+		//{
+		//	if((*iter)->Intersect(thisObject))
+		//		intersectLights.push_back((*iter));
+		//}
 
 		SOC_Matrix worldMat, worldViewProjMat;
 

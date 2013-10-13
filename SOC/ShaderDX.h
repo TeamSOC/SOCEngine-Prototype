@@ -30,7 +30,7 @@ namespace Rendering
 			virtual bool SetVariable(const char *parameter, int *ary, SOC_uint count);
 			virtual bool SetVariable(const char *parameter, Texture::Texture *texture);
 
-			virtual bool IsParameterUsed(const char *paramter, const char *technique = DEFAULT_TECHNIQUE);
+			virtual bool IsParameterUsed(const char *parameter, const char *technique = DEFAULT_TECHNIQUE);
 
 			virtual bool SetTechnique(const char *technique = DEFAULT_TECHNIQUE);
 

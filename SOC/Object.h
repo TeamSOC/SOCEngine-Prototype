@@ -64,6 +64,7 @@ namespace Rendering
 			}
 
 			ComponentType *compo = new ComponentType;
+			compo->SetOwner(this);
 
 			//오직 유저 컴포넌트만 중복 가능
 			compo->Initialize();
@@ -78,8 +79,10 @@ namespace Rendering
 			typename std::vector<Component*>::iterator iter;
 			for(iter = componenets.begin(); iter != componenets.end(); ++iter)
 			{
-				if((*iter)->ComponentType == ComponentType::ComponentType)
-					return (*iter);
+				ComponentType *compareComponent = dynamic_cast<ComponentType*>(*iter);
+
+				if(compareComponent->ComponentType == ComponentType::ComponentType)
+					return compareComponent;
 			}
 
 			return nullptr;

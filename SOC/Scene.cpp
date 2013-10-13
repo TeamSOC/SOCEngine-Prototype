@@ -32,6 +32,8 @@ void Scene::Initialize()
 
 void Scene::Update(float dt)
 {
+	OnUpdate(dt);
+
 	for(vector<Object*>::iterator iter = objects.begin(); iter != objects.end(); ++iter)
 		(*iter)->Update(dt);
 }

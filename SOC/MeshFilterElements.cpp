@@ -40,17 +40,23 @@ namespace Rendering
 			SAFE_DELETE(tangents);
 			SAFE_DELETE(binomals);
 
-			for(int i=0; i<texcoords.first; ++i)
-				SAFE_ARRARY_DELETE(texcoords.second[i]);
+			if(texcoords.second)
+			{
+				for(int i=0; i<texcoords.first; ++i)
+					SAFE_ARRARY_DELETE(texcoords.second[i]);
 
-			SAFE_ARRARY_DELETE(texcoords.second);
+				SAFE_ARRARY_DELETE(texcoords.second);
+			}
 
 			SAFE_DELETE(colors);
 			SAFE_ARRARY_DELETE(indices.second);
 			SAFE_ARRARY_DELETE(skinIndices.second);
 
-			for(int i=0; i<boneIndices->size(); ++i)
-				SAFE_DELETE((*boneIndices)[i]);
+			if(boneIndices)
+			{
+				for(int i=0; i<boneIndices->size(); ++i)
+					SAFE_DELETE((*boneIndices)[i]);
+			}
 			SAFE_DELETE(boneIndices);
 		}
 }

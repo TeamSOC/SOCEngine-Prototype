@@ -9,8 +9,13 @@ namespace Rendering
 			compiled = false;
 			numPass = 0;
 
-			this->name = name;
+			if(name != nullptr)
+				this->name = name;
+
 			this->graphics = graphics;
+
+			requiredLightParam = 0;
+			requiredMatrixParam = 0;
 		}
 
 		ShaderForm::~ShaderForm(void)

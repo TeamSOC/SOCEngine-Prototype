@@ -4,7 +4,8 @@ namespace Rendering
 {
 	Material::Material(const char *name) : useShader(nullptr)
 	{
-		this->name = name;			
+		if(name != nullptr)
+			this->name = name;			
 		elements.ambientColor = Color(0.1f, 0.1f, 0.1f, 1.0f);
 	}
 
@@ -122,18 +123,18 @@ namespace Rendering
 		SOC_byte mp = useShader->GetRequiredMatrixParameters();
 		SOC_byte lp = useShader->GetRequiredLightParameters();
 		
-		
+		bool test = false;
 
 		if ( REQUIRED_MATRIX_WORLD & mp )
-			useShader->SetVariable(BasicParameterNames::GetWorldMatrix(), transform->worldMatrix);
+			test = useShader->SetVariable(BasicParameterNames::GetWorldMatrix(), transform->worldMatrix);
 		if ( REQUIRED_MATRIX_VIEW & mp )
-			useShader->SetVariable(BasicParameterNames::GetViewMatrix(), transform->viewMatrix);
+			test = useShader->SetVariable(BasicParameterNames::GetViewMatrix(), transform->viewMatrix);
 		if ( REQUIRED_MATRIX_PROJECTION & mp )
-			useShader->SetVariable(BasicParameterNames::GetProjMatrix(), transform->projMatrix);
+			test = useShader->SetVariable(BasicParameterNames::GetProjMatrix(), transform->projMatrix);
 		if ( REQUIRED_MATRIX_VP & mp )
-			useShader->SetVariable(BasicParameterNames::GetViewProjMatrix(), transform->viewProjMatrix);
+			test = useShader->SetVariable(BasicParameterNames::GetViewProjMatrix(), transform->viewProjMatrix);
 		if ( REQUIRED_MATRIX_WVP & mp )
-			useShader->SetVariable(BasicParameterNames::GetWorldViewProjMatrix(), transform->worldViewProjMatrix);
+			test = useShader->SetVariable(BasicParameterNames::GetWorldViewProjMatrix(), transform->worldViewProjMatrix);
 
 		if( REQUIRED_LIGHT_AMBIENT_COLOR & lp )
 		{

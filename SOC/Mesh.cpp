@@ -33,6 +33,9 @@ namespace Rendering
 			if( (beginFunc && endFunc) == false)
 				return;
 
+			if(renderer->GetMaterialCount() == 0)
+				return;
+
 			renderer->ConnectRequiredParameters(transform, light);
 
 			beginFunc(renderer);
