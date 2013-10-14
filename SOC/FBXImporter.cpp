@@ -149,7 +149,7 @@ namespace Rendering
 			}
 
 			BuildMesh(fbxMesh, outMeshFliterElements);
-			//			ParseMaterial(fbxMesh, outMaterialElements, outTextureNames);
+			ParseMaterial(fbxMesh, outMaterialElements, outTextureNames);
 
 			bool animation = outMeshFliterElements->skinIndices.second != nullptr;
 
@@ -305,48 +305,21 @@ namespace Rendering
 				}
 			}
 
-
-
 			return true;
 		}
 
 		void FBXImporter::ParseMaterial(fbxsdk_2014_1::FbxMesh *fbxMesh, MaterialElements *outMaterialElements, MaterialTextures *outTextures)
 		{
-			int layerCount = fbxMesh->GetLayerCount();
-			for(int layer = 0; layer < layerCount; ++layer)
+			FbxNode *node = fbxMesh->GetNode();
+			int materialCount = node->GetMaterialCount();
+			for(int materialIdx = 0; materialIdx < materialCount; ++materialIdx)
 			{
-				FbxLayerElementMaterial *layerMaterial = fbxMesh->GetLayer(0)->GetMaterials();
-
-				if(layerMaterial != nullptr)
-				{
-					FbxLayerElement::EMappingMode mappingMode = layerMaterial->GetMappingMode();
-
-					if(mappingMode == FbxLayerElement::eAllSame)
-					{
-						int matID = layerMaterial->GetIndexArray().GetAt(0);
-
-						if(matID >= 0)
-						{
-							int a = 3;
-							a=5;
-						}
-					}
-					else if(mappingMode == FbxLayerElement::eByPolygon)
-					{
-
-					}
-				}
-			}
-
-			int materialCount = scene->GetMaterialCount();
-			for(int materialIdx = 0; materialIdx < materialCount; materialIdx)
-			{
-				FbxSurfaceMaterial *fbxMaterial = scene->GetMaterial(materialIdx);
+				FbxSurfaceMaterial *fbxMaterial = node->GetMaterial(materialIdx);
 
 				if(fbxMaterial == nullptr)
 					continue;
 
-				//				ParseMaterialElements(fbxMaterial, outMaterialElements);
+				ParseMaterialElements(fbxMaterial, outMaterialElements);
 
 				FbxProperty fbxProperty;
 
@@ -603,9 +576,9 @@ namespace Rendering
 			FbxClassId id = fbxMaterial->GetClassId();
 
 			std::pair<FbxDouble3, double> ambient, diffuse, emissive;
-			double transparency;
+			double transparency = 1.0f;
 
-			if(id.Is(FbxSurfacePhong::ClassId) == false)
+			if(id.Is(FbxSurfacePhong::ClassId))
 			{
 				FbxSurfacePhong *phong = static_cast<FbxSurfacePhong*>(fbxMaterial);
 
@@ -628,7 +601,7 @@ namespace Rendering
 
 				out->specularColor = Color(specular[0], specular[1], specular[2]) * specularFactor;
 			}
-			else if(id.Is(FbxSurfaceLambert::ClassId) == false)
+			else if(id.Is(FbxSurfaceLambert::ClassId))
 			{
 				FbxSurfaceLambert *lambert = static_cast<FbxSurfaceLambert*>(fbxMaterial);
 
@@ -643,7 +616,7 @@ namespace Rendering
 
 				transparency = lambert->TransparencyFactor;
 			}
-
+			else return false;
 
 			out->ambientColor = Color(ambient.first[0], ambient.first[1], ambient.first[2]) * ambient.second;
 			out->diffuseColor = Color(diffuse.first[0], diffuse.first[1], diffuse.first[2]) * diffuse.second;

@@ -11,6 +11,8 @@ private:
 	Object *meshObject;
 
 	Rendering::MeshFilterElements emesh;
+	Rendering::MaterialElements ematerial;
+	Rendering::MaterialTextures etex;
 
 public:
 	TestScene(void);

@@ -33,11 +33,7 @@ void TestScene::OnInitialize()
 	bool success;
 
 	success = importer->Initialize("");
-	success = importer->LoadScene("sphere-highpoly.fbx");
-
-	Rendering::MaterialElements ematerial;
-//	Rendering::MeshFilterElements emesh;
-	Rendering::MaterialTextures etex;
+	success = importer->LoadScene("test.fbx");
 
 	success = importer->Decode(&ematerial, &emesh, &etex);
 
@@ -47,7 +43,7 @@ void TestScene::OnInitialize()
 		emesh.numOfVertex, emesh.numOfTriangle, emesh.indices,
 		SOC_TRIANGLE_LIST, emesh.isDynamic, false);
 
-	SOC_Vector3 v = SOC_Vector3(0.0, 0.0, 1.2 -1);
+	SOC_Vector3 v = SOC_Vector3(0.0, 0.0, 0);
 	meshObject->GetTransform()->SetPosition(v);
 	meshObject->GetTransform()->radius = 100.0f;
 
@@ -75,7 +71,8 @@ void TestScene::OnInitialize()
 void TestScene::OnUpdate(float dt)
 {
 	SOC_Vector3 eular = meshObject->GetTransform()->GetLocalEulerAngle();
-	meshObject->GetTransform()->Rotate(0, 0.000001f, 0.0f);
+//	meshObject->GetTransform()->Rotate(0, 0.000001f, 0.0f);
+	meshObject->GetTransform()->Translate(SOC_Vector3(0, 0, 0.0001));
 }
 
 void TestScene::OnRenderPreview()
