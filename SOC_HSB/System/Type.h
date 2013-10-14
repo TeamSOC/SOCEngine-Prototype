@@ -7,11 +7,15 @@
     typedef __int64 SOC_INT64;
 	typedef unsigned __int32 SOC_UINT32;
 	typedef unsigned __int64 SOC_UINT64;
+
+    typedef HANDLE SOC_HANDLE;
 #else
     typedef int32_t SOC_INT32;
     typedef int64_t SOC_INT64;
 	typedef uint32_t SOC_UINT32;
 	typedef uint64_t SOC_UINT64;
+
+    typedef int SOC_HANDLE;
 #endif
 
 #if defined(_WIN64)

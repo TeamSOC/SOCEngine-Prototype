@@ -31,7 +31,7 @@ namespace SOC_System {
 	coreCount = sinfo.dwNumberOfProcessors;
 #else
 	// mac os
-	coreCount = sysconf(_SC_NPROCESSORS_ONLN);
+	coreCount = (int)sysconf(_SC_NPROCESSORS_ONLN);
 #endif
 			}
 

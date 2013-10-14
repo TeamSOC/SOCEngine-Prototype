@@ -25,11 +25,7 @@ namespace SOC_System {
 	class Thread
 	{
 	protected:
-#if defined(_WIN32) || defined(_WIN64)
-		HANDLE			m_handle;
-#else
-		int				m_handle;
-#endif
+		SOC_HANDLE		m_handle;
 		SOC_INT32		m_id;
 
 	public:
@@ -41,7 +37,7 @@ namespace SOC_System {
 		void	Join();
 		void	Destroy();
 
-		HANDLE GetHandle() { return m_handle; }
+		SOC_HANDLE GetHandle() { return m_handle; }
 		void SetID(SOC_INT32 threadID);
 		SOC_INT32 GetID() { return m_id; }
 		void Exit() { m_bExited = true; }
