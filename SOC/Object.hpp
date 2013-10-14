@@ -5,7 +5,7 @@ namespace Rendering
 	//ComponentType* AddComponent()
 	//{
 	//	typename std::vector<Component*>::iterator iter;
-	//	for(iter = componenets.begin(); iter != componenets.end(); ++iter)
+	//	for(iter = components.begin(); iter != components.end(); ++iter)
 	//	{
 	//		if( (*iter)->GetComponentType() < Component::Type::User )
 	//			return dynamic_cast<ComponentType*>(*iter);
@@ -15,7 +15,7 @@ namespace Rendering
 
 	//	//오직 유저 컴포넌트만 중복 가능
 	//	compo->Initialize();
-	//	componenets.push_back(compo);
+	//	components.push_back(compo);
 
 	//	return compo;
 	//}
@@ -24,7 +24,7 @@ namespace Rendering
 	//ComponentType* Object::GetComponent()
 	//{
 	//	typename std::vector<Component*>::iterator iter;
-	//	for(iter = componenets.begin(); iter != componenets.end(); ++iter)
+	//	for(iter = components.begin(); iter != components.end(); ++iter)
 	//	{
 	//		if((*iter)->ComponentType == ComponentType::ComponentType)
 	//			return (*iter);
@@ -38,7 +38,7 @@ namespace Rendering
 	//{
 	//	std::vector<Component*> v;
 	//	typename std::vector<Component*>::iterator iter;
-	//	for(iter = componenets.begin(); iter != componenets.end(); ++iter)
+	//	for(iter = components.begin(); iter != components.end(); ++iter)
 	//	{
 	//		if((*iter)->ComponentType == ComponentType::ComponentType)
 	//			v.push_back((*iter));

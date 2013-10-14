@@ -50,7 +50,7 @@ namespace Rendering
 		for(int i=0; i<6; ++i)
 		{
 			dist = SOCPlaneDotCoord( &plane[i], &v );
-			if(dist > (radius + gap) ) return false;
+			if(dist < (radius + gap) ) return false;
 		}
 
 		return true;

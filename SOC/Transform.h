@@ -28,6 +28,7 @@ namespace Rendering
 
 		SOC_Matrix matrix;
 
+	public:
 		float radius;
 
 	public:
@@ -75,8 +76,6 @@ namespace Rendering
 	public:
 		void GetMatrix(SOC_Matrix *outMatrix);
 		void GetWorldMatrix(SOC_Matrix *outMatrix);
-
-		float GetRadius();
 
 		SOC_Vector3 GetWorldPosition();
 		SOC_Vector3 GetLocalPosition();

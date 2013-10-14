@@ -137,7 +137,20 @@ namespace Rendering
 
 	void Camera::GetViewMatrix(SOC_Matrix *outMatrix)
 	{
-		ownerTransform->GetMatrix(outMatrix);
+		ownerTransform->GetWorldMatrix(outMatrix);
+		//ownerTransform->GetMatrix(outMatrix);
+
+		SOC_Vector3 worldPos = ownerTransform->GetWorldPosition();
+
+		SOC_Vector3 p = SOC_Vector3(
+			-SOCVec3Dot(&ownerTransform->GetRight(), &worldPos),
+			-SOCVec3Dot(&ownerTransform->GetUp(), &worldPos),
+			-SOCVec3Dot(&ownerTransform->GetForward(), &worldPos));
+
+		outMatrix->_41 = p.x;
+		outMatrix->_42 = p.y;
+		outMatrix->_43 = p.z;
+		outMatrix->_44 = 1.0f;
 	}
 
 	void Camera::GetViewProjectionMatrix(SOC_Matrix *outMatrix, float farGap)

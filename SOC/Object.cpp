@@ -63,7 +63,7 @@ namespace Rendering
 
 	bool Object::Culling(Frustum *frustum)
 	{
-		culled = frustum->In(transform->GetWorldPosition(), transform->GetRadius());
+		culled = frustum->In(transform->GetWorldPosition(), transform->radius);
 
 		if(culled == false)
 		{
@@ -86,7 +86,7 @@ namespace Rendering
 
 	void Object::Update(float delta)
 	{
-		for(std::vector<Component*>::iterator iter = componenets.begin(); iter != componenets.end(); ++iter)
+		for(std::vector<Component*>::iterator iter = components.begin(); iter != components.end(); ++iter)
 			(*iter)->Update(delta);
 	}
 
@@ -94,7 +94,7 @@ namespace Rendering
 	{
 		if(culled)	return;
 
-		Sphere thisObject(transform->GetWorldPosition(), transform->GetRadius());
+		Sphere thisObject(transform->GetWorldPosition(), transform->radius);
 		std::vector<LightForm*> intersectLights;
 
 		//for(std::vector<LightForm*>::iterator iter = lights->begin(); iter != lights->end(); ++iter)
@@ -136,13 +136,13 @@ namespace Rendering
 
 		lp.viewPos = SOC_Vector4(viewMat->_41, viewMat->_42, viewMat->_43, 1.0f);
 
-		for(std::vector<Component*>::iterator iter = componenets.begin(); iter != componenets.end(); ++iter)
+		for(std::vector<Component*>::iterator iter = components.begin(); iter != components.end(); ++iter)
 			(*iter)->Render(&tp, &lp);
 	}
 
 	bool Object::Intersect(Intersection::Sphere &sphere)
 	{
-		return sphere.Intersection(transform->GetWorldPosition(), transform->GetRadius());
+		return sphere.Intersection(transform->GetWorldPosition(), transform->radius);
 	}
 
 	//void Object::_Render(std::vector<LightForm*> *lights, SOC_Matrix *viewMat, SOC_Matrix *projMat, SOC_Matrix *viewProjMat)
@@ -152,12 +152,12 @@ namespace Rendering
 
 	void Object::DeleteComponent(Component *component)
 	{
-		for(std::vector<Component*>::iterator iter = componenets.begin(); iter != componenets.end(); ++iter)
+		for(std::vector<Component*>::iterator iter = components.begin(); iter != components.end(); ++iter)
 		{
 			if((*iter) == component)
 			{
 				(*iter)->Destroy();
-				componenets.erase(iter);
+				components.erase(iter);
 				delete (*iter);
 				return;
 			}
@@ -177,10 +177,10 @@ namespace Rendering
 
 	void Object::DeleteAllComponent()
 	{
-		for(std::vector<Component*>::iterator iter = componenets.begin(); iter != componenets.end(); ++iter)
+		for(std::vector<Component*>::iterator iter = components.begin(); iter != components.end(); ++iter)
 			delete (*iter);
 
-		componenets.clear();
+		components.clear();
 	}
 }
 

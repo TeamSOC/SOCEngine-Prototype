@@ -149,8 +149,9 @@ namespace Rendering
 	void Transform::GetWorldMatrix(SOC_Matrix *outMatrix)
 	{
 		SOC_Matrix mat;
-
 		SOCMatrixIdentity(&mat);
+
+		UpdateMatrix();
 
 		for(Transform *o = this; o != NULL; o = o->parent)
 			mat *= o->matrix;
@@ -226,7 +227,7 @@ namespace Rendering
 
 	void Transform::SetDirection(SOC_Vector3 dir)
 	{
-		SOC_Vector3 p = GetWorldPosition() - dir;
+		SOC_Vector3 p = GetWorldPosition() + dir;
 		LookAt(p);
 	}
 
@@ -258,18 +259,19 @@ namespace Rendering
 		matrix._22 *= localScale.y;
 		matrix._33 *= localScale.z;
 
-		SOC_Vector3 p = SOC_Vector3(-SOCVec3Dot(&right, &localPosition),
-			-SOCVec3Dot(&up, &localPosition),
-			-SOCVec3Dot(&forward, &localPosition));
-
-		matrix._41 = p.x;
-		matrix._42 = p.y;
-		matrix._43 = p.z;
+		matrix._41 = localPosition.x;
+		matrix._42 = localPosition.y;
+		matrix._43 = localPosition.z;
 		matrix._44 = 1.0f;
 
-		//matrix._41 = localPosition.x;
-		//matrix._42 = localPosition.y;
-		//matrix._43 = localPosition.z;
+		//SOC_Vector3 p = SOC_Vector3(
+		//	-SOCVec3Dot(&right, &localPosition),
+		//	-SOCVec3Dot(&up, &localPosition),
+		//	-SOCVec3Dot(&forward, &localPosition));
+
+		//matrix._41 = p.x;
+		//matrix._42 = p.y;
+		//matrix._43 = p.z;
 		//matrix._44 = 1.0f;
 	}
 
@@ -336,11 +338,6 @@ namespace Rendering
 		this->radius = totalR > radius ? totalR : radius;
 
 		return radius;
-	}
-
-	float Transform::GetRadius()
-	{
-		return radius; 
 	}
 
 	SOC_Vector3 Transform::GetForward()

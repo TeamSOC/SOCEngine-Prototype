@@ -32,7 +32,7 @@ namespace Rendering
 		Transform *transform;
 
 	protected:
-		std::vector<Component*> componenets;
+		std::vector<Component*> components;
 
 	public:
 		Object(Object* parent = NULL);
@@ -54,7 +54,7 @@ namespace Rendering
 			if( ComponentType::ComponentType < Component::Type::User )
 			{
 				typename std::vector<Component*>::iterator iter;
-				for(iter = componenets.begin(); iter != componenets.end(); ++iter)
+				for(iter = components.begin(); iter != components.end(); ++iter)
 				{
 					ComponentType *compareComponent = dynamic_cast<ComponentType*>(*iter);
 
@@ -68,7 +68,7 @@ namespace Rendering
 
 			//오직 유저 컴포넌트만 중복 가능
 			compo->Initialize();
-			componenets.push_back(compo);
+			components.push_back(compo);
 
 			return compo;
 		}
@@ -77,7 +77,7 @@ namespace Rendering
 		ComponentType* GetComponent()
 		{
 			typename std::vector<Component*>::iterator iter;
-			for(iter = componenets.begin(); iter != componenets.end(); ++iter)
+			for(iter = components.begin(); iter != components.end(); ++iter)
 			{
 				ComponentType *compareComponent = dynamic_cast<ComponentType*>(*iter);
 
@@ -93,7 +93,7 @@ namespace Rendering
 		{
 			std::vector<Component*> v;
 			typename std::vector<Component*>::iterator iter;
-			for(iter = componenets.begin(); iter != componenets.end(); ++iter)
+			for(iter = components.begin(); iter != components.end(); ++iter)
 			{
 				if((*iter)->ComponentType == ComponentType::ComponentType)
 					v.push_back((*iter));
