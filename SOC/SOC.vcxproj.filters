@@ -394,8 +394,11 @@
     <ClCompile Include="FBXImporter.cpp">
       <Filter>Engine\Rendering\FBXImporter</Filter>
     </ClCompile>
+    <ClCompile Include="MeshImporter.cpp">
+      <Filter>Engine\Rendering\FBXImporter</Filter>
+    </ClCompile>
     <ClCompile Include="TestScene.cpp">
-      <Filter>Engine</Filter>
+      <Filter>Source\TestScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -609,6 +612,11 @@
     <ClInclude Include="FBXImporter.h">
       <Filter>Engine\Rendering\FBXImporter</Filter>
     </ClInclude>
-    <ClInclude Include="TestScene.h" />
+    <ClInclude Include="MeshImporter.h">
+      <Filter>Engine\Rendering\FBXImporter</Filter>
+    </ClInclude>
+    <ClInclude Include="TestScene.h">
+      <Filter>Source\TestScene</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

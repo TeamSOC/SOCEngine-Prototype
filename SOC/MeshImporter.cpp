@@ -1,4 +1,4 @@
-#include "FBXImporter.h"
+#include "MeshImporter.h"
 
 using namespace fbxsdk_2014_1;
 #pragma warning( disable : 4244 )
@@ -7,18 +7,18 @@ namespace Rendering
 {
 	namespace Importer
 	{
-		FBXImporter::FBXImporter(FbxManager *manager)
+		MeshImporter::MeshImporter(FbxManager *manager)
 		{
 			this->manager = manager;
 			scene = nullptr;
 		}
 
-		FBXImporter::~FBXImporter(void)
+		MeshImporter::~MeshImporter(void)
 		{
 			Destroy();
 		}
 
-		bool FBXImporter::Initialize(const char *sceneName)
+		bool MeshImporter::Initialize(const char *sceneName)
 		{
 			if(manager == nullptr)
 				return false;
@@ -54,7 +54,7 @@ namespace Rendering
 			return scene != nullptr;
 		}
 
-		bool FBXImporter::LoadScene(const char *fileName, const char *password)
+		bool MeshImporter::LoadScene(const char *fileName, const char *password)
 		{
 			int sdkMajor, sdkMinor, sdkRevision;
 
@@ -111,58 +111,9 @@ namespace Rendering
 			return status;
 		}
 
-		bool FBXImporter::Decode(MaterialElements *outMaterialElements, MeshFilterElements *outMeshFliterElements, MaterialTextures *outTextureNames)
-		{
-			if(scene == nullptr)
-				return false;
 
-			FbxNode *rootNode = scene->GetRootNode();
-			int childCount = rootNode->GetChildCount();
 
-			FbxMesh *fbxMesh		 = nullptr;
-			FbxSkeleton *fbxSkeleton = nullptr;
-
-			for(int childIdx = 0; childIdx < childCount; ++childIdx)
-			{
-				FbxNode *childNode = rootNode->GetChild(childIdx);
-				FbxNodeAttribute *nodeAttribute = childNode->GetNodeAttribute();
-
-				if(nodeAttribute == nullptr)
-					continue;
-
-				FbxNodeAttribute::EType attributeType = nodeAttribute->GetAttributeType();
-
-				if(attributeType == FbxNodeAttribute::eMesh)
-					fbxMesh = childNode->GetMesh();
-				else if(attributeType == FbxNodeAttribute::eSkeleton)
-					fbxSkeleton = childNode->GetSkeleton();
-
-				if(fbxMesh != nullptr && fbxSkeleton != nullptr)
-					break;
-			}
-
-			if(fbxSkeleton == nullptr)
-			{
-				FbxNode *skeletonNode = FindSkeletonRoot(rootNode);
-				if(skeletonNode != nullptr)
-					fbxSkeleton = skeletonNode->GetSkeleton();
-			}
-			FbxNode *test = fbxMesh->GetNode();
-			BuildMesh(fbxMesh, outMeshFliterElements);
-			ParseMaterial(fbxMesh, outMaterialElements, outTextureNames);
-
-			bool animation = outMeshFliterElements->skinIndices.second != nullptr;
-
-			if( animation)
-			{
-				outMeshFliterElements->boneIndices = new std::vector<Animation::Bone*>;
-				BuildSkeleton(fbxSkeleton, outMeshFliterElements->boneIndices);
-			}
-
-			return true;
-		}
-
-		bool FBXImporter::BuildMesh(FbxMesh *fbxMesh, MeshFilterElements *outMeshFilterElements)
+		bool MeshImporter::BuildMesh(FbxMesh *fbxMesh, MeshFilterElements *outMeshFilterElements)
 		{
 			if(fbxMesh == nullptr)
 				return false;
@@ -244,6 +195,7 @@ namespace Rendering
 			int *ary = nullptr;
 
 			int skinIdx		= 0;
+			int vertexCount = 0;
 
 			for(int i=0; i<numOfVertex; ++i)
 			{
@@ -251,7 +203,27 @@ namespace Rendering
 				vertices[i] = SOC_Vector3((float)v[0], (float)v[1], (float)v[2]);
 			}
 
-			int vertexCount = 0;
+			for(int layer = 0; layer < layerCount; ++layer)
+			{
+				FbxLayer *fbxLayer = fbxMesh->GetLayer(layer);
+				
+				for(int polygonIdx = 0; polygonIdx<polygonCount; ++polygonIdx)
+				{
+					int polySize = fbxMesh->GetPolygonSize(polygonIdx);
+
+					ary = polySize == 3 ? triangleAry : rectAry;
+					int count = polySize == 3 ? 3 : 6;
+
+					for(int vertexIdx = 0; vertexIdx < count; ++vertexIdx)
+					{
+						int ctrlIdx = fbxMesh->GetPolygonVertex(polygonIdx, vertexIdx);
+						FbxVector4 vertex = ctrlPoints[ctrlIdx];
+						vertices[ctrlIdx] = SOC_Vector3((float)vertex[0], (float)vertex[1], (float)vertex[2]);
+
+
+					}
+				}
+			}
 
 			for(int polyIdx = 0; polyIdx < polygonCount; ++polyIdx)
 			{
@@ -308,7 +280,7 @@ namespace Rendering
 			return true;
 		}
 
-		void FBXImporter::ParseMaterial(fbxsdk_2014_1::FbxMesh *fbxMesh, MaterialElements *outMaterialElements, MaterialTextures *outTextures)
+		void MeshImporter::ParseMaterial(fbxsdk_2014_1::FbxMesh *fbxMesh, MaterialElements *outMaterialElements, MaterialTextures *outTextures)
 		{
 			FbxNode *node = fbxMesh->GetNode();
 			int materialCount = node->GetMaterialCount();
@@ -346,7 +318,7 @@ namespace Rendering
 			}
 		}
 
-		void FBXImporter::BuildskinningMesh(FbxMesh *fbxMesh, std::vector<int> &boneIndices)
+		void MeshImporter::BuildskinningMesh(FbxMesh *fbxMesh, std::vector<int> &boneIndices)
 		{
 			int skinCount = fbxMesh->GetDeformerCount(FbxDeformer::eSkin);
 
@@ -385,7 +357,7 @@ namespace Rendering
 			}
 		}
 
-		bool FBXImporter::ParseNormals(FbxLayer *layer, int ctrlPointIdx, int vertexCount, SOC_Vector3 *out)
+		bool MeshImporter::ParseNormals(FbxLayer *layer, int ctrlPointIdx, int vertexCount, SOC_Vector3 *out)
 		{
 			int index = -1;
 			bool res = ParseElements(layer->GetNormals(), ctrlPointIdx, vertexCount, &index);
@@ -410,7 +382,7 @@ namespace Rendering
 			return res;
 		}
 
-		bool FBXImporter::ParseUV(FbxLayer *layer, FbxMesh *fbxMesh, int ctrlPointIdx, int polygonIdx, int vertexIdx, SOC_Vector2 *out)
+		bool MeshImporter::ParseUV(FbxLayer *layer, FbxMesh *fbxMesh, int ctrlPointIdx, int polygonIdx, int vertexIdx, SOC_Vector2 *out)
 		{
 			FbxLayerElementUV *fbxUV = layer->GetUVs();
 
@@ -446,7 +418,7 @@ namespace Rendering
 			return index != -1;
 		}
 
-		bool FBXImporter::ParseVertexColor(FbxLayer *layer, int ctrlPointIdx, int vertexCount, Color *out)
+		bool MeshImporter::ParseVertexColor(FbxLayer *layer, int ctrlPointIdx, int vertexCount, Color *out)
 		{
 			int index = -1;
 			bool res = ParseElements(layer->GetVertexColors(), ctrlPointIdx, vertexCount, &index);
@@ -461,7 +433,7 @@ namespace Rendering
 			return res;
 		}
 
-		bool FBXImporter::ParseTangents(FbxLayer *layer, int ctrlPointIdx, int vertexCount, SOC_Vector3 *out)
+		bool MeshImporter::ParseTangents(FbxLayer *layer, int ctrlPointIdx, int vertexCount, SOC_Vector3 *out)
 		{
 			int index = -1;
 			bool res = ParseElements(layer->GetTangents(), ctrlPointIdx, vertexCount, &index);
@@ -476,7 +448,7 @@ namespace Rendering
 			return res;
 		}
 
-		bool FBXImporter::ParseBinormals(FbxLayer *layer, int ctrlPointIdx, int vertexCount, SOC_Vector3 *out)
+		bool MeshImporter::ParseBinormals(FbxLayer *layer, int ctrlPointIdx, int vertexCount, SOC_Vector3 *out)
 		{
 			int index = -1;
 			bool res = ParseElements<FbxLayerElementBinormal>(layer->GetBinormals(), ctrlPointIdx, vertexCount, &index);
@@ -491,7 +463,7 @@ namespace Rendering
 			return res;
 		}
 
-		bool FBXImporter::IsSkeleton(FbxNode *node)
+		bool MeshImporter::IsSkeleton(FbxNode *node)
 		{
 			FbxNodeAttribute *attribute = node->GetNodeAttribute();
 			if(attribute == nullptr)
@@ -501,7 +473,7 @@ namespace Rendering
 				(FbxCast<FbxSkeleton>(attribute)->GetSkeletonType() == FbxSkeleton::eLimbNode);
 		}
 
-		FbxNode* FBXImporter::FindSkeletonRoot(FbxNode  *parent)
+		FbxNode* MeshImporter::FindSkeletonRoot(FbxNode  *parent)
 		{
 			FbxNode *parentNode = parent->GetParent();
 
@@ -520,36 +492,8 @@ namespace Rendering
 			return nullptr;
 		}
 
-		void FBXImporter::ParseBoneRecursive(const FbxNode* boneNode, int parentBoneIdx, std::vector<Animation::Bone*> *outBones)
-		{
-			Animation::Bone *bone = new Animation::Bone;
 
-			bone->name = boneNode->GetName();
-			bone->index = outBones->size();
-			bone->indexParnet = parentBoneIdx;
-			outBones->push_back(bone);
-
-			int count = boneNode->GetChildCount();
-
-			for(int i=0; i<count; ++i)
-			{
-				const FbxNode *child = boneNode->GetChild( i );
-				ParseBoneRecursive( child, bone->index, outBones );
-			}
-		}
-
-		bool FBXImporter::BuildSkeleton(FbxSkeleton *skeleton, std::vector<Animation::Bone*> *outBones)
-		{
-			if(skeleton == nullptr)
-				return false;
-
-			FbxNode *boneNode = skeleton->GetNode();
-			ParseBoneRecursive(boneNode, -1, outBones);
-
-			return true;
-		}
-
-		bool FBXImporter::ParseTexture(FbxProperty &fbxProperty, std::string* outFileName)
+		bool MeshImporter::ParseTexture(FbxProperty &fbxProperty, std::string* outFileName)
 		{
 			if( fbxProperty.IsValid() == false )
 				return false;
@@ -571,7 +515,7 @@ namespace Rendering
 			return true;
 		}
 
-		bool FBXImporter::ParseMaterialElements(FbxSurfaceMaterial *fbxMaterial, MaterialElements *out)
+		bool MeshImporter::ParseMaterialElements(FbxSurfaceMaterial *fbxMaterial, MaterialElements *out)
 		{
 			FbxClassId id = fbxMaterial->GetClassId();
 
@@ -626,7 +570,7 @@ namespace Rendering
 			return true;
 		}
 
-		void FBXImporter::Destroy()
+		void MeshImporter::Destroy()
 		{
 			if(scene)
 			{

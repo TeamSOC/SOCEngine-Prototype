@@ -33,7 +33,7 @@ void TestScene::OnInitialize()
 	bool success;
 
 	success = importer->Initialize("");
-	success = importer->LoadScene("test.fbx");
+	success = importer->LoadScene("carl.fbx");
 
 	success = importer->Decode(&ematerial, &emesh, &etex);
 
@@ -43,7 +43,7 @@ void TestScene::OnInitialize()
 		emesh.numOfVertex, emesh.numOfTriangle, emesh.indices,
 		SOC_TRIANGLE_LIST, emesh.isDynamic, false);
 
-	SOC_Vector3 v = SOC_Vector3(0.0, 0.0, 0);
+	SOC_Vector3 v = SOC_Vector3(0.0, 0.0, 5);
 	meshObject->GetTransform()->SetPosition(v);
 	meshObject->GetTransform()->radius = 100.0f;
 
@@ -71,8 +71,8 @@ void TestScene::OnInitialize()
 void TestScene::OnUpdate(float dt)
 {
 	SOC_Vector3 eular = meshObject->GetTransform()->GetLocalEulerAngle();
-//	meshObject->GetTransform()->Rotate(0, 0.000001f, 0.0f);
-	meshObject->GetTransform()->Translate(SOC_Vector3(0, 0, 0.0001));
+//	meshObject->GetTransform()->Rotate(0, 0.0000001f, 0.0f);
+//	meshObject->GetTransform()->Translate(SOC_Vector3(0, 0, 0.0001));
 }
 
 void TestScene::OnRenderPreview()
