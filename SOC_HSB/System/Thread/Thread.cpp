@@ -6,29 +6,32 @@
 
 #include "../../pch/pch.h"
 
+
+
 namespace SOC_System {
 	namespace Thread {
 
-Thread* Thread::GetCurrent()
+THREAD_LOCAL_INITSIGN_VARIABLE SOCThread* SOCThread::g_pthreadInstance = nullptr;
+
+SOC_INT32 GetCurrentThreadID()
+{
+    if (SOCThread::GetCurrent() == nullptr)
+    {
+        return 0;
+    }
+            
+    return SOCThread::GetCurrent()->GetID();
+}
+        
+
+SOCThread* SOCThread::GetCurrent()
 {
 	// thread local variable type
 	return g_pthreadInstance;
 }
 
-SOC_INT32 GetCurrentThreadID()
-{
-	if (Thread::GetCurrent() == nullptr)
-	{
-		return 0;
-	}
-
-	return Thread::GetCurrent()->GetID();
-}
-
-Thread* Thread::g_pthreadInstance = nullptr;
-
-Thread::Thread(bool bCreate)
-	: m_handle(0)
+SOCThread::SOCThread(bool bCreate)
+	: m_handle(nullptr)
 	, m_id(0)
 	, m_bExited(false)
 	, m_exitSign(true)
@@ -39,23 +42,23 @@ Thread::Thread(bool bCreate)
 		Attach();
 }
 
-Thread::~Thread()
-{
-	if (m_handle != 0)
+SOCThread::~SOCThread()
+        {
+	if (m_handle != nullptr)
 	{
 #if defined(_WIN32) || defined(_WIN64)
 		CloseHandle(m_handle);
 #else
-
+        pthread_detach(m_handle);
 #endif
 	}
 }
 
-SOC_ULONG Thread::HandleFunc(void* pData)
+void* SOCThread::HandleFunc(void* pData)
 {
 	if (pData != nullptr)
 	{
-		Thread* pThread = static_cast<Thread*>(pData);
+		SOCThread* pThread = static_cast<SOCThread*>(pData);
 		g_pthreadInstance = pThread;
 
 		pThread->CallBack(pThread);
@@ -67,13 +70,14 @@ SOC_ULONG Thread::HandleFunc(void* pData)
 	{
 		//Crash
 	}
-
-	return 0;
+    
+    return nullptr;
 }
 
-void Thread::SetID(SOC_INT32 threadID)
+void SOCThread::SetID(SOC_INT32 threadID)
 {
 	m_id = threadID;
+
 #if defined(_WIN32) || defined(_WIN64)
 	SYSTEM_INFO sinfo;
 	GetSystemInfo(&sinfo);
@@ -84,10 +88,11 @@ void Thread::SetID(SOC_INT32 threadID)
 //	numberOfCore = sysconf(_SC_NPROCESSORS_ONLN);
 //
 #endif
-
 }
 
-void Thread::Resume()
+//////////////////////////////
+// not implemented in xcode
+void SOCThread::Resume()
 {	
 #if defined(_WIN32) || defined(_WIN64)
 	ResumeThread(m_handle);
@@ -96,7 +101,8 @@ void Thread::Resume()
 #endif
 }
 
-void Thread::Stop()
+// not implemented in xcode
+void SOCThread::Stop()
 {
 #if defined(_WIN32) || defined(_WIN64)
 	SuspendThread(m_handle);
@@ -104,32 +110,33 @@ void Thread::Stop()
 	//mac os
 #endif
 }
-
-void Thread::Join()
+//////////////////////////////
+        
+void SOCThread::Join()
 {
 #if defined(_WIN32) || defined(_WIN64)
 	WaitForSingleObject(m_handle, INFINITE);
 #else
-	//mac os
+	pthread_join(m_handle, nullptr);
 #endif
 }
 
-void Thread::Destroy()
+void SOCThread::Destroy()
 {
 #if defined(_WIN32) || defined(_WIN64)
 	_endthreadex(0);
 #else
-	//mac os
+    pthread_exit(0);
 #endif
 }
 
-void Thread::Create()
+void SOCThread::Create()
 {
-	SOC_UINT32 threadID = 0;
+	SOC_INT32 threadID = 0;
 
 #if defined(_WIN32) || defined(_WIN64)
 	m_handle = (HANDLE)_beginthreadex(nullptr, 
-		0, &Thread::HandleFunc, this, CREATE_SUSPENDED, &threadID);
+		0, &SOCThread::HandleFunc, this, CREATE_SUSPENDED, &threadID);
 
 	if (m_handle == INVALID_HANDLE_VALUE)
 	{
@@ -138,11 +145,19 @@ void Thread::Create()
 	}
 
 #else
-	//mac os
+    
+    threadID = pthread_create(&m_handle, nullptr, SOCThread::HandleFunc, this);
+    if (threadID < 0)
+    {
+        perror("[System] : Thread create error");
+        //loging and crash
+    }
 #endif
 }
 
-void Thread::Attach()
+////////////////////////////////////
+//not implemented in xcode
+void SOCThread::Attach()
 {
 #if defined(_WIN32) || defined(_WIN64)
 	BOOL ret = DuplicateHandle(::GetCurrentProcess(), ::GetCurrentThread(), 
@@ -159,6 +174,7 @@ void Thread::Attach()
 
 	g_pthreadInstance = this;
 }
+////////////////////////////////////
 
 }
 }

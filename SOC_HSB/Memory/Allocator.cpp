@@ -7,8 +7,8 @@
 #include "../pch/pch.h"
 
 namespace SOC_Memory {
-
-	Allocator::Allocator(SOC_INT32 threadID, SOC_INT32 threadMax, SOC_INT32 minAlign, SOC_INT32 maxAlign, SOC_SIZE_T bufferSize)
+    
+    Allocator::Allocator(SOC_INT32 threadID, SOC_INT32 threadMax, SOC_INT32 minAlign, SOC_INT32 maxAlign, SOC_SIZE_T bufferSize)
 		: m_threadID(threadID)
 		, m_threadMax(threadMax)
 		, m_minAlign(minAlign)
@@ -28,7 +28,7 @@ namespace SOC_Memory {
 		}
 	}
 
-	Allocator::~Allocator()
+    Allocator::~Allocator()
 	{
 		for (int i=0; i<m_alignCount; ++i)
 		{

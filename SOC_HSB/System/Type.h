@@ -15,7 +15,7 @@
 	typedef uint32_t SOC_UINT32;
 	typedef uint64_t SOC_UINT64;
 
-    typedef int SOC_HANDLE;
+    typedef pthread_t SOC_HANDLE;
 #endif
 
 #if defined(_WIN64)
@@ -56,3 +56,8 @@
 
 #endif
 
+#if defined(_WIN64) || defined(_WIN32)
+    typedef SOC_ULONG LOCK_INT;
+#else
+    typedef SOC_LONG LOCK_INT;
+#endif

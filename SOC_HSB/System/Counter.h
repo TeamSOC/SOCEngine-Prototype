@@ -15,7 +15,8 @@ public:
 	SOC_LONG Get() { return m_count; }
 
 public:
-	void operator = (SOC_LONG Value);
+	void operator = (SOC_LONG value);
+    
 	SOC_LONG operator ++ () // prefix ++
 	{
 #if defined(_WIN64) || defined(_WIN32)

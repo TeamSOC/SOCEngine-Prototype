@@ -46,7 +46,11 @@ namespace SOC_System {
 			if (Destroy() == true)
 				break;
 
+#if defined(_WIN32) || defined(_WIN64)
 			Sleep(100);
+#else
+            sleep(100);
+#endif
 		}
 	}
 
