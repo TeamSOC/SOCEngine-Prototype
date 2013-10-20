@@ -21,6 +21,11 @@ namespace Rendering
 			Device::Graphics::GraphicsForm	*graphics;
 
 		private:
+			MeshFilterElements		filterElements;
+			MaterialElements		materialElements;
+			MaterialTextures		textureElements;
+
+		private:
 			void (*beginFunc)(MeshRenderer*);
 			void (*endFunc)(MeshRenderer*);
 
@@ -38,7 +43,16 @@ namespace Rendering
 		public:
 			virtual void Initialize();
 			virtual void Destroy();
-//			virtual Component::Type GetComponentType();
+
+		public:
+			bool Create(MeshFilterElements &vertexData, MaterialElements &materialData, MaterialTextures &textureData)
+			{
+				this->filterElements = vertexData;
+				this->materialElements = materialData;
+				this->textureElements = textureData;
+
+
+			}
 		};
 
 	}

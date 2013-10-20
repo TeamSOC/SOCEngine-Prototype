@@ -70,6 +70,20 @@ public:
 		return v.size() == 0 ? NULL : v[0];
 	}
 
+	bool HasObject(Object *object)
+	{
+		std::vector<Object*> v;
+		typename std::vector<Object*>::iterator iter;
+
+		for(iter = objects.begin(); iter != objects.end(); ++iter)
+		{
+			if( (*iter) == object )
+				return true;
+		}
+
+		return false;
+	}
+
 	Object* AddObject(Object *child, bool copy = false)
 	{
 		Object *c = copy == false ? child : new Object(*child);
