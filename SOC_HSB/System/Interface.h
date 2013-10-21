@@ -1,11 +1,12 @@
 
 #pragma once
 
-#include "Thread/Define.h"
+
+#include "Lock/Define.h"
+#include "Lock/Lock.h"
 
 #include "Converter.h"
 #include "Type.h"
-#include "Lock/Lock.h"
 #include "Queue.h"
 #include "Counter.h"
 #include "Object.h"

@@ -70,7 +70,7 @@ void* SOCThread::HandleFunc(void* pData)
 	{
 		//Crash
 	}
-    
+
     return nullptr;
 }
 

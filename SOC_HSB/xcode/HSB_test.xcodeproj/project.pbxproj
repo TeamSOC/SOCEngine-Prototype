@@ -34,6 +34,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		EC6E20741815942D00DCDFCE /* Define.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Define.h; sourceTree = "<group>"; };
 		ECB54ACE180019AE000B872C /* Allocator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Allocator.cpp; sourceTree = "<group>"; };
 		ECB54ACF180019AE000B872C /* Allocator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Allocator.h; sourceTree = "<group>"; };
 		ECB54AD0180019AE000B872C /* Interface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Interface.h; sourceTree = "<group>"; };
@@ -64,7 +65,6 @@
 		ECDAF6A0180B1A92001E2713 /* Singleton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Singleton.h; sourceTree = "<group>"; };
 		ECDAF6A1180B1AA7001E2713 /* MemoryPool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MemoryPool.h; sourceTree = "<group>"; };
 		ECDAF6A2180B1AEC001E2713 /* PreDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PreDefine.h; sourceTree = "<group>"; };
-		ECDAF6A3180B1CDC001E2713 /* Define.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Define.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +127,7 @@
 		ECB54ADB180019AE000B872C /* Lock */ = {
 			isa = PBXGroup;
 			children = (
+				EC6E20741815942D00DCDFCE /* Define.h */,
 				ECB54ADC180019AE000B872C /* Lock.cpp */,
 				ECB54ADD180019AE000B872C /* Lock.h */,
 			);
@@ -169,7 +170,6 @@
 				ECDAF699180B1A75001E2713 /* Thread.h */,
 				ECDAF69A180B1A75001E2713 /* ThreadPool.cpp */,
 				ECDAF69B180B1A75001E2713 /* ThreadPool.h */,
-				ECDAF6A3180B1CDC001E2713 /* Define.h */,
 			);
 			path = Thread;
 			sourceTree = "<group>";
