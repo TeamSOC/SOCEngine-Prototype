@@ -118,5 +118,5 @@ namespace Lock {
 }
 }
 
-#define TYPED_SCOPE_LOCK(lock)  Lock::Helper::TypedScopedLock<Lock::CriticalSectionLock> __lock(lock, __FILE__, __LINE__)
-#define TYPED_SCOPE_SPINLOCK(lock)  Lock::Helper::TypedScopedLock<Lock::SpinLock::DefSpinLock> __lock(lock, __FILE__, __LINE__)
+#define TYPED_SCOPE_LOCK(lock)  SOC_System::Lock::Helper::TypedScopedLock<SOC_System::Lock::CriticalSectionLock> __lock(lock, __FILE__, __LINE__)
+#define TYPED_SCOPE_SPINLOCK(lock)  SOC_System::Lock::Helper::TypedScopedLock<SOC_System::Lock::SpinLock::DefSpinLock> __lock(lock, __FILE__, __LINE__)

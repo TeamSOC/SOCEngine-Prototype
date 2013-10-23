@@ -47,9 +47,9 @@ namespace SOC_System {
 				break;
 
 #if defined(_WIN32) || defined(_WIN64)
-			Sleep(100);
+			Sleep(100); // 0.1 sec. this is millisec.
 #else
-            sleep(100);
+            usleep(100000); // 0.1 sec. this is microsec.
 #endif
 		}
 	}
