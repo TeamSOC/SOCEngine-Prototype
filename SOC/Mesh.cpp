@@ -28,6 +28,22 @@ namespace Rendering
 			Utility::SAFE_DELETE(renderer);
 		}
 
+		bool Mesh::Create(MeshFilterElements &vertexData, MaterialElements &materialData, MaterialTextures &textureData)
+		{
+			{
+				this->filterElements = vertexData;
+				this->materialElements = materialData;
+				this->textureElements = textureData;
+			}
+
+			filter->Create(vertexData.vertices, vertexData.normals, vertexData.tangents,
+				vertexData.binomals, vertexData.texcoords, vertexData.colors,
+				vertexData.numOfVertex, vertexData.numOfTriangle, vertexData.indices,
+				SOC_TRIANGLE_LIST, vertexData.isDynamic, false);
+
+			return true;
+		}
+
 		void Mesh::Render(Rendering::TransformParameters *transform, Rendering::Light::LightParameters *light)
 		{
 			if( (beginFunc && endFunc) == false)

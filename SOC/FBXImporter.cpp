@@ -39,17 +39,17 @@ namespace Rendering
 			manager->LoadPluginsDirectory(path.Buffer(), IExtension.Buffer());
 			scene = FbxScene::Create(manager, sceneName);
 
-#if defined(WIN32) && !defined(_USE_GL_DEFINES)
-
-			FbxAxisSystem axis = FbxAxisSystem::DirectX;
-
-#elif defined(__APPLE__) || defined(_USE_GL_DEFINES)
-
-			FbxAxisSystem axis = FbxAxisSystem::OpenGL;
-
-#endif
-
-			axis.ConvertScene(scene);
+//#if defined(WIN32) && !defined(_USE_GL_DEFINES)
+//
+//			FbxAxisSystem axis = FbxAxisSystem::DirectX;
+//
+//#elif defined(__APPLE__) || defined(_USE_GL_DEFINES)
+//
+//			FbxAxisSystem axis = FbxAxisSystem::OpenGL;
+//
+//#endif
+//
+//			axis.ConvertScene(scene);
 
 			return scene != nullptr;
 		}
@@ -111,55 +111,82 @@ namespace Rendering
 			return status;
 		}
 
-		bool FBXImporter::Decode(MaterialElements *outMaterialElements, MeshFilterElements *outMeshFliterElements, MaterialTextures *outTextureNames)
+		void FBXImporter::BuildSkeleton(Object *parent, FbxNode *node)
 		{
-			if(scene == nullptr)
-				return false;
+			//뭔가 좀 부실한데..
+			//FbxSkeleton *fbxSkeleton = node->GetSkeleton();
 
+		}
+
+		void FBXImporter::AssignMesh(Object *obj, FbxNode *node)
+		{
+			FbxMesh *fbxMesh = node->GetMesh();
+			Mesh::Mesh *mesh = obj->AddComponent<Mesh::Mesh>();
+
+			MeshFilterElements fe;
+			MaterialElements me;
+			MaterialTextures te;
+
+			BuildMesh(fbxMesh, &fe);
+			ParseMaterial(fbxMesh, &me, &te);
+
+			mesh->Create(fe, me, te);
+			SetFbxTransform(obj, node);
+		}
+
+		void FBXImporter::SetFbxTransform(Object *obj, FbxNode *node)
+		{
+			Transform *transform = obj->GetTransform();
+
+			FbxDouble3 p, s, r;
+			p = node->LclTranslation.Get();
+			s = node->LclScaling.Get();
+			r = node->LclRotation.Get();
+
+			transform->SetPosition(SOC_Vector3((float)p[0], (float)p[1], (float)p[2]));
+			transform->SetEulerAngles(SOC_Vector3((float)r[0], (float)r[1], (float)r[2]));
+			transform->SetScale(SOC_Vector3((float)s[0], (float)s[1], (float)s[2]));
+		}
+
+		Object* FBXImporter::BuildObject(Object *parent)
+		{
 			FbxNode *rootNode = scene->GetRootNode();
 			int childCount = rootNode->GetChildCount();
 
-			FbxMesh *fbxMesh		 = nullptr;
-			FbxSkeleton *fbxSkeleton = nullptr;
+			Object *rootObject = new Object(parent);
 
-			for(int childIdx = 0; childIdx < childCount; ++childIdx)
-			{
-				FbxNode *childNode = rootNode->GetChild(childIdx);
-				FbxNodeAttribute *nodeAttribute = childNode->GetNodeAttribute();
+			for(int i=0; i<childCount; ++i)
+				Decode(rootObject, rootNode->GetChild(i));
 
-				if(nodeAttribute == nullptr)
-					continue;
+			return rootObject;
+		}
 
-				FbxNodeAttribute::EType attributeType = nodeAttribute->GetAttributeType();
+		//애가 재귀형이니까, 아닌곳에서 얘 좀 호출해줘야해
+		Object* FBXImporter::Decode(Object *parent, FbxNode *fbxNode)
+		{
+			FbxNodeAttribute *fbxNodeAttri = fbxNode->GetNodeAttribute();
 
-				if(attributeType == FbxNodeAttribute::eMesh)
-					fbxMesh = childNode->GetMesh();
-				else if(attributeType == FbxNodeAttribute::eSkeleton)
-					fbxSkeleton = childNode->GetSkeleton();
+			if(fbxNodeAttri == nullptr)
+				return nullptr;
 
-				if(fbxMesh != nullptr && fbxSkeleton != nullptr)
-					break;
-			}
+			FbxNodeAttribute::EType atType = fbxNodeAttri->GetAttributeType();
+			Object *obj = new Object(parent);
+			obj->name = fbxNode->GetName() ? fbxNode->GetName() : "None Node";
+			SetFbxTransform(obj, fbxNode);
 
-			if(fbxSkeleton == nullptr)
-			{
-				FbxNode *skeletonNode = FindSkeletonRoot(rootNode);
-				if(skeletonNode != nullptr)
-					fbxSkeleton = skeletonNode->GetSkeleton();
-			}
-			FbxNode *test = fbxMesh->GetNode();
-			BuildMesh(fbxMesh, outMeshFliterElements);
-			ParseMaterial(fbxMesh, outMaterialElements, outTextureNames);
+			if(parent->HasObject(obj) == false)
+				parent->AddObject(obj, false);
 
-			bool animation = outMeshFliterElements->skinIndices.second != nullptr;
+			if(atType == FbxNodeAttribute::eMesh)
+				AssignMesh(obj, fbxNode);
+			else if(atType == FbxNodeAttribute::eSkeleton)
+				BuildSkeleton(obj, fbxNode);
 
-			if( animation)
-			{
-				outMeshFliterElements->boneIndices = new std::vector<Animation::Bone*>;
-				BuildSkeleton(fbxSkeleton, outMeshFliterElements->boneIndices);
-			}
+			int childCount = fbxNode->GetChildCount();
+			for(int i=0; i<childCount; ++i)
+				Decode(obj, fbxNode->GetChild(i));
 
-			return true;
+			return obj;
 		}
 
 		bool FBXImporter::BuildMesh(FbxMesh *fbxMesh, MeshFilterElements *outMeshFilterElements)
@@ -170,21 +197,19 @@ namespace Rendering
 			if(fbxMesh->GetControlPointsCount() == 0)
 				return false;
 
-			const char *meshName = fbxMesh->GetNameOnly();
-
 			FbxVector4 *ctrlPoints	= fbxMesh->GetControlPoints();
 			int layerCount			= fbxMesh->GetLayerCount();
 			int polygonCount		= fbxMesh->GetPolygonCount();
 
-			std::vector<int> skinIndices;
-			BuildskinningMesh(fbxMesh, skinIndices);
-			bool isSkinned = skinIndices.empty() == false;
+			//std::vector<int> skinIndices;
+			//BuildskinningMesh(fbxMesh, skinIndices);
+			//bool isSkinned = skinIndices.empty() == false;
 
-			if(isSkinned)
-			{
-				outMeshFilterElements->skinIndices.first = skinIndices.size();
-				outMeshFilterElements->skinIndices.second = new int[skinIndices.size()];
-			}
+			//if(isSkinned)
+			//{
+			//	outMeshFilterElements->skinIndices.first = skinIndices.size();
+			//	outMeshFilterElements->skinIndices.second = new int[skinIndices.size()];
+			//}
 
 			int indexCount =  0;
 
@@ -204,7 +229,7 @@ namespace Rendering
 			outMeshFilterElements->numOfVertex = numOfVertex;
 			outMeshFilterElements->vertices = new SOC_Vector3[outMeshFilterElements->numOfVertex];
 			outMeshFilterElements->numOfTriangle = indexCount / 3;
-			outMeshFilterElements->isDynamic = isSkinned;
+			outMeshFilterElements->isDynamic = false;
 
 			if(fbxMesh->GetLayer(0)->GetNormals() != nullptr)
 				outMeshFilterElements->normals = new SOC_Vector3[numOfVertex];
@@ -244,14 +269,13 @@ namespace Rendering
 			int *ary = nullptr;
 
 			int skinIdx		= 0;
+			int vertexCount = 0;
 
 			for(int i=0; i<numOfVertex; ++i)
 			{
 				FbxVector4  v = fbxMesh->GetControlPointAt(i);
-				vertices[i] = SOC_Vector3((float)v[0], (float)v[1], (float)v[2]);
+				vertices[i] = SOC_Vector3((float)v[0], (float)v[1], -(float)v[2]);
 			}
-
-			int vertexCount = 0;
 
 			for(int polyIdx = 0; polyIdx < polygonCount; ++polyIdx)
 			{
@@ -394,10 +418,10 @@ namespace Rendering
 			{
 				FbxLayerElementNormal *fbxNormal = layer->GetNormals();
 				FbxVector4 v = fbxNormal->GetDirectArray().GetAt(index);
-				(*out) = SOC_Vector3((float)v[0], (float)v[1], (float)v[2]);
+				(*out) = SOC_Vector3((float)v[0], (float)v[1], -(float)v[2]);
 
-				int test = fbxNormal->GetDirectArray().GetCount();
-				int test2 = fbxNormal->GetIndexArray().GetCount();
+				//int test = fbxNormal->GetDirectArray().GetCount();
+				//int test2 = fbxNormal->GetIndexArray().GetCount();
 
 
 				if( fbxNormal->GetDirectArray().GetCount() < index
@@ -440,7 +464,7 @@ namespace Rendering
 			if(index != -1)
 			{
 				FbxVector2 v = fbxUV->GetDirectArray().GetAt(index);
-				(*out) = SOC_Vector2((float)v[0], (float)v[1]);
+				(*out) = SOC_Vector2((float)v[0], 1.0f - (float)v[1]);
 			}
 
 			return index != -1;
@@ -520,34 +544,6 @@ namespace Rendering
 			return nullptr;
 		}
 
-		void FBXImporter::ParseBoneRecursive(const FbxNode* boneNode, int parentBoneIdx, std::vector<Animation::Bone*> *outBones)
-		{
-			Animation::Bone *bone = new Animation::Bone;
-
-			bone->name = boneNode->GetName();
-			bone->index = outBones->size();
-			bone->indexParnet = parentBoneIdx;
-			outBones->push_back(bone);
-
-			int count = boneNode->GetChildCount();
-
-			for(int i=0; i<count; ++i)
-			{
-				const FbxNode *child = boneNode->GetChild( i );
-				ParseBoneRecursive( child, bone->index, outBones );
-			}
-		}
-
-		bool FBXImporter::BuildSkeleton(FbxSkeleton *skeleton, std::vector<Animation::Bone*> *outBones)
-		{
-			if(skeleton == nullptr)
-				return false;
-
-			FbxNode *boneNode = skeleton->GetNode();
-			ParseBoneRecursive(boneNode, -1, outBones);
-
-			return true;
-		}
 
 		bool FBXImporter::ParseTexture(FbxProperty &fbxProperty, std::string* outFileName)
 		{
@@ -616,6 +612,7 @@ namespace Rendering
 
 				transparency = lambert->TransparencyFactor;
 			}
+
 			else return false;
 
 			out->ambientColor = Color(ambient.first[0], ambient.first[1], ambient.first[2]) * ambient.second;

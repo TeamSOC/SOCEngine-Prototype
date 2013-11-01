@@ -13,6 +13,11 @@ namespace Rendering
 	{
 		culled = false;
 		transform = new Transform( parent ? parent->transform : nullptr);
+		
+		this->parent = parent;
+		this->root = parent ? parent->root : this;
+		this->use = true;
+		this->hasMesh = false;
 	}
 
 	Object::~Object(void)
@@ -102,7 +107,7 @@ namespace Rendering
 		//	if((*iter)->Intersect(thisObject))
 		//		intersectLights.push_back((*iter));
 		//}
-
+		
 		SOC_Matrix worldMat, worldViewProjMat;
 
 		transform->GetWorldMatrix(&worldMat);
@@ -112,32 +117,38 @@ namespace Rendering
 		TransformParameters tp(&worldMat, viewMat, projMat, viewProjMat, &worldViewProjMat);
 		LightParameters lp;
 
-		SOC_Vector4 diffuseColorAry[MAX_LIGHT], specularColorAry[MAX_LIGHT];
-		float rangeAry[MAX_LIGHT], specularPowerAry[MAX_LIGHT];
-		SOC_Vector4 lightPosAry[MAX_LIGHT], lightDirAry[MAX_LIGHT];
-		float spotAngleAry[MAX_LIGHT];
-		int typeAry[MAX_LIGHT];
-
-		int intersectLightCount = intersectLights.size();
-		lp.count = intersectLightCount > MAX_LIGHT ? MAX_LIGHT : intersectLightCount;
-
-		for(int i=0; i < lp.count; ++i)
+		if(hasMesh)
 		{
-			LightForm *light = intersectLights[i];
-			diffuseColorAry[i]  = light->diffuseColor.GetVector();
-			specularColorAry[i] = light->specularColor.GetVector();
-			rangeAry[i] = light->range;
-			specularPowerAry[i] = light->specularPower;
-			lightPosAry[i] = SOC_Vector4(light->GetWorldPosition(), 1.0f);
-			lightDirAry[i] = SOC_Vector4(light->GetDirection(), 1.0f);
-			typeAry[i] = (int)light->type;
-			spotAngleAry[i] = light->type == LightForm::LIGHTTYPE_SPOT ? static_cast<SpotLight*>(light)->spotAngle : 1.0f;		
-		}
+			SOC_Vector4 diffuseColorAry[MAX_LIGHT], specularColorAry[MAX_LIGHT];
+			float rangeAry[MAX_LIGHT], specularPowerAry[MAX_LIGHT];
+			SOC_Vector4 lightPosAry[MAX_LIGHT], lightDirAry[MAX_LIGHT];
+			float spotAngleAry[MAX_LIGHT];
+			int typeAry[MAX_LIGHT];
 
-		lp.viewPos = SOC_Vector4(viewMat->_41, viewMat->_42, viewMat->_43, 1.0f);
+			int intersectLightCount = intersectLights.size();
+			lp.count = intersectLightCount > MAX_LIGHT ? MAX_LIGHT : intersectLightCount;
+
+			for(int i=0; i < lp.count; ++i)
+			{
+				LightForm *light = intersectLights[i];
+				diffuseColorAry[i]  = light->diffuseColor.GetVector();
+				specularColorAry[i] = light->specularColor.GetVector();
+				rangeAry[i] = light->range;
+				specularPowerAry[i] = light->specularPower;
+				lightPosAry[i] = SOC_Vector4(light->GetWorldPosition(), 1.0f);
+				lightDirAry[i] = SOC_Vector4(light->GetDirection(), 1.0f);
+				typeAry[i] = (int)light->type;
+				spotAngleAry[i] = light->type == LightForm::LIGHTTYPE_SPOT ? static_cast<SpotLight*>(light)->spotAngle : 1.0f;		
+			}
+
+			lp.viewPos = SOC_Vector4(viewMat->_41, viewMat->_42, viewMat->_43, 1.0f);
+		}
 
 		for(std::vector<Component*>::iterator iter = components.begin(); iter != components.end(); ++iter)
 			(*iter)->Render(&tp, &lp);
+
+		for(std::vector<Object*>::iterator iter = objects.begin(); iter != objects.end(); ++iter)
+			(*iter)->Render(lights, viewMat, projMat, viewProjMat);
 	}
 
 	bool Object::Intersect(Intersection::Sphere &sphere)

@@ -25,6 +25,7 @@ namespace Rendering
 	protected:
 		bool use;
 		bool culled;
+		bool hasMesh;
 
 	protected:
 		Object *parent;
@@ -65,6 +66,9 @@ namespace Rendering
 
 			ComponentType *compo = new ComponentType;
 			compo->SetOwner(this);
+
+			if(compo->ComponentType == Component::Type::Mesh)
+				hasMesh = true;
 
 			//오직 유저 컴포넌트만 중복 가능
 			compo->Initialize();

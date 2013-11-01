@@ -1,4 +1,5 @@
 #include "TestScene.h"
+//#include "MeshImporter.h"
 
 using namespace Rendering;
 
@@ -17,37 +18,32 @@ TestScene::~TestScene(void)
 void TestScene::OnInitialize()
 {
 	camObject = new Object;
-	meshObject = new Object;
 
 	AddObject(camObject);
-	AddObject(meshObject);
 
 	Rendering::Camera *camera = camObject->AddComponent<Camera>();	
-	Mesh::Mesh *mesh = meshObject->AddComponent<Mesh::Mesh>();
 
-	Mesh::MeshFilter *filter = mesh->GetFilter();
+	//Mesh::MeshFilter *filter = mesh->GetFilter();
 
 	fbxsdk_2014_1::FbxManager *manager = fbxsdk_2014_1::FbxManager::Create();
 	Rendering::Importer::FBXImporter *importer = new Rendering::Importer::FBXImporter(manager);
+//	Rendering::Importer::MeshImporter *importer = new Rendering::Importer::MeshImporter(manager);
 
 	bool success;
-
 	success = importer->Initialize("");
 	success = importer->LoadScene("carl.fbx");
 
-	success = importer->Decode(&ematerial, &emesh, &etex);
+	meshObject = importer->BuildObject(nullptr);
+	AddObject(meshObject);
 
-	filter->Create(
-		emesh.vertices, emesh.normals, emesh.tangents,
-		emesh.binomals, emesh.texcoords, emesh.colors,
-		emesh.numOfVertex, emesh.numOfTriangle, emesh.indices,
-		SOC_TRIANGLE_LIST, emesh.isDynamic, false);
+	Rendering::Mesh::Mesh *mesh = meshObject->GetObject(1)->GetComponent<Mesh::Mesh>();
 
-	SOC_Vector3 v = SOC_Vector3(0.0, 0.0, 5);
+	SOC_Vector3 v = SOC_Vector3(0.0, 0.0, 100);
 	meshObject->GetTransform()->SetPosition(v);
-	meshObject->GetTransform()->radius = 100.0f;
+	meshObject->GetTransform()->radius = 1000.0f;
+//	meshObject->GetTransform()->SetEulerAngles(SOC_Vector3(0, 90, 0));
 
-	camObject->GetTransform()->SetPosition(SOC_Vector3(0, 0, -1));
+	camObject->GetTransform()->SetPosition(SOC_Vector3(0, 0, 0));
 	camObject->GetTransform()->SetDirection(SOC_Vector3(0, 0, 1));
 
 	camera = camObject->GetComponent<Camera>();
@@ -62,7 +58,6 @@ void TestScene::OnInitialize()
 	shader->Compile(shaderCode);
 
 	material->AddShader(shader);
-
 	renderer->AddMaterial(material, false);
 
 	shader->Compile(shaderCode);

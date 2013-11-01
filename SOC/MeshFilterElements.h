@@ -31,6 +31,14 @@ namespace Rendering
 	public:
 		MeshFilterElements(void);
 		~MeshFilterElements(void);
+
+	//public:
+	//	MeshFilterElements& operator= (MeshFilterElements& other)
+	//	{
+	//		this->vertices = other.vertices;
+
+	//		return *this;
+	//	}
 	};
 
 }

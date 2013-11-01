@@ -45,14 +45,7 @@ namespace Rendering
 			virtual void Destroy();
 
 		public:
-			bool Create(MeshFilterElements &vertexData, MaterialElements &materialData, MaterialTextures &textureData)
-			{
-				this->filterElements = vertexData;
-				this->materialElements = materialData;
-				this->textureElements = textureData;
-
-
-			}
+			bool Create(MeshFilterElements &vertexData, MaterialElements &materialData, MaterialTextures &textureData);
 		};
 
 	}

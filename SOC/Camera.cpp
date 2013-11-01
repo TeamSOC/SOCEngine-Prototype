@@ -21,7 +21,7 @@ namespace Rendering
 	void Camera::Initialize()
 	{
 		FOV = 60;
-		clippingNear = 0.0001f;
+		clippingNear = 0.01f;
 		clippingFar = 1000.0f;
 		normalizedViewPortRect = Rect<float>(0, 0, 1, 1);
 
@@ -114,9 +114,7 @@ namespace Rendering
 		SOC_Matrix projMat, viewMat, viewProjMat;
 		cam->GetProjectionMatrix(&projMat);
 		cam->GetViewMatrix(&viewMat);
-		//viewMat._41 *= -1;
-		//viewMat._42 *= -1;
-		//viewMat._43 *= -1;
+
 		viewProjMat = viewMat * projMat;
 
 		cam->Clear();		

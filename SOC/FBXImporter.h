@@ -11,6 +11,8 @@
 #include "Bone.h"
 #include <vector>
 
+#include "Object.h"
+
 namespace Rendering
 {
 	namespace Importer
@@ -28,10 +30,17 @@ namespace Rendering
 		public:
 			bool Initialize(const char *sceneName);
 			bool LoadScene(const char *fileName, const char *password = nullptr);
-			bool Decode(MaterialElements *outMaterialElements, MeshFilterElements *outMeshFliterElements, MaterialTextures *outTextureNames);
+
+			Object* BuildObject(Object *parent);
+
 			void Destroy();
 
 		private:
+			Object* Decode(Object *parent, FbxNode *fbxNode);
+			void BuildSkeleton(Object *parent, FbxNode *node);
+			void AssignMesh(Object *obj, FbxNode *node);
+			void SetFbxTransform(Object *obj, FbxNode *node);
+
 			bool BuildMesh(fbxsdk_2014_1::FbxMesh *fbxMesh, MeshFilterElements *outMeshFilterElements);
 			void BuildskinningMesh(fbxsdk_2014_1::FbxMesh *fbxMesh, std::vector<int> &skinIndices);
 
@@ -76,8 +85,6 @@ namespace Rendering
 			bool IsSkeleton(fbxsdk_2014_1::FbxNode *node);
 
 			FbxNode* FindSkeletonRoot(fbxsdk_2014_1::FbxNode  *parent);
-			void ParseBoneRecursive(const fbxsdk_2014_1::FbxNode* boneNode, int parentBoneIdx, std::vector<Animation::Bone*> *outBones);
-			bool BuildSkeleton(fbxsdk_2014_1::FbxSkeleton *skeleton, std::vector<Animation::Bone*> *outBones);
 			bool ParseTexture(fbxsdk_2014_1::FbxProperty &fbxProperty, std::string* outFileName);
 			bool ParseMaterialElements(fbxsdk_2014_1::FbxSurfaceMaterial *fbxMaterial, MaterialElements *out);			
 		};
