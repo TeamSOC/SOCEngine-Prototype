@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		ECBED9CB1813730400AB1081 /* Allocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECB54ACE180019AE000B872C /* Allocator.cpp */; };
+		ECBED9CC1813732200AB1081 /* Slab.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECB54AD2180019AE000B872C /* Slab.cpp */; };
+		ECBED9CD1813733100AB1081 /* pch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECB54AD5180019AE000B872C /* pch.cpp */; };
+		ECBED9CE1813733100AB1081 /* Counter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECDAF69C180B1A92001E2713 /* Counter.cpp */; };
+		ECBED9CF1813733100AB1081 /* Object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECDAF69E180B1A92001E2713 /* Object.cpp */; };
+		ECBED9D01813733100AB1081 /* Thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECDAF698180B1A75001E2713 /* Thread.cpp */; };
+		ECBED9D11813733100AB1081 /* ThreadPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECDAF69A180B1A75001E2713 /* ThreadPool.cpp */; };
+		ECBED9D21813733100AB1081 /* Converter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECB54AD8180019AE000B872C /* Converter.cpp */; };
+		ECBED9D31813733500AB1081 /* Lock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECB54ADC180019AE000B872C /* Lock.cpp */; };
 		ECD6FAAD17FFFFDE00C3F06A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECD6FAAC17FFFFDE00C3F06A /* main.cpp */; };
 		ECD6FAAF17FFFFDE00C3F06A /* HSB_test.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = ECD6FAAE17FFFFDE00C3F06A /* HSB_test.1 */; };
 /* End PBXBuildFile section */
@@ -25,11 +34,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		EC6E20741815942D00DCDFCE /* Define.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Define.h; sourceTree = "<group>"; };
 		ECB54ACE180019AE000B872C /* Allocator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Allocator.cpp; sourceTree = "<group>"; };
 		ECB54ACF180019AE000B872C /* Allocator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Allocator.h; sourceTree = "<group>"; };
 		ECB54AD0180019AE000B872C /* Interface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Interface.h; sourceTree = "<group>"; };
 		ECB54AD1180019AE000B872C /* MacroDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MacroDefine.h; sourceTree = "<group>"; };
-		ECB54AD2180019AE000B872C /* Slab.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Slab.cpp; sourceTree = "<group>"; };
+		ECB54AD2180019AE000B872C /* Slab.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = Slab.cpp; sourceTree = "<group>"; };
 		ECB54AD3180019AE000B872C /* Slab.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Slab.h; sourceTree = "<group>"; };
 		ECB54AD5180019AE000B872C /* pch.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = pch.cpp; sourceTree = "<group>"; };
 		ECB54AD6180019AE000B872C /* pch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pch.h; sourceTree = "<group>"; };
@@ -55,7 +65,6 @@
 		ECDAF6A0180B1A92001E2713 /* Singleton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Singleton.h; sourceTree = "<group>"; };
 		ECDAF6A1180B1AA7001E2713 /* MemoryPool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MemoryPool.h; sourceTree = "<group>"; };
 		ECDAF6A2180B1AEC001E2713 /* PreDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PreDefine.h; sourceTree = "<group>"; };
-		ECDAF6A3180B1CDC001E2713 /* Define.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Define.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +127,7 @@
 		ECB54ADB180019AE000B872C /* Lock */ = {
 			isa = PBXGroup;
 			children = (
+				EC6E20741815942D00DCDFCE /* Define.h */,
 				ECB54ADC180019AE000B872C /* Lock.cpp */,
 				ECB54ADD180019AE000B872C /* Lock.h */,
 			);
@@ -160,7 +170,6 @@
 				ECDAF699180B1A75001E2713 /* Thread.h */,
 				ECDAF69A180B1A75001E2713 /* ThreadPool.cpp */,
 				ECDAF69B180B1A75001E2713 /* ThreadPool.h */,
-				ECDAF6A3180B1CDC001E2713 /* Define.h */,
 			);
 			path = Thread;
 			sourceTree = "<group>";
@@ -217,6 +226,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				ECD6FAAD17FFFFDE00C3F06A /* main.cpp in Sources */,
+				ECBED9CB1813730400AB1081 /* Allocator.cpp in Sources */,
+				ECBED9CC1813732200AB1081 /* Slab.cpp in Sources */,
+				ECBED9CD1813733100AB1081 /* pch.cpp in Sources */,
+				ECBED9CE1813733100AB1081 /* Counter.cpp in Sources */,
+				ECBED9CF1813733100AB1081 /* Object.cpp in Sources */,
+				ECBED9D01813733100AB1081 /* Thread.cpp in Sources */,
+				ECBED9D11813733100AB1081 /* ThreadPool.cpp in Sources */,
+				ECBED9D21813733100AB1081 /* Converter.cpp in Sources */,
+				ECBED9D31813733500AB1081 /* Lock.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,6 +303,7 @@
 		ECD6FAB317FFFFDE00C3F06A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_INPUT_FILETYPE = sourcecode.cpp.objcpp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -292,6 +311,7 @@
 		ECD6FAB417FFFFDE00C3F06A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_INPUT_FILETYPE = sourcecode.cpp.objcpp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

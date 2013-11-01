@@ -25,7 +25,8 @@ namespace SOC_Memory {
 	private:
 		Allocator(const Allocator& rhs);
 	public:
-		Allocator(SOC_INT32 threadID, SOC_INT32 threadMax, SOC_INT32 minAlign, SOC_INT32 maxAlign, SOC_SIZE_T bufferSize);
+		Allocator(SOC_INT32 threadID, SOC_INT32 threadMax, SOC_INT32 minAlign,
+                  SOC_INT32 maxAlign, SOC_SIZE_T bufferSize);
 		~Allocator();
 
 	public:

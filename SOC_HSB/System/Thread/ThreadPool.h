@@ -4,15 +4,15 @@ namespace SOC_System {
 	namespace Thread {
 
 	class ThreadPool 
-		: public Thread
+		: public SOCThread
 		, public Singleton<ThreadPool>
 	{
 	public:
-		typedef	void (*PFUNCTION)(Thread* pCurThread);
+		typedef	void (*PFUNCTION)(SOCThread* pCurThread);
 
 	public:
 		ThreadPool() 
-			: Thread(false)
+			: SOCThread(false)
 			, m_threadMax(0)
 		{}
 		virtual ~ThreadPool() 
@@ -24,14 +24,13 @@ namespace SOC_System {
 
 			if (m_threadMax == 0)
 			{
-				int coreCount = 0;
 #if defined(_WIN32) || defined(_WIN64)
 	SYSTEM_INFO sinfo;
 	GetSystemInfo(&sinfo);
-	coreCount = sinfo.dwNumberOfProcessors;
+	m_threadMax = sinfo.dwNumberOfProcessors;
 #else
 	// mac os
-	coreCount = (int)sysconf(_SC_NPROCESSORS_ONLN);
+	m_threadMax = (int)sysconf(_SC_NPROCESSORS_ONLN);
 #endif
 			}
 
@@ -44,20 +43,20 @@ namespace SOC_System {
 		int GetThreadMax() { return m_threadMax; }
 
 	private:
-		void CallBack(Thread* pCurThread) {}
+		void CallBack(SOCThread* pCurThread) {}
 
 	private:
-		class Worker : public Thread
+		class Worker : public SOCThread
 		{
 		public:
 			Worker(PFUNCTION pFunction)
-			: Thread(true)
+			: SOCThread(true)
 			, m_function(pFunction)
 			{}
 			virtual ~Worker() 
 			{}
 
-			void CallBack(Thread* pCurThread)
+			void CallBack(SOCThread* pCurThread)
 			{
 				m_function(pCurThread);
 			}

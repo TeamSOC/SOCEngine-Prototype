@@ -48,6 +48,39 @@ namespace Lock {
         pthread_mutex_unlock(&m_key);
 #endif
 	}
+    
+    namespace SpinLock {
+ 
+        DefSpinLock::DefSpinLock(unsigned int spincount)
+        : m_key(OS_SPINLOCK_INIT)
+        {}
+        
+        DefSpinLock::~DefSpinLock()
+        {
+        }
+        
+        void DefSpinLock::Enter(const char* pFileName, int line)
+        {
+#if defined(_WIN32) || defined(_WIN64)
+            // windows
+#else
+            OSSpinLockLock(&m_key);
+#endif
+        }
+        
+        void DefSpinLock::Leave()
+        {
+#if defined(_WIN32) || defined(_WIN64)
+            // windows
+#else
+            // if lock possible.. exactly this state is not locked.
+            if (OSSpinLockTry(&m_key))
+                return;
 
+            OSSpinLockUnlock(&m_key);
+#endif
+        }
+    }
 }
+    
 }

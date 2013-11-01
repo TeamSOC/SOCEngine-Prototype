@@ -54,7 +54,25 @@ namespace Lock {
 #endif
 	};
 
-	namespace Spin	{
+	namespace SpinLock
+    {
+        class DefSpinLock
+        {
+        public:
+            DefSpinLock(unsigned int spincount = 3000);
+            virtual ~DefSpinLock();
+
+            virtual void Enter(const char* pFileName, int line);
+            virtual void Leave();
+            
+        private:
+#if defined(_WIN32) || defined(_WIN64)
+            // m_key;
+#else
+            OSSpinLock m_key;
+#endif
+        };
+        
 //		class BackoffLock : public ILock
 	}
 
@@ -100,4 +118,5 @@ namespace Lock {
 }
 }
 
-#define TYPED_SCOPE_LOCK(lock) Lock::Helper::TypedScopedLock<Lock::CriticalSectionLock> __lock(lock, __FILE__, __LINE__)
+#define TYPED_SCOPE_LOCK(lock)  SOC_System::Lock::Helper::TypedScopedLock<SOC_System::Lock::CriticalSectionLock> __lock(lock, __FILE__, __LINE__)
+#define TYPED_SCOPE_SPINLOCK(lock)  SOC_System::Lock::Helper::TypedScopedLock<SOC_System::Lock::SpinLock::DefSpinLock> __lock(lock, __FILE__, __LINE__)

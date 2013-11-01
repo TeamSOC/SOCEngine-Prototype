@@ -10,27 +10,28 @@ namespace SOC_System {
 	namespace Thread {
 
 #ifndef TEST_STDCALL
+ #if defined(_WIN32) || defined(_WIN64)
+    #define TEST_STDCALL __stdcall
+    #define THREAD_LOCAL_VARIABLE __declspec(thread)
+    #define THREAD_LOCAL_INITSIGN_VARIABLE
+ #else
+    #define TEST_STDCALL
+    #define THREAD_LOCAL_VARIABLE __thread
+    #define THREAD_LOCAL_INITSIGN_VARIABLE __thread
 
-#if defined(_WIN32) || defined(_WIN64)
-#define TEST_STDCALL __stdcall
-#define THREAD_LOCAL_VARIABLE __declspec(thread)
-
-#else
-#define TEST_STDCALL
-#define THREAD_LOCAL_VARIABLE __thread
-
-#endif
+ #endif
 #endif
 		
-	class Thread
+	class SOCThread
 	{
+        
 	protected:
 		SOC_HANDLE		m_handle;
 		SOC_INT32		m_id;
 
 	public:
-		Thread(bool bCreate);
-		virtual ~Thread();
+		SOCThread(bool bCreate);
+		virtual ~SOCThread();
 
 		void	Resume();
 		void	Stop();
@@ -47,21 +48,21 @@ namespace SOC_System {
 
 		virtual void Clean() {}
 
-		static Thread* GetCurrent();
+		static SOCThread* GetCurrent();
 
 	private:
 		void Create();
 		void Attach();
-		static SOC_ULONG TEST_STDCALL HandleFunc(void* pData);
+		static void* TEST_STDCALL HandleFunc(void* pData);
 
 	protected:
-		virtual void CallBack(Thread* pCurThread) = 0;
+		virtual void CallBack(SOCThread* pCurThread) = 0;
 
 	private:
 		bool m_exitSign;
 		bool m_bExited;
 
-		static THREAD_LOCAL_VARIABLE Thread* g_pthreadInstance;
+		static THREAD_LOCAL_VARIABLE SOCThread* g_pthreadInstance;
 	};
 
 	SOC_INT32 GetCurrentThreadID();

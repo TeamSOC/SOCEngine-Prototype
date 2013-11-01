@@ -21,8 +21,8 @@ template <typename T, unsigned int MAX_SIZE>
 class MWSRQueue
 {
 private:
-	volatile unsigned long m_first;
-	volatile unsigned long m_size;
+	volatile LOCK_INT m_first;
+	volatile LOCK_INT m_size;
 	unsigned long m_last;
 	T*	m_pData[MAX_SIZE];
 
@@ -90,7 +90,7 @@ public:
 		}
 
 		m_last = (++m_last) & (MAX_SIZE -1);
-        
+  
 		InterlockedDecrement(&m_size);
 		
         return pData;
