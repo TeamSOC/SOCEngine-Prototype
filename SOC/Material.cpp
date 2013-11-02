@@ -79,6 +79,30 @@ namespace Rendering
 		}
 	}
 
+	Shader::Shader* Material::FindShader( const char *name )
+	{
+		std::vector<Shader::Shader *>::iterator iter;
+		for(iter = shaders.begin(); iter != shaders.end(); ++iter)
+		{
+			if( strcmp(name, (*iter)->GetName()) == 0 )
+				return *iter;
+		}
+
+		return nullptr;
+	}
+
+	bool Material::HasShader(Shader::Shader *shader)
+	{
+		std::vector<Shader::Shader *>::iterator iter;
+		for(iter = shaders.begin(); iter != shaders.end(); ++iter)
+		{
+			if( (*iter) == shader )
+				return true;
+		}
+
+		return false;
+	}
+
 	void Material::DeleteAllShader( )
 	{
 		shaders.clear();

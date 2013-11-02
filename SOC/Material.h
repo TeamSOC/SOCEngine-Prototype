@@ -35,6 +35,9 @@ namespace Rendering
 		void DeleteShader( Shader::Shader *shader );
 		void DeleteAllShader();
 
+		Shader::Shader* FindShader( const char *name );
+		bool HasShader(Shader::Shader *shader);
+
 	public:
 		template<typename Type>
 		void SetVariable(int idx, char *parameter, Type value)

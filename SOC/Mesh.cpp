@@ -51,12 +51,15 @@ namespace Rendering
 			{
 				material = new Material(key.data());
 				material->elements = materialData;
-
-
-
-				Device::Graphics::GraphicsForm *gp = Device::DeviceDirector::GetInstance()->GetGraphics();
-
 			}
+
+			Shader::Shader *shader;
+			scene->GetShaderManager()->LoadShaderFromFile("Basic", &shader, false);
+
+			if(material->FindShader(shader->GetName()) == nullptr)
+				material->AddShader(shader);
+
+			renderer->AddMaterial(material, false);
 
 			return true;
 		}

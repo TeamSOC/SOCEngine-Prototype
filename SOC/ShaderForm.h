@@ -20,7 +20,7 @@ namespace Rendering
 
 		class ShaderForm
 		{
-		private:
+		protected:
 			std::string name;
 
 		protected:
