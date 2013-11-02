@@ -55,7 +55,10 @@ namespace Rendering
 
 	public:
 		static void SceneUpdate(float dt, std::vector<Object*> *sceneObjects);
-		static void SceneRender(Camera *cam, std::vector<Object*> *sceneObjects, Light::LightManager* sceneLights);
+		static void SceneRender(Camera *cam, 
+			std::vector<Object*>::iterator &objectBegin,
+			std::vector<Object*>::iterator &objectEnd,
+			Light::LightManager* sceneLights);
 
 	public:
 		void SetViewPort(Common::Rect<float> rect);

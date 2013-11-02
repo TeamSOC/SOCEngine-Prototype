@@ -8,6 +8,8 @@ namespace Rendering
 {
 	struct MaterialElements
 	{
+		std::string name;
+
 		Color ambientColor;
 		Color diffuseColor;
 		Color specularColor;
@@ -27,7 +29,7 @@ namespace Rendering
 			emissive = Color::black();
 		}
 
-		MaterialElements(Color ambientColor, Color diffuseColor, Color specularColor, float reflectionFactor, float transparentFactor = 1.0f)
+		MaterialElements(Color ambientColor, Color diffuseColor, Color specularColor, float reflectionFactor, float transparentFactor = 1.0f, const char *name = nullptr)
 		{
 			this->ambientColor = ambientColor;
 			this->diffuseColor = diffuseColor;
@@ -36,9 +38,12 @@ namespace Rendering
 
 			this->transparentFactor = transparentFactor;
 			this->reflectionFactor = reflectionFactor;
+
+			if(name)
+				this->name = name;
 		}
 
-		MaterialElements(Color ambientColor, Color diffuseColor, Color specularColor, Color emissive, float reflectionFactor, float transparentFactor = 1.0f)
+		MaterialElements(Color ambientColor, Color diffuseColor, Color specularColor, Color emissive, float reflectionFactor, float transparentFactor = 1.0f, const char *name = nullptr)
 		{
 			this->ambientColor = ambientColor;
 			this->diffuseColor = diffuseColor;
@@ -47,6 +52,9 @@ namespace Rendering
 
 			this->transparentFactor = transparentFactor;
 			this->reflectionFactor = reflectionFactor;
+
+			if(name)
+				this->name = name;
 		}
 	};
 

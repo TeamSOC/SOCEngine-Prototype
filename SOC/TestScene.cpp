@@ -19,7 +19,7 @@ void TestScene::OnInitialize()
 {
 	camObject = new Object;
 
-	AddObject(camObject);
+	rootObjects->AddObject(camObject);
 
 	Rendering::Camera *camera = camObject->AddComponent<Camera>();	
 
@@ -34,7 +34,7 @@ void TestScene::OnInitialize()
 	success = importer->LoadScene("carl.fbx");
 
 	meshObject = importer->BuildObject(nullptr);
-	AddObject(meshObject);
+	rootObjects->AddObject(meshObject);
 
 	Rendering::Mesh::Mesh *mesh = meshObject->GetObject(1)->GetComponent<Mesh::Mesh>();
 

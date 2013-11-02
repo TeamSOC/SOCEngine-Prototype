@@ -109,7 +109,8 @@ namespace Rendering
 			(*iter)->Update(dt);
 	}
 
-	void Camera::SceneRender(Camera *cam, std::vector<Object*> *sceneObjects, Light::LightManager* sceneLights)
+	void Camera::SceneRender(Camera *cam, std::vector<Object*>::iterator& objectBegin,
+			std::vector<Object*>::iterator& objectEnd, Light::LightManager* sceneLights)
 	{
 		SOC_Matrix projMat, viewMat, viewProjMat;
 		cam->GetProjectionMatrix(&projMat);
@@ -126,7 +127,7 @@ namespace Rendering
 		sceneLights->Intersect(cam->frustum, &lights);
 		//월드 상의 빛에서 절두체에 겹치는거 모두 찾음.
 
-		for(vector<Object*>::iterator iter = sceneObjects->begin(); iter != sceneObjects->end(); ++iter)
+		for(vector<Object*>::iterator iter = objectBegin; iter != objectEnd; ++iter)
 		{
 			(*iter)->Culling(cam->frustum);
 			(*iter)->Render(&lights, &viewMat, &projMat, &viewProjMat);

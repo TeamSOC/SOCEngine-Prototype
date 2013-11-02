@@ -8,7 +8,7 @@ using namespace std;
 
 //static Scene* nowScene = nullptr;
 
-Scene::Scene(void) : BaseScene(), Container()
+Scene::Scene(void) : BaseScene()
 {
 	destroyMgr = true;
 }
@@ -20,11 +20,13 @@ Scene::~Scene(void)
 
 void Scene::Initialize()
 {
-	lightMgr		= new LightManager();
-	textureMgr		= new TextureManager();
-	shaderMgr		= new ShaderManager();
+	lightMgr		= new LightManager;
+	textureMgr		= new TextureManager;
 	graphics		= Device::DeviceDirector::GetInstance()->GetGraphics();
-	cameraMgr		= new CameraManager();
+	shaderMgr		= new ShaderManager(graphics);
+	cameraMgr		= new CameraManager;
+	materialMgr		= new MaterialManager;
+	rootObjects		= new Container<Object>;
 
 	NextState();
 	OnInitialize();
@@ -33,8 +35,9 @@ void Scene::Initialize()
 void Scene::Update(float dt)
 {
 	OnUpdate(dt);
+	vector<Object*>::iterator end = rootObjects->GetEndIter();
 
-	for(vector<Object*>::iterator iter = objects.begin(); iter != objects.end(); ++iter)
+	for(vector<Object*>::iterator iter = rootObjects->GetBeginIter(); iter != end; ++iter)
 		(*iter)->Update(dt);
 }
 
@@ -52,8 +55,8 @@ void Scene::Render()
 		//for(vector<Camera*>::iterator iter = cameraMgr->GetIteratorBegin(); iter != cameraMgr->GetIteratorEnd(); ++iter)
 		//	(*iter)->Run(dt);
 		
-		Camera::SceneRender(mainCam, &objects, lightMgr);
-		//일단은, 이렇게 처리하고 추후에 각 카메라마다 RTT 세팅해준뒤, 그걸 처리하도록 해야할듯.
+		Camera::SceneRender(mainCam, rootObjects->GetBeginIter(), rootObjects->GetEndIter(), lightMgr);
+		//일단은, 이렇게 처리하고 추후에 각 카메라마다 Render to texture 세팅해준뒤, 그걸 처리하도록 해야할듯.
 		//추후 조정이 필요함.
 
 		OnRenderPost();
@@ -70,11 +73,13 @@ void Scene::Destroy()
 	lightMgr->DeleteAll(true);
 	shaderMgr->DeleteAll();
 	textureMgr->DeleteAll();
+	materialMgr->DeleteAll();
 
 	Utility::SAFE_DELETE(lightMgr);
 	Utility::SAFE_DELETE(shaderMgr);
 	Utility::SAFE_DELETE(textureMgr);
 	Utility::SAFE_DELETE(cameraMgr);
+	Utility::SAFE_DELETE(materialMgr);
 
 	OnDestroy();
 }
@@ -94,12 +99,12 @@ ShaderManager* Scene::GetShaderManager()
 	return shaderMgr;
 }
 
-vector<Object*>* Scene::GetRootObjects()
-{
-	return &objects;
-}
-
 CameraManager* Scene::GetCameraManager()
 {
 	return cameraMgr;
+}
+
+MaterialManager* Scene::GetMaterialManager()
+{
+	return materialMgr;
 }

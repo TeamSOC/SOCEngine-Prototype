@@ -145,6 +145,16 @@ public:
 	}
 
 public:
+	typename std::vector<Object*>::iterator GetBeginIter()
+	{
+		return objects.begin();
+	}
+
+	typename std::vector<Object*>::iterator GetEndIter()
+	{
+		return objects.end();
+	}
+
 	int GetObjectsCount()
 	{
 		return objects.size();
@@ -154,4 +164,8 @@ public:
 	{
 		return *(objects.begin()+index); 
 	}
+
+
+
+
 };

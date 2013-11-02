@@ -1,7 +1,6 @@
 #pragma once
 
 #include "SOCHashMap.h"
-#include "SingleTon.h"
 #include "Texture.h"
 
 namespace Rendering
@@ -26,7 +25,7 @@ namespace Rendering
 
 		public:
 			void Delete(std::string path, bool inResourceFolder = true);
-			void Delete(Texture::TextureForm* texture, bool remove);
+			void Delete(Texture::TextureForm* texture, bool dealloc);
 
 			void DeleteAll();
 		};

@@ -4,10 +4,13 @@
 #include "Container.h"
 #include "BaseScene.h"
 
-class Scene : public BaseScene, public Container<Rendering::Object>
+class Scene : public BaseScene
 {
 public:
 	bool destroyMgr;
+
+protected:
+	Container<Rendering::Object> *rootObjects;
 
 protected:
 	Device::Graphics::GraphicsForm			*graphics;
@@ -15,6 +18,7 @@ protected:
 	Rendering::Texture::TextureManager		*textureMgr;
 	Rendering::Shader::ShaderManager		*shaderMgr;
 	Rendering::CameraManager				*cameraMgr;
+	Rendering::MaterialManager				*materialMgr;
 
 public:
 	Scene(void);
@@ -37,6 +41,6 @@ public:
 	Rendering::Light::LightManager* GetLightManager();
 	Rendering::Texture::TextureManager* GetTextureManager();
 	Rendering::Shader::ShaderManager* GetShaderManager();
-	std::vector<Rendering::Object*>* GetRootObjects();
 	Rendering::CameraManager* GetCameraManager();
+	Rendering::MaterialManager* GetMaterialManager();
 };

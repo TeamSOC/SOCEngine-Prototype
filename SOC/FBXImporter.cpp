@@ -335,6 +335,10 @@ namespace Rendering
 		void FBXImporter::ParseMaterial(fbxsdk_2014_1::FbxMesh *fbxMesh, MaterialElements *outMaterialElements, MaterialTextures *outTextures)
 		{
 			FbxNode *node = fbxMesh->GetNode();
+
+			if(node->GetName())
+				outMaterialElements->name = node->GetName();
+
 			int materialCount = node->GetMaterialCount();
 			for(int materialIdx = 0; materialIdx < materialCount; ++materialIdx)
 			{
@@ -368,6 +372,8 @@ namespace Rendering
 				fbxProperty = fbxMaterial->FindProperty(FbxSurfaceMaterial::sTransparentColor);
 				ParseTexture(fbxProperty, &outTextures->transparentColor);
 			}
+
+
 		}
 
 		void FBXImporter::BuildskinningMesh(FbxMesh *fbxMesh, std::vector<int> &boneIndices)

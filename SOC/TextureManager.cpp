@@ -54,7 +54,7 @@ namespace Rendering
 			if(inResourceFolder)
 				path.erase(0, resourceDirLen);
 
-			hash_map<string, Texture::TextureForm*>::iterator iter = hash.find(path);
+			SOCHashMap<string, Texture::TextureForm*>::iterator iter = hash.find(path);
 
 			if( iter == hash.end() )
 				return;
@@ -66,7 +66,7 @@ namespace Rendering
 
 		void TextureManager::Delete(Texture::TextureForm* texture, bool remove)
 		{
-			hash_map<string, Texture::TextureForm*>::iterator iter;
+			SOCHashMap<string, Texture::TextureForm*>::iterator iter;
 			for(iter = hash.begin(); iter != hash.end(); ++iter)
 			{
 				if( (*iter).second == texture )
@@ -82,7 +82,7 @@ namespace Rendering
 
 		void TextureManager::DeleteAll()
 		{
-			for(hash_map<string, Texture::TextureForm*>::iterator iter = hash.begin();iter != hash.end(); ++iter)
+			for(SOCHashMap<string, Texture::TextureForm*>::iterator iter = hash.begin();iter != hash.end(); ++iter)
 				Utility::SAFE_DELETE(iter->second);
 
 			hash.clear();

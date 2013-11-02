@@ -1,6 +1,8 @@
 #include "Mesh.h"
 #include "Transform.h"
 
+#include "Scene.h"
+
 namespace Rendering
 {
 	namespace Mesh
@@ -30,16 +32,31 @@ namespace Rendering
 
 		bool Mesh::Create(MeshFilterElements &vertexData, MaterialElements &materialData, MaterialTextures &textureData)
 		{
-			{
-				this->filterElements = vertexData;
-				this->materialElements = materialData;
-				this->textureElements = textureData;
-			}
+			this->filterElements = vertexData;
+			this->materialElements = materialData;
+			this->textureElements = textureData;
 
 			filter->Create(vertexData.vertices, vertexData.normals, vertexData.tangents,
 				vertexData.binomals, vertexData.texcoords, vertexData.colors,
 				vertexData.numOfVertex, vertexData.numOfTriangle, vertexData.indices,
 				SOC_TRIANGLE_LIST, vertexData.isDynamic, false);
+
+			Scene *scene = dynamic_cast<Scene*>(Device::DeviceDirector::GetInstance()->GetScene());
+			MaterialManager *mgr = scene->GetMaterialManager();
+
+			string &key = materialData.name.empty() ? owner->name : materialData.name;
+			Material *material = mgr->Find(key);
+
+			if(material == nullptr)
+			{
+				material = new Material(key.data());
+				material->elements = materialData;
+
+
+
+				Device::Graphics::GraphicsForm *gp = Device::DeviceDirector::GetInstance()->GetGraphics();
+
+			}
 
 			return true;
 		}

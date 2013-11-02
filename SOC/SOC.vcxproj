@@ -95,6 +95,7 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Cone.cpp" />
     <ClCompile Include="DeviceDirector.cpp" />
+    <ClCompile Include="Dictionary.cpp" />
     <ClCompile Include="DX.cpp" />
     <ClCompile Include="FBXImporter.cpp" />
     <ClCompile Include="GraphicsForm.cpp" />
@@ -108,6 +109,7 @@
     <ClCompile Include="LightParameters.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
+    <ClCompile Include="MaterialManager.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshFilter.cpp" />
@@ -151,6 +153,7 @@
     <ClInclude Include="Container.h" />
     <ClInclude Include="Device.h" />
     <ClInclude Include="DeviceDirector.h" />
+    <ClInclude Include="Dictionary.h" />
     <ClInclude Include="DX.h" />
     <ClInclude Include="FBXImporter.h" />
     <ClInclude Include="GraphicsForm.h" />
@@ -166,6 +169,7 @@
     <ClInclude Include="LightParameters.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MaterialElements.h" />
+    <ClInclude Include="MaterialManager.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshFilter.h" />

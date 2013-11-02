@@ -239,6 +239,12 @@
     <Filter Include="Source\TestScene">
       <UniqueIdentifier>{2e15fc3d-0814-4323-b362-bfe42a903299}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Rendering\Material\Manager">
+      <UniqueIdentifier>{dd5ac7e3-9689-4324-a845-7c4770ca0e13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Common\Dictionary">
+      <UniqueIdentifier>{08ccc148-db64-4fbd-8853-b11ae3e9f27a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AABB.cpp">
@@ -396,6 +402,12 @@
     </ClCompile>
     <ClCompile Include="TestScene.cpp">
       <Filter>Source\TestScene</Filter>
+    </ClCompile>
+    <ClCompile Include="MaterialManager.cpp">
+      <Filter>Engine\Rendering\Material\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Dictionary.cpp">
+      <Filter>Engine\Common\Dictionary</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -611,6 +623,12 @@
     </ClInclude>
     <ClInclude Include="TestScene.h">
       <Filter>Source\TestScene</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialManager.h">
+      <Filter>Engine\Rendering\Material\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Dictionary.h">
+      <Filter>Engine\Common\Dictionary</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

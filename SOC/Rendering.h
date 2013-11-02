@@ -7,3 +7,4 @@
 #include "Light.h"
 #include "Mesh.h"
 #include "Object.h"
+#include "MaterialManager.h"
