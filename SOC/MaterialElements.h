@@ -6,6 +6,7 @@
 
 namespace Rendering
 {
+
 	struct MaterialElements
 	{
 		std::string name;
@@ -59,7 +60,7 @@ namespace Rendering
 	};
 
 
-	struct MaterialTextures
+	struct MeshTextureNames
 	{
 		std::string diffuse;
 		std::string emissive;

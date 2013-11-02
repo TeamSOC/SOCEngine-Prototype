@@ -1,12 +1,13 @@
-#include "MeshFilterElements.h"
+#include "VBElements.h"
 #include "Utility.h"
 
 using namespace Utility;
 
 namespace Rendering
 {
-
-		MeshFilterElements::MeshFilterElements(void)
+	namespace Mesh
+	{
+		VBElements::VBElements(void)
 		{
 			vertices = nullptr;
 			normals = nullptr;
@@ -28,12 +29,10 @@ namespace Rendering
 
 			skinIndices.first = 0;
 			skinIndices.second = nullptr;
-
-			boneIndices = nullptr;
 		}
 
 
-		MeshFilterElements::~MeshFilterElements(void)
+		VBElements::~VBElements(void)
 		{
 			SAFE_DELETE(vertices);
 			SAFE_DELETE(normals);
@@ -51,12 +50,6 @@ namespace Rendering
 			SAFE_DELETE(colors);
 			SAFE_ARRARY_DELETE(indices.second);
 			SAFE_ARRARY_DELETE(skinIndices.second);
-
-			if(boneIndices)
-			{
-				for(int i=0; i<boneIndices->size(); ++i)
-					SAFE_DELETE((*boneIndices)[i]);
-			}
-			SAFE_DELETE(boneIndices);
 		}
+	}
 }

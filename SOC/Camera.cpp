@@ -76,7 +76,8 @@ namespace Rendering
 
 	void Camera::GetPerspectiveMatrix(SOC_Matrix *outMatrix, float farGap)
 	{
-		SOCMatrixPerspectiveFovLH(outMatrix, FOV, aspect, clippingNear, clippingFar + farGap);
+		float radian = FOV * SOCM_PI / 180.0f;
+		SOCMatrixPerspectiveFovLH(outMatrix, radian, aspect, clippingNear, clippingFar + farGap);
 	}
 	void Camera::GetOrthoGraphicMatrix(SOC_Matrix *outMatrix)
 	{
@@ -156,7 +157,7 @@ namespace Rendering
 	{
 		SOC_Matrix proj;
 
-		ownerTransform->GetMatrix(outMatrix); // view Matrix
+		ownerTransform->GetWorldMatrix(outMatrix); // view Matrix
 		GetProjectionMatrix(&proj, farGap);
 
 		SOCMatrixMultiply(outMatrix, outMatrix, &proj);

@@ -30,9 +30,8 @@ namespace Rendering
 			Utility::SAFE_DELETE(renderer);
 		}
 
-		bool Mesh::Create(MeshFilterElements &vertexData, MaterialElements &materialData, MaterialTextures &textureData)
+		bool Mesh::Create(VBElements &vertexData, MaterialElements &materialData, MeshTextureNames &textureData)
 		{
-			this->filterElements = vertexData;
 			this->materialElements = materialData;
 			this->textureElements = textureData;
 
@@ -54,12 +53,13 @@ namespace Rendering
 			}
 
 			Shader::Shader *shader;
-			scene->GetShaderManager()->LoadShaderFromFile("Basic", &shader, false);
+			if(scene->GetShaderManager()->LoadShaderFromFile("Basic", &shader, false))
+			{
+				if(material->FindShader(shader->GetName()) == nullptr)
+					material->AddShader(shader);
 
-			if(material->FindShader(shader->GetName()) == nullptr)
-				material->AddShader(shader);
-
-			renderer->AddMaterial(material, false);
+				renderer->AddMaterial(material, false);
+			}
 
 			return true;
 		}

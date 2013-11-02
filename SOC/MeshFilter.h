@@ -6,7 +6,7 @@
 #include "Utility.h"
 #include "Math.h"
 #include "Buffer.h"
-#include "MeshFilterElements.h"
+#include "VBElements.h"
 
 namespace Rendering
 {
@@ -73,7 +73,7 @@ namespace Rendering
 			}
 
 		public:
-			bool Create(MeshFilterElements &option, bool alloc);
+			bool Create(VBElements &option, bool alloc);
 			bool Create(SOC_Vector3 *vertices, SOC_Vector3 *normals, SOC_Vector3 *tangents,
 						SOC_Vector3 *binomals, std::pair<count, SOC_Vector2**> texcoords, Color *colors, 
 						int numOfVertex, int numOfTriangle, std::pair<count, SOC_word*> indices, SOC_TRIANGLE type, bool isDynamic, bool alloc);

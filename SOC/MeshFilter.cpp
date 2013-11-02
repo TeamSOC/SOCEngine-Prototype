@@ -39,7 +39,7 @@ namespace Rendering
 			if(colors)			vertexBufferSize += sizeof(SOC_Vector4);
 		}
 
-		bool MeshFilter::Create(MeshFilterElements &option, bool alloc)
+		bool MeshFilter::Create(VBElements &option, bool alloc)
 		{
 			return Create(
 				option.vertices, option.normals, 

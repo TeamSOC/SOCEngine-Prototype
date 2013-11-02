@@ -133,6 +133,16 @@ static SOC_Vector3 SOCEulerNormalize(SOC_Vector3 eulerAngels)
 	return SOC_Vector3(eulerAngels.x - x * 360, eulerAngels.y - y * 360, eulerAngels.z - z * 360);
 }
 
+static float SOCDegreeToRadian(float degree)
+{
+	return degree * SOCM_PI / 180.0f;
+}
+
+static float SOCRadianToDegree(float radian)
+{
+	return radian * 180.0f / SOCM_PI;
+}
+
 #elif defined(__APPLE__) || defined(_USE_GL_DEFINES)
 
 struct SOC_Vector2

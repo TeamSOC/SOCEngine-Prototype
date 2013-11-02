@@ -14,9 +14,6 @@
     <Filter Include="Engine\Common\LayerManager">
       <UniqueIdentifier>{7fc00bf2-f83a-403f-9139-8e71b139bedd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Common\Math">
-      <UniqueIdentifier>{7b090837-1844-49a7-9fe6-09fce6c13e7b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Common\Rect">
       <UniqueIdentifier>{623ea997-a949-47d8-88ca-32310088aa32}</UniqueIdentifier>
     </Filter>
@@ -197,9 +194,6 @@
     <Filter Include="Engine\Rendering\Math">
       <UniqueIdentifier>{49e7df99-1206-42a2-90ad-efcd4e81cbb6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Common\Container">
-      <UniqueIdentifier>{b716aaad-0918-4bc0-8342-889273fe9ee2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Scene\Base">
       <UniqueIdentifier>{5a0219a5-2496-4dc8-9aa4-5271b95f8217}</UniqueIdentifier>
     </Filter>
@@ -224,17 +218,8 @@
     <Filter Include="Engine\Common\Timer">
       <UniqueIdentifier>{006beb02-4c25-4ad8-affc-b95c387b51a4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Rendering\Bone">
-      <UniqueIdentifier>{3305679d-91e2-4625-b1b2-603337ad5871}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Rendering\Mesh\Filter\FilterElements">
-      <UniqueIdentifier>{df655b02-fa85-48b3-975b-68fd4df14b3c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Rendering\FBXImporter">
       <UniqueIdentifier>{51c56a7f-8895-4222-8dae-5a15d6cc5c5b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Rendering\Skeleton">
-      <UniqueIdentifier>{5af621c1-f510-4c26-b9d1-f04195379f32}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\TestScene">
       <UniqueIdentifier>{2e15fc3d-0814-4323-b362-bfe42a903299}</UniqueIdentifier>
@@ -242,8 +227,23 @@
     <Filter Include="Engine\Rendering\Material\Manager">
       <UniqueIdentifier>{dd5ac7e3-9689-4324-a845-7c4770ca0e13}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Common\Dictionary">
+    <Filter Include="Engine\Common\Data Struct">
+      <UniqueIdentifier>{de32baea-2b4e-4b7b-91d3-9f4913a26bfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Common\Data Struct\Container">
+      <UniqueIdentifier>{b716aaad-0918-4bc0-8342-889273fe9ee2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Common\Data Struct\Dictionary">
       <UniqueIdentifier>{08ccc148-db64-4fbd-8853-b11ae3e9f27a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Common\Data Struct\Map">
+      <UniqueIdentifier>{721928de-0afb-4759-94d2-a893c33ffee9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Mesh\Filter\VBElements">
+      <UniqueIdentifier>{df655b02-fa85-48b3-975b-68fd4df14b3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Mesh\Filter\VBElements\Manager">
+      <UniqueIdentifier>{e69f271b-a09b-47ab-bc69-592615d2b9fc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -255,9 +255,6 @@
     </ClCompile>
     <ClCompile Include="Ray.cpp">
       <Filter>Engine\Common\Intersection\Ray</Filter>
-    </ClCompile>
-    <ClCompile Include="Math.cpp">
-      <Filter>Engine\Common\Math</Filter>
     </ClCompile>
     <ClCompile Include="Sphere.cpp">
       <Filter>Engine\Common\Intersection\Sphere</Filter>
@@ -388,15 +385,6 @@
     <ClCompile Include="Timer.cpp">
       <Filter>Engine\Common\Timer</Filter>
     </ClCompile>
-    <ClCompile Include="Bone.cpp">
-      <Filter>Engine\Rendering\Bone</Filter>
-    </ClCompile>
-    <ClCompile Include="Skeleton.cpp">
-      <Filter>Engine\Rendering\Skeleton</Filter>
-    </ClCompile>
-    <ClCompile Include="MeshFilterElements.cpp">
-      <Filter>Engine\Rendering\Mesh\Filter\FilterElements</Filter>
-    </ClCompile>
     <ClCompile Include="FBXImporter.cpp">
       <Filter>Engine\Rendering\FBXImporter</Filter>
     </ClCompile>
@@ -407,7 +395,16 @@
       <Filter>Engine\Rendering\Material\Manager</Filter>
     </ClCompile>
     <ClCompile Include="Dictionary.cpp">
-      <Filter>Engine\Common\Dictionary</Filter>
+      <Filter>Engine\Common\Data Struct\Dictionary</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Engine\Common\Data Struct\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="VBElements.cpp">
+      <Filter>Engine\Rendering\Mesh\Filter\VBElements</Filter>
+    </ClCompile>
+    <ClCompile Include="VBElementsManager.cpp">
+      <Filter>Engine\Rendering\Mesh\Filter\VBElements\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -422,9 +419,6 @@
     </ClInclude>
     <ClInclude Include="Rect.h">
       <Filter>Engine\Common\Rect</Filter>
-    </ClInclude>
-    <ClInclude Include="Math.h">
-      <Filter>Engine\Common\Math</Filter>
     </ClInclude>
     <ClInclude Include="Sphere.h">
       <Filter>Engine\Common\Intersection\Sphere</Filter>
@@ -591,11 +585,8 @@
     <ClInclude Include="Component.h">
       <Filter>Engine\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Object.hpp">
-      <Filter>Engine\Rendering\Object</Filter>
-    </ClInclude>
     <ClInclude Include="Container.h">
-      <Filter>Engine\Common\Container</Filter>
+      <Filter>Engine\Common\Data Struct\Container</Filter>
     </ClInclude>
     <ClInclude Include="BasicParameterNames.h">
       <Filter>Engine\Rendering\Shader\Shader\Parameters</Filter>
@@ -603,20 +594,11 @@
     <ClInclude Include="Timer.h">
       <Filter>Engine\Common\Timer</Filter>
     </ClInclude>
-    <ClInclude Include="Bone.h">
-      <Filter>Engine\Rendering\Bone</Filter>
-    </ClInclude>
     <ClInclude Include="MaterialElements.h">
       <Filter>Engine\Rendering\Material</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Engine\Rendering\Texture</Filter>
-    </ClInclude>
-    <ClInclude Include="Skeleton.h">
-      <Filter>Engine\Rendering\Skeleton</Filter>
-    </ClInclude>
-    <ClInclude Include="MeshFilterElements.h">
-      <Filter>Engine\Rendering\Mesh\Filter\FilterElements</Filter>
     </ClInclude>
     <ClInclude Include="FBXImporter.h">
       <Filter>Engine\Rendering\FBXImporter</Filter>
@@ -628,7 +610,16 @@
       <Filter>Engine\Rendering\Material\Manager</Filter>
     </ClInclude>
     <ClInclude Include="Dictionary.h">
-      <Filter>Engine\Common\Dictionary</Filter>
+      <Filter>Engine\Common\Data Struct\Dictionary</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Engine\Common\Data Struct\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="VBElements.h">
+      <Filter>Engine\Rendering\Mesh\Filter\VBElements</Filter>
+    </ClInclude>
+    <ClInclude Include="VBElementsManager.h">
+      <Filter>Engine\Rendering\Mesh\Filter\VBElements\Manager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

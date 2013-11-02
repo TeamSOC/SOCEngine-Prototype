@@ -1,6 +1,7 @@
 #include "FBXImporter.h"
 
 using namespace fbxsdk_2014_1;
+
 #pragma warning( disable : 4244 )
 
 namespace Rendering
@@ -123,15 +124,18 @@ namespace Rendering
 			FbxMesh *fbxMesh = node->GetMesh();
 			Mesh::Mesh *mesh = obj->AddComponent<Mesh::Mesh>();
 
-			MeshFilterElements fe;
-			MaterialElements me;
-			MaterialTextures te;
+			{
+				Mesh::VBElements fe;
+				MaterialElements me;
+				MeshTextureNames te;
 
-			BuildMesh(fbxMesh, &fe);
-			ParseMaterial(fbxMesh, &me, &te);
+				BuildMesh(fbxMesh, &fe);
+				ParseMaterial(fbxMesh, &me, &te);
 
-			mesh->Create(fe, me, te);
-			SetFbxTransform(obj, node);
+				mesh->Create(fe, me, te);
+				SetFbxTransform(obj, node);
+			}
+
 		}
 
 		void FBXImporter::SetFbxTransform(Object *obj, FbxNode *node)
@@ -189,7 +193,7 @@ namespace Rendering
 			return obj;
 		}
 
-		bool FBXImporter::BuildMesh(FbxMesh *fbxMesh, MeshFilterElements *outMeshFilterElements)
+		bool FBXImporter::BuildMesh(FbxMesh *fbxMesh, Mesh::VBElements *outVBElements)
 		{
 			if(fbxMesh == nullptr)
 				return false;
@@ -207,8 +211,8 @@ namespace Rendering
 
 			//if(isSkinned)
 			//{
-			//	outMeshFilterElements->skinIndices.first = skinIndices.size();
-			//	outMeshFilterElements->skinIndices.second = new int[skinIndices.size()];
+			//	outVBElements->skinIndices.first = skinIndices.size();
+			//	outVBElements->skinIndices.second = new int[skinIndices.size()];
 			//}
 
 			int indexCount =  0;
@@ -224,45 +228,45 @@ namespace Rendering
 			}
 
 			int numOfVertex = fbxMesh->GetControlPointsCount();
-			outMeshFilterElements->indices.first = indexCount;
-			outMeshFilterElements->indices.second = new SOC_word[indexCount];
-			outMeshFilterElements->numOfVertex = numOfVertex;
-			outMeshFilterElements->vertices = new SOC_Vector3[outMeshFilterElements->numOfVertex];
-			outMeshFilterElements->numOfTriangle = indexCount / 3;
-			outMeshFilterElements->isDynamic = false;
+			outVBElements->indices.first = indexCount;
+			outVBElements->indices.second = new SOC_word[indexCount];
+			outVBElements->numOfVertex = numOfVertex;
+			outVBElements->vertices = new SOC_Vector3[outVBElements->numOfVertex];
+			outVBElements->numOfTriangle = indexCount / 3;
+			outVBElements->isDynamic = false;
 
 			if(fbxMesh->GetLayer(0)->GetNormals() != nullptr)
-				outMeshFilterElements->normals = new SOC_Vector3[numOfVertex];
+				outVBElements->normals = new SOC_Vector3[numOfVertex];
 
 			if(fbxMesh->GetLayer(0)->GetVertexColors() != nullptr)
-				outMeshFilterElements->colors = new Color[numOfVertex];
+				outVBElements->colors = new Color[numOfVertex];
 
 			if(fbxMesh->GetLayer(0)->GetBinormals() != nullptr)
-				outMeshFilterElements->binomals = new SOC_Vector3[numOfVertex];
+				outVBElements->binomals = new SOC_Vector3[numOfVertex];
 
 			if(fbxMesh->GetLayer(0)->GetTangents() != nullptr)
-				outMeshFilterElements->tangents = new SOC_Vector3[numOfVertex];
+				outVBElements->tangents = new SOC_Vector3[numOfVertex];
 
 			if(fbxMesh->GetLayerCount() > 0)
 			{
-				outMeshFilterElements->texcoords.second = new SOC_Vector2*[layerCount];
+				outVBElements->texcoords.second = new SOC_Vector2*[layerCount];
 
 				for(int i=0; i<layerCount; ++i)
-					outMeshFilterElements->texcoords.second[i] = new SOC_Vector2[numOfVertex];
+					outVBElements->texcoords.second[i] = new SOC_Vector2[numOfVertex];
 
-				outMeshFilterElements->texcoords.first = fbxMesh->GetLayerCount();
+				outVBElements->texcoords.first = fbxMesh->GetLayerCount();
 			}
 
-			outMeshFilterElements->type = SOC_TRIANGLE::SOC_TRIANGLE_LIST;
+			outVBElements->type = SOC_TRIANGLE::SOC_TRIANGLE_LIST;
 			//½ºÆ®¸³ ¤Ç
 
-			SOC_word *indices = outMeshFilterElements->indices.second;
-			SOC_Vector3 *vertices = outMeshFilterElements->vertices;
-			SOC_Vector3 *normals = outMeshFilterElements->normals;
-			SOC_Vector3 *binormals = outMeshFilterElements->binomals;
-			SOC_Vector3 *tangents = outMeshFilterElements->tangents;
-			Color *colors = outMeshFilterElements->colors;
-			SOC_Vector2 **texcoords = outMeshFilterElements->texcoords.second;
+			SOC_word *indices = outVBElements->indices.second;
+			SOC_Vector3 *vertices = outVBElements->vertices;
+			SOC_Vector3 *normals = outVBElements->normals;
+			SOC_Vector3 *binormals = outVBElements->binomals;
+			SOC_Vector3 *tangents = outVBElements->tangents;
+			Color *colors = outVBElements->colors;
+			SOC_Vector2 **texcoords = outVBElements->texcoords.second;
 
 			int triangleAry[3] = { 0, 1, 2 };
 			int rectAry[6] = { 0, 1, 2, 0, 2, 3 };
@@ -332,12 +336,11 @@ namespace Rendering
 			return true;
 		}
 
-		void FBXImporter::ParseMaterial(fbxsdk_2014_1::FbxMesh *fbxMesh, MaterialElements *outMaterialElements, MaterialTextures *outTextures)
+		void FBXImporter::ParseMaterial(fbxsdk_2014_1::FbxMesh *fbxMesh, MaterialElements *outMaterialElements, MeshTextureNames *outTextureNames)
 		{
 			FbxNode *node = fbxMesh->GetNode();
 
-			if(node->GetName())
-				outMaterialElements->name = node->GetName();
+			outMaterialElements->name = node->GetName();
 
 			int materialCount = node->GetMaterialCount();
 			for(int materialIdx = 0; materialIdx < materialCount; ++materialIdx)
@@ -352,25 +355,25 @@ namespace Rendering
 				FbxProperty fbxProperty;
 
 				fbxProperty = fbxMaterial->FindProperty(FbxSurfaceMaterial::sDiffuse);
-				ParseTexture(fbxProperty, &outTextures->diffuse);
+				ParseTexture(fbxProperty, &outTextureNames->diffuse);
 
 				fbxProperty = fbxMaterial->FindProperty(FbxSurfaceMaterial::sEmissive);
-				ParseTexture(fbxProperty, &outTextures->emissive);
+				ParseTexture(fbxProperty, &outTextureNames->emissive);
 
 				fbxProperty = fbxMaterial->FindProperty(FbxSurfaceMaterial::sSpecular);
-				ParseTexture(fbxProperty, &outTextures->specular);
+				ParseTexture(fbxProperty, &outTextureNames->specular);
 
 				fbxProperty = fbxMaterial->FindProperty(FbxSurfaceMaterial::sSpecularFactor);
-				ParseTexture(fbxProperty, &outTextures->specularFactor);
+				ParseTexture(fbxProperty, &outTextureNames->specularFactor);
 
 				fbxProperty = fbxMaterial->FindProperty(FbxSurfaceMaterial::sBump);
-				ParseTexture(fbxProperty, &outTextures->bump);
+				ParseTexture(fbxProperty, &outTextureNames->bump);
 
 				fbxProperty = fbxMaterial->FindProperty(FbxSurfaceMaterial::sBumpFactor);
-				ParseTexture(fbxProperty, &outTextures->bumpFactor);
+				ParseTexture(fbxProperty, &outTextureNames->bumpFactor);
 
 				fbxProperty = fbxMaterial->FindProperty(FbxSurfaceMaterial::sTransparentColor);
-				ParseTexture(fbxProperty, &outTextures->transparentColor);
+				ParseTexture(fbxProperty, &outTextureNames->transparentColor);
 			}
 
 

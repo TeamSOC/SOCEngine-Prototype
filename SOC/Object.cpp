@@ -194,5 +194,3 @@ namespace Rendering
 		components.clear();
 	}
 }
-
-#include "Object.hpp"

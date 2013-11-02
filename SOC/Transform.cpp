@@ -192,9 +192,9 @@ namespace Rendering
 		euler = SOCEulerNormalize(euler);
 		localEulerAngles = euler; 
 
-		Yaw(euler.y);
-		Pitch(euler.x);
-		Roll(euler.z);
+		Yaw(SOCDegreeToRadian(euler.y));
+		Pitch(SOCDegreeToRadian(euler.x));
+		Roll(SOCDegreeToRadian(euler.z));
 
 		SOCVec3Normalize(&forward, &forward);
 

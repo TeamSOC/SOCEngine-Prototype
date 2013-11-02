@@ -6,9 +6,8 @@
 #pragma comment(lib, "libfbxsdk-md.lib")
 
 #include "MaterialElements.h"
-#include "MeshFilterElements.h"
+#include "VBElements.h"
 
-#include "Bone.h"
 #include <vector>
 
 #include "Object.h"
@@ -41,10 +40,10 @@ namespace Rendering
 			void AssignMesh(Object *obj, FbxNode *node);
 			void SetFbxTransform(Object *obj, FbxNode *node);
 
-			bool BuildMesh(fbxsdk_2014_1::FbxMesh *fbxMesh, MeshFilterElements *outMeshFilterElements);
+			bool BuildMesh(fbxsdk_2014_1::FbxMesh *fbxMesh, Mesh::VBElements *outVBElements);
 			void BuildskinningMesh(fbxsdk_2014_1::FbxMesh *fbxMesh, std::vector<int> &skinIndices);
 
-			void ParseMaterial(fbxsdk_2014_1::FbxMesh *fbxMesh, MaterialElements *outMaterialElements, MaterialTextures *outTextures);
+			void ParseMaterial(fbxsdk_2014_1::FbxMesh *fbxMesh, MaterialElements *outMaterialElements, MeshTextureNames *outTextureNames);
 
 			template <typename ElementType>
 			bool ParseElements(ElementType* e, int ctrlPointIdx, int vertexCount, int *outIdx)

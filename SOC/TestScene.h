@@ -10,9 +10,9 @@ private:
 	Object *camObject;
 	Object *meshObject;
 
-	Rendering::MeshFilterElements emesh;
+	Rendering::Mesh::VBElements emesh;
 	Rendering::MaterialElements ematerial;
-	Rendering::MaterialTextures etex;
+	Rendering::MeshTextureNames etex;
 
 public:
 	TestScene(void);

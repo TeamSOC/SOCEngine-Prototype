@@ -88,7 +88,6 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="BaseScene.cpp" />
     <ClCompile Include="BasicParameterNames.cpp" />
-    <ClCompile Include="Bone.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="Color.cpp" />
@@ -108,13 +107,12 @@
     <ClCompile Include="LightManager.cpp" />
     <ClCompile Include="LightParameters.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MaterialManager.cpp" />
-    <ClCompile Include="Math.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshFilter.cpp" />
-    <ClCompile Include="Skeleton.cpp" />
-    <ClCompile Include="MeshFilterElements.cpp" />
+    <ClCompile Include="VBElements.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="PointLight.cpp" />
@@ -135,6 +133,7 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TransformParameters.cpp" />
+    <ClCompile Include="VBElementsManager.cpp" />
     <ClCompile Include="VertexBufferForm.cpp" />
     <ClCompile Include="VertexBufferDX.cpp" />
     <ClCompile Include="Windows.cpp" />
@@ -144,7 +143,6 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="BaseScene.h" />
     <ClInclude Include="BasicParameterNames.h" />
-    <ClInclude Include="Bone.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="Color.h" />
@@ -167,17 +165,15 @@
     <ClInclude Include="LightForm.h" />
     <ClInclude Include="LightManager.h" />
     <ClInclude Include="LightParameters.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MaterialElements.h" />
     <ClInclude Include="MaterialManager.h" />
-    <ClInclude Include="Math.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshFilter.h" />
-    <ClInclude Include="Skeleton.h" />
-    <ClInclude Include="MeshFilterElements.h" />
+    <ClInclude Include="VBElements.h" />
     <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="Object.h" />
-    <ClInclude Include="Object.hpp" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="Rect.h" />
@@ -209,6 +205,7 @@
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TransformParameters.h" />
     <ClInclude Include="Utility.h" />
+    <ClInclude Include="VBElementsManager.h" />
     <ClInclude Include="VertexBufferForm.h" />
     <ClInclude Include="VertexBufferDX.h" />
     <ClInclude Include="VertexDeclaration.h" />
