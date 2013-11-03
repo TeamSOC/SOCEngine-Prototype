@@ -5,7 +5,11 @@
 
 namespace Rendering
 {
-	class MaterialManager : public Dictionary<Material>
+	namespace Material
 	{
-	};
+		class MaterialManager : public Dictionary<Material>
+		{
+		};
+
+	}
 }

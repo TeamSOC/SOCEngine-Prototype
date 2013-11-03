@@ -19,7 +19,7 @@ protected:
 	Rendering::Texture::TextureManager		*textureMgr;
 	Rendering::Shader::ShaderManager		*shaderMgr;
 	Rendering::CameraManager				*cameraMgr;
-	Rendering::MaterialManager				*materialMgr;
+	Rendering::Material::MaterialManager	*materialMgr;
 	//Rendering::Mesh::VBElementsManager		*vbElementsMgr;
 	Rendering::MeshDataManager				*meshDataMgr;
 
@@ -46,5 +46,5 @@ public:
 	Rendering::Shader::ShaderManager* GetShaderManager();
 	Rendering::CameraManager* GetCameraManager();
 	Rendering::MeshDataManager* GetMeshDataMgr();
-	Rendering::MaterialManager* GetMaterialMgr();
+	Rendering::Material::MaterialManager* GetMaterialMgr();
 };

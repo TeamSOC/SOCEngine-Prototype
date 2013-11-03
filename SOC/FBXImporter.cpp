@@ -344,7 +344,7 @@ namespace Rendering
 			return true;
 		}
 
-		void FBXImporter::ParseMaterial(fbxsdk_2014_1::FbxMesh *fbxMesh, MaterialElements *outMaterialElements, MeshTextureNames *outTextureNames)
+		void FBXImporter::ParseMaterial(fbxsdk_2014_1::FbxMesh *fbxMesh, Material::MaterialElements *outMaterialElements, MeshTextureNames *outTextureNames)
 		{
 			FbxNode *node = fbxMesh->GetNode();
 
@@ -582,7 +582,7 @@ namespace Rendering
 			return true;
 		}
 
-		bool FBXImporter::ParseMaterialElements(FbxSurfaceMaterial *fbxMaterial, MaterialElements *out)
+		bool FBXImporter::ParseMaterialElements(FbxSurfaceMaterial *fbxMaterial, Material::MaterialElements *out)
 		{
 			FbxClassId id = fbxMaterial->GetClassId();
 

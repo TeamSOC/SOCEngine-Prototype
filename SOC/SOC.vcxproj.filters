@@ -245,6 +245,9 @@
     <Filter Include="Engine\Rendering\Mesh\Manager">
       <UniqueIdentifier>{f2ae2543-62a2-4b9e-879c-a586d5f376b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Rendering\Material\Diffuse">
+      <UniqueIdentifier>{7612513d-3da2-4a1f-9dd9-bb788eba7ead}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AABB.cpp">
@@ -405,6 +408,9 @@
     </ClCompile>
     <ClCompile Include="MaterialManager.cpp">
       <Filter>Engine\Rendering\Material\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="DiffuseMaterial.cpp">
+      <Filter>Engine\Rendering\Material\Diffuse</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -620,6 +626,9 @@
     </ClInclude>
     <ClInclude Include="MaterialManager.h">
       <Filter>Engine\Rendering\Material\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="DiffuseMaterial.h">
+      <Filter>Engine\Rendering\Material\Diffuse</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

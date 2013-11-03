@@ -22,6 +22,7 @@ namespace Rendering
 			Device::Graphics::GraphicsForm	*graphics;
 
 		private:
+			MeshDatas *meshData;
 
 		private:
 			void (*beginFunc)(MeshRenderer*);

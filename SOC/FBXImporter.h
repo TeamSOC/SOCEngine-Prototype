@@ -43,7 +43,7 @@ namespace Rendering
 			bool BuildMesh(fbxsdk_2014_1::FbxMesh *fbxMesh, Mesh::VBElements *outVBElements);
 			void BuildskinningMesh(fbxsdk_2014_1::FbxMesh *fbxMesh, std::vector<int> &skinIndices);
 
-			void ParseMaterial(fbxsdk_2014_1::FbxMesh *fbxMesh, MaterialElements *outMaterialElements, MeshTextureNames *outTextureNames);
+			void ParseMaterial(fbxsdk_2014_1::FbxMesh *fbxMesh, Material::MaterialElements *outMaterialElements, MeshTextureNames *outTextureNames);
 
 			template <typename ElementType>
 			bool ParseElements(ElementType* e, int ctrlPointIdx, int vertexCount, int *outIdx)
@@ -85,7 +85,7 @@ namespace Rendering
 
 			FbxNode* FindSkeletonRoot(fbxsdk_2014_1::FbxNode  *parent);
 			bool ParseTexture(fbxsdk_2014_1::FbxProperty &fbxProperty, std::string* outFileName);
-			bool ParseMaterialElements(fbxsdk_2014_1::FbxSurfaceMaterial *fbxMaterial, MaterialElements *out);			
+			bool ParseMaterialElements(fbxsdk_2014_1::FbxSurfaceMaterial *fbxMaterial, Material::MaterialElements *out);			
 		};
 	}
 }

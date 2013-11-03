@@ -1,6 +1,5 @@
 #include "MeshRenderer.h"
 
-
 namespace Rendering
 {
 	namespace Mesh
@@ -24,15 +23,15 @@ namespace Rendering
 			DeleteAllMaterial();
 		}
 
-		void MeshRenderer::AddMaterial(Material *material, bool copy)
+		void MeshRenderer::AddMaterial(Material::Material *material, bool copy)
 		{
-			Material *m = copy ? new Material(*material) : material; // Material::Copy(material) : material;
+			Material::Material *m = copy ? new Material::Material(*material) : material; // Material::Copy(material) : material;
 			materials.push_back(m);
 		}
 
-		bool MeshRenderer::DeleteMaterial(Material *material)
+		bool MeshRenderer::DeleteMaterial(Material::Material *material)
 		{
-			std::vector<Material*>::iterator iter;
+			std::vector<Material::Material*>::iterator iter;
 			for(iter = materials.begin(); iter != materials.end(); ++iter)
 			{
 				if(material == (*iter))
@@ -48,16 +47,16 @@ namespace Rendering
 
 		void MeshRenderer::DeleteAllMaterial()
 		{
-			std::vector<Material*>::iterator iter;
+			std::vector<Material::Material*>::iterator iter;
 			for(iter = materials.begin(); iter != materials.end(); ++iter)
 				Utility::SAFE_DELETE(*iter);
 
 			materials.clear();
 		}
 
-		Material* MeshRenderer::FindMaterial(const char *name)
+		Material::Material* MeshRenderer::FindMaterial(const char *name)
 		{
-			std::vector<Material*>::iterator iter;
+			std::vector<Material::Material*>::iterator iter;
 			for(iter = materials.begin(); iter != materials.end(); ++iter)
 			{
 				if( strcmp( (*iter)->GetName(), name ) == 0 )
@@ -69,9 +68,9 @@ namespace Rendering
 
 		void MeshRenderer::Begin(MeshRenderer *renderer)
 		{
-			std::vector<Material*>::iterator iter;
-			std::vector<Material*>::iterator begin = renderer->materials.begin();
-			std::vector<Material*>::iterator end = renderer->materials.end();
+			std::vector<Material::Material*>::iterator iter;
+			std::vector<Material::Material*>::iterator begin = renderer->materials.begin();
+			std::vector<Material::Material*>::iterator end = renderer->materials.end();
 
 			for(iter = begin; iter != end; ++iter)
 			{
@@ -82,9 +81,9 @@ namespace Rendering
 
 		void MeshRenderer::End(MeshRenderer *renderer)
 		{
-			std::vector<Material*>::iterator iter;
-			std::vector<Material*>::iterator begin = renderer->materials.begin();
-			std::vector<Material*>::iterator end = renderer->materials.end();
+			std::vector<Material::Material*>::iterator iter;
+			std::vector<Material::Material*>::iterator begin = renderer->materials.begin();
+			std::vector<Material::Material*>::iterator end = renderer->materials.end();
 
 			for(iter = begin; iter != end; ++iter)
 			{
@@ -98,14 +97,14 @@ namespace Rendering
 			return materials.size();
 		}
 
-		Material* MeshRenderer::GetMaterial(int idx)
+		Material::Material* MeshRenderer::GetMaterial(int idx)
 		{
 			return *( materials.begin() + idx );
 		}
 
 		void MeshRenderer::ConnectRequiredParameters(TransformParameters *transform, Light::LightParameters *light)
 		{
-			for(std::vector<Material*>::iterator iter = materials.begin(); iter != materials.end(); ++iter)
+			for(std::vector<Material::Material*>::iterator iter = materials.begin(); iter != materials.end(); ++iter)
 				(*iter)->SetUseShaderRequiredParameters(transform, light);
 		}
 

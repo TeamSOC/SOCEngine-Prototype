@@ -10,7 +10,7 @@ namespace Rendering
 		class MeshRenderer
 		{
 		private:
-			std::vector<Material*> materials;
+			std::vector<Material::Material*> materials;
 			bool castShadow;
 			bool reciveShadow;
 
@@ -19,10 +19,10 @@ namespace Rendering
 			~MeshRenderer(void);
 
 		public:
-			void AddMaterial(Material *material, bool copy);
-			bool DeleteMaterial(Material *material);
+			void AddMaterial(Material::Material *material, bool copy);
+			bool DeleteMaterial(Material::Material *material);
 			void DeleteAllMaterial();
-			Material* FindMaterial(const char *name);
+			Material::Material* FindMaterial(const char *name);
 
 			void ConnectRequiredParameters(TransformParameters *transform, Light::LightParameters *light);
 
@@ -32,7 +32,7 @@ namespace Rendering
 
 		public:
 			SOC_uint GetMaterialCount();
-			Material* GetMaterial(int idx = 0);
+			Material::Material* GetMaterial(int idx = 0);
 		};
 
 	}

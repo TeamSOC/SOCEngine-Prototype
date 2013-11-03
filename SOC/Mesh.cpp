@@ -33,6 +33,7 @@ namespace Rendering
 		bool Mesh::Create(MeshDatas *meshData)
 		{
 			VBElements& vertexData = meshData->vb;
+			this->meshData = meshData;
 
 			filter->Create(vertexData.vertices, vertexData.normals, vertexData.tangents,
 				vertexData.binormals, vertexData.texcoords, vertexData.colors,
@@ -41,15 +42,15 @@ namespace Rendering
 
 			Scene *scene = dynamic_cast<Scene*>(Device::DeviceDirector::GetInstance()->GetScene());
 
-			MaterialManager *mgr = scene->GetMaterialMgr();
-			Material *material = mgr->Find("None");
+			Material::MaterialManager *mgr = scene->GetMaterialMgr();
+			Material::Material *material = mgr->Find("None");
 
 			Shader::Shader *shader;
 			scene->GetShaderManager()->LoadShaderFromFile("Basic", &shader, false);
 
 			if(material == nullptr)
 			{
-				material = new Material("None");
+				material = new Material::Material("None");
 				material->AddShader(shader);
 				mgr->Add("None", material);
 			}

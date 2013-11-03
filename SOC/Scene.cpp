@@ -5,6 +5,7 @@ using namespace Texture;
 using namespace Shader;
 using namespace Light;
 using namespace std;
+using namespace Material;
 
 //static Scene* nowScene = nullptr;
 
@@ -107,12 +108,12 @@ CameraManager* Scene::GetCameraManager()
 	return cameraMgr;
 }
 
-Rendering::MeshDataManager* Scene::GetMeshDataMgr()
+MeshDataManager* Scene::GetMeshDataMgr()
 {
 	return meshDataMgr;
 }
 
-Rendering::MaterialManager* Scene::GetMaterialMgr()
+MaterialManager* Scene::GetMaterialMgr()
 {
 	return materialMgr;
 }

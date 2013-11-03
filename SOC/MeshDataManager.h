@@ -9,7 +9,7 @@ namespace Rendering
 	struct MeshDatas
 	{
 		Mesh::VBElements	vb;
-		MaterialElements	material;
+		Material::MaterialElements	material;
 		MeshTextureNames	textureNames;
 
 		MeshDatas(){}
