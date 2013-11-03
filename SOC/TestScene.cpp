@@ -45,6 +45,7 @@ void TestScene::OnInitialize()
 
 	Texture::Texture *texture = textureMgr->AddTexture("Test.png");
 	Material::LambertMaterial *lambert = new Material::LambertMaterial(texture);
+	//
 }
 
 void TestScene::OnUpdate(float dt)

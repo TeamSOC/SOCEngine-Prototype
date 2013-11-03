@@ -95,7 +95,6 @@
     <ClCompile Include="Cone.cpp" />
     <ClCompile Include="DeviceDirector.cpp" />
     <ClCompile Include="Dictionary.cpp" />
-    <ClCompile Include="LambertMaterial.cpp" />
     <ClCompile Include="DX.cpp" />
     <ClCompile Include="FBXImporter.cpp" />
     <ClCompile Include="GraphicsForm.cpp" />
@@ -103,6 +102,7 @@
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="IndexBufferForm.cpp" />
     <ClCompile Include="IndexBufferDX.cpp" />
+    <ClCompile Include="LambertMaterial.cpp" />
     <ClCompile Include="LayerManager.cpp" />
     <ClCompile Include="LightForm.cpp" />
     <ClCompile Include="LightManager.cpp" />
@@ -153,7 +153,6 @@
     <ClInclude Include="Device.h" />
     <ClInclude Include="DeviceDirector.h" />
     <ClInclude Include="Dictionary.h" />
-    <ClInclude Include="LambertMaterial.h" />
     <ClInclude Include="DX.h" />
     <ClInclude Include="FBXImporter.h" />
     <ClInclude Include="GraphicsForm.h" />
@@ -162,6 +161,7 @@
     <ClInclude Include="Buffer.h" />
     <ClInclude Include="IndexBufferForm.h" />
     <ClInclude Include="IndexBufferDX.h" />
+    <ClInclude Include="LambertMaterial.h" />
     <ClInclude Include="LayerManager.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightForm.h" />
