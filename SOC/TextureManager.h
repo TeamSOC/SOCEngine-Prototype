@@ -12,7 +12,7 @@ namespace Rendering
 #define RESOURCE_DIR "../Resources/"
 
 		private:
-			SOCHashMap<std::string, Texture::TextureForm*> hash;
+			SOCHashMap<std::string, Texture*> hash;
 			int resourceDirLen;
 
 		public:
@@ -20,12 +20,12 @@ namespace Rendering
 			~TextureManager();
 
 		public:
-			Texture::TextureForm* AddTexture(std::string path, bool inResourceFolder = true);
-			Texture::TextureForm* FindTexture(std::string path, bool inResourceFolder = true);
+			Texture* AddTexture(std::string path, bool inResourceFolder = true);
+			Texture* FindTexture(std::string path, bool inResourceFolder = true);
 
 		public:
 			void Delete(std::string path, bool inResourceFolder = true);
-			void Delete(Texture::TextureForm* texture, bool dealloc);
+			void Delete(Texture* texture, bool dealloc);
 
 			void DeleteAll();
 		};

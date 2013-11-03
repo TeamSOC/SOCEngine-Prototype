@@ -61,6 +61,18 @@ namespace Rendering
 			return false;
 		}
 
+		bool Material::SelectUseShader(Shader::Shader *shader)
+		{
+			if(shader == nullptr)
+				return false;
+
+			if(HasShader(shader) == false)
+				AddShader(shader);
+
+			useShader = shader;
+			return true;
+		}
+
 		void Material::AddShader( Shader::Shader *shader )
 		{
 			if(useShader == nullptr)

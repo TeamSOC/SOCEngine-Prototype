@@ -102,11 +102,13 @@ namespace Rendering
 			return *( materials.begin() + idx );
 		}
 
-		void MeshRenderer::ConnectRequiredParameters(TransformParameters *transform, Light::LightParameters *light)
+		void MeshRenderer::ConnectParameters(TransformParameters *transform, Light::LightParameters *light)
 		{
 			for(std::vector<Material::Material*>::iterator iter = materials.begin(); iter != materials.end(); ++iter)
+			{
 				(*iter)->SetUseShaderRequiredParameters(transform, light);
+				(*iter)->ConnectParamater();
+			}
 		}
-
 	}
 }

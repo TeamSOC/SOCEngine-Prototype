@@ -1,5 +1,5 @@
 #include "TestScene.h"
-//#include "MeshImporter.h"
+#include "LambertMaterial.h"
 
 using namespace Rendering;
 
@@ -33,8 +33,6 @@ void TestScene::OnInitialize()
 	meshObject = importer->BuildObject(nullptr);
 	rootObjects->AddObject(meshObject);
 
-	Rendering::Mesh::Mesh *mesh = meshObject->GetObject(1)->GetComponent<Mesh::Mesh>();
-
 	SOC_Vector3 v = SOC_Vector3(0.0, -100.0, 350);
 	meshObject->GetTransform()->SetPosition(v);
 	meshObject->GetTransform()->radius = 1000.0f;
@@ -44,6 +42,9 @@ void TestScene::OnInitialize()
 
 	camera = camObject->GetComponent<Camera>();
 	cameraMgr->SetMainCamera(camera);
+
+	Texture::Texture *texture = textureMgr->AddTexture("Test.png");
+	Material::LambertMaterial *lambert = new Material::LambertMaterial(texture);
 }
 
 void TestScene::OnUpdate(float dt)

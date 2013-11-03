@@ -245,7 +245,7 @@
     <Filter Include="Engine\Rendering\Mesh\Manager">
       <UniqueIdentifier>{f2ae2543-62a2-4b9e-879c-a586d5f376b4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Rendering\Material\Diffuse">
+    <Filter Include="Engine\Rendering\Material\LambertMaterial">
       <UniqueIdentifier>{7612513d-3da2-4a1f-9dd9-bb788eba7ead}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -409,8 +409,8 @@
     <ClCompile Include="MaterialManager.cpp">
       <Filter>Engine\Rendering\Material\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="DiffuseMaterial.cpp">
-      <Filter>Engine\Rendering\Material\Diffuse</Filter>
+    <ClCompile Include="LambertMaterial.cpp">
+      <Filter>Engine\Rendering\Material\LambertMaterial</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -627,8 +627,8 @@
     <ClInclude Include="MaterialManager.h">
       <Filter>Engine\Rendering\Material\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="DiffuseMaterial.h">
-      <Filter>Engine\Rendering\Material\Diffuse</Filter>
+    <ClInclude Include="LambertMaterial.h">
+      <Filter>Engine\Rendering\Material\LambertMaterial</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

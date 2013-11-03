@@ -95,7 +95,7 @@
     <ClCompile Include="Cone.cpp" />
     <ClCompile Include="DeviceDirector.cpp" />
     <ClCompile Include="Dictionary.cpp" />
-    <ClCompile Include="DiffuseMaterial.cpp" />
+    <ClCompile Include="LambertMaterial.cpp" />
     <ClCompile Include="DX.cpp" />
     <ClCompile Include="FBXImporter.cpp" />
     <ClCompile Include="GraphicsForm.cpp" />
@@ -153,7 +153,7 @@
     <ClInclude Include="Device.h" />
     <ClInclude Include="DeviceDirector.h" />
     <ClInclude Include="Dictionary.h" />
-    <ClInclude Include="DiffuseMaterial.h" />
+    <ClInclude Include="LambertMaterial.h" />
     <ClInclude Include="DX.h" />
     <ClInclude Include="FBXImporter.h" />
     <ClInclude Include="GraphicsForm.h" />

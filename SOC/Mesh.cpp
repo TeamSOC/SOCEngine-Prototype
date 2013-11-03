@@ -68,7 +68,7 @@ namespace Rendering
 			if(renderer->GetMaterialCount() == 0)
 				return;
 
-			renderer->ConnectRequiredParameters(transform, light);
+			renderer->ConnectParameters(transform, light);
 
 			beginFunc(renderer);
 			{

@@ -8,7 +8,6 @@ namespace Rendering
 {
 	namespace Material
 	{
-
 		class Material
 		{
 		private:
@@ -31,8 +30,8 @@ namespace Rendering
 
 		public:
 			bool SelectUseShader(SOC_uint idx);
-
 			bool SelectUseShader( std::string name );
+			bool SelectUseShader(Shader::Shader *shader);
 
 			void AddShader( Shader::Shader *shader );
 			void DeleteShader( Shader::Shader *shader );
@@ -72,6 +71,8 @@ namespace Rendering
 			bool GetUseShaderRequiredParameters(SOC_byte *outMatrixParameters, SOC_byte *outLightParameters);
 
 			void SetUseShaderRequiredParameters(TransformParameters *transform, Light::LightParameters *light);
+
+			virtual void ConnectParamater(){}
 		};
 
 	}
