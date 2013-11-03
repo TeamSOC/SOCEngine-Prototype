@@ -1,4 +1,5 @@
 #include "FBXImporter.h"
+#include "Scene.h"
 
 using namespace fbxsdk_2014_1;
 
@@ -119,23 +120,30 @@ namespace Rendering
 
 		}
 
-		void FBXImporter::AssignMesh(Object *obj, FbxNode *node)
+		void FBXImporter::CreateMeshComponent(Object *obj, FbxNode *node)
 		{
 			FbxMesh *fbxMesh = node->GetMesh();
 			Mesh::Mesh *mesh = obj->AddComponent<Mesh::Mesh>();
 
+			Scene *scene = dynamic_cast<Scene*>(Device::DeviceDirector::GetInstance()->GetScene());
+			MeshDataManager *mgr = scene->GetMeshDataMgr();
+
+			/*material*/
+			const char *key = node->GetName();
+			MeshDatas *meshData = mgr->Find(key);
+
+			if(meshData == nullptr)
 			{
-				Mesh::VBElements fe;
-				MaterialElements me;
-				MeshTextureNames te;
+				meshData = new MeshDatas;
 
-				BuildMesh(fbxMesh, &fe);
-				ParseMaterial(fbxMesh, &me, &te);
+				BuildMesh(fbxMesh, &meshData->vb);
+				ParseMaterial(fbxMesh, &meshData->material, &meshData->textureNames);
 
-				mesh->Create(fe, me, te);
-				SetFbxTransform(obj, node);
+				mgr->Add(key, meshData);
 			}
 
+			mesh->Create(meshData);
+			SetFbxTransform(obj, node);
 		}
 
 		void FBXImporter::SetFbxTransform(Object *obj, FbxNode *node)
@@ -182,7 +190,7 @@ namespace Rendering
 				parent->AddObject(obj, false);
 
 			if(atType == FbxNodeAttribute::eMesh)
-				AssignMesh(obj, fbxNode);
+				CreateMeshComponent(obj, fbxNode);
 			else if(atType == FbxNodeAttribute::eSkeleton)
 				BuildSkeleton(obj, fbxNode);
 
@@ -242,7 +250,7 @@ namespace Rendering
 				outVBElements->colors = new Color[numOfVertex];
 
 			if(fbxMesh->GetLayer(0)->GetBinormals() != nullptr)
-				outVBElements->binomals = new SOC_Vector3[numOfVertex];
+				outVBElements->binormals = new SOC_Vector3[numOfVertex];
 
 			if(fbxMesh->GetLayer(0)->GetTangents() != nullptr)
 				outVBElements->tangents = new SOC_Vector3[numOfVertex];
@@ -263,7 +271,7 @@ namespace Rendering
 			SOC_word *indices = outVBElements->indices.second;
 			SOC_Vector3 *vertices = outVBElements->vertices;
 			SOC_Vector3 *normals = outVBElements->normals;
-			SOC_Vector3 *binormals = outVBElements->binomals;
+			SOC_Vector3 *binormals = outVBElements->binormals;
 			SOC_Vector3 *tangents = outVBElements->tangents;
 			Color *colors = outVBElements->colors;
 			SOC_Vector2 **texcoords = outVBElements->texcoords.second;
@@ -339,8 +347,6 @@ namespace Rendering
 		void FBXImporter::ParseMaterial(fbxsdk_2014_1::FbxMesh *fbxMesh, MaterialElements *outMaterialElements, MeshTextureNames *outTextureNames)
 		{
 			FbxNode *node = fbxMesh->GetNode();
-
-			outMaterialElements->name = node->GetName();
 
 			int materialCount = node->GetMaterialCount();
 			for(int materialIdx = 0; materialIdx < materialCount; ++materialIdx)

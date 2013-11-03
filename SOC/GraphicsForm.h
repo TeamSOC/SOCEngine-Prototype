@@ -40,7 +40,7 @@ namespace Device
 			virtual bool SetVertexStream(SOC_uint stream, DeviceVertexBuffer deviceVertexBuffer, SOC_uint vertexBufferSize) = 0;
 			virtual bool SetVertexStremFrequency(SOC_uint stream, SOC_uint frequency) = 0;
 
-			virtual VertexDeclaration CreateVertexDeclation( VertexElements *ve ) = 0;
+			virtual VertexDeclaration CreateVertexDeclation( VertexDeclarationElements *ve ) = 0;
 			virtual bool SetVertexDeclaration( const char *description ) = 0;
 			virtual bool SetVertexDeclaration( VertexDeclaration decl ) = 0;
 

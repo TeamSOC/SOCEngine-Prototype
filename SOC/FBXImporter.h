@@ -37,7 +37,7 @@ namespace Rendering
 		private:
 			Object* Decode(Object *parent, FbxNode *fbxNode);
 			void BuildSkeleton(Object *parent, FbxNode *node);
-			void AssignMesh(Object *obj, FbxNode *node);
+			void CreateMeshComponent(Object *obj, FbxNode *node);
 			void SetFbxTransform(Object *obj, FbxNode *node);
 
 			bool BuildMesh(fbxsdk_2014_1::FbxMesh *fbxMesh, Mesh::VBElements *outVBElements);

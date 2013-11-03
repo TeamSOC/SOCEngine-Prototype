@@ -38,7 +38,7 @@ enum SOC_VERTEX_USAGE
     SOC_VERTEX_USAGE_COLOR	  = 10,     // 10
 };
 
-struct VertexElement
+struct VertexDeclarationElement
 {
 	SOC_byte stream;
 	SOC_byte offset;
@@ -46,9 +46,9 @@ struct VertexElement
 	SOC_VERTEX_USAGE usage;
 	SOC_byte usageIndex;
 
-	VertexElement() : stream(0), offset(0), type((SOC_VERTEX_DECLTYPE)0), usage((SOC_VERTEX_USAGE)0), usageIndex(0)
+	VertexDeclarationElement() : stream(0), offset(0), type((SOC_VERTEX_DECLTYPE)0), usage((SOC_VERTEX_USAGE)0), usageIndex(0)
 	{}
-	VertexElement(SOC_byte stream, SOC_byte offset, SOC_VERTEX_DECLTYPE type, SOC_VERTEX_USAGE usage, SOC_byte usageIndex)
+	VertexDeclarationElement(SOC_byte stream, SOC_byte offset, SOC_VERTEX_DECLTYPE type, SOC_VERTEX_USAGE usage, SOC_byte usageIndex)
 	{
 		this->stream	 = stream;
 		this->offset	 = offset;
@@ -72,14 +72,14 @@ struct VertexElement
 
 };
 
-struct VertexElements
+struct VertexDeclarationElements
 {
 	std::string description;
-	std::vector<VertexElement> vertexElement;
+	std::vector<VertexDeclarationElement> vertexElement;
 
-	VertexElements()
+	VertexDeclarationElements()
 	{}
-	VertexElements( const char *description, std::vector<VertexElement> &ve )
+	VertexDeclarationElements( const char *description, std::vector<VertexDeclarationElement> &ve )
 	{
 		this->description = description;
 		this->vertexElement = ve;

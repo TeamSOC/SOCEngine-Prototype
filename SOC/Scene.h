@@ -4,6 +4,7 @@
 #include "Container.h"
 #include "BaseScene.h"
 
+
 class Scene : public BaseScene
 {
 public:
@@ -19,6 +20,8 @@ protected:
 	Rendering::Shader::ShaderManager		*shaderMgr;
 	Rendering::CameraManager				*cameraMgr;
 	Rendering::MaterialManager				*materialMgr;
+	//Rendering::Mesh::VBElementsManager		*vbElementsMgr;
+	Rendering::MeshDataManager				*meshDataMgr;
 
 public:
 	Scene(void);
@@ -42,5 +45,6 @@ public:
 	Rendering::Texture::TextureManager* GetTextureManager();
 	Rendering::Shader::ShaderManager* GetShaderManager();
 	Rendering::CameraManager* GetCameraManager();
-	Rendering::MaterialManager* GetMaterialManager();
+	Rendering::MeshDataManager* GetMeshDataMgr();
+	Rendering::MaterialManager* GetMaterialMgr();
 };

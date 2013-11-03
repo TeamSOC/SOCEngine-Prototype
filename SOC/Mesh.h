@@ -5,6 +5,7 @@
 #include "Device.h"
 #include "Component.h"
 #include "FBXImporter.h"
+#include "MeshDataManager.h"
 
 namespace Rendering
 {
@@ -21,8 +22,6 @@ namespace Rendering
 			Device::Graphics::GraphicsForm	*graphics;
 
 		private:
-			MaterialElements		materialElements;
-			MeshTextureNames		textureElements;
 
 		private:
 			void (*beginFunc)(MeshRenderer*);
@@ -44,7 +43,7 @@ namespace Rendering
 			virtual void Destroy();
 
 		public:
-			bool Create(VBElements &vertexData, MaterialElements &materialData, MeshTextureNames &textureData);
+			bool Create(MeshDatas *meshData);
 		};
 
 	}

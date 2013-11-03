@@ -4,7 +4,7 @@ namespace Rendering
 {
 	namespace Mesh
 	{
-		MeshFilter::MeshFilter(Device::Graphics::GraphicsForm *graphics) : vertices(NULL), normals(NULL), tangents(NULL), binomals(NULL), colors(NULL), decl(nullptr)
+		MeshFilter::MeshFilter(Device::Graphics::GraphicsForm *graphics) : vertices(NULL), normals(NULL), tangents(NULL), binormals(NULL), colors(NULL), decl(nullptr)
 		{
 			vertexBufferSize = 0;
 			numOfVertex = 0;
@@ -34,7 +34,7 @@ namespace Rendering
 				vertexBufferSize += sizeof(SOC_Vector2) * texcoords.first;
 
 			if(tangents)		vertexBufferSize += sizeof(SOC_Vector3);
-			if(binomals)		vertexBufferSize += sizeof(SOC_Vector3);
+			if(binormals)		vertexBufferSize += sizeof(SOC_Vector3);
 
 			if(colors)			vertexBufferSize += sizeof(SOC_Vector4);
 		}
@@ -43,7 +43,7 @@ namespace Rendering
 		{
 			return Create(
 				option.vertices, option.normals, 
-				option.tangents, option.binomals, 
+				option.tangents, option.binormals, 
 				option.texcoords, option.colors, 
 				option.numOfVertex, option.numOfTriangle, 
 				option.indices, option.type, 
@@ -51,7 +51,7 @@ namespace Rendering
 		}
 
 		bool MeshFilter::Create(SOC_Vector3 *vertices, SOC_Vector3 *normals, SOC_Vector3 *tangents,
-			SOC_Vector3 *binomals, std::pair<count, SOC_Vector2**> texcoords, Color *colors, 
+			SOC_Vector3 *binormals, std::pair<count, SOC_Vector2**> texcoords, Color *colors, 
 			int numOfVertex, int numOfTriangle, std::pair<count, SOC_word*> indices, SOC_TRIANGLE type, bool isDynamic, bool alloc)
 		{
 			if(vertices == NULL ) return false;
@@ -62,7 +62,7 @@ namespace Rendering
 			SetVertexData(&this->vertices, vertices, SOC_Vector3(), alloc);
 			SetVertexData(&this->normals, normals, SOC_Vector3(), alloc);
 			SetVertexData(&this->tangents, tangents, SOC_Vector3(), alloc);
-			SetVertexData(&this->binomals, binomals, SOC_Vector3(), alloc);
+			SetVertexData(&this->binormals, binormals, SOC_Vector3(), alloc);
 			SetVertexData(&this->colors, colors, Color(), alloc);
 
 			if(texcoords.first > 0)
@@ -169,12 +169,12 @@ namespace Rendering
 					vertexBufferData = (SOC_Vector3*)vertexBufferData + 1;
 				}
 
-				if(tangents && binomals)
+				if(tangents && binormals)
 				{
 					*( (SOC_Vector3*)vertexBufferData ) = tangents[i];
 					vertexBufferData = (SOC_Vector3*)vertexBufferData + 1;
 
-					*( (SOC_Vector3*)vertexBufferData ) = binomals[i];
+					*( (SOC_Vector3*)vertexBufferData ) = binormals[i];
 					vertexBufferData = (SOC_Vector3*)vertexBufferData + 1;
 				}
 
@@ -228,11 +228,11 @@ namespace Rendering
 
 		VertexDeclaration MeshFilter::CreateVertexDeclaration()
 		{
-			VertexElements ves;
+			VertexDeclarationElements ves;
 			std::string description = "P";
-			VertexElement e = VertexElement(0, 0, SOC_VERTEX_DECLTYPE_FLOAT3, SOC_VERTEX_USAGE_POSITION, 0);
+			VertexDeclarationElement e = VertexDeclarationElement(0, 0, SOC_VERTEX_DECLTYPE_FLOAT3, SOC_VERTEX_USAGE_POSITION, 0);
 
-			std::vector<VertexElement> *v = &ves.vertexElement;
+			std::vector<VertexDeclarationElement> *v = &ves.vertexElement;
 
 			//add position declaraction
 			v->push_back(e);
@@ -256,7 +256,7 @@ namespace Rendering
 				description += "T";
 			}
 
-			if(binomals)
+			if(binormals)
 			{
 				e.usage = SOC_VERTEX_USAGE_BINORMAL;
 				v->push_back(e);

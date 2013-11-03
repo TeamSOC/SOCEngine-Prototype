@@ -30,36 +30,31 @@ namespace Rendering
 			Utility::SAFE_DELETE(renderer);
 		}
 
-		bool Mesh::Create(VBElements &vertexData, MaterialElements &materialData, MeshTextureNames &textureData)
+		bool Mesh::Create(MeshDatas *meshData)
 		{
-			this->materialElements = materialData;
-			this->textureElements = textureData;
+			VBElements& vertexData = meshData->vb;
 
 			filter->Create(vertexData.vertices, vertexData.normals, vertexData.tangents,
-				vertexData.binomals, vertexData.texcoords, vertexData.colors,
+				vertexData.binormals, vertexData.texcoords, vertexData.colors,
 				vertexData.numOfVertex, vertexData.numOfTriangle, vertexData.indices,
 				SOC_TRIANGLE_LIST, vertexData.isDynamic, false);
 
 			Scene *scene = dynamic_cast<Scene*>(Device::DeviceDirector::GetInstance()->GetScene());
-			MaterialManager *mgr = scene->GetMaterialManager();
 
-			string &key = materialData.name.empty() ? owner->name : materialData.name;
-			Material *material = mgr->Find(key);
+			MaterialManager *mgr = scene->GetMaterialMgr();
+			Material *material = mgr->Find("None");
+
+			Shader::Shader *shader;
+			scene->GetShaderManager()->LoadShaderFromFile("Basic", &shader, false);
 
 			if(material == nullptr)
 			{
-				material = new Material(key.data());
-				material->elements = materialData;
+				material = new Material("None");
+				material->AddShader(shader);
+				mgr->Add("None", material);
 			}
 
-			Shader::Shader *shader;
-			if(scene->GetShaderManager()->LoadShaderFromFile("Basic", &shader, false))
-			{
-				if(material->FindShader(shader->GetName()) == nullptr)
-					material->AddShader(shader);
-
-				renderer->AddMaterial(material, false);
-			}
+			renderer->AddMaterial(material, false);
 
 			return true;
 		}

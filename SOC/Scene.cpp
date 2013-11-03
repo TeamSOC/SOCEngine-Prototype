@@ -25,8 +25,9 @@ void Scene::Initialize()
 	graphics		= Device::DeviceDirector::GetInstance()->GetGraphics();
 	shaderMgr		= new ShaderManager(graphics);
 	cameraMgr		= new CameraManager;
-	materialMgr		= new MaterialManager;
 	rootObjects		= new Container<Object>;
+	meshDataMgr		= new MeshDataManager;
+	materialMgr		= new MaterialManager;
 
 	NextState();
 	OnInitialize();
@@ -73,12 +74,14 @@ void Scene::Destroy()
 	lightMgr->DeleteAll(true);
 	shaderMgr->DeleteAll();
 	textureMgr->DeleteAll();
+	meshDataMgr->DeleteAll();
 	materialMgr->DeleteAll();
 
 	Utility::SAFE_DELETE(lightMgr);
 	Utility::SAFE_DELETE(shaderMgr);
 	Utility::SAFE_DELETE(textureMgr);
 	Utility::SAFE_DELETE(cameraMgr);
+	Utility::SAFE_DELETE(meshDataMgr);
 	Utility::SAFE_DELETE(materialMgr);
 
 	OnDestroy();
@@ -104,7 +107,12 @@ CameraManager* Scene::GetCameraManager()
 	return cameraMgr;
 }
 
-MaterialManager* Scene::GetMaterialManager()
+Rendering::MeshDataManager* Scene::GetMeshDataMgr()
+{
+	return meshDataMgr;
+}
+
+Rendering::MaterialManager* Scene::GetMaterialMgr()
 {
 	return materialMgr;
 }

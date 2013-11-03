@@ -23,25 +23,25 @@ public:
 public:
 	Object* Add(std::string key, Object* object)
 	{
-		std::map<std::string, Object*>::iterator iter = hash.find(key);
+		std::map<std::string, Object*>::iterator iter = map.find(key);
 
-		if(iter != hash.end())
+		if(iter != map.end())
 			return iter->second;
 
-		hash.insert(SOCHashMap<std::string, Object*>::value_type(key, object));
+		map.insert(std::map<std::string, Object*>::value_type(key, object));
 
 		return object;
 	}
 
 	Object* Find(std::string key)
 	{
-		std::map<std::string, Object*>::iterator iter = hash.find(key);
-		return iter == hash.end() ? nullptr : iter->second;
+		std::map<std::string, Object*>::iterator iter = map.find(key);
+		return iter == map.end() ? nullptr : iter->second;
 	}
 
 	void Delete(std::string key)
 	{
-		std::map<std::string, Object*>::iterator iter = hash.find(key);
+		std::map<std::string, Object*>::iterator iter = nao.find(key);
 
 		if( iter == hash.end() )
 			return;
@@ -54,7 +54,7 @@ public:
 	void Delete(Object* object, bool dealloc)
 	{
 		std::map<std::string, Object*>::iterator iter;
-		for(iter = hash.begin(); iter != hash.end(); ++iter)
+		for(iter = map.begin(); iter != map.end(); ++iter)
 		{
 			if( (*iter).second == object )
 			{
@@ -69,10 +69,11 @@ public:
 
 	void DeleteAll()
 	{
-		for(std::map<std::string, Object*>::iterator iter = hash.begin();iter != hash.end(); ++iter)
+		typename std::map<std::string, Object*>::iterator iter;
+		for(iter = map.begin();iter != map.end(); ++iter)
 			Utility::SAFE_DELETE(iter->second);
 
-		hash.clear();
+		map.clear();
 	}
 };
 

@@ -33,7 +33,7 @@ namespace Device
 
 			bool CreateVertexBuffer(int bufferLength, SOC_dword usage, SOC_POOL pool, DeviceVertexBuffer* outDeviceBuffer);
 			bool CreateIndexBuffer(int bufferLength, SOC_POOL pool, DeviceIndexBuffer* outDeviceBuffer);
-			VertexDeclaration CreateVertexDeclation( VertexElements *ve );
+			VertexDeclaration CreateVertexDeclation( VertexDeclarationElements *ve );
 
 			bool SetIndices( DeviceIndexBuffer indexBuffer );
 			bool SetVertexStream(SOC_uint stream, DeviceVertexBuffer deviceVertexBuffer, SOC_uint stride);

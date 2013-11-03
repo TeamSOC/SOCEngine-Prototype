@@ -242,8 +242,8 @@
     <Filter Include="Engine\Rendering\Mesh\Filter\VBElements">
       <UniqueIdentifier>{df655b02-fa85-48b3-975b-68fd4df14b3c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Rendering\Mesh\Filter\VBElements\Manager">
-      <UniqueIdentifier>{e69f271b-a09b-47ab-bc69-592615d2b9fc}</UniqueIdentifier>
+    <Filter Include="Engine\Rendering\Mesh\Manager">
+      <UniqueIdentifier>{f2ae2543-62a2-4b9e-879c-a586d5f376b4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -391,9 +391,6 @@
     <ClCompile Include="TestScene.cpp">
       <Filter>Source\TestScene</Filter>
     </ClCompile>
-    <ClCompile Include="MaterialManager.cpp">
-      <Filter>Engine\Rendering\Material\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="Dictionary.cpp">
       <Filter>Engine\Common\Data Struct\Dictionary</Filter>
     </ClCompile>
@@ -403,8 +400,11 @@
     <ClCompile Include="VBElements.cpp">
       <Filter>Engine\Rendering\Mesh\Filter\VBElements</Filter>
     </ClCompile>
-    <ClCompile Include="VBElementsManager.cpp">
-      <Filter>Engine\Rendering\Mesh\Filter\VBElements\Manager</Filter>
+    <ClCompile Include="MeshDataManager.cpp">
+      <Filter>Engine\Rendering\Mesh\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="MaterialManager.cpp">
+      <Filter>Engine\Rendering\Material\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -606,9 +606,6 @@
     <ClInclude Include="TestScene.h">
       <Filter>Source\TestScene</Filter>
     </ClInclude>
-    <ClInclude Include="MaterialManager.h">
-      <Filter>Engine\Rendering\Material\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="Dictionary.h">
       <Filter>Engine\Common\Data Struct\Dictionary</Filter>
     </ClInclude>
@@ -618,8 +615,11 @@
     <ClInclude Include="VBElements.h">
       <Filter>Engine\Rendering\Mesh\Filter\VBElements</Filter>
     </ClInclude>
-    <ClInclude Include="VBElementsManager.h">
-      <Filter>Engine\Rendering\Mesh\Filter\VBElements\Manager</Filter>
+    <ClInclude Include="MeshDataManager.h">
+      <Filter>Engine\Rendering\Mesh\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialManager.h">
+      <Filter>Engine\Rendering\Material\Manager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

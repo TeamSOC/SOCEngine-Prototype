@@ -10,10 +10,6 @@ private:
 	Object *camObject;
 	Object *meshObject;
 
-	Rendering::Mesh::VBElements emesh;
-	Rendering::MaterialElements ematerial;
-	Rendering::MeshTextureNames etex;
-
 public:
 	TestScene(void);
 	~TestScene(void);

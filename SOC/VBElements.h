@@ -17,7 +17,7 @@ namespace Rendering
 			SOC_Vector3 *vertices;
 			SOC_Vector3 *normals;
 			SOC_Vector3 *tangents;
-			SOC_Vector3 *binomals;
+			SOC_Vector3 *binormals;
 			std::pair<count, SOC_Vector2**> texcoords;
 			Color *colors;
 			int numOfVertex;
@@ -25,21 +25,24 @@ namespace Rendering
 			std::pair<count, SOC_word*> indices;
 			SOC_TRIANGLE type;
 			bool isDynamic;
-			std::pair<count, int*> skinIndices;
+			//std::pair<count, int*> skinIndices;
 			//std::pair<count, Animation::Bone*> boneIndices;
 			//std::vector<Animation::Bone*> *boneIndices;
 
 		public:
 			VBElements(void);
+			VBElements(SOC_Vector3 *vertices, SOC_Vector3 *normals, SOC_Vector3 *tangents,
+				SOC_Vector3 *binormals, std::pair<count, SOC_Vector2**> &texcoords,
+				Color *colors, int numOfVertex, int numOfTriangle, std::pair<count, SOC_word*> &indices,
+				SOC_TRIANGLE type, bool isDynamic);
+
 			~VBElements(void);
 
-			//public:
-			//	VBElements& operator= (VBElements& other)
-			//	{
-			//		this->vertices = other.vertices;
-
-			//		return *this;
-			//	}
+			public:
+				VBElements* Clone()
+				{
+					return nullptr;
+				}
 		};
 	}
 }

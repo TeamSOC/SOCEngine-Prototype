@@ -22,7 +22,7 @@ namespace Rendering
 			SOC_Vector3* normals;
 
 			SOC_Vector3* tangents;
-			SOC_Vector3* binomals;
+			SOC_Vector3* binormals;
 
 			std::pair<count, SOC_Vector2**> texcoords;
 
@@ -43,7 +43,7 @@ namespace Rendering
 			SOC_TRIANGLE triangleType;
 
 			
-//			VertexElements vertexElements;
+//			VertexDeclarationElements vertexElements;
 
 		private:
 			Device::Graphics::GraphicsForm	*graphics;
@@ -75,7 +75,7 @@ namespace Rendering
 		public:
 			bool Create(VBElements &option, bool alloc);
 			bool Create(SOC_Vector3 *vertices, SOC_Vector3 *normals, SOC_Vector3 *tangents,
-						SOC_Vector3 *binomals, std::pair<count, SOC_Vector2**> texcoords, Color *colors, 
+						SOC_Vector3 *binormals, std::pair<count, SOC_Vector2**> texcoords, Color *colors, 
 						int numOfVertex, int numOfTriangle, std::pair<count, SOC_word*> indices, SOC_TRIANGLE type, bool isDynamic, bool alloc);
 
 		private:

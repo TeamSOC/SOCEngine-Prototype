@@ -131,7 +131,7 @@ namespace Device
 			return SUCCEEDED( device->SetStreamSourceFreq(stream, frequency) );
 		}
 
-		VertexDeclaration DX::CreateVertexDeclation( VertexElements *ve )
+		VertexDeclaration DX::CreateVertexDeclation( VertexDeclarationElements *ve )
 		{
 			LPDIRECT3DVERTEXDECLARATION9 decl = declMap[ve->description.c_str()];
 
@@ -143,7 +143,7 @@ namespace Device
 
 			for(int i=0; i<size; ++i)
 			{
-				VertexElement *e = &ve->vertexElement[i];
+				VertexDeclarationElement *e = &ve->vertexElement[i];
 				e->GetD3DElemnts( &(elements[i]) );
 			}
 

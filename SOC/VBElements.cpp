@@ -12,7 +12,7 @@ namespace Rendering
 			vertices = nullptr;
 			normals = nullptr;
 			tangents = nullptr;
-			binomals = nullptr;
+			binormals = nullptr;
 
 			numOfVertex = 0;
 			numOfTriangle = 0;
@@ -26,18 +26,33 @@ namespace Rendering
 			indices.second = nullptr;
 
 			type = SOC_TRIANGLE::SOC_TRIANGLE_LIST;
-
-			skinIndices.first = 0;
-			skinIndices.second = nullptr;
+			isDynamic = false;
 		}
 
+		VBElements::VBElements(SOC_Vector3 *vertices, SOC_Vector3 *normals, SOC_Vector3 *tangents,
+				SOC_Vector3 *binormals, std::pair<count, SOC_Vector2**> &texcoords,
+				Color *colors, int numOfVertex, int numOfTriangle, std::pair<count, SOC_word*> &indices,
+				SOC_TRIANGLE type, bool isDynamic)
+		{
+			this->vertices = vertices;
+			this->normals = normals;
+			this->tangents = tangents;
+			this->binormals = binormals;
+			this->numOfVertex = numOfVertex;
+			this->numOfTriangle = numOfTriangle;
+			this->texcoords = texcoords;
+			this->colors = colors;
+			this->indices = indices;
+			this->type = type;
+			this->isDynamic = false;
+		}
 
 		VBElements::~VBElements(void)
 		{
 			SAFE_DELETE(vertices);
 			SAFE_DELETE(normals);
 			SAFE_DELETE(tangents);
-			SAFE_DELETE(binomals);
+			SAFE_DELETE(binormals);
 
 			if(texcoords.second)
 			{
@@ -49,7 +64,6 @@ namespace Rendering
 
 			SAFE_DELETE(colors);
 			SAFE_ARRARY_DELETE(indices.second);
-			SAFE_ARRARY_DELETE(skinIndices.second);
 		}
 	}
 }
