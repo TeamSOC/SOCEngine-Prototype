@@ -58,19 +58,19 @@ public:
 		return _FindObject(name, FIND_ENUM_TAG, false);
 	}
 
-	Object* FindObject(std::string name)
+	Object* Find(std::string name)
 	{
 		std::vector<Object*> v = _FindObject(name, FIND_ENUM_NAME, true);
 		return v.size() == 0 ? NULL : v[0];
 	}
 
-	Object* FindObjectWithTag(std::string tag)
+	Object* FindWithTag(std::string tag)
 	{
 		std::vector<Object*> v = _FindObject(tag, FIND_ENUM_TAG, true);
 		return v.size() == 0 ? NULL : v[0];
 	}
 
-	bool HasObject(Object *object)
+	bool Has(Object *object)
 	{
 		std::vector<Object*> v;
 		typename std::vector<Object*>::iterator iter;
@@ -84,7 +84,7 @@ public:
 		return false;
 	}
 
-	Object* AddObject(Object *child, bool copy = false)
+	Object* Add(Object *child, bool copy = false)
 	{
 		Object *c = copy == false ? child : new Object(*child);
 
@@ -95,7 +95,7 @@ public:
 		return c;
 	}
 
-	Object* AddObject(Object *child, int order, bool copy = false)
+	Object* Add(Object *child, int order, bool copy = false)
 	{
 		Object *c = copy == false ? child : new Object(*child);
 
@@ -115,7 +115,7 @@ public:
 		return nullptr;
 	}
 
-	void DeleteObject(Object *child, bool remove)
+	void Delete(Object *child, bool remove)
 	{
 		typename std::vector<Object*>::iterator iter;
 
@@ -133,7 +133,7 @@ public:
 
 	}
 
-	void DeleteAllObjects(bool deleteClone)
+	void DeleteAll(bool deleteClone)
 	{
 		for(typename std::vector<Object*>::iterator iter = objects.begin(); iter != objects.end(); ++iter)
 		{
@@ -155,12 +155,12 @@ public:
 		return objects.end();
 	}
 
-	int GetObjectsCount()
+	int GetCount()
 	{
 		return objects.size();
 	}
 
-	Object* GetObject(unsigned int index)
+	Object* Get(unsigned int index)
 	{
 		return *(objects.begin()+index); 
 	}

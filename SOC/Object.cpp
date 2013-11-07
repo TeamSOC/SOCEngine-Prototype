@@ -25,13 +25,13 @@ namespace Rendering
 		if(transform)
 			delete transform;
 
-		DeleteAllObjects(true);
+		DeleteAll(true);
 		DeleteAllComponent();
 	}
 
 	Object* Object::AddObject(Object *child, int renderQueue, bool copy/* = false */)
 	{
-		Object *c =  Container::AddObject(child, renderQueue, copy);
+		Object *c =  Container::Add(child, renderQueue, copy);
 		transform->CalcRadius(c->transform);
 
 		return c;
@@ -39,7 +39,7 @@ namespace Rendering
 
 	Object* Object::AddObject(Object *child, bool copy/* = false */)
 	{
-		Object *c =  Container::AddObject(child, copy);
+		Object *c =  Container::Add(child, copy);
 		transform->CalcRadius(c->transform);
 
 		return c;

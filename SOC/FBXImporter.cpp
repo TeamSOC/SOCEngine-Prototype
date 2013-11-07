@@ -186,8 +186,8 @@ namespace Rendering
 			obj->name = fbxNode->GetName() ? fbxNode->GetName() : "None Node";
 			SetFbxTransform(obj, fbxNode);
 
-			if(parent->HasObject(obj) == false)
-				parent->AddObject(obj, false);
+			if(parent->Has(obj) == false)
+				parent->Add(obj, false);
 
 			if(atType == FbxNodeAttribute::eMesh)
 				CreateMeshComponent(obj, fbxNode);

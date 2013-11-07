@@ -18,7 +18,7 @@ namespace Rendering
 			{
 				Scene *scene = dynamic_cast<Scene*>(Device::DeviceDirector::GetInstance()->GetScene());
 				
-				if(scene->GetShaderManager()->LoadShaderFromFile("diffuse", &diffuse, false))
+				if(scene->GetShaderManager()->LoadShaderFromFile("test", &diffuse, false))
 				{
 					AddShader(diffuse);
 					SelectUseShader((SOC_uint)0);
@@ -35,7 +35,7 @@ namespace Rendering
 		public:
 			virtual void ConnectParamater()
 			{
-				diffuse->SetVariable("mainTex", texture);
+				diffuse->SetVariable("diffuseTex", texture);
 			}
 		};
 	}

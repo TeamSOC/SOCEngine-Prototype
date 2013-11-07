@@ -18,12 +18,11 @@ namespace Rendering
 		{
 			Device::Graphics::DX *device = dynamic_cast<Device::Graphics::DX*>( Device::DeviceDirector::GetInstance()->GetGraphics() );
 
-			LPDIRECT3DTEXTURE9 tex;
-			if( FAILED(D3DXCreateTextureFromFile(device->GetD3DDevice(), path, &tex)) )
+			if( FAILED(D3DXCreateTextureFromFile(device->GetD3DDevice(), path, &texture)) )
 				return false;
 
 			D3DSURFACE_DESC desc;
-			tex->GetLevelDesc(0, &desc);
+			texture->GetLevelDesc(0, &desc);
 
 			this->size.w = desc.Width;
 			this->size.h = desc.Height;

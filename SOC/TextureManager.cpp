@@ -20,9 +20,6 @@ namespace Rendering
 
 		Texture* TextureManager::AddTexture(std::string path, bool inResourceFolder)
 		{
-			if(inResourceFolder)
-				path.erase(0, resourceDirLen);
-
 			SOCHashMap<std::string, Texture*>::iterator iter = hash.find(path);
 
 			if(iter != hash.end())
@@ -32,6 +29,10 @@ namespace Rendering
 			bool success;
 
 			tex = new Texture();
+
+			if(inResourceFolder)
+				path.insert(0, RESOURCE_DIR);
+
 			success = tex->Create(path.c_str());
 
 			if(success == false)

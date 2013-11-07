@@ -55,11 +55,12 @@ namespace Rendering
 			}
 
 			pair<ShaderCode, Shader*> pairData;
-			pairData.first = code;
-
 			Shader *shader = new Shader(graphics, name.data());
-			shader->Compile(code);
 
+			if(shader->Compile(code) == false)
+				return false;
+
+			pairData.first = code;
 			pairData.second = shader;
 
 			hash.insert( SOCHashMap<std::string, pair<ShaderCode, Shader*>>::value_type(path, pairData));

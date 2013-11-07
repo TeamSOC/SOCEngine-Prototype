@@ -19,7 +19,7 @@ void TestScene::OnInitialize()
 {
 	camObject = new Object;
 
-	rootObjects->AddObject(camObject);
+	rootObjects->Add(camObject);
 
 	Rendering::Camera *camera = camObject->AddComponent<Camera>();	
 
@@ -31,9 +31,9 @@ void TestScene::OnInitialize()
 	success = importer->LoadScene("carl.fbx");
 
 	meshObject = importer->BuildObject(nullptr);
-	rootObjects->AddObject(meshObject);
+	rootObjects->Add(meshObject);
 
-	SOC_Vector3 v = SOC_Vector3(0.0, -100.0, 350);
+	SOC_Vector3 v = SOC_Vector3(0.0, -100.0, 250);
 	meshObject->GetTransform()->SetPosition(v);
 	meshObject->GetTransform()->radius = 1000.0f;
 
@@ -43,15 +43,17 @@ void TestScene::OnInitialize()
 	camera = camObject->GetComponent<Camera>();
 	cameraMgr->SetMainCamera(camera);
 
-	Texture::Texture *texture = textureMgr->AddTexture("Test.png");
+	meshObject->Get(1)->GetComponent<Mesh::Mesh>()->GetRenderer()->DeleteAllMaterial();
+
+	Texture::Texture *texture = textureMgr->AddTexture("Test.jpg");
 	Material::LambertMaterial *lambert = new Material::LambertMaterial(texture);
-	//
+	meshObject->Get(1)->GetComponent<Mesh::Mesh>()->GetRenderer()->AddMaterial(lambert, false);
 }
 
 void TestScene::OnUpdate(float dt)
 {
 	SOC_Vector3 eular = meshObject->GetTransform()->GetLocalEulerAngle();
-//	meshObject->GetTransform()->Rotate(0, 1.0f, 0.0f);
+	meshObject->GetTransform()->Rotate(0, 0.00001f, 0.0f);
 //	meshObject->GetTransform()->Translate(SOC_Vector3(0, 0, 0.0001));
 }
 
