@@ -28,12 +28,12 @@ void TestScene::OnInitialize()
 
 	bool success;
 	success = importer->Initialize("");
-	success = importer->LoadScene("carl.fbx");
+	success = importer->LoadScene("testcarl.fbx");
 
 	meshObject = importer->BuildObject(nullptr);
 	rootObjects->Add(meshObject);
 
-	SOC_Vector3 v = SOC_Vector3(0.0, -100.0, 250);
+	SOC_Vector3 v = SOC_Vector3(0.0, 50.0, 100);
 	meshObject->GetTransform()->SetPosition(v);
 	meshObject->GetTransform()->radius = 1000.0f;
 

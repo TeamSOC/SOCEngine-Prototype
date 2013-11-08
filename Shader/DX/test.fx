@@ -29,7 +29,13 @@ VS_OUTPUT vs( VS_INPUT Input )
 texture diffuseTex;
 sampler2D diffuseMap = sampler_state
 {
-    Texture = (diffuseTex);
+    Texture = <diffuseTex>;
+AddressU = wrap; 
+AddressV = wrap; 
+AddressW = wrap; 
+MIPFILTER = LINEAR; 
+MINFILTER = LINEAR; 
+MAGFILTER = LINEAR;
 };
 
 struct PS_INPUT 
@@ -50,7 +56,6 @@ technique SOC
    pass Pass_0
    {
       CULLMODE = CW;
-      ZWRITEENABLE = TRUE;
 
       VertexShader = compile vs_2_0 vs();
       PixelShader = compile ps_2_0 ps();

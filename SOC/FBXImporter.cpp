@@ -276,6 +276,9 @@ namespace Rendering
 			Color *colors = outVBElements->colors;
 			SOC_Vector2 **texcoords = outVBElements->texcoords.second;
 
+			//bool check[2009];
+			//ZeroMemory(check, sizeof(bool) * 2009);
+
 			int triangleAry[3] = { 0, 1, 2 };
 			int rectAry[6] = { 0, 1, 2, 0, 2, 3 };
 			int *ary = nullptr;
@@ -289,20 +292,27 @@ namespace Rendering
 				vertices[i] = SOC_Vector3((float)v[0], (float)v[1], -(float)v[2]);
 			}
 
+//			int index = 0;
 			for(int polyIdx = 0; polyIdx < polygonCount; ++polyIdx)
 			{
 				int polySize = fbxMesh->GetPolygonSize(polyIdx);
 
-				for(int i=0; i<polySize; ++i)
+				ary = polySize == 3 ? triangleAry : rectAry;
+				int count = polySize == 3 ? 3 : 6;
+
+				for(int i=0; i<count; ++i)
 				{
-					int ctrlIdx = fbxMesh->GetPolygonVertex(polyIdx, i);					
+					int ctrlIdx = fbxMesh->GetPolygonVertex(polyIdx, ary[i]);					
+					indices[vertexCount] = ctrlIdx;
 
 					for(int layerIdx = 0; layerIdx < layerCount; ++layerIdx)
 					{
 						FbxLayer *layer = fbxMesh->GetLayer(layerIdx);
 
-						if(texcoords)
-							ParseUV(layer, fbxMesh, ctrlIdx, polyIdx, i, &texcoords[layerIdx][ctrlIdx]);
+						if(layer)
+							ParseUV(layer, fbxMesh, ctrlIdx, polyIdx, i, ary[i], &texcoords[layerIdx][ctrlIdx]);
+
+//						check[ctrlIdx] = true;
 					}
 
 					FbxLayer *layer = fbxMesh->GetLayer(0);
@@ -323,23 +333,18 @@ namespace Rendering
 				}
 			}
 
-			int index = 0;
-			for(int polygonIdx = 0; polygonIdx < polygonCount; ++polygonIdx)
-			{
-				int polygonSize = fbxMesh->GetPolygonSize(polygonIdx);					
-
-				ary = polygonSize == 3 ? triangleAry : rectAry;
-				int count = polygonSize == 3 ? 3 : 6;
-
-				for(int vertexIdx = 0; vertexIdx < count; ++vertexIdx)
-				{
-					indices[index] = fbxMesh->GetPolygonVertex(polygonIdx, ary[vertexIdx]);
-
-					//skin mesh??
-
-					++index;
-				}
-			}
+			//int c = 0;
+			//for(int i=0; i<numOfVertex; ++i)
+			//{
+			//	for(int j=0; j<numOfVertex; ++j)
+			//	{
+			//		if(texcoords[0][i].x == texcoords[0][j].x &&
+			//			texcoords[0][i].y == texcoords[0][j].y && (i != j))
+			//		{
+			//			++c;
+			//		}
+			//	}
+			//}
 
 			return true;
 		}
@@ -449,7 +454,7 @@ namespace Rendering
 			return res;
 		}
 
-		bool FBXImporter::ParseUV(FbxLayer *layer, FbxMesh *fbxMesh, int ctrlPointIdx, int polygonIdx, int vertexIdx, SOC_Vector2 *out)
+		bool FBXImporter::ParseUV(FbxLayer *layer, FbxMesh *fbxMesh, int ctrlPointIdx, int polygonIdx, int vertexIdx, int pointIdx, SOC_Vector2 *out)
 		{
 			FbxLayerElementUV *fbxUV = layer->GetUVs();
 
@@ -471,8 +476,10 @@ namespace Rendering
 				}
 				else if(mappingMode == FbxLayerElement::eByPolygonVertex)
 				{
-					if(refMode == FbxLayerElement::eDirect || refMode == FbxLayerElement::eIndexToDirect)
-						index = fbxMesh->GetTextureUVIndex(polygonIdx, vertexIdx);
+					if(refMode == FbxLayerElement::eDirect)
+						index = vertexIdx;
+					else if(refMode == FbxLayerElement::eIndexToDirect)
+						index = fbxMesh->GetTextureUVIndex(polygonIdx, pointIdx);
 				}
 			}
 

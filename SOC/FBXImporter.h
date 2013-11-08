@@ -76,7 +76,7 @@ namespace Rendering
 			}
 
 			bool ParseNormals(fbxsdk_2014_1::FbxLayer *layer, int ctrlPointIdx, int vertexCount, SOC_Vector3 *out);
-			bool ParseUV(fbxsdk_2014_1::FbxLayer *layer, FbxMesh *fbxMesh, int ctrlPointIdx, int polygonIdx, int vertexIdx, SOC_Vector2 *out);
+			bool ParseUV(fbxsdk_2014_1::FbxLayer *layer, FbxMesh *fbxMesh, int ctrlPointIdx, int polygonIdx, int vertexIdx, int pointIdx, SOC_Vector2 *out);
 			bool ParseVertexColor(fbxsdk_2014_1::FbxLayer *layer, int ctrlPointIdx, int vertexCount, Color *out);
 			bool ParseTangents(fbxsdk_2014_1::FbxLayer *layer, int ctrlPointIdx, int vertexCount, SOC_Vector3 *out);
 			bool ParseBinormals(fbxsdk_2014_1::FbxLayer *layer, int ctrlPointIdx, int vertexCount, SOC_Vector3 *out);
