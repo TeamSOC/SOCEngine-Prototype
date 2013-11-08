@@ -49,6 +49,9 @@ technique SOC
 {
    pass Pass_0
    {
+      CULLMODE = CW;
+      ZWRITEENABLE = TRUE;
+
       VertexShader = compile vs_2_0 vs();
       PixelShader = compile ps_2_0 ps();
    }

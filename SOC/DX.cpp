@@ -55,6 +55,9 @@ namespace Device
 			if(FAILED(d3dHandle->CreateDevice( D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, d3dpp.hDeviceWindow, D3DCREATE_HARDWARE_VERTEXPROCESSING, &d3dpp, &device)))
 				return false;
 
+			//device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
+			//device->SetRenderState( D3DRS_ZENABLE,  true );
+
 			return true;
 		}
 

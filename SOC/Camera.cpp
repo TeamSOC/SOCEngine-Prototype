@@ -138,7 +138,6 @@ namespace Rendering
 	void Camera::GetViewMatrix(SOC_Matrix *outMatrix)
 	{
 		ownerTransform->GetWorldMatrix(outMatrix);
-		//ownerTransform->GetMatrix(outMatrix);
 
 		SOC_Vector3 worldPos = ownerTransform->GetWorldPosition();
 
