@@ -36,19 +36,17 @@ struct VS_INPUT
 {
    float4 position   : POSITION;
    float3 normal     : NORMAL;
-   float2 uv         : TEXCOORD0;
 };
 
 struct VS_OUTPUT 
 {
    float4 position   : POSITION;
    float3 normal     : TEXCOORD0;
-   float2 uv         : TEXCOORD1;
 
-   float4 worldPos   : TEXCOORD2;
+   float4 worldPos   : TEXCOORD1;
 
-   float3 lightDir   : TEXCOORD3;
-   float3 viewDir    : TEXCOORD4;
+   float3 lightDir   : TEXCOORD2;
+   float3 viewDir    : TEXCOORD3;
 };
 
 VS_OUTPUT vs_main( VS_INPUT i )
@@ -56,42 +54,30 @@ VS_OUTPUT vs_main( VS_INPUT i )
    VS_OUTPUT o;
 
    o.position = mul(i.position, worldViewProjMat);
-   o.normal   = mul(i.normal, (float3x3)worldMat);
-   o.uv       = i.uv;
+   o.normal   = normalize(mul(i.normal, (float3x3)worldMat));
 
    o.worldPos = mul(i.position, worldMat);
    o.lightDir = normalize(lights[0].pos.xyz - o.worldPos.xyz);
    o.viewDir  = normalize(cameraPos.xyz - o.worldPos.xyz);  
-      
+
    return o;
 }
-
-texture diffuseTex;
-sampler2D diffuseMap = sampler_state
-{
-    Texture = <diffuseTex>;
-};
 
 struct PS_INPUT 
 {
    float3 normal     : TEXCOORD0;
-   float2 uv         : TEXCOORD1;
-
-   float4 worldPos   : TEXCOORD2;
-
-   float3 lightDir   : TEXCOORD3;
-   float3 viewDir    : TEXCOORD4;
+   float4 worldPos   : TEXCOORD1;
+   float3 lightDir   : TEXCOORD2;
+   float3 viewDir    : TEXCOORD3;
 };
 
 
 float4 ps_main(PS_INPUT i) : COLOR
 {  
-   float3 normal = normalize(i.normal);
-   float3 lightDir = normalize(i.lightDir);
- 
-   float3 albedo = tex2D(diffuseMap, i.uv);
-   float3 halfVector = normalize(i.viewDir) + normalize(i.lightDir);
-   float dotLight = saturate( dot(normal, lightDir) );
+   float3 normal 	= normalize(i.normal);
+   float3 lightDir 	= normalize(i.lightDir);
+   float3 halfVector	= normalize(normalize(i.viewDir) + i.lightDir);
+   float  dotLight 	= saturate( dot(normal, lightDir) );
 
    float3 ambient = lights[0].ambient * material.ambient;
    
@@ -100,11 +86,11 @@ float4 ps_main(PS_INPUT i) : COLOR
 
    if(dotLight > 0.0f)
    {
-      diffuse = lights[0].diffuse * material.diffuse * albedo * dotLight;
-      specular = lights[0].specular * material.specular * pow( saturate( dot(normal, halfVector) ), material.shininess);
+      diffuse = lights[0].diffuse * material.diffuse * dotLight;
+      specular = lights[0].specular * material.specular * pow(saturate(dot(normal,halfVector)), material.shininess*5);
    }
 
-   return float4(diffuse + ambient, 1.0f);
+   return float4(diffuse + ambient + specular, 1.0f);
 }
 
 technique SOC

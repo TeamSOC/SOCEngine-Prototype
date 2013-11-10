@@ -1,116 +1,40 @@
-#define MAX_LIGHTS 8
-
-struct Light
-{
-   float3 ambient;
-   float3 diffuse;
-   float3 specular;
-
-   float3 pos;
-   float3 dir;
-   int type;
-
-   float range;
-   float spotAngle;
-};
-
-struct Material
-{
-   float3 ambient;
-   float3 diffuse;
-   float3 emissive;
-   float3 specular;
-   float transparent;
-   float shininess;
-};
-
-float4x4 worldMat;
-float4x4 worldViewProjMat;
-
-float4 cameraPos;
-
-Material material;
-Light lights[MAX_LIGHTS];
+float4x4 worldViewProjMat : WorldViewProjection;
 
 struct VS_INPUT 
 {
-   float4 position   : POSITION;
-   float3 normal     : NORMAL;
+   float4 Position : POSITION0;
+   float3 Normal : NORMAL;
+   float2 UV : TEXCOORD0;
 };
 
 struct VS_OUTPUT 
 {
-   float4 position   : POSITION;
-   float3 normal     : TEXCOORD0;
-
-   float4 worldPos   : TEXCOORD1;
-
-   float3 lightDir   : TEXCOORD2;
-   float3 viewDir    : TEXCOORD3;
+   float4 Position : POSITION0;
+   
 };
 
-VS_OUTPUT vs_main( VS_INPUT i )
+VS_OUTPUT vs( VS_INPUT Input )
 {
-   VS_OUTPUT o;
+   VS_OUTPUT Output;
 
-   o.position = mul(i.position, worldViewProjMat);
-   o.normal   = mul(i.normal, (float3x3)worldMat);
-
-   o.worldPos = mul(i.position, worldMat);
-   o.lightDir = normalize(lights[0].pos.xyz - o.worldPos.xyz);
-   o.viewDir  = normalize(cameraPos.xyz - o.worldPos.xyz);  
-      
-   return o;
+   Output.Position = mul( Input.Position, worldViewProjMat );
+   
+   return( Output );
+   
 }
 
-texture diffuseTex;
-sampler2D diffuseMap = sampler_state
-{
-    Texture = <diffuseTex>;
-};
-
-struct PS_INPUT 
-{
-   float3 normal     : TEXCOORD0;
-
-   float4 worldPos   : TEXCOORD1;
-
-   float3 lightDir   : TEXCOORD2;
-   float3 viewDir    : TEXCOORD3;
-};
-
-
-float4 ps_main(PS_INPUT i) : COLOR
-{  
-   float3 normal = normalize(i.normal);
-   float3 lightDir = normalize(i.lightDir);
- 
-//   float3 albedo = tex2D(diffuseMap, i.uv);
-   float3 halfVector = normalize(i.viewDir) + normalize(i.lightDir);
-   float dotLight = saturate( dot(normal, lightDir) );
-
-   float3 ambient = lights[0].ambient * material.ambient;
+float4 ps() : COLOR0
+{   
+   return( float4( 1.0f, 0.0f, 0.0f, 1.0f ) );
    
-   float3 diffuse = float3(0, 0, 0);
-   float3 specular = float3(0, 0, 0);
-
-   if(dotLight > 0.0f)
-   {
-      diffuse = lights[0].diffuse * material.diffuse;
-      specular = lights[0].specular * material.specular * pow( saturate( dot(normal, halfVector) ), material.shininess);
-   }
-
-   return float4(diffuse + ambient, 1.0f);
 }
 
 technique SOC
 {
-   pass
+   pass Pass_0
    {
-      CULLMODE = CW;
-
-      VertexShader = compile vs_3_0 vs_main();
-      PixelShader = compile ps_3_0 ps_main();
+      VertexShader = compile vs_2_0 vs();
+      PixelShader = compile ps_2_0 ps();
    }
 
 }

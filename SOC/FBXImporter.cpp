@@ -289,12 +289,7 @@ namespace Rendering
 			//bool check[2009];
 			//ZeroMemory(check, sizeof(bool) * 2009);
 
-			int triangleAry[3] = { 0, 1, 2 };
-			int rectAry[6] = { 0, 1, 2, 0, 2, 3 };
-			int *ary = nullptr;
-
 			int skinIdx		= 0;
-			int vertexCount = 0;
 
 			float radius = 0.0f, maxRadius = 0.0f;
 
@@ -321,45 +316,60 @@ namespace Rendering
 			if(outBounds)
 				outBounds->SetMinMax(minSize, maxSize);
 
-//			int index = 0;
-			std::vector<SOC_Vector3> testno;
+			int vertexCount = 0;
 			for(int polyIdx = 0; polyIdx < polygonCount; ++polyIdx)
 			{
 				int polySize = fbxMesh->GetPolygonSize(polyIdx);
 
-				ary = polySize == 3 ? triangleAry : rectAry;
-				int count = polySize == 3 ? 3 : 6;
-
-				for(int i=0; i<count; ++i)
+				for(int i=0; i<polySize; ++i)
 				{
-					int ctrlIdx = fbxMesh->GetPolygonVertex(polyIdx, ary[i]);					
-					indices[vertexCount] = ctrlIdx;
+					int ctrlIdx = fbxMesh->GetPolygonVertex(polyIdx, i);					
 
 					for(int layerIdx = 0; layerIdx < layerCount; ++layerIdx)
 					{
 						FbxLayer *layer = fbxMesh->GetLayer(layerIdx);
 
 						if(layer)
-							ParseUV(layer, fbxMesh, ctrlIdx, polyIdx, vertexCount, ary[i], &texcoords[layerIdx][ctrlIdx]);
+							ParseUV(layer, fbxMesh, ctrlIdx, polyIdx, vertexCount, i, &texcoords[layerIdx][ctrlIdx]);
 					}
 
 					FbxLayer *layer = fbxMesh->GetLayer(0);
 
 					if(normals)
-					{
 						ParseNormals(layer, ctrlIdx, vertexCount, &normals[ctrlIdx]);
-						testno.push_back(normals[ctrlIdx]);
-					}
+
 					if(binormals)
-						ParseBinormals(layer, ctrlIdx, i, &binormals[ctrlIdx]);
+						ParseBinormals(layer, ctrlIdx, vertexCount, &binormals[ctrlIdx]);
 
 					if(tangents)
-						ParseTangents(layer, ctrlIdx, i, &tangents[ctrlIdx]);
+						ParseTangents(layer, ctrlIdx, vertexCount, &tangents[ctrlIdx]);
 
 					if(colors)
-						ParseVertexColor(layer, ctrlIdx, i, &colors[ctrlIdx]);
+						ParseVertexColor(layer, ctrlIdx, vertexCount, &colors[ctrlIdx]);
 
 					vertexCount++;
+				}
+			}
+
+			int triangleAry[3] = { 0, 1, 2 };
+			int rectAry[6] = { 0, 1, 2, 0, 2, 3 };
+			int *ary = nullptr;
+
+			int index = 0;
+			for(int polygonIdx = 0; polygonIdx < polygonCount; ++polygonIdx)
+			{
+				int polygonSize = fbxMesh->GetPolygonSize(polygonIdx);					
+
+				ary = polygonSize == 3 ? triangleAry : rectAry;
+				int count = polygonSize == 3 ? 3 : 6;
+
+				for(int vertexIdx = 0; vertexIdx < count; ++vertexIdx)
+				{
+					indices[index] = fbxMesh->GetPolygonVertex(polygonIdx, ary[vertexIdx]);
+
+					//skin mesh??
+
+					++index;
 				}
 			}
 
