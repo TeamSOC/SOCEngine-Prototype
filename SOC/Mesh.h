@@ -33,7 +33,7 @@ namespace Rendering
 			~Mesh(void);
 
 		public:
-			virtual void Render(Rendering::TransformParameters *transform, Rendering::Light::LightParameters *light);
+			virtual void Render(TransformParameters *transform, std::vector<Light::LightParameters> *lights, SOC_Vector4 &viewPos);
 
 		public:
 			MeshRenderer* GetRenderer();
@@ -44,6 +44,7 @@ namespace Rendering
 			virtual void Destroy();
 
 		public:
+
 			bool Create(MeshDatas *meshData);
 		};
 

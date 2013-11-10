@@ -9,7 +9,6 @@ namespace Rendering
 			vertexBufferSize = 0;
 			numOfVertex = 0;
 			numOfTriangle = 0;
-			radius = 0.0f;
 			triangleType = SOC_TRIANGLE_LIST;
 
 			vertexBuffer = nullptr;
@@ -138,31 +137,11 @@ namespace Rendering
 			if( vertexBuffer->Lock(&vertexBufferData) == false )
 				return false;
 
-			float maxRadius = 0.0f;
-			float rad = 0.0f;
-			SOC_Vector3 minSize(0, 0, 0), maxSize(0, 0, 0);
-
 			for(int i=0; i<numOfVertex; ++i)
 			{
 				*( (SOC_Vector3*)vertexBufferData ) = vertices[i];
 				vertexBufferData = (SOC_Vector3*)vertexBufferData + 1;
 
-				/* calculate radius */
-				rad = SOCVec3Length(&vertices[i]);
-
-				if( maxRadius < rad )
-					maxRadius = rad;
-				/* end */
-
-				/* calculate AABB */
-
-				for(int j=0; j<3; ++j)
-				{
-					if(minSize[j] > vertices[i][j])	minSize[j] = vertices[i][j];
-					else if(maxSize[j] < vertices[i][j]) maxSize[j] = vertices[i][j];
-				}
-
-				/* end */
 				if(normals)
 				{
 					*( (SOC_Vector3*)vertexBufferData ) = normals[i];
@@ -203,9 +182,6 @@ namespace Rendering
 
 			if( vertexBuffer->UnLock() == false)
 				return false;
-
-			radius = maxRadius;
-			bounds.SetMinMax(minSize, maxSize);
 
 			return true;
 		}

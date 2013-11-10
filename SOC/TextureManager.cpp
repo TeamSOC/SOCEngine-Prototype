@@ -1,16 +1,18 @@
 #include "TextureManager.h"
 #include <string>
+#include "ResourcesFolder.h"
 
 using namespace std;
 
 namespace Rendering
 {
+	using namespace Utility;
+
 	namespace Texture
 	{
 
 		TextureManager::TextureManager()
 		{
-			resourceDirLen = strlen(RESOURCE_DIR);
 		}
 
 		TextureManager::~TextureManager()
@@ -30,10 +32,8 @@ namespace Rendering
 
 			tex = new Texture();
 
-			if(inResourceFolder)
-				path.insert(0, RESOURCE_DIR);
-
-			success = tex->Create(path.c_str());
+			std::string &str = ResourcesFolder::GetPath(path.data());
+			success = tex->Create(str.data());
 
 			if(success == false)
 				return NULL;
@@ -43,18 +43,13 @@ namespace Rendering
 			return tex;
 		}
 
-		Texture* TextureManager::FindTexture(std::string path, bool inResourceFolder)
+		Texture* TextureManager::FindTexture(std::string path)
 		{
-			if(inResourceFolder)
-				path.erase(0, resourceDirLen);
 			return hash.find(path)->second;
 		}
 
-		void TextureManager::Delete(std::string path, bool inResourceFolder/* = true*/)
+		void TextureManager::Delete(std::string path)
 		{
-			if(inResourceFolder)
-				path.erase(0, resourceDirLen);
-
 			SOCHashMap<string, Texture*>::iterator iter = hash.find(path);
 
 			if( iter == hash.end() )

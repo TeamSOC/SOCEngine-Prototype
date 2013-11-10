@@ -4,24 +4,27 @@
 #include "Sphere.h"
 #include "Component.h"
 
+
+
 namespace Rendering
 {
 	namespace Light
 	{
-#define MAX_LIGHT 8
-
 		class LightForm : public Component
 		{
 		public:
 			static const Component::Type ComponentType = Component::Type::Light;
 
 		public:
-			enum LightType{ LIGHTTYPE_DIRECTIONAL = 0, LIGHTTYPE_POINT, LIGHTTYPE_SPOT };
+			enum LightType{ DIRECTIONAL = 0, POINT, SPOT };
+
+		protected:
 			LightType type;
 		
 		public:
-			Color diffuseColor;
-			Color specularColor;
+			Color ambient;
+			Color diffuse;
+			Color specular;
 		
 			float range;
 			float specularPower;
@@ -33,7 +36,11 @@ namespace Rendering
 			virtual bool Intersect(Intersection::Sphere &sphere) = 0;
 			SOC_Vector3& GetWorldPosition();
 			SOC_Vector3& GetDirection();
-//			virtual Component::Type GetComponentType();
+
+		public:
+			virtual void Initialize();
+			virtual void Destroy();
+			LightType GetType();
 		};
 	}
 }

@@ -37,9 +37,6 @@ namespace Rendering
 			int			numOfVertex;
 			int			numOfTriangle;
 
-			float				radius;
-			Intersection::AABB  bounds;
-
 			SOC_TRIANGLE triangleType;
 
 			

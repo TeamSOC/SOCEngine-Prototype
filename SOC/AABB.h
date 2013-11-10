@@ -31,7 +31,7 @@ namespace Intersection
 		
 		float SqrDistance(SOC_Vector3 point);
 
-		bool IntersectRay(Ray ray, SOC_Vector3 *outPickPoint = NULL, float gap = 0.0);
+		bool Intersects(Ray ray, SOC_Vector3 *outPickPoint = NULL, float gap = 0.0);
 
 	public:
 		bool operator!=(AABB &box);

@@ -28,14 +28,13 @@ void TestScene::OnInitialize()
 
 	bool success;
 	success = importer->Initialize("");
-	success = importer->LoadScene("testcarl.fbx");
+	success = importer->LoadScene("sphere.fbx");
 
 	meshObject = importer->BuildObject(nullptr);
 	rootObjects->Add(meshObject);
 
-	SOC_Vector3 v = SOC_Vector3(0.0, 50.0, 100);
+	SOC_Vector3 v = SOC_Vector3(0.0, 0.0, 3);
 	meshObject->GetTransform()->SetPosition(v);
-	meshObject->GetTransform()->radius = 1000.0f;
 
 	camObject->GetTransform()->SetPosition(SOC_Vector3(0, 0, 0));
 	camObject->GetTransform()->SetDirection(SOC_Vector3(0, 0, 1));
@@ -43,16 +42,23 @@ void TestScene::OnInitialize()
 	camera = camObject->GetComponent<Camera>();
 	cameraMgr->SetMainCamera(camera);
 
-	meshObject->Get(1)->GetComponent<Mesh::Mesh>()->GetRenderer()->DeleteAllMaterial();
+	//meshObject->Get(1)->GetComponent<Mesh::Mesh>()->GetRenderer()->DeleteMaterial();
 
-	Texture::Texture *texture = textureMgr->AddTexture("Test.jpg");
-	Material::LambertMaterial *lambert = new Material::LambertMaterial(texture);
-	meshObject->Get(1)->GetComponent<Mesh::Mesh>()->GetRenderer()->AddMaterial(lambert, false);
+	//Texture::Texture *texture = textureMgr->AddTexture("Test.jpg");
+	//Material::LambertMaterial *lambert = new Material::LambertMaterial(texture);
+	//meshObject->Get(0)->GetComponent<Mesh::Mesh>()->GetRenderer()->SetMaterial(lambert);
+
+	lightObj = new Object;
+	rootObjects->Add(lightObj);
+	Light::DirectionalLight *light = lightObj->AddComponent<Light::DirectionalLight>();
+	lightMgr->AddLight(light);
+	lightObj->GetTransform()->SetPosition(SOC_Vector3(500, 500, -500));
+	lightObj->GetTransform()->LookAt(meshObject->GetTransform()->GetWorldPosition());
 }
 
 void TestScene::OnUpdate(float dt)
 {
-	SOC_Vector3 eular = meshObject->GetTransform()->GetLocalEulerAngle();
+	SOC_Vector3 eular = lightObj->GetTransform()->GetLocalEulerAngle();
 	meshObject->GetTransform()->Rotate(0, 0.00001f, 0.0f);
 //	meshObject->GetTransform()->Translate(SOC_Vector3(0, 0, 0.0001));
 }

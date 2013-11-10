@@ -8,107 +8,63 @@ namespace Rendering
 		{
 			castShadow = false;
 			reciveShadow = false;
+			this->materialElements = nullptr;
 
 			if(beginFunc && endFunc)
 			{
 				(*beginFunc)	= this->Begin;
 				(*endFunc)		= this->End;
 			}
-
-
 		}
 
 		MeshRenderer::~MeshRenderer(void)
 		{
-			DeleteAllMaterial();
+			DeleteMaterial();
 		}
 
-		void MeshRenderer::AddMaterial(Material::Material *material, bool copy)
+		void MeshRenderer::SetMaterial(Material::Material *material)
 		{
-			Material::Material *m = copy ? new Material::Material(*material) : material; // Material::Copy(material) : material;
-			materials.push_back(m);
+			this->material = material;
+
+			if(materialElements)
+				material->SetElements(*materialElements);
 		}
 
-		bool MeshRenderer::DeleteMaterial(Material::Material *material)
+		void MeshRenderer::DeleteMaterial()
 		{
-			std::vector<Material::Material*>::iterator iter;
-			for(iter = materials.begin(); iter != materials.end(); ++iter)
-			{
-				if(material == (*iter))
-				{
-					Utility::SAFE_DELETE(*iter);
-					materials.erase(iter);
-					return true;
-				}
-			}
-
-			return false;
-		}
-
-		void MeshRenderer::DeleteAllMaterial()
-		{
-			std::vector<Material::Material*>::iterator iter;
-			for(iter = materials.begin(); iter != materials.end(); ++iter)
-				Utility::SAFE_DELETE(*iter);
-
-			materials.clear();
-		}
-
-		Material::Material* MeshRenderer::FindMaterial(const char *name)
-		{
-			std::vector<Material::Material*>::iterator iter;
-			for(iter = materials.begin(); iter != materials.end(); ++iter)
-			{
-				if( strcmp( (*iter)->GetName(), name ) == 0 )
-					return (*iter);
-			}
-
-			return nullptr;
+			Utility::SAFE_DELETE(material);
 		}
 
 		void MeshRenderer::Begin(MeshRenderer *renderer)
 		{
-			std::vector<Material::Material*>::iterator iter;
-			std::vector<Material::Material*>::iterator begin = renderer->materials.begin();
-			std::vector<Material::Material*>::iterator end = renderer->materials.end();
-
-			for(iter = begin; iter != end; ++iter)
-			{
-				(*iter)->Begin();
-				(*iter)->BeginPass();
-			}
+			Material::Material* material = renderer->material;
+			material->Begin();
+			material->BeginPass(0);
 		}
 
 		void MeshRenderer::End(MeshRenderer *renderer)
 		{
-			std::vector<Material::Material*>::iterator iter;
-			std::vector<Material::Material*>::iterator begin = renderer->materials.begin();
-			std::vector<Material::Material*>::iterator end = renderer->materials.end();
-
-			for(iter = begin; iter != end; ++iter)
-			{
-				(*iter)->EndPass();
-				(*iter)->End();
-			}
+			Material::Material* material = renderer->material;
+			material->EndPass();
+			material->End();
 		}
 
-		SOC_uint MeshRenderer::GetMaterialCount()
+		void MeshRenderer::ConnectParameters(TransformParameters *transform, std::vector<Light::LightParameters> *lights, SOC_Vector4 &viewPos)
 		{
-			return materials.size();
+			material->SetUseShaderRequiredParameters(transform, lights, viewPos);
+			material->ConnectParamater();
 		}
 
-		Material::Material* MeshRenderer::GetMaterial(int idx)
+		bool MeshRenderer::HasMaterial()
 		{
-			return *( materials.begin() + idx );
+			return material != nullptr;
 		}
 
-		void MeshRenderer::ConnectParameters(TransformParameters *transform, Light::LightParameters *light)
+		void MeshRenderer::SetMaterialElements(Material::MaterialElements *materialElements)
 		{
-			for(std::vector<Material::Material*>::iterator iter = materials.begin(); iter != materials.end(); ++iter)
-			{
-				(*iter)->SetUseShaderRequiredParameters(transform, light);
-				(*iter)->ConnectParamater();
-			}
+			this->materialElements = materialElements;
+			if(material)
+				material->SetElements(*materialElements);
 		}
 	}
 }

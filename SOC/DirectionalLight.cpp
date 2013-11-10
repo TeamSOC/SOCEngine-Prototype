@@ -6,7 +6,7 @@ namespace Rendering
 	{
 		DirectionalLight::DirectionalLight() : LightForm()
 		{
-			type = LIGHTTYPE_DIRECTIONAL;
+			type = DIRECTIONAL;
 		}
 
 		DirectionalLight::~DirectionalLight()

@@ -14,7 +14,7 @@ namespace Rendering
 
 		public:
 			virtual bool Intersect(Intersection::Sphere &sphere);
-		};
 
+		};
 	}
 }

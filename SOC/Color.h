@@ -49,7 +49,8 @@ namespace Rendering
 
 	public:
 		Color& GetColor();
-		SOC_Vector4 GetVector();
+		SOC_Vector3 GetVector3();
+		SOC_Vector4 GetVector4();
 
 	public:
 		void SetColor(Color &color);

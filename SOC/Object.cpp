@@ -68,7 +68,7 @@ namespace Rendering
 
 	bool Object::Culling(Frustum *frustum)
 	{
-		culled = frustum->In(transform->GetWorldPosition(), transform->radius);
+		culled = frustum->In(transform->GetWorldPosition(), transform->GetRadius());
 
 		if(culled == false)
 		{
@@ -99,14 +99,14 @@ namespace Rendering
 	{
 		if(culled)	return;
 
-		Sphere thisObject(transform->GetWorldPosition(), transform->radius);
+		Sphere thisObject(transform->GetWorldPosition(), transform->GetRadius());
 		std::vector<LightForm*> intersectLights;
 
-		//for(std::vector<LightForm*>::iterator iter = lights->begin(); iter != lights->end(); ++iter)
-		//{
-		//	if((*iter)->Intersect(thisObject))
-		//		intersectLights.push_back((*iter));
-		//}
+		for(std::vector<LightForm*>::iterator iter = lights->begin(); iter != lights->end(); ++iter)
+		{
+			if((*iter)->Intersect(thisObject))
+				intersectLights.push_back((*iter));
+		}
 		
 		SOC_Matrix worldMat, worldViewProjMat;
 
@@ -114,38 +114,39 @@ namespace Rendering
 		worldViewProjMat = worldMat;
 		worldViewProjMat *= (*viewProjMat);
 
-		TransformParameters tp(&worldMat, viewMat, projMat, viewProjMat, &worldViewProjMat);
-		LightParameters lp;
+		TransformParameters transformParam;
+		transformParam.SetMatrix(&worldMat, viewMat, projMat, viewProjMat, &worldViewProjMat);
+
+		vector<LightParameters> lightParam;
+		SOC_Vector4 viewPos = SOC_Vector4(viewMat->_41, viewMat->_42, viewMat->_43, 1.0f);
 
 		if(hasMesh)
 		{
-			SOC_Vector4 diffuseColorAry[MAX_LIGHT], specularColorAry[MAX_LIGHT];
-			float rangeAry[MAX_LIGHT], specularPowerAry[MAX_LIGHT];
-			SOC_Vector4 lightPosAry[MAX_LIGHT], lightDirAry[MAX_LIGHT];
-			float spotAngleAry[MAX_LIGHT];
-			int typeAry[MAX_LIGHT];
-
 			int intersectLightCount = intersectLights.size();
-			lp.count = intersectLightCount > MAX_LIGHT ? MAX_LIGHT : intersectLightCount;
+			int count = intersectLightCount > MAX_LIGHT ? MAX_LIGHT : intersectLightCount;
 
-			for(int i=0; i < lp.count; ++i)
+			for(int i=0; i < count; ++i)
 			{
 				LightForm *light = intersectLights[i];
-				diffuseColorAry[i]  = light->diffuseColor.GetVector();
-				specularColorAry[i] = light->specularColor.GetVector();
-				rangeAry[i] = light->range;
-				specularPowerAry[i] = light->specularPower;
-				lightPosAry[i] = SOC_Vector4(light->GetWorldPosition(), 1.0f);
-				lightDirAry[i] = SOC_Vector4(light->GetDirection(), 1.0f);
-				typeAry[i] = (int)light->type;
-				spotAngleAry[i] = light->type == LightForm::LIGHTTYPE_SPOT ? static_cast<SpotLight*>(light)->spotAngle : 1.0f;		
-			}
+				SOC_Vector3 w = light->GetWorldPosition();
+				SOC_Vector3 d = light->GetDirection();
 
-			lp.viewPos = SOC_Vector4(viewMat->_41, viewMat->_42, viewMat->_43, 1.0f);
+				LightParameters lp;
+				lp.SetData(light->ambient.GetVector3(),
+					light->diffuse.GetVector3(),
+					light->specular.GetVector3(), 
+					light->range, 
+					w,
+					d,
+					LightForm::SPOT == light->GetType() ? static_cast<SpotLight*>(light)->spotAngle : 1.0f,
+					(int)light->GetType());
+
+				lightParam.push_back(lp);
+			}
 		}
 
 		for(std::vector<Component*>::iterator iter = components.begin(); iter != components.end(); ++iter)
-			(*iter)->Render(&tp, &lp);
+			(*iter)->Render(&transformParam, &lightParam, viewPos);
 
 		for(std::vector<Object*>::iterator iter = objects.begin(); iter != objects.end(); ++iter)
 			(*iter)->Render(lights, viewMat, projMat, viewProjMat);
@@ -153,7 +154,7 @@ namespace Rendering
 
 	bool Object::Intersect(Intersection::Sphere &sphere)
 	{
-		return sphere.Intersection(transform->GetWorldPosition(), transform->radius);
+		return sphere.Intersection(transform->GetWorldPosition(), transform->GetRadius());
 	}
 
 	//void Object::_Render(std::vector<LightForm*> *lights, SOC_Matrix *viewMat, SOC_Matrix *projMat, SOC_Matrix *viewProjMat)

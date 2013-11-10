@@ -14,7 +14,7 @@ void Component::Update(float deltaTime)
 	//null
 }
 
-void Component::Render(Rendering::TransformParameters *transform, Rendering::Light::LightParameters *light)
+void Component::Render(Rendering::TransformParameters *transform, std::vector<Rendering::Light::LightParameters> *lights, SOC_Vector4 &viewPos)
 {
 	//null
 }

@@ -21,6 +21,8 @@ namespace Rendering
 
 			virtual bool SetVariable(const char *parameter, SOC_Matrix *m);
 			virtual bool SetVariable(const char *parameter, SOC_Matrix *ary, SOC_uint count);
+			virtual bool SetVariable(const char *parameter, SOC_Vector3 *v);
+			virtual bool SetVariable(const char *parameter, SOC_Vector3 *ary, SOC_uint count);
 			virtual bool SetVariable(const char *parameter, SOC_Vector4 *v);
 			virtual bool SetVariable(const char *parameter, SOC_Vector4 *ary, SOC_uint count);
 			virtual bool SetVariable(const char *parameter, bool b);
@@ -29,6 +31,10 @@ namespace Rendering
 			virtual bool SetVariable(const char *parameter, int i);
 			virtual bool SetVariable(const char *parameter, int *ary, SOC_uint count);
 			virtual bool SetVariable(const char *parameter, Texture::Texture *texture);
+			virtual bool SetVariable(const char *parameter, void *data, SOC_uint size);
+
+			virtual bool SetStructArrayVariable(const char *variableName, SOC_uint index, const char *component, void* data, SOC_uint size);
+			virtual bool SetStructVariable(const char *variableName, const char *component, void* data, SOC_uint size);
 
 			virtual bool IsParameterUsed(const char *parameter, const char *technique = DEFAULT_TECHNIQUE);
 
@@ -37,8 +43,7 @@ namespace Rendering
 			virtual bool Begin();
 			virtual bool BeginPass(SOC_uint pass);
 			virtual bool EndPass();
-			virtual bool End();
-
+			virtual bool End();			
 		};
 	}
 }

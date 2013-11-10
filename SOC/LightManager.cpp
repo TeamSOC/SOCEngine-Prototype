@@ -22,7 +22,13 @@ namespace Rendering
 			{
 				SOC_Vector3 worldP = (*iter)->GetWorldPosition();
 				float radius = (*iter)->range;
-				if( frustum->In( worldP, radius ) )
+				
+				if((*iter)->GetType() == LightForm::LightType::DIRECTIONAL)
+				{
+					out->push_back(*iter);
+					intersect = true;
+				}
+				else if( frustum->In( worldP, radius ) )
 				{
 					out->push_back( *iter );
 					intersect = true;

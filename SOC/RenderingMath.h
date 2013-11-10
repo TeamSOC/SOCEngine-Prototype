@@ -18,6 +18,8 @@
 #define sqr(x) ((x)*(x))
 #endif
 
+#define MAX_LIGHT 8
+
 #if defined(WIN32) && !defined(_USE_GL_DEFINES)
 
 #include <d3dx9math.h>

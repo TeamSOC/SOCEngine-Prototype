@@ -630,5 +630,13 @@
     <ClInclude Include="LambertMaterial.h">
       <Filter>Engine\Rendering\Material\LambertMaterial</Filter>
     </ClInclude>
+    <ClInclude Include="ResourcesFolder.h">
+      <Filter>Engine\Common\Utility</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Shader\DX\test.fx">
+      <Filter>Source\TestScene</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

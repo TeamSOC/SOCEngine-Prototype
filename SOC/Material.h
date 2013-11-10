@@ -15,7 +15,6 @@ namespace Rendering
 			std::vector<Shader::Shader*> shaders;
 			Shader::Shader* useShader;
 
-		public:
 			Material::MaterialElements elements;
 
 		public:
@@ -70,9 +69,11 @@ namespace Rendering
 			bool GetShaderRequiredParameters(unsigned int index, SOC_byte *outMatrixParameters, SOC_byte *outLightParameters);
 			bool GetUseShaderRequiredParameters(SOC_byte *outMatrixParameters, SOC_byte *outLightParameters);
 
-			void SetUseShaderRequiredParameters(TransformParameters *transform, Light::LightParameters *light);
+			void SetUseShaderRequiredParameters(TransformParameters *transform, std::vector<Light::LightParameters> *lights, SOC_Vector4 &viewPos);
 
 			virtual void ConnectParamater(){}
+
+			void SetElements(MaterialElements &element);
 		};
 
 	}

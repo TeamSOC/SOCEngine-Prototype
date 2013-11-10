@@ -1,6 +1,7 @@
 #pragma once
 
 #include "RenderingMath.h"
+#include "AABB.h"
 
 namespace Rendering
 {
@@ -28,8 +29,9 @@ namespace Rendering
 
 		SOC_Matrix matrix;
 
-	public:
+	private:
 		float radius;
+		Intersection::AABB bound;
 
 	public:
 		Transform(Transform* parent);
@@ -91,5 +93,11 @@ namespace Rendering
 		SOC_Vector3 GetForward();
 		SOC_Vector3 GetRight();
 		SOC_Vector3 GetUp();
+
+		float GetRadius();
+		void SetRadius(float radius);
+
+		void SetBound(Intersection::AABB &bound);
+		Intersection::AABB GetBound();
 	};
 }

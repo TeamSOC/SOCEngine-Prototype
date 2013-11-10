@@ -394,4 +394,23 @@ namespace Rendering
 		return up;
 	}
 
+	float Transform::GetRadius()
+	{
+		return radius;
+	}
+
+	void Transform::SetRadius(float radius)
+	{
+		this->radius = radius;
+	}
+
+	void Transform::SetBound(Intersection::AABB &bound)
+	{
+		this->bound = bound;
+	}
+
+	Intersection::AABB Transform::GetBound()
+	{
+		return this->bound;
+	}
 }

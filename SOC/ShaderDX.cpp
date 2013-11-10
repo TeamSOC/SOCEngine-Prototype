@@ -16,6 +16,7 @@ namespace Rendering
 		{
 			if(shader)
 				shader->Release();
+
 		}
 
 		bool ShaderDX::Compile(string &shaderCode)
@@ -64,6 +65,16 @@ namespace Rendering
 			return SUCCEEDED(shader->SetMatrixArray(parameter, ary, count));
 		}
 
+		bool ShaderDX::SetVariable(const char *parameter, SOC_Vector3 *v)
+		{
+			return SUCCEEDED(shader->SetValue(parameter, v, sizeof(SOC_Vector3)));
+		}
+
+		bool ShaderDX::SetVariable(const char *parameter, SOC_Vector3 *ary, SOC_uint count)
+		{
+			return SUCCEEDED(shader->SetValue(parameter, ary, sizeof(SOC_Vector3) * count));
+		}
+
 		bool ShaderDX::SetVariable(const char *parameter, SOC_Vector4 *v)
 		{
 			return SUCCEEDED(shader->SetVector(parameter, v));
@@ -110,6 +121,28 @@ namespace Rendering
 			return SUCCEEDED( shader->SetTexture(parameter, tex) );
 		}
 
+		bool ShaderDX::SetVariable(const char *parameter, void *data, SOC_uint size)
+		{
+			return SUCCEEDED(shader->SetValue(parameter, data, size));
+		}
+
+		bool ShaderDX::SetStructArrayVariable(const char *structName, SOC_uint index, const char *component, void* data, SOC_uint size)
+		{
+			D3DXHANDLE structHandle = shader->GetParameterElement(structName, index);
+			D3DXHANDLE componentHandle = shader->GetParameterByName(structHandle, component);
+
+			return SUCCEEDED(shader->SetValue(componentHandle, data, size));;
+		}
+
+		bool ShaderDX::SetStructVariable(const char *variableName, const char *component, void* data, SOC_uint size)
+		{
+			std::string parameter = variableName;
+			parameter += ".";
+			parameter += component;
+		
+			return SetVariable(parameter.c_str(), data, size);
+		}
+
 		bool ShaderDX::Begin()
 		{
 			return SUCCEEDED( shader->Begin(&this->numPass, NULL) );
@@ -138,28 +171,45 @@ namespace Rendering
 		void ShaderDX::GetRequiredParameters(SOC_byte *outMatrixParamters, SOC_byte *outLightParameters, char *technique)
 		{
 			if(IsParameterUsed(BasicParameterNames::GetWorldMatrix(), technique))
-				requiredMatrixParam |= REQUIRED_MATRIX_WORLD;
+				requiredMatrixParam |= REQUIRED_TRANSFORM::WORLD;
 
 			if(IsParameterUsed(BasicParameterNames::GetViewMatrix(), technique))
-				requiredMatrixParam |= REQUIRED_MATRIX_VIEW;
+				requiredMatrixParam |= REQUIRED_TRANSFORM::VIEW;
 
 			if(IsParameterUsed(BasicParameterNames::GetProjMatrix(), technique))
-				requiredMatrixParam |= REQUIRED_MATRIX_PROJECTION;
+				requiredMatrixParam |= REQUIRED_TRANSFORM::PROJECTION;
 
 			if(IsParameterUsed(BasicParameterNames::GetViewProjMatrix(), technique))
-				requiredMatrixParam |= REQUIRED_MATRIX_VP;
+				requiredMatrixParam |= REQUIRED_TRANSFORM::VIEW_PROJECTION;
 
 			if(IsParameterUsed(BasicParameterNames::GetWorldViewProjMatrix(), technique))
-				requiredMatrixParam |= REQUIRED_MATRIX_WVP;
+				requiredMatrixParam |= REQUIRED_TRANSFORM::WORLD_VIEW_PROJECTION;
 
-			if(IsParameterUsed(BasicParameterNames::GetLightDiffuseColor(), technique))
-				requiredLightParam |= REQUIRED_LIGHT_DIFFUSE;
+			const char *structName = nullptr;
+			bool test;// = shader->SetValue("material.ambient", nullptr, sizeof(float));
+			std::string &checkParam = BasicParameterNames::GetMaterialElement(BasicParameterNames::GetAmbient());
 
-			if(IsParameterUsed(BasicParameterNames::GetLightSpecularColor(), technique))
-				requiredLightParam |= REQUIRED_LIGHT_SPECULAR;
+			SOC_Vector4 temp(0, 0, 0, 0);
+			if(SetVariable(checkParam.c_str(), &temp))
+			{
+				requiredLightParam |= REQUIRED_LIGHTING::MATERIAL;
 
-			if(IsParameterUsed(BasicParameterNames::GetAmbientColor(), technique))
-				requiredLightParam |= REQUIRED_LIGHT_AMBIENT_COLOR;
+				float tempfloat = 0.0f;
+				if(SetVariable(BasicParameterNames::GetMaterialElement(BasicParameterNames::GetMaterialShininess()).c_str(), tempfloat))
+					requiredLightParam |= REQUIRED_LIGHTING::MATERIAL_SHININESS;
+			}
+			
+			structName = shader->GetParameterElement(BasicParameterNames::GetLight(), 0);
+			if(structName != nullptr)
+			{
+				requiredLightParam |= REQUIRED_LIGHTING::LIGHT;
+				
+				if(shader->GetParameterByName(structName, BasicParameterNames::GetLightRange()) != nullptr)
+					requiredLightParam |= REQUIRED_LIGHTING::LIGHT_RANGE;
+
+				if(shader->GetParameterByName(structName, BasicParameterNames::GetLightSpotAngle()) != nullptr)
+					requiredLightParam |= REQUIRED_LIGHTING::LIGHT_SPOTANGLE;
+			}
 
 			if(outMatrixParamters)
 				*outMatrixParamters = requiredMatrixParam;

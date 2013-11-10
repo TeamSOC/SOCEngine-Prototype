@@ -34,64 +34,88 @@ namespace Rendering
 			return worldViewProjMat;
 		}
 
-		const char* BasicParameterNames::GetAmbientColor()
-		{
-			static const char *ambientColor	= "ambientColor";
-			return ambientColor;
-		}
-
-		const char* BasicParameterNames::GetLightDiffuseColor()
-		{
-			static const char *lightDiffuseColor = "lightDiffuesColor";
-			return lightDiffuseColor;
-		}
-
-		const char* BasicParameterNames::GetLightSpecularColor()
-		{
-			static const char *lightSpecularColor = "lightSpecularColor";
-			return lightSpecularColor;
-		}
-
-		const char* BasicParameterNames::GetLightSpecularPower()
-		{
-			static const char *lightSpecularPower = "lightSpecularPower";
-			return lightSpecularPower;
-		}
-
 		const char* BasicParameterNames::GetViewPos()
 		{
-			static const char *viewPos = "viewPos";
+			static const char *viewPos = "cameraPos";
 			return viewPos;
 		}
 
-		const char* BasicParameterNames::GetLightPos()
+		const char* BasicParameterNames::GetMaterial()
 		{
-			static const char *lightPos = "lightPos";
-			return lightPos;
+			static const char *material = "material";
+			return material;
 		}
 
-		const char* BasicParameterNames::GetLightDir()
+		const char* BasicParameterNames::GetAmbient()
 		{
-			static const char *lightDir = "lightDir";
-			return lightDir;
+			static const char *param = "ambient";
+			return param;
+		}
+	
+		const char* BasicParameterNames::GetDiffuse()
+		{
+			static const char *param = "diffuse";
+			return param;
 		}
 
-		const char* BasicParameterNames::GetLightRange()
+		const char* BasicParameterNames::GetSpecular()
 		{
-			static const char *lightRange = "lightRange";
-			return lightRange;
+			static const char *param = "specular";
+			return param;
+		}
+
+		const char* BasicParameterNames::GetMaterialEmissive()
+		{
+			static const char *param = "emissive";
+			return param;
+		}
+
+		const char* BasicParameterNames::GetMaterialTransparent()
+		{
+			static const char *param = "transparent";
+			return param;
+		}
+
+		const char* BasicParameterNames::GetMaterialShininess()
+		{
+			static const char *shininess = "shininess";
+			return shininess;
+		}
+
+		const char* BasicParameterNames::GetLight()
+		{
+			static const char *light = "lights";
+			return light;
 		}
 
 		const char* BasicParameterNames::GetLightType()
 		{
-			static const char *lightType = "lightType";
-			return lightType;
+			static const char *param = "type";
+			return param;
+		}
+
+		const char* BasicParameterNames::GetLightDir()
+		{
+			static const char *param = "dir";
+			return param;
+		}
+
+		const char* BasicParameterNames::GetLightPos()
+		{
+			static const char *param = "pos";
+			return param;
+		}
+
+		const char* BasicParameterNames::GetLightRange()
+		{
+			static const char *range = "range";
+			return range;
 		}
 
 		const char* BasicParameterNames::GetLightSpotAngle()
 		{
-			static const char *lightSpotAngle = "lightSpotAngle";
-			return lightSpotAngle;
+			static const char *spotAngle = "spotAngle";
+			return spotAngle;
 		}
 	}
 }

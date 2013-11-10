@@ -9,11 +9,8 @@ namespace Rendering
 	{
 		class TextureManager
 		{
-#define RESOURCE_DIR "../Resources/"
-
 		private:
 			SOCHashMap<std::string, Texture*> hash;
-			int resourceDirLen;
 
 		public:
 			TextureManager();
@@ -21,10 +18,10 @@ namespace Rendering
 
 		public:
 			Texture* AddTexture(std::string path, bool inResourceFolder = true);
-			Texture* FindTexture(std::string path, bool inResourceFolder = true);
+			Texture* FindTexture(std::string path);
 
 		public:
-			void Delete(std::string path, bool inResourceFolder = true);
+			void Delete(std::string path);
 			void Delete(Texture* texture, bool dealloc);
 
 			void DeleteAll();

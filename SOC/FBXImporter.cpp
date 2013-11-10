@@ -1,5 +1,6 @@
 #include "FBXImporter.h"
 #include "Scene.h"
+#include "ResourcesFolder.h"
 
 using namespace fbxsdk_2014_1;
 
@@ -56,7 +57,7 @@ namespace Rendering
 			return scene != nullptr;
 		}
 
-		bool FBXImporter::LoadScene(const char *fileName, const char *password)
+		bool FBXImporter::LoadScene(const char *fileName, bool inResourcesFolder, const char *password)
 		{
 			int sdkMajor, sdkMinor, sdkRevision;
 
@@ -78,9 +79,11 @@ namespace Rendering
 			ioSetting->SetBoolProp(IMP_FBX_ANIMATION,       true);
 			ioSetting->SetBoolProp(IMP_FBX_GLOBAL_SETTINGS, true);
 
-
 			//파일 이름을 제공하여 임포터를 초기화 시킵니다.
-			bool importStatus = importer->Initialize(fileName, -1, manager->GetIOSettings());
+
+			std::string &path = Utility::ResourcesFolder::GetPath(fileName);
+
+			bool importStatus = importer->Initialize(path.data(), -1, manager->GetIOSettings());
 			if(importStatus == false)
 			{
 				FbxString error = importer->GetStatus().GetErrorString();
@@ -132,17 +135,24 @@ namespace Rendering
 			const char *key = node->GetName();
 			MeshDatas *meshData = mgr->Find(key);
 
+			Intersection::AABB bound;
+			float radius;
+
 			if(meshData == nullptr)
 			{
 				meshData = new MeshDatas;
 
-				BuildMesh(fbxMesh, &meshData->vb);
+				BuildMesh(fbxMesh, &meshData->vb, &bound, &radius);
 				ParseMaterial(fbxMesh, &meshData->material, &meshData->textureNames);
 
 				mgr->Add(key, meshData);
 			}
 
 			mesh->Create(meshData);
+
+			obj->GetTransform()->SetRadius(radius);
+			obj->GetTransform()->SetBound(bound);
+
 			SetFbxTransform(obj, node);
 		}
 
@@ -201,7 +211,7 @@ namespace Rendering
 			return obj;
 		}
 
-		bool FBXImporter::BuildMesh(FbxMesh *fbxMesh, Mesh::VBElements *outVBElements)
+		bool FBXImporter::BuildMesh(FbxMesh *fbxMesh, Mesh::VBElements *outVBElements, Intersection::AABB *outBounds, float *outRadius)
 		{
 			if(fbxMesh == nullptr)
 				return false;
@@ -286,13 +296,33 @@ namespace Rendering
 			int skinIdx		= 0;
 			int vertexCount = 0;
 
+			float radius = 0.0f, maxRadius = 0.0f;
+
+			SOC_Vector3 minSize(0, 0, 0), maxSize(0, 0, 0);
 			for(int i=0; i<numOfVertex; ++i)
 			{
 				FbxVector4  v = fbxMesh->GetControlPointAt(i);
 				vertices[i] = SOC_Vector3((float)v[0], (float)v[1], -(float)v[2]);
+
+				radius = SOCVec3Length(&vertices[i]);
+
+				if( maxRadius < radius )
+					maxRadius = radius;
+
+				for(int j=0; j<3; ++j)
+				{
+					if(minSize[j] > vertices[i][j])	minSize[j] = vertices[i][j];
+					else if(maxSize[j] < vertices[i][j]) maxSize[j] = vertices[i][j];
+				}
 			}
 
+			if(maxRadius)
+				(*outRadius) = maxRadius;
+			if(outBounds)
+				outBounds->SetMinMax(minSize, maxSize);
+
 //			int index = 0;
+			std::vector<SOC_Vector3> testno;
 			for(int polyIdx = 0; polyIdx < polygonCount; ++polyIdx)
 			{
 				int polySize = fbxMesh->GetPolygonSize(polyIdx);
@@ -310,41 +340,28 @@ namespace Rendering
 						FbxLayer *layer = fbxMesh->GetLayer(layerIdx);
 
 						if(layer)
-							ParseUV(layer, fbxMesh, ctrlIdx, polyIdx, i, ary[i], &texcoords[layerIdx][ctrlIdx]);
-
-//						check[ctrlIdx] = true;
+							ParseUV(layer, fbxMesh, ctrlIdx, polyIdx, vertexCount, ary[i], &texcoords[layerIdx][ctrlIdx]);
 					}
 
 					FbxLayer *layer = fbxMesh->GetLayer(0);
 
 					if(normals)
+					{
 						ParseNormals(layer, ctrlIdx, vertexCount, &normals[ctrlIdx]);
-
+						testno.push_back(normals[ctrlIdx]);
+					}
 					if(binormals)
-						ParseBinormals(layer, ctrlIdx, vertexCount, &binormals[ctrlIdx]);
+						ParseBinormals(layer, ctrlIdx, i, &binormals[ctrlIdx]);
 
 					if(tangents)
-						ParseTangents(layer, ctrlIdx, vertexCount, &tangents[ctrlIdx]);
+						ParseTangents(layer, ctrlIdx, i, &tangents[ctrlIdx]);
 
 					if(colors)
-						ParseVertexColor(layer, ctrlIdx, vertexCount, &colors[ctrlIdx]);
+						ParseVertexColor(layer, ctrlIdx, i, &colors[ctrlIdx]);
 
 					vertexCount++;
 				}
 			}
-
-			//int c = 0;
-			//for(int i=0; i<numOfVertex; ++i)
-			//{
-			//	for(int j=0; j<numOfVertex; ++j)
-			//	{
-			//		if(texcoords[0][i].x == texcoords[0][j].x &&
-			//			texcoords[0][i].y == texcoords[0][j].y && (i != j))
-			//		{
-			//			++c;
-			//		}
-			//	}
-			//}
 
 			return true;
 		}
@@ -384,7 +401,7 @@ namespace Rendering
 				ParseTexture(fbxProperty, &outTextureNames->bumpFactor);
 
 				fbxProperty = fbxMaterial->FindProperty(FbxSurfaceMaterial::sTransparentColor);
-				ParseTexture(fbxProperty, &outTextureNames->transparentColor);
+				ParseTexture(fbxProperty, &outTextureNames->transparent);
 			}
 
 
@@ -429,26 +446,16 @@ namespace Rendering
 			}
 		}
 
-		bool FBXImporter::ParseNormals(FbxLayer *layer, int ctrlPointIdx, int vertexCount, SOC_Vector3 *out)
+		bool FBXImporter::ParseNormals(FbxLayer *layer, int ctrlPointIdx, int vertexIdx, SOC_Vector3 *out)
 		{
 			int index = -1;
-			bool res = ParseElements(layer->GetNormals(), ctrlPointIdx, vertexCount, &index);
+			bool res = ParseElements(layer->GetNormals(), ctrlPointIdx, vertexIdx, &index);
 
 			if(res)
 			{
 				FbxLayerElementNormal *fbxNormal = layer->GetNormals();
 				FbxVector4 v = fbxNormal->GetDirectArray().GetAt(index);
-				(*out) = SOC_Vector3((float)v[0], (float)v[1], -(float)v[2]);
-
-				//int test = fbxNormal->GetDirectArray().GetCount();
-				//int test2 = fbxNormal->GetIndexArray().GetCount();
-
-
-				if( fbxNormal->GetDirectArray().GetCount() < index
-					|| index == -1)
-				{
-					res = false;
-				}
+				(*out) = SOC_Vector3((float)v[0], (float)v[1], (float)v[2]);
 			}
 
 			return res;
@@ -464,8 +471,8 @@ namespace Rendering
 			int index = -1;
 
 			{
-				FbxLayerElement::EMappingMode mappingMode = fbxUV->GetMappingMode();;
-				FbxLayerElement::EReferenceMode refMode = fbxUV->GetReferenceMode();;
+				FbxLayerElement::EMappingMode mappingMode = fbxUV->GetMappingMode();
+				FbxLayerElement::EReferenceMode refMode = fbxUV->GetReferenceMode();
 
 				if(mappingMode == FbxLayerElement::eByControlPoint)
 				{
@@ -525,7 +532,7 @@ namespace Rendering
 		bool FBXImporter::ParseBinormals(FbxLayer *layer, int ctrlPointIdx, int vertexCount, SOC_Vector3 *out)
 		{
 			int index = -1;
-			bool res = ParseElements<FbxLayerElementBinormal>(layer->GetBinormals(), ctrlPointIdx, vertexCount, &index);
+			bool res = ParseElements(layer->GetBinormals(), ctrlPointIdx, vertexCount, &index);
 
 			if(res)
 			{
@@ -595,6 +602,7 @@ namespace Rendering
 
 			std::pair<FbxDouble3, double> ambient, diffuse, emissive;
 			double transparency = 1.0f;
+			double shininess = 0.0f;
 
 			if(id.Is(FbxSurfacePhong::ClassId))
 			{
@@ -617,7 +625,8 @@ namespace Rendering
 
 				transparency = phong->TransparencyFactor;
 
-				out->specularColor = Color(specular[0], specular[1], specular[2]) * specularFactor;
+				out->shininess = phong->Shininess.Get();
+				out->specular = Color(specular[0], specular[1], specular[2]) * specularFactor;
 			}
 			else if(id.Is(FbxSurfaceLambert::ClassId))
 			{
@@ -637,8 +646,8 @@ namespace Rendering
 
 			else return false;
 
-			out->ambientColor = Color(ambient.first[0], ambient.first[1], ambient.first[2]) * ambient.second;
-			out->diffuseColor = Color(diffuse.first[0], diffuse.first[1], diffuse.first[2]) * diffuse.second;
+			out->ambient = Color(ambient.first[0], ambient.first[1], ambient.first[2]) * ambient.second;
+			out->diffuse = Color(diffuse.first[0], diffuse.first[1], diffuse.first[2]) * diffuse.second;
 			out->emissive = Color(emissive.first[0], emissive.first[1], emissive.first[2]) * emissive.second;
 			out->transparentFactor = transparency;
 

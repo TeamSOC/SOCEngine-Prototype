@@ -88,7 +88,7 @@ namespace Intersection
 		return true;
 	}
 
-	bool AABB::IntersectRay(Ray ray, SOC_Vector3 *outPickPoint /*= NULL*/, float gap)
+	bool AABB::Intersects(Ray ray, SOC_Vector3 *outPickPoint /*= NULL*/, float gap)
 	{
 		SOC_Vector3 realMin = center + min;
 		SOC_Vector3 realMax = center + max;

@@ -1,25 +1,28 @@
 #pragma once
 
+#include <string>
+
 namespace Rendering
 {
 	namespace Shader
 	{
-		enum REQUIRED_MATRIX
+		enum REQUIRED_TRANSFORM
 		{
-			REQUIRED_MATRIX_WORLD			= 1,
-			REQUIRED_MATRIX_VIEW			= 2,
-			REQUIRED_MATRIX_PROJECTION		= 4,
-			REQUIRED_MATRIX_VP				= 8,	//View * Projection
-			REQUIRED_MATRIX_WVP				= 16	//World * View * Projection
+			WORLD			= 1,
+			VIEW			= 2,
+			PROJECTION		= 4,
+			VIEW_PROJECTION = 8,	//View * Projection
+			WORLD_VIEW_PROJECTION = 16	//World * View * Projection
 		};
 
-		//Specular light or other light should autonomously set. 
-		enum REQUIRED_LIGHT
+		enum REQUIRED_LIGHTING
 		{
-			REQUIRED_LIGHT_DIFFUSE = 1,
-			REQUIRED_LIGHT_AMBIENT_COLOR = 2,
-			REQUIRED_LIGHT_SPECULAR = 4,
-			REQUIRED_LIGHT_HAS_LIGHT = REQUIRED_LIGHT_DIFFUSE | REQUIRED_LIGHT_SPECULAR
+			MATERIAL			= 1,
+			MATERIAL_SHININESS	= 2,
+
+			LIGHT				= 4,
+			LIGHT_RANGE			= 8,
+			LIGHT_SPOTANGLE		= 16
 		};
 
 		class BasicParameterNames
@@ -31,18 +34,33 @@ namespace Rendering
 			static const char *GetViewProjMatrix();
 			static const char *GetWorldViewProjMatrix();
 
-			static const char *GetAmbientColor();
-			static const char *GetLightDiffuseColor();
+			static const char *GetMaterial();
+			static const char *GetMaterialEmissive();
+			static const char *GetMaterialTransparent();
+			static const char *GetMaterialShininess();
 
-			static const char *GetLightSpecularColor();
-			static const char *GetLightSpecularPower();
+			static const char *GetAmbient();
+			static const char *GetDiffuse();
+			static const char *GetSpecular();
 
-			static const char *GetViewPos();
-			static const char *GetLightPos();
-			static const char *GetLightDir();
-			static const char *GetLightRange();
+			static const char *GetLight();
 			static const char *GetLightType();
+			static const char *GetLightDir();
+			static const char *GetLightPos();
+			static const char *GetViewPos();
+
+			static const char *GetLightRange();
 			static const char *GetLightSpotAngle();
+
+		public:
+			static std::string GetMaterialElement(const char* materialComponent)
+			{
+				std::string str = GetMaterial();
+				str += ".";
+				str += materialComponent;
+
+				return str;
+			}
 		};
 	}
 }

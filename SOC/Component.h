@@ -31,7 +31,7 @@ public:
 public:
 	virtual void Initialize() = 0;
 	virtual void Update(float deltaTime);
-	virtual void Render(Rendering::TransformParameters *transform, Rendering::Light::LightParameters *light);
+	virtual void Render(Rendering::TransformParameters *transform, std::vector<Rendering::Light::LightParameters> *lights, SOC_Vector4 &viewPos);
 	virtual void Destroy() = 0;
 
 public:

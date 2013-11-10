@@ -7,7 +7,7 @@ namespace Rendering
 	{
 		PointLight::PointLight() : LightForm()
 		{
-			type = LIGHTTYPE_POINT;
+			type = POINT;
 		}
 
 		PointLight::~PointLight(void)

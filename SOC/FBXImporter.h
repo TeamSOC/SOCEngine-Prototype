@@ -7,6 +7,7 @@
 
 #include "MaterialElements.h"
 #include "VBElements.h"
+#include "AABB.h"
 
 #include <vector>
 
@@ -28,7 +29,7 @@ namespace Rendering
 
 		public:
 			bool Initialize(const char *sceneName);
-			bool LoadScene(const char *fileName, const char *password = nullptr);
+			bool LoadScene(const char *fileName, bool inResourcesFolder = true, const char *password = nullptr);
 
 			Object* BuildObject(Object *parent);
 
@@ -40,13 +41,13 @@ namespace Rendering
 			void CreateMeshComponent(Object *obj, FbxNode *node);
 			void SetFbxTransform(Object *obj, FbxNode *node);
 
-			bool BuildMesh(fbxsdk_2014_1::FbxMesh *fbxMesh, Mesh::VBElements *outVBElements);
+			bool BuildMesh(fbxsdk_2014_1::FbxMesh *fbxMesh, Mesh::VBElements *outVBElements, Intersection::AABB *outBounds, float *outRadius);
 			void BuildskinningMesh(fbxsdk_2014_1::FbxMesh *fbxMesh, std::vector<int> &skinIndices);
 
 			void ParseMaterial(fbxsdk_2014_1::FbxMesh *fbxMesh, Material::MaterialElements *outMaterialElements, MeshTextureNames *outTextureNames);
 
 			template <typename ElementType>
-			bool ParseElements(ElementType* e, int ctrlPointIdx, int vertexCount, int *outIdx)
+			bool ParseElements(ElementType e, int ctrlPointIdx, int vertexIdx, int *outIdx)
 			{
 				if(e == nullptr)
 					return false;
@@ -65,9 +66,9 @@ namespace Rendering
 				else if(mappingMode == FbxLayerElement::eByPolygonVertex)
 				{
 					if(refMode == FbxLayerElement::eDirect)
-						index = vertexCount;
+						index = vertexIdx;
 					else if(refMode == FbxLayerElement::eIndexToDirect)
-						index = e->GetIndexArray().GetAt(vertexCount);
+						index = e->GetIndexArray().GetAt(vertexIdx);
 				}
 
 				*outIdx = index;

@@ -10,11 +10,9 @@ namespace Rendering
 			range = 10.0f;
 			specularPower = 20.0f;
 
-			//worldPosition = SOC_Vector3(0, 0, 0);
-			//direction = SOC_Vector3(0, 0, 0);
-
-			diffuseColor = Color::white();
-			specularColor = Color::white();
+			ambient = Color(0.1, 0.1, 0.1);
+			diffuse = Color::white();
+			specular = Color::white();
 		}
 
 		SOC_Vector3& LightForm::GetWorldPosition()
@@ -27,9 +25,19 @@ namespace Rendering
 			return ownerTransform->GetForward();
 		}
 
-		//Component::Type LightForm::GetComponentType()
-		//{
-		//	return Component::Type::Light;
-		//}
+		LightForm::LightType LightForm::GetType()
+		{
+			return type;
+		}
+
+		void LightForm::Initialize()
+		{
+
+		}
+
+		void LightForm::Destroy()
+		{
+
+		}
 	}
 }

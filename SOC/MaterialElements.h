@@ -8,53 +8,53 @@ namespace Rendering
 {
 	namespace Material
 	{
-
+		//ambient, diffuse, specular 모두 factor 연산은 해둠.
 		struct MaterialElements
 		{
-			Color ambientColor;
-			Color diffuseColor;
-			Color specularColor;
+			Color ambient;
+			Color diffuse;
+			Color specular;
 			Color emissive;
 
 			float transparentFactor;
-			float reflectionFactor;
+			float shininess;
 
 			MaterialElements()
 			{
-				reflectionFactor = 20.0f;
+				shininess = 20.0f;
 				transparentFactor = 1.0f;
 
-				ambientColor = Color::gray();
-				diffuseColor = Color::white();
-				specularColor = Color::white();
+				ambient = Color::gray();
+				diffuse = Color::white();
+				specular = Color::white();
 				emissive = Color::black();
 			}
 
-			MaterialElements(Color &ambientColor, Color &diffuseColor, Color &specularColor, float reflectionFactor, float transparentFactor = 1.0f)
+			MaterialElements(Color &ambient, Color &diffuse, Color &specular, float shininess, float transparentFactor = 1.0f)
 			{
-				this->ambientColor = ambientColor;
-				this->diffuseColor = diffuseColor;
-				this->specularColor = specularColor;
+				this->ambient = ambient;
+				this->diffuse = diffuse;
+				this->specular = specular;
 				this->emissive = Rendering::Color::black();
 
 				this->transparentFactor = transparentFactor;
-				this->reflectionFactor = reflectionFactor;
+				this->shininess = shininess;
 			}
 
-			MaterialElements(Color &ambientColor, Color &diffuseColor, Color &specularColor, Color &emissive, float reflectionFactor, float transparentFactor = 1.0f)
+			MaterialElements(Color &ambient, Color &diffuse, Color &specular, Color &emissive, float shininess, float transparentFactor = 1.0f)
 			{
-				this->ambientColor = ambientColor;
-				this->diffuseColor = diffuseColor;
-				this->specularColor = specularColor;
+				this->ambient = ambient;
+				this->diffuse = diffuse;
+				this->specular = specular;
 				this->emissive = emissive;
 
 				this->transparentFactor = transparentFactor;
-				this->reflectionFactor = reflectionFactor;
+				this->shininess = shininess;
 			}
 
 			MaterialElements* Clone()
 			{
-				return new MaterialElements(ambientColor, diffuseColor, specularColor, emissive, transparentFactor, reflectionFactor);
+				return new MaterialElements(ambient, diffuse, specular, emissive, transparentFactor, shininess);
 			}
 		};
 	}
@@ -67,6 +67,6 @@ namespace Rendering
 		std::string specularFactor;
 		std::string bump;
 		std::string bumpFactor;
-		std::string transparentColor;
+		std::string transparent;
 	};
 }

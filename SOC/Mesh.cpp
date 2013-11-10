@@ -9,12 +9,14 @@ namespace Rendering
 	{
 		Mesh::Mesh(void) : beginFunc(nullptr), endFunc(nullptr)
 		{
-
+			this->graphics = nullptr;
+			this->filter = nullptr;
+			this->renderer = nullptr;
 		}
 
 		Mesh::~Mesh(void)
 		{
-
+			Destroy();
 		}
 
 		void Mesh::Initialize()
@@ -55,20 +57,21 @@ namespace Rendering
 				mgr->Add("None", material);
 			}
 
-			renderer->AddMaterial(material, false);
+			renderer->SetMaterial(material);
+			renderer->SetMaterialElements(&meshData->material);
 
 			return true;
 		}
 
-		void Mesh::Render(Rendering::TransformParameters *transform, Rendering::Light::LightParameters *light)
+		void Mesh::Render(TransformParameters *transform, std::vector<Light::LightParameters> *lights, SOC_Vector4 &viewPos)
 		{
 			if( (beginFunc && endFunc) == false)
 				return;
 
-			if(renderer->GetMaterialCount() == 0)
+			if(renderer->HasMaterial() == false)
 				return;
 
-			renderer->ConnectParameters(transform, light);
+			renderer->ConnectParameters(transform, lights, viewPos);
 
 			beginFunc(renderer);
 			{

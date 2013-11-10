@@ -50,6 +50,8 @@ namespace Rendering
 			virtual bool SetVariable(const char *parameter, int i) = 0;
 			virtual bool SetVariable(const char *parameter, int *ary, SOC_uint count) = 0;
 			virtual bool SetVariable(const char *parameter, Texture::Texture *texture) = 0;
+			virtual bool SetVariable(const char *parameter, void *data, SOC_uint size) = 0;
+			virtual bool SetStructArrayVariable(const char *structName, SOC_uint index, const char *component, void* data, SOC_uint size) = 0;
 
 			virtual bool SetTechnique(const char *technique) = 0;
 			virtual bool IsParameterUsed(const char *parameter, const char *technique) = 0;

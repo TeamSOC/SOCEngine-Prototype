@@ -8,27 +8,36 @@ namespace Rendering
 	{
 		struct LightParameters
 		{
-			SOC_Vector4 *diffuseColorAry;
-			SOC_Vector4 *specularColorAry;
+			SOC_Vector3 ambient;
+			SOC_Vector3 diffuse;
+			SOC_Vector3 specular;
 
-			float *rangeAry;
-			float *specularPowerAry;
+			float range;
 
-			SOC_Vector4 *lightposAry;
-			SOC_Vector4 *lightDirAry;
-			SOC_Vector4  viewPos;
+			SOC_Vector3 lightPos;
+			SOC_Vector3 lightDir;
 
-			float *spotAngleAry;
-			int *typeAry;
-
-			int count;
+			float spotAngle;
+			int type;
 
 		public:
 			LightParameters();
-			LightParameters(int *typeAry,
-				SOC_Vector4 *diffuseColorAry, float *rangeAry, SOC_Vector4 *lightposAry, SOC_Vector4 *lightDirAry,
-				SOC_Vector4 &viewPos, SOC_Vector4 *specularColorAry, float *specularPowerAry,
-				float *spotAngleAry);
+			~LightParameters()
+			{
+			}
+
+			void SetData(SOC_Vector3 &ambient, SOC_Vector3 &diffuse, SOC_Vector3 &specular, float range,
+				SOC_Vector3 &lightPos, SOC_Vector3& lightdir, float spotAngle, int type)
+			{
+				this->ambient = ambient;
+				this->diffuse = diffuse;
+				this->specular = specular;
+				this->range = range;
+				this->lightPos = lightPos;
+				this->lightDir = lightdir;
+				this->spotAngle = spotAngle;
+				this->type = type;
+			}
 		};
 
 	}

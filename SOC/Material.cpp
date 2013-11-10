@@ -9,7 +9,6 @@ namespace Rendering
 		{
 			if(name != nullptr)
 				this->name = name;			
-			elements.ambientColor = Color(0.1f, 0.1f, 0.1f, 1.0f);
 		}
 
 		Material::~Material(void)
@@ -155,54 +154,84 @@ namespace Rendering
 			return true;
 		}
 
-		void Material::SetUseShaderRequiredParameters(TransformParameters *transform, Light::LightParameters *light)
+		void Material::SetUseShaderRequiredParameters(TransformParameters *transform, std::vector<Light::LightParameters> *lights, SOC_Vector4 &viewPos)
 		{
 			using namespace Shader;
 
-			SOC_byte mp = useShader->GetRequiredMatrixParameters();
+			SOC_byte tp = useShader->GetRequiredMatrixParameters();
 			SOC_byte lp = useShader->GetRequiredLightParameters();
 
+			if ( REQUIRED_TRANSFORM::WORLD & tp )
+				useShader->SetVariable(BasicParameterNames::GetWorldMatrix(), transform->worldMatrix);
+			if ( REQUIRED_TRANSFORM::VIEW & tp )
+				useShader->SetVariable(BasicParameterNames::GetViewMatrix(), transform->viewMatrix);
+			if ( REQUIRED_TRANSFORM::PROJECTION & tp )
+				useShader->SetVariable(BasicParameterNames::GetProjMatrix(), transform->projMatrix);
+			if ( REQUIRED_TRANSFORM::VIEW_PROJECTION & tp )
+				useShader->SetVariable(BasicParameterNames::GetViewProjMatrix(), transform->viewProjMatrix);
+			if ( REQUIRED_TRANSFORM::WORLD_VIEW_PROJECTION & tp )
+				useShader->SetVariable(BasicParameterNames::GetWorldViewProjMatrix(), transform->worldViewProjMatrix);
+
 			bool test = false;
-
-			if ( REQUIRED_MATRIX_WORLD & mp )
-				test = useShader->SetVariable(BasicParameterNames::GetWorldMatrix(), transform->worldMatrix);
-			if ( REQUIRED_MATRIX_VIEW & mp )
-				test = useShader->SetVariable(BasicParameterNames::GetViewMatrix(), transform->viewMatrix);
-			if ( REQUIRED_MATRIX_PROJECTION & mp )
-				test = useShader->SetVariable(BasicParameterNames::GetProjMatrix(), transform->projMatrix);
-			if ( REQUIRED_MATRIX_VP & mp )
-				test = useShader->SetVariable(BasicParameterNames::GetViewProjMatrix(), transform->viewProjMatrix);
-			if ( REQUIRED_MATRIX_WVP & mp )
-				test = useShader->SetVariable(BasicParameterNames::GetWorldViewProjMatrix(), transform->worldViewProjMatrix);
-
-			if( REQUIRED_LIGHT_AMBIENT_COLOR & lp )
+			if ( REQUIRED_LIGHTING::MATERIAL & lp )
 			{
-				SOC_Vector4 vector = elements.ambientColor.GetVector();
-				useShader->SetVariable(BasicParameterNames::GetAmbientColor(), &vector);
+				SOC_Vector3 &v = elements.ambient.GetVector3();
+				std::string &str = BasicParameterNames::GetMaterialElement(BasicParameterNames::GetAmbient());
+				test = useShader->SetVariable(str.c_str(), &v);
+
+				v = elements.diffuse.GetVector3();
+				str = BasicParameterNames::GetMaterialElement(BasicParameterNames::GetDiffuse());
+				test = useShader->SetVariable(str.c_str(), &v);
+
+				v = elements.specular.GetVector3();
+				str = BasicParameterNames::GetMaterialElement(BasicParameterNames::GetSpecular());
+				test = useShader->SetVariable(str.c_str(), &v);
+
+				v = elements.emissive.GetVector3();
+				str = BasicParameterNames::GetMaterialElement(BasicParameterNames::GetMaterialEmissive());
+				test = useShader->SetVariable(str.c_str(), &v);
+
+				str = BasicParameterNames::GetMaterialElement(BasicParameterNames::GetMaterialTransparent());
+				test = useShader->SetVariable(str.c_str(), elements.transparentFactor);
+
+				if(REQUIRED_LIGHTING::MATERIAL_SHININESS & lp)
+				{
+					str = BasicParameterNames::GetMaterialElement(BasicParameterNames::GetMaterialShininess());
+					test = useShader->SetVariable(str.c_str(), elements.shininess);
+				}
 			}
 
-			int count = light->count;
-
-			if(REQUIRED_LIGHT_HAS_LIGHT & lp)
+			if ( REQUIRED_LIGHTING::LIGHT & lp )
 			{
-				useShader->SetVariable(BasicParameterNames::GetViewPos(), &light->viewPos);
-				useShader->SetVariable(BasicParameterNames::GetLightPos(), light->lightposAry, count);
-				useShader->SetVariable(BasicParameterNames::GetLightRange(), light->rangeAry, count);
-				useShader->SetVariable(BasicParameterNames::GetLightType(), light->typeAry, count);
-				useShader->SetVariable(BasicParameterNames::GetLightDir(), light->lightDirAry, count);
+				const char *structVariable = BasicParameterNames::GetLight();
 
-				useShader->SetVariable(BasicParameterNames::GetLightSpotAngle(), light->spotAngleAry, count);
-				//아 모르겠다 지가 알아서 걸르것지 --;
+				int i = 0;
+				for(std::vector<Light::LightParameters>::iterator iter = lights->begin(); iter != lights->end(); ++iter, ++i)
+				{
+					test = useShader->SetStructArrayVariable(structVariable, i, BasicParameterNames::GetAmbient(), &iter->ambient, sizeof(iter->ambient));
+					test = useShader->SetStructArrayVariable(structVariable, i, BasicParameterNames::GetDiffuse(), &iter->diffuse, sizeof(iter->diffuse));
+					test = useShader->SetStructArrayVariable(structVariable, i, BasicParameterNames::GetSpecular(), &iter->specular, sizeof(iter->specular));
+
+					test = useShader->SetStructArrayVariable(structVariable, i, BasicParameterNames::GetLightType(), &iter->type, sizeof(iter->type));
+					test = useShader->SetStructArrayVariable(structVariable, i, BasicParameterNames::GetLightDir(), &iter->lightDir, sizeof(iter->lightDir));
+					test = useShader->SetStructArrayVariable(structVariable, i, BasicParameterNames::GetLightPos(), &iter->lightPos, sizeof(iter->lightPos));					
+
+					if(REQUIRED_LIGHTING::LIGHT_RANGE & lp)
+					{
+						test = useShader->SetStructArrayVariable(structVariable, i, BasicParameterNames::GetLightRange(), &iter->range, sizeof(iter->range));
+
+						if(REQUIRED_LIGHTING::LIGHT_SPOTANGLE & lp)
+							test = useShader->SetStructArrayVariable(structVariable, i, BasicParameterNames::GetLightSpotAngle(), &iter->spotAngle, sizeof(iter->spotAngle));
+					}
+				}
+
+				test = useShader->SetVariable(BasicParameterNames::GetViewPos(), &viewPos);
 			}
+		}
 
-			if( REQUIRED_LIGHT_DIFFUSE & lp )
-				useShader->SetVariable(BasicParameterNames::GetLightDiffuseColor(), light->diffuseColorAry, count);
-
-			if( REQUIRED_LIGHT_SPECULAR & lp )
-			{
-				useShader->SetVariable(BasicParameterNames::GetLightSpecularColor(), light->specularColorAry, count);
-				useShader->SetVariable(BasicParameterNames::GetLightSpecularPower(), light->specularPowerAry, count);
-			}
+		void Material::SetElements(MaterialElements &element)
+		{
+			this->elements = element;
 		}
 	}
 

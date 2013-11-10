@@ -16,5 +16,19 @@ namespace Rendering
 	public:
 		TransformParameters();
 		TransformParameters(SOC_Matrix *worldMat, SOC_Matrix *viewMat, SOC_Matrix *projMat, SOC_Matrix *viewProjMat, SOC_Matrix *worldViewProjMat);
+
+		~TransformParameters()
+		{
+
+		}
+
+		void SetMatrix(SOC_Matrix *worldMat, SOC_Matrix *viewMat, SOC_Matrix *projMat, SOC_Matrix *viewProjMat, SOC_Matrix *worldViewProjMat)
+		{
+			this->worldMatrix = worldMat;
+			this->viewMatrix = viewMat;
+			this->projMatrix = projMat;
+			this->viewProjMatrix = viewProjMat;
+			this->worldViewProjMatrix = worldViewProjMat;
+		}
 	};
 }
