@@ -117,5 +117,11 @@ namespace Rendering
 			static const char *spotAngle = "spotAngle";
 			return spotAngle;
 		}
+
+		const char* BasicParameterNames::GetLightNum()
+		{
+			static const char *n = "lightCount";
+			return n;
+		}
 	}
 }

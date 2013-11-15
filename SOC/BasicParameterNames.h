@@ -47,6 +47,8 @@ namespace Rendering
 			static const char *GetLightType();
 			static const char *GetLightDir();
 			static const char *GetLightPos();
+
+			static const char *GetLightNum();
 			static const char *GetViewPos();
 
 			static const char *GetLightRange();

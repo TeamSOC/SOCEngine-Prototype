@@ -9,7 +9,9 @@ class TestScene : public Scene
 private:
 	Object *camObject;
 	Object *meshObject;
+
 	Object *lightObj;
+	Object *lightObj2;
 
 public:
 	TestScene(void);

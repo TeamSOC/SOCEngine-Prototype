@@ -638,5 +638,8 @@
     <FxCompile Include="..\Shader\DX\test.fx">
       <Filter>Source\TestScene</Filter>
     </FxCompile>
+    <FxCompile Include="..\Shader\DX\Basic.fx">
+      <Filter>Source\TestScene</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

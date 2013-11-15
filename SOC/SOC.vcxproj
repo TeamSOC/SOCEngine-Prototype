@@ -215,6 +215,9 @@
     <ClInclude Include="Windows.h" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\Shader\DX\Basic.fx">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
     <FxCompile Include="..\Shader\DX\test.fx">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </FxCompile>

@@ -225,6 +225,7 @@ namespace Rendering
 					}
 				}
 
+				test = useShader->SetVariable(BasicParameterNames::GetLightNum(), i);
 				test = useShader->SetVariable(BasicParameterNames::GetViewPos(), &viewPos);
 			}
 		}
