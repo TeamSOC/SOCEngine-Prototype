@@ -28,16 +28,20 @@ void TestScene::OnInitialize()
 
 	bool success;
 	success = importer->Initialize("");
-	success = importer->LoadScene("sphere.fbx");
+//	success = importer->LoadScene("testcarl.fbx");
+	success = importer->LoadScene("dxsphere.fbx");
 
 	meshObject = importer->BuildObject(nullptr);
 	rootObjects->Add(meshObject);
+	meshObject->GetTransform()->SetPosition(SOC_Vector3(-100, 0, 0));
+	//	SOC_Vector3 v = SOC_Vector3(0.0, 30, 100);
 
-	SOC_Vector3 v = SOC_Vector3(0.0, 0, 3);
-	meshObject->GetTransform()->SetPosition(v);
+	meshObject2 = importer->BuildObject(nullptr);
+	rootObjects->Add(meshObject2);
+	meshObject2->GetTransform()->SetPosition(SOC_Vector3(100, 0, 0));
 
-	camObject->GetTransform()->SetPosition(SOC_Vector3(0, 0, 0));
-	camObject->GetTransform()->SetDirection(SOC_Vector3(0, 0, 1));
+	camObject->GetTransform()->SetPosition(SOC_Vector3(0, 0, -300));
+//	camObject->GetTransform()->SetDirection(SOC_Vector3(0, 0, 1));
 
 	camera = camObject->GetComponent<Camera>();
 	cameraMgr->SetMainCamera(camera);
@@ -72,8 +76,8 @@ void TestScene::OnInitialize()
 void TestScene::OnUpdate(float dt)
 {
 	SOC_Vector3 eular = meshObject->GetTransform()->GetLocalEulerAngle();
-	meshObject->GetTransform()->Rotate(0, 0.000004f, 0.0f);
-//	meshObject->GetTransform()->Translate(SOC_Vector3(0, 0, 0.0001));
+	meshObject->GetTransform()->Rotate(0, 0.01f, 0.0f);
+//	meshObject->GetTransform()->Translate(SOC_Vector3(0, 0, 0.01));
 }
 
 void TestScene::OnRenderPreview()

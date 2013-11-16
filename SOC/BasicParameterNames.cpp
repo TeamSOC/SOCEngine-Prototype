@@ -34,6 +34,12 @@ namespace Rendering
 			return worldViewProjMat;
 		}
 
+		const char* BasicParameterNames::GetWorldViewInvTnsMatrix()
+		{
+			static const char *wit = "worldViewInvTns";
+			return wit;
+		}
+
 		const char* BasicParameterNames::GetViewPos()
 		{
 			static const char *viewPos = "cameraPos";

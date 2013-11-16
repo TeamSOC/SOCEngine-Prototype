@@ -111,11 +111,22 @@ namespace Rendering
 		SOC_Matrix worldMat, worldViewProjMat;
 
 		transform->GetWorldMatrix(&worldMat);
-		worldViewProjMat = worldMat;
-		worldViewProjMat *= (*viewProjMat);
+		SOCMatrixMultiply(&worldViewProjMat, &worldMat, viewProjMat);
+
+		if(this->components.size() != 0)
+		{
+			//debug break point
+			int a= 5;
+			a=3;
+		}
+
+		SOC_Matrix worldViewInvTns;
+		SOCMatrixMultiply(&worldViewInvTns, &worldMat, viewMat);
+		SOCMatrixInverse(&worldViewInvTns, nullptr, &worldViewInvTns);
+		SOCMatrixTranspose(&worldViewInvTns, &worldViewInvTns);
 
 		TransformParameters transformParam;
-		transformParam.SetMatrix(&worldMat, viewMat, projMat, viewProjMat, &worldViewProjMat);
+		transformParam.SetMatrix(&worldMat, viewMat, projMat, viewProjMat, &worldViewProjMat, &worldViewInvTns);
 
 		vector<LightParameters> lightParam;
 		SOC_Vector4 viewPos = SOC_Vector4(viewMat->_41, viewMat->_42, viewMat->_43, 1.0f);

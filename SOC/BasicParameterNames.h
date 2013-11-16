@@ -12,7 +12,8 @@ namespace Rendering
 			VIEW			= 2,
 			PROJECTION		= 4,
 			VIEW_PROJECTION = 8,	//View * Projection
-			WORLD_VIEW_PROJECTION = 16	//World * View * Projection
+			WORLD_VIEW_PROJECTION = 16,	//World * View * Projection
+			WORLD_VIEW_INV_TRANS = 32
 		};
 
 		enum REQUIRED_LIGHTING
@@ -33,6 +34,7 @@ namespace Rendering
 			static const char *GetProjMatrix();
 			static const char *GetViewProjMatrix();
 			static const char *GetWorldViewProjMatrix();
+			static const char *GetWorldViewInvTnsMatrix();
 
 			static const char *GetMaterial();
 			static const char *GetMaterialEmissive();

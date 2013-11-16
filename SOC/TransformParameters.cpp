@@ -6,12 +6,12 @@ namespace Rendering
 	{
 	}
 
-	TransformParameters::TransformParameters(SOC_Matrix *worldMat, SOC_Matrix *viewMat, SOC_Matrix *projMat, SOC_Matrix *viewProjMat, SOC_Matrix *worldViewProjMat)
-	{
-		worldMatrix = worldMat;
-		viewMatrix = viewMat;
-		projMatrix = projMat;
-		viewProjMatrix = viewProjMat;
-		worldViewProjMatrix = worldViewProjMat;
-	}
+	//TransformParameters::TransformParameters(SOC_Matrix *worldMat, SOC_Matrix *viewMat, SOC_Matrix *projMat, SOC_Matrix *viewProjMat, SOC_Matrix *worldViewProjMat)
+	//{
+	//	worldMatrix = worldMat;
+	//	viewMatrix = viewMat;
+	//	projMatrix = projMat;
+	//	viewProjMatrix = viewProjMat;
+	//	worldViewProjMatrix = worldViewProjMat;
+	//}
 }

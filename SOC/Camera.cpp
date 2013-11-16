@@ -117,10 +117,10 @@ namespace Rendering
 		cam->GetProjectionMatrix(&projMat);
 		cam->GetViewMatrix(&viewMat);
 
-		viewProjMat = viewMat * projMat;
+		SOCMatrixMultiply(&viewProjMat, &viewMat, &projMat);
 
-		cam->Clear();		
-		cam->frustum->Make(&(viewMat * projMat));
+		cam->Clear();
+		cam->frustum->Make(&viewProjMat);
 
 		//추후 작업.	
 

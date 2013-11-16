@@ -14,7 +14,7 @@ namespace Rendering
 
 			float range;
 
-			SOC_Vector3 lightPos;
+			SOC_Vector4 lightPos;
 			SOC_Vector3 lightDir;
 
 			float spotAngle;
@@ -33,7 +33,7 @@ namespace Rendering
 				this->diffuse = diffuse;
 				this->specular = specular;
 				this->range = range;
-				this->lightPos = lightPos;
+				this->lightPos = SOC_Vector4(lightPos, 1.0f);
 				this->lightDir = lightdir;
 				this->spotAngle = spotAngle;
 				this->type = type;

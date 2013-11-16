@@ -172,6 +172,9 @@ namespace Rendering
 			if ( REQUIRED_TRANSFORM::WORLD_VIEW_PROJECTION & tp )
 				useShader->SetVariable(BasicParameterNames::GetWorldViewProjMatrix(), transform->worldViewProjMatrix);
 
+			if ( REQUIRED_TRANSFORM::WORLD_VIEW_INV_TRANS & tp )
+				useShader->SetVariable(BasicParameterNames::GetWorldViewInvTnsMatrix(), transform->worldViewInvTns);
+
 			bool test = false;
 			if ( REQUIRED_LIGHTING::MATERIAL & lp )
 			{

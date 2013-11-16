@@ -4,6 +4,8 @@
 #include "VBElements.h"
 #include "MaterialElements.h"
 
+#include "AABB.h"
+
 namespace Rendering
 {
 	struct MeshDatas
@@ -11,6 +13,9 @@ namespace Rendering
 		Mesh::VBElements	vb;
 		Material::MaterialElements	material;
 		MeshTextureNames	textureNames;
+
+		float radius;
+		Intersection::AABB aabb;
 
 		MeshDatas(){}
 		~MeshDatas(){}

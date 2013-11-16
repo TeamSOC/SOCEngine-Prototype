@@ -185,6 +185,9 @@ namespace Rendering
 			if(IsParameterUsed(BasicParameterNames::GetWorldViewProjMatrix(), technique))
 				requiredMatrixParam |= REQUIRED_TRANSFORM::WORLD_VIEW_PROJECTION;
 
+			if(IsParameterUsed(BasicParameterNames::GetWorldViewInvTnsMatrix(), technique))
+				requiredMatrixParam |= REQUIRED_TRANSFORM::WORLD_VIEW_INV_TRANS;
+
 			const char *structName = nullptr;
 			bool test;// = shader->SetValue("material.ambient", nullptr, sizeof(float));
 			std::string &checkParam = BasicParameterNames::GetMaterialElement(BasicParameterNames::GetAmbient());

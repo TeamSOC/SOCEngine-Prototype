@@ -154,7 +154,7 @@ namespace Rendering
 		UpdateMatrix();
 
 		for(Transform *o = this; o != NULL; o = o->parent)
-			mat *= o->matrix;
+			SOCMatrixMultiply(&mat, &o->matrix, &mat);
 
 		*outMatrix = mat;
 	}

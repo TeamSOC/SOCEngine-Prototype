@@ -145,7 +145,15 @@ namespace Rendering
 				BuildMesh(fbxMesh, &meshData->vb, &bound, &radius);
 				ParseMaterial(fbxMesh, &meshData->material, &meshData->textureNames);
 
+				meshData->radius = radius;
+				meshData->aabb = bound;
+
 				mgr->Add(key, meshData);
+			}
+			else
+			{
+				bound = meshData->aabb;
+				radius = meshData->radius;
 			}
 
 			mesh->Create(meshData);
@@ -311,7 +319,7 @@ namespace Rendering
 				}
 			}
 
-			if(maxRadius)
+			if(outRadius)
 				(*outRadius) = maxRadius;
 			if(outBounds)
 				outBounds->SetMinMax(minSize, maxSize);
