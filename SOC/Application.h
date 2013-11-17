@@ -1,31 +1,44 @@
 #pragma once
 
+#include <Windows.h>
 #include "Rect.h"
 
 namespace Device
 {
-	namespace Application
+	class Application
 	{
-		class Application
-		{
-		protected:
-			Common::Rect<int> rect;
+	private:
+		Common::Rect<int> rect;
 
-		public:
-			Application(void);
-			virtual ~Application();
+		WNDCLASSEX		windowInfo;
+		const char*	name;
+		HWND			parentHandle;
+		HWND			handle;
+		unsigned int	options;
+		bool			windowsMode;
 
-		public:
-			virtual bool Initialize() = 0;
-			virtual void Destroy() = 0;
+	private:
+		static LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-		public:
-			Common::Rect<int> GetRect();
-			Common::Size<int> GetSize();
+	public:
+		Application(Common::Rect<int> &rect, HINSTANCE Instance, const char* name, bool windowMode, bool isChild, HWND parentHandle = NULL);
+		~Application(void);
 
-		protected:
-			void SetRect(Common::Rect<int> r);
-		};
+	public:
+		bool Initialize();
+		void Destroy();
 
-	}
+	public:
+		bool IsChild();
+		bool IsWindowMode();
+		HWND GetHandle();
+
+	public:
+		Common::Rect<int> GetRect();
+		Common::Size<int> GetSize();
+
+	protected:
+		void SetRect(Common::Rect<int> r);
+	};
+
 }

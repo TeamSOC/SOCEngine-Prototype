@@ -43,7 +43,7 @@ namespace Rendering
 		void Update(float delta);
 		void Render(std::vector<Light::LightForm*> *lights, SOC_Matrix *viewMat, SOC_Matrix *projMat, SOC_Matrix *viewProjMat);
 
-		virtual bool Intersect(Intersection::Sphere &sphere);
+		bool Intersect(Intersection::Sphere &sphere);
 
 	public:
 		Object* AddObject(Object *child, bool copy = false);

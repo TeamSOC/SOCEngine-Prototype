@@ -5,6 +5,7 @@
 #include "Skybox.h"
 #include "LightManager.h"
 #include "Component.h"
+#include "Shader.h"
 
 namespace Rendering
 {
@@ -19,7 +20,8 @@ namespace Rendering
 		//CLEAR_FLAG_DEPTHONLY는 제외함. 어떻게 구현하라는건지 잘 모르겠음 -ㅠ-;
 
 	private:
-		Frustum		*frustum;
+		Frustum			*frustum;
+		Shader::Shader	*rtShader;
 
 	private:
 		Common::Rect<float>	  normalizedViewPortRect;
@@ -37,6 +39,7 @@ namespace Rendering
 		/*2. 컬링 마스크처리에서 여러개의 태그를 선택할 수 있어.
 		     그럼 태그 시스템을 바꿔야 한단 소리네 하.. */
 		//3. 렌더 텍스쳐 선택. 이건 지금 할게 아니야
+
 
 	public:
 		Camera();

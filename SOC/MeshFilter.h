@@ -40,11 +40,11 @@ namespace Rendering
 			SOC_TRIANGLE triangleType;
 
 		private:
-			Device::Graphics::GraphicsForm	*graphics;
+			Device::Graphics	*graphics;
 			VertexDeclaration				decl;
 
 		public:
-			MeshFilter(Device::Graphics::GraphicsForm *graphics);
+			MeshFilter(Device::Graphics *graphics);
 			~MeshFilter();
 
 		private:
@@ -75,7 +75,7 @@ namespace Rendering
 		private:
 			bool CreateVertexBuffer(bool isDynamic);
 			bool CreateIndexBuffer();
-			VertexDeclaration CreateVertexDeclaration();
+			bool CreateVertexDeclaration(VertexDeclaration *out);
 
 		public:
 			Buffer::VertexBuffer* GetVertexBuffer();

@@ -74,12 +74,12 @@ namespace Device
 		}
 	}
 
-	Graphics::GraphicsForm* DeviceDirector::GetGraphics()
+	Graphics* DeviceDirector::GetGraphics()
 	{
 		return graphics;
 	}
 
-	Application::Application* DeviceDirector::GetApplication()
+	Application* DeviceDirector::GetApplication()
 	{
 		return app;
 	}
@@ -108,12 +108,12 @@ namespace Device
 
 	bool DeviceDirector::Initialize(PresentInterval interval, WindowsInitOption &options)
 	{
-		app = new Application::Windows(options.rect, options.instance, options.name, options.windowMode, options.isChild, options.parentHandle);
+		app = new Application(options.rect, options.instance, options.name, options.windowMode, options.isChild, options.parentHandle);
 
 		if( app->Initialize() == false)
 			return false;
 
-		graphics = new Graphics::DX(interval, app);
+		graphics = new Graphics(interval, app);
 
 		if(graphics->Initialize() == false)
 		{

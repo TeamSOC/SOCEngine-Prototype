@@ -35,6 +35,12 @@ namespace Rendering
 		this->skybox = nullptr;
 
 		clearFlag = ClearFlag::FlagSolidColor;
+
+		Graphics *graphics = DeviceDirector::GetInstance()->GetGraphics();
+		//rtShader = new Shader::Shader(graphics, "Camera"); //render target shader?
+
+		Scene *scene = dynamic_cast<Scene*>(Device::DeviceDirector::GetInstance()->GetScene());
+		scene->GetShaderManager()->LoadShaderFromFile("Camera", &rtShader, false);
 	}
 
 	void Camera::Destroy()
@@ -46,7 +52,7 @@ namespace Rendering
 	{
 		//defulat is 'target clear option'.
 //		Graphics flag = Graphics::FlagTarget;
-		Graphics::GraphicsForm::ClearFlag flag = Graphics::GraphicsForm::FlagTarget;
+		Graphics::ClearFlag flag = Graphics::ClearFlagType::FlagTarget;
 
 		if( clearFlag == ClearFlag::FlagDontClear )
 			return;
@@ -59,7 +65,7 @@ namespace Rendering
 		}
 
 		else if( clearFlag == ClearFlag::FlagSolidColor )
-			flag |= Graphics::GraphicsForm::FlagZBuffer;
+			flag |= Graphics::ClearFlagType::FlagZBuffer;
 
 		DeviceDirector::GetInstance()->GetGraphics()->Clear( 0, NULL, flag, clearColor, 1.0f, 0);
 	}

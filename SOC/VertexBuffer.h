@@ -1,20 +1,25 @@
 #pragma once
 
-#include "VertexBufferForm.h"
+#include "DeviceDirector.h"
+#include "Platform.h"
 
 namespace Rendering
 {
 	namespace Buffer
 	{
-		class VertexBufferDX : public VertexBufferForm
+		class VertexBuffer
 		{
 		private:
+			int vertexBufferSize;
+			int numOfVertex;
+			Device::Graphics *graphics;
+
 			LPDIRECT3DVERTEXBUFFER9 vertexBuffer;
 			LPDIRECT3DDEVICE9 device;
 
 		public:
-			VertexBufferDX(int vertexBufferSize, int numOfVertex, Device::Graphics::GraphicsForm *graphics);
-			~VertexBufferDX(void);
+			VertexBuffer(int vertexBufferSize, int numOfVertex, Device::Graphics *graphics);
+			~VertexBuffer(void);
 
 		public:
 			bool Create(SOC_dword usage, SOC_POOL pool);
@@ -22,6 +27,10 @@ namespace Rendering
 			bool UnLock();
 
 		public:
+			int GetNumOfVertex();
+			int GetLength();
+			int GetSize();
+
 			DeviceVertexBuffer GetDeviceBuffer();
 		};
 	}

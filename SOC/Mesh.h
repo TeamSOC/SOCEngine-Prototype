@@ -19,7 +19,7 @@ namespace Rendering
 		private:
 			MeshFilter						*filter;
 			MeshRenderer					*renderer;
-			Device::Graphics::GraphicsForm	*graphics;
+			Device::Graphics	*graphics;
 
 		private:
 			MeshDatas *meshData;

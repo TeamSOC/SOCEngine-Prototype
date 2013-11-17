@@ -1,4 +1,4 @@
-#include "ShaderManagerDX.h"
+#include "ShaderManager.h"
 
 using namespace std;
 
@@ -6,18 +6,19 @@ namespace Rendering
 {
 	namespace Shader
 	{
-		ShaderManagerDX::ShaderManagerDX(Device::Graphics::GraphicsForm *graphics) : ShaderManagerForm(graphics)
+		ShaderManager::ShaderManager(Device::Graphics *graphics)
 		{
-			shaderDir = "../Shader/DX/";
+			this->graphics = graphics;
+			shaderDir = "../Shader/";
 			dirLen = strlen(shaderDir);
 		}
 
-		ShaderManagerDX::~ShaderManagerDX(void)
+		ShaderManager::~ShaderManager(void)
 		{
 			DeleteAll();
 		}
 
-		bool ShaderManagerDX::LoadShaderFromFile( std::string &path, std::pair<ShaderCode, Shader*> *outPair, bool shaderClone, bool inShaderFolder)
+		bool ShaderManager::LoadShaderFromFile( std::string &path, std::pair<ShaderCode, Shader*> *outPair, bool shaderClone, bool inShaderFolder)
 		{
 			SOCHashMap<std::string, pair<ShaderCode, Shader*>>::iterator iter = hash.find(path);
 			string name = path;
@@ -71,7 +72,7 @@ namespace Rendering
 			return true;
 		}
 
-		bool ShaderManagerDX::FindShader(std::string &name, std::pair<ShaderCode, Shader*> *outPair, bool shaderClone)
+		bool ShaderManager::FindShader(std::string &name, std::pair<ShaderCode, Shader*> *outPair, bool shaderClone)
 		{
 			SOCHashMap<std::string, pair<ShaderCode, Shader*>>::iterator iter = hash.find(name);
 
@@ -95,7 +96,7 @@ namespace Rendering
 			return true;
 		}
 
-		bool ShaderManagerDX::LoadShaderFromFile( std::string path, ShaderCode *outShaderCode, bool inShaderFolder)
+		bool ShaderManager::LoadShaderFromFile( std::string path, ShaderCode *outShaderCode, bool inShaderFolder)
 		{
 			pair<ShaderCode, Shader*> pairData;
 			bool res = LoadShaderFromFile(path, &pairData, false, inShaderFolder);
@@ -106,7 +107,7 @@ namespace Rendering
 			return res;
 		}
 
-		bool ShaderManagerDX::FindShader(std::string path, ShaderCode *outShaderCode)
+		bool ShaderManager::FindShader(std::string path, ShaderCode *outShaderCode)
 		{
 			pair<ShaderCode, Shader*> pairData;
 			bool res = FindShader(path, &pairData, false);
@@ -117,7 +118,7 @@ namespace Rendering
 			return res;
 		}
 
-		bool ShaderManagerDX::LoadShaderFromFile( std::string path, Shader **outShader, bool shaderClone, bool inShaderFolder)
+		bool ShaderManager::LoadShaderFromFile( std::string path, Shader **outShader, bool shaderClone, bool inShaderFolder)
 		{
 			pair<ShaderCode, Shader*> pairData;
 			bool res = LoadShaderFromFile(path, &pairData, shaderClone, inShaderFolder);
@@ -128,7 +129,7 @@ namespace Rendering
 			return res;
 		}
 
-		bool ShaderManagerDX::FindShader(std::string path, Shader **outShader, bool shaderClone)
+		bool ShaderManager::FindShader(std::string path, Shader **outShader, bool shaderClone)
 		{
 			pair<ShaderCode, Shader*> pairData;
 			bool res = FindShader(path, &pairData, shaderClone);
@@ -140,7 +141,7 @@ namespace Rendering
 		}
 
 
-		void ShaderManagerDX::DeleteAll()
+		void ShaderManager::DeleteAll()
 		{
 			hash.clear();
 		}

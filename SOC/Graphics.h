@@ -1,16 +1,28 @@
 #pragma once
 
-#include "GraphicsForm.h"
-#include "Windows.h"
+#include "Application.h"
+#include "Utility.h"
+#include "Color.h"
+#include "Device.h"
+#include "VertexDeclaration.h"
 #include "SOCHashMap.h"
 #include <string>
 
 namespace Device
 {
-	namespace Graphics
-	{
-		class DX : public GraphicsForm
+
+		class Graphics
 		{
+		public:
+			enum ClearFlagType
+			{
+				FlagTarget	= 1,
+				FlagZBuffer	= 2,
+				FlagStencil	= 4
+			};
+
+			typedef SOC_dword ClearFlag;
+
 		private:
 			SOCHashMap<const char *, LPDIRECT3DVERTEXDECLARATION9> declMap;
 
@@ -21,11 +33,11 @@ namespace Device
 			D3DPRESENT_PARAMETERS d3dpp;
 
 		public:
-			DX(PresentInterval interval, Application::Application *app);
-			virtual ~DX(void);
+			Graphics(PresentInterval interval, Application *app);
+			~Graphics(void);
 
 		public:
-			bool DX::Initialize();
+			bool Initialize();
 
 		public:
 			bool Clear(unsigned int count, const Common::Rect<int> *rect, ClearFlag flags, Rendering::Color &color, float z, unsigned int stencil);
@@ -47,9 +59,19 @@ namespace Device
 			bool EndScene();
 			void Present();
 
+			bool GetRenderTarget(SOC_uint renderTargetIdx, DeviceSurface *renderTarget)
+			{
+				return SUCCEEDED( device->GetRenderTarget(renderTargetIdx, renderTarget) );
+			}
+
+			bool SetRenderTarget(SOC_uint renderTargetIdx, DeviceSurface renderTarget)
+			{
+				return SUCCEEDED( device->SetRenderTarget(renderTargetIdx, renderTarget) );
+			}
+
 		public:
 			LPDIRECT3DDEVICE9 GetD3DDevice();
 		};
 
-	}
+	
 }

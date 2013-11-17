@@ -15,8 +15,8 @@ namespace Device
 		float  fps;	
 
 	private:
-		Graphics::GraphicsForm *graphics;
-		Application::Application *app;
+		Graphics *graphics;
+		Application *app;
 		BaseScene* scene;
 		BaseScene* nextScene;
 
@@ -52,8 +52,8 @@ namespace Device
 		void Destroy();
 
 	public:
-		Graphics::GraphicsForm* GetGraphics();
-		Application::Application* GetApplication();
+		Graphics* GetGraphics();
+		Application* GetApplication();
 
 		Common::Size<int>& GetSize();
 

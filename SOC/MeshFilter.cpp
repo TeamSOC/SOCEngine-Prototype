@@ -4,7 +4,7 @@ namespace Rendering
 {
 	namespace Mesh
 	{
-		MeshFilter::MeshFilter(Device::Graphics::GraphicsForm *graphics) : vertices(NULL), normals(NULL), tangents(NULL), binormals(NULL), colors(NULL), decl(nullptr)
+		MeshFilter::MeshFilter(Device::Graphics *graphics) : vertices(NULL), normals(NULL), tangents(NULL), binormals(NULL), colors(NULL), decl(nullptr)
 		{
 			vertexBufferSize = 0;
 			numOfVertex = 0;
@@ -118,9 +118,7 @@ namespace Rendering
 			if( CreateIndexBuffer() == false )
 				return false;				
 
-			decl = CreateVertexDeclaration();
-
-			if( decl == nullptr )
+			if( CreateVertexDeclaration(&decl) == false )
 				return false;
 
 			return true; 
@@ -202,7 +200,7 @@ namespace Rendering
 			return true;
 		}
 
-		VertexDeclaration MeshFilter::CreateVertexDeclaration()
+		bool MeshFilter::CreateVertexDeclaration(VertexDeclaration *out)
 		{
 			VertexDeclarationElements ves;
 			std::string description = "P";
@@ -271,8 +269,9 @@ namespace Rendering
 			}
 
 			ves.description = description.c_str();
+			(*out) = graphics->CreateVertexDeclation(&ves);
 
-			return graphics->CreateVertexDeclation(&ves);
+			return true;
 		}
 
 		Buffer::VertexBuffer* MeshFilter::GetVertexBuffer()

@@ -1,4 +1,4 @@
-#include "ShaderDX.h"
+#include "Shader.h"
 
 using namespace std;
 using namespace Device;
@@ -7,23 +7,34 @@ namespace Rendering
 {
 	namespace Shader
 	{
-		ShaderDX::ShaderDX(Device::Graphics::GraphicsForm *graphics, const char *name) : ShaderForm(graphics, name)
+		Shader::Shader(Device::Graphics *graphics, const char *name)
 		{
+			compiled = false;
+			numPass = 0;
+
+			if(name != nullptr)
+				this->name = name;
+
+			this->graphics = graphics;
+
+			requiredLightParam = 0;
+			requiredMatrixParam = 0;
+
 			shader = NULL;
 		}
 
-		ShaderDX::~ShaderDX(void)
+		Shader::~Shader(void)
 		{
 			if(shader)
 				shader->Release();
 
 		}
 
-		bool ShaderDX::Compile(string &shaderCode)
+		bool Shader::Compile(string &shaderCode)
 		{
 			LPD3DXBUFFER error = nullptr;
 			SOC_dword flags = 0;
-			LPDIRECT3DDEVICE9 device = dynamic_cast<Device::Graphics::DX*>(graphics)->GetD3DDevice();
+			LPDIRECT3DDEVICE9 device = dynamic_cast<Device::Graphics*>(graphics)->GetD3DDevice();
 			bool success = true;
 
 #if _DEBUG
@@ -55,78 +66,78 @@ namespace Rendering
 			return success; 
 		}
 
-		bool ShaderDX::SetVariable(const char *parameter, SOC_Matrix *m)
+		bool Shader::SetVariable(const char *parameter, SOC_Matrix *m)
 		{
 			return SUCCEEDED(shader->SetMatrix(parameter, m));
 		}
 
-		bool ShaderDX::SetVariable(const char *parameter, SOC_Matrix *ary, SOC_uint count)
+		bool Shader::SetVariable(const char *parameter, SOC_Matrix *ary, SOC_uint count)
 		{
 			return SUCCEEDED(shader->SetMatrixArray(parameter, ary, count));
 		}
 
-		bool ShaderDX::SetVariable(const char *parameter, SOC_Vector3 *v)
+		bool Shader::SetVariable(const char *parameter, SOC_Vector3 *v)
 		{
 			return SUCCEEDED(shader->SetValue(parameter, v, sizeof(SOC_Vector3)));
 		}
 
-		bool ShaderDX::SetVariable(const char *parameter, SOC_Vector3 *ary, SOC_uint count)
+		bool Shader::SetVariable(const char *parameter, SOC_Vector3 *ary, SOC_uint count)
 		{
 			return SUCCEEDED(shader->SetValue(parameter, ary, sizeof(SOC_Vector3) * count));
 		}
 
-		bool ShaderDX::SetVariable(const char *parameter, SOC_Vector4 *v)
+		bool Shader::SetVariable(const char *parameter, SOC_Vector4 *v)
 		{
 			return SUCCEEDED(shader->SetVector(parameter, v));
 		}
 
-		bool ShaderDX::SetVariable(const char *parameter, SOC_Vector4 *ary, SOC_uint count)
+		bool Shader::SetVariable(const char *parameter, SOC_Vector4 *ary, SOC_uint count)
 		{
 			return SUCCEEDED(shader->SetVectorArray(parameter, ary, count));
 		}
 
-		bool ShaderDX::SetVariable(const char *parameter, bool b)
+		bool Shader::SetVariable(const char *parameter, bool b)
 		{
 			return SUCCEEDED(shader->SetBool(parameter, b));
 		}
 
-		bool ShaderDX::SetVariable(const char *parameter, float f)
+		bool Shader::SetVariable(const char *parameter, float f)
 		{
 			return SUCCEEDED(shader->SetFloat(parameter, f));
 		}
 
-		bool ShaderDX::SetVariable(const char *parameter, float *ary, SOC_uint count)
+		bool Shader::SetVariable(const char *parameter, float *ary, SOC_uint count)
 		{
 			return SUCCEEDED(shader->SetFloatArray(parameter, ary, count));
 		}
 
-		bool ShaderDX::SetVariable(const char *parameter, int i)
+		bool Shader::SetVariable(const char *parameter, int i)
 		{
 			return SUCCEEDED(shader->SetInt(parameter, i));
 		}
 
-		bool ShaderDX::SetVariable(const char *parameter, int *ary, SOC_uint count)
+		bool Shader::SetVariable(const char *parameter, int *ary, SOC_uint count)
 		{
 			return SUCCEEDED(shader->SetIntArray(parameter, ary, count));
 		}
 
-		bool ShaderDX::SetTechnique(const char *technique)
+		bool Shader::SetTechnique(const char *technique)
 		{
 			return SUCCEEDED(shader->SetTechnique(technique));
 		}
 
-		bool ShaderDX::SetVariable(const char *parameter, Texture::Texture *texture)
+		bool Shader::SetVariable(const char *parameter, Texture::Texture *texture)
 		{
 			LPDIRECT3DTEXTURE9 tex = texture->GetTexture();
 			return SUCCEEDED( shader->SetTexture(parameter, tex) );
 		}
 
-		bool ShaderDX::SetVariable(const char *parameter, void *data, SOC_uint size)
+		bool Shader::SetVariable(const char *parameter, void *data, SOC_uint size)
 		{
 			return SUCCEEDED(shader->SetValue(parameter, data, size));
 		}
 
-		bool ShaderDX::SetStructArrayVariable(const char *structName, SOC_uint index, const char *component, void* data, SOC_uint size)
+		bool Shader::SetStructArrayVariable(const char *structName, SOC_uint index, const char *component, void* data, SOC_uint size)
 		{
 			D3DXHANDLE structHandle = shader->GetParameterElement(structName, index);
 			D3DXHANDLE componentHandle = shader->GetParameterByName(structHandle, component);
@@ -134,7 +145,7 @@ namespace Rendering
 			return SUCCEEDED(shader->SetValue(componentHandle, data, size));;
 		}
 
-		bool ShaderDX::SetStructVariable(const char *variableName, const char *component, void* data, SOC_uint size)
+		bool Shader::SetStructVariable(const char *variableName, const char *component, void* data, SOC_uint size)
 		{
 			std::string parameter = variableName;
 			parameter += ".";
@@ -143,32 +154,32 @@ namespace Rendering
 			return SetVariable(parameter.c_str(), data, size);
 		}
 
-		bool ShaderDX::Begin()
+		bool Shader::Begin()
 		{
 			return SUCCEEDED( shader->Begin(&this->numPass, NULL) );
 		}
 
-		bool ShaderDX::BeginPass(SOC_uint pass)
+		bool Shader::BeginPass(SOC_uint pass)
 		{
 			return SUCCEEDED( shader->BeginPass(pass) );
 		}
 
-		bool ShaderDX::EndPass()
+		bool Shader::EndPass()
 		{
 			return SUCCEEDED( shader->EndPass() );
 		}
 
-		bool ShaderDX::End()
+		bool Shader::End()
 		{
 			return SUCCEEDED( shader->End() );
 		}
 
-		bool ShaderDX::IsParameterUsed(const char *parameter, const char *technique)
+		bool Shader::IsParameterUsed(const char *parameter, const char *technique)
 		{			 
 			return (bool)shader->IsParameterUsed(parameter, technique);
 		}
 
-		void ShaderDX::GetRequiredParameters(SOC_byte *outMatrixParamters, SOC_byte *outLightParameters, char *technique)
+		void Shader::GetRequiredParameters(SOC_byte *outMatrixParamters, SOC_byte *outLightParameters, char *technique)
 		{
 			if(IsParameterUsed(BasicParameterNames::GetWorldMatrix(), technique))
 				requiredMatrixParam |= REQUIRED_TRANSFORM::WORLD;
@@ -219,6 +230,31 @@ namespace Rendering
 
 			if(outLightParameters)
 				*outLightParameters = requiredLightParam;
+		}
+
+		bool Shader::IsCompiled()
+		{
+			return compiled;
+		}
+
+		SOC_uint Shader::GetNumPasses()
+		{
+			return numPass;
+		}
+
+		const char* Shader::GetName()
+		{
+			return name.c_str();
+		}
+
+		SOC_byte Shader::GetRequiredMatrixParameters()
+		{
+			return requiredMatrixParam;
+		}
+
+		SOC_byte Shader::GetRequiredLightParameters()
+		{
+			return requiredLightParam;
 		}
 	}
 }

@@ -14,15 +14,4 @@ namespace Rendering
 
 #elif defined(__APPLE__) || defined(_USE_GL_DEFINES)
 
-#include "ShaderCodeGL.h"
-
-namespace Rendering
-{
-	namespace Shader
-	{
-		typedef ShaderCodeGL ShaderCode;
-	}
-}
-
-
 #endif

@@ -1,15 +1,13 @@
-#include "DX.h"
+#include "Graphics.h"
 
 namespace Device
 {
-	namespace Graphics
-	{
-		DX::DX(PresentInterval interval, Application::Application *app) 
-			: GraphicsForm(interval, app)
+
+		Graphics::Graphics(PresentInterval interval, Application *app) 
 		{
 			ZeroMemory(&d3dpp, sizeof(d3dpp));
 
-			Application::Windows *win = dynamic_cast<Application::Windows*>(app);
+			Application *win = app;
 
 			d3dpp.Windowed = win->IsWindowMode();
 
@@ -33,7 +31,7 @@ namespace Device
 			d3dpp.FullScreen_RefreshRateInHz	= 0;
 		}
 
-		DX::~DX(void)
+		Graphics::~Graphics(void)
 		{
 			if(d3dHandle)
 			{
@@ -48,7 +46,7 @@ namespace Device
 			}
 		}
 
-		bool DX::Initialize()
+		bool Graphics::Initialize()
 		{
 			d3dHandle = Direct3DCreate9( D3D_SDK_VERSION );
 
@@ -61,7 +59,7 @@ namespace Device
 			return true;
 		}
 
-		bool DX::Clear(unsigned int count, const Common::Rect<int> *rect, ClearFlag flags, Rendering::Color &color, float z, unsigned int stencil)
+		bool Graphics::Clear(unsigned int count, const Common::Rect<int> *rect, ClearFlag flags, Rendering::Color &color, float z, unsigned int stencil)
 		{				
 			D3DCOLOR d3dColor = D3DCOLOR_COLORVALUE(color.r, color.g, color.b, color.a);
 
@@ -89,43 +87,43 @@ namespace Device
 			return success;
 		}
 
-		bool DX::Clear(ClearFlag flags, Rendering::Color &color)
+		bool Graphics::Clear(ClearFlag flags, Rendering::Color &color)
 		{
 			return Clear(0, NULL, flags, color, 1.0f, 0L);
 		}
 
-		bool DX::CreateVertexBuffer(int bufferLength, SOC_dword usage, SOC_POOL pool, DeviceVertexBuffer* outDeviceBuffer)
+		bool Graphics::CreateVertexBuffer(int bufferLength, SOC_dword usage, SOC_POOL pool, DeviceVertexBuffer* outDeviceBuffer)
 		{
 			LPDIRECT3DVERTEXBUFFER9 *buffer = (LPDIRECT3DVERTEXBUFFER9*)outDeviceBuffer;
 			return SUCCEEDED( device->CreateVertexBuffer(bufferLength, usage, 0, pool == SOC_POOL_DEFAULT ? D3DPOOL_DEFAULT : D3DPOOL_MANAGED, buffer, NULL) );
 		}
 
-		bool DX::CreateIndexBuffer(int bufferLength, SOC_POOL pool, DeviceIndexBuffer* outDeviceBuffer)
+		bool Graphics::CreateIndexBuffer(int bufferLength, SOC_POOL pool, DeviceIndexBuffer* outDeviceBuffer)
 		{
 			D3DPOOL d3dPool = pool == SOC_POOL_DEFAULT ? D3DPOOL_DEFAULT : D3DPOOL_MANAGED;				
 			return SUCCEEDED( device->CreateIndexBuffer( bufferLength, D3DUSAGE_WRITEONLY, D3DFMT_INDEX16, d3dPool, (LPDIRECT3DINDEXBUFFER9*)outDeviceBuffer, NULL) );;
 		}
 
-		bool DX::SetIndices( DeviceIndexBuffer indexBuffer )
+		bool Graphics::SetIndices( DeviceIndexBuffer indexBuffer )
 		{
 			LPDIRECT3DINDEXBUFFER9 idxBuffer = (LPDIRECT3DINDEXBUFFER9)indexBuffer;
 			return SUCCEEDED( device->SetIndices(idxBuffer) );
 		}
 
-		bool DX::DrawIndexedPrimitive(SOC_TRIANGLE type, SOC_int baseVertexIdx, SOC_uint minVertexIdx, SOC_uint numVertices, SOC_uint startIdx, SOC_uint primitiveCount)
+		bool Graphics::DrawIndexedPrimitive(SOC_TRIANGLE type, SOC_int baseVertexIdx, SOC_uint minVertexIdx, SOC_uint numVertices, SOC_uint startIdx, SOC_uint primitiveCount)
 		{
 			D3DPRIMITIVETYPE d3dPrimitiType = (D3DPRIMITIVETYPE)type;
 			return SUCCEEDED( device->DrawIndexedPrimitive(d3dPrimitiType, baseVertexIdx, minVertexIdx, numVertices, startIdx, primitiveCount) );
 			//				return SUCCEEDED( device->DrawPrimitive(d3dPrimitiType, 0, primitiveCount) );
 		}
 
-		bool DX::SetVertexStream(SOC_uint stream, DeviceVertexBuffer deviceVertexBuffer, SOC_uint stride)
+		bool Graphics::SetVertexStream(SOC_uint stream, DeviceVertexBuffer deviceVertexBuffer, SOC_uint stride)
 		{
 			LPDIRECT3DVERTEXBUFFER9 vb = (LPDIRECT3DVERTEXBUFFER9)deviceVertexBuffer;
 			return SUCCEEDED(device->SetStreamSource( stream, vb, 0, stride));
 		}
 
-		bool DX::SetVertexStremFrequency(SOC_uint stream, SOC_uint frequency)
+		bool Graphics::SetVertexStremFrequency(SOC_uint stream, SOC_uint frequency)
 		{
 			if(frequency == 0)
 				frequency = 1;
@@ -134,7 +132,7 @@ namespace Device
 			return SUCCEEDED( device->SetStreamSourceFreq(stream, frequency) );
 		}
 
-		VertexDeclaration DX::CreateVertexDeclation( VertexDeclarationElements *ve )
+		VertexDeclaration Graphics::CreateVertexDeclation( VertexDeclarationElements *ve )
 		{
 			LPDIRECT3DVERTEXDECLARATION9 decl = declMap[ve->description.c_str()];
 
@@ -168,7 +166,7 @@ namespace Device
 			return decl;
 		}
 
-		bool DX::SetVertexDeclaration( const char *description )
+		bool Graphics::SetVertexDeclaration( const char *description )
 		{
 			LPDIRECT3DVERTEXDECLARATION9 decl = declMap[description];
 
@@ -178,7 +176,7 @@ namespace Device
 			return SUCCEEDED( device->SetVertexDeclaration( decl ) );
 		}
 
-		bool DX::SetVertexDeclaration( VertexDeclaration decl )
+		bool Graphics::SetVertexDeclaration( VertexDeclaration decl )
 		{				
 			if(decl == nullptr)
 				return false;
@@ -187,26 +185,26 @@ namespace Device
 		}
 
 
-		bool DX::BeginScene()
+		bool Graphics::BeginScene()
 		{
 			return SUCCEEDED(	device->BeginScene() );
 		}
 
-		bool DX::EndScene()
+		bool Graphics::EndScene()
 		{
 			return SUCCEEDED( device->EndScene() );
 		}
 
-		void DX::Present()
+		void Graphics::Present()
 		{
 			device->Present(NULL, NULL, NULL, NULL);
 		}
 
-		LPDIRECT3DDEVICE9 DX::GetD3DDevice()
+		LPDIRECT3DDEVICE9 Graphics::GetD3DDevice()
 		{
 			return device;
 		}
 
 
-	}
+	
 }

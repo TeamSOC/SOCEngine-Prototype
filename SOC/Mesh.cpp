@@ -47,7 +47,7 @@ namespace Rendering
 			Material::MaterialManager *mgr = scene->GetMaterialMgr();
 			Material::Material *material = mgr->Find("None");
 
-			Shader::Shader *shader;
+			Shader::Shader *shader = nullptr;
 			scene->GetShaderManager()->LoadShaderFromFile("Basic", &shader, false);
 
 			if(material == nullptr)

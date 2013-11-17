@@ -1,39 +1,46 @@
-#include "IndexBufferDX.h"
+#include "IndexBuffer.h"
 
 
 namespace Rendering
 {
 	namespace Buffer
 	{
-		IndexBufferDX::IndexBufferDX(int count, Device::Graphics::GraphicsForm *graphics) : IndexBufferForm(count, graphics)
+		IndexBuffer::IndexBuffer(int count, Device::Graphics *graphics)
 		{
+			this->count = count;
+			this->graphics = graphics;
 			indexBuffer = NULL;
 		}
 
-		IndexBufferDX::~IndexBufferDX(void)
+		IndexBuffer::~IndexBuffer(void)
 		{
 			if(indexBuffer)
 				indexBuffer->Release();
 		}
 
-		bool IndexBufferDX::Create(SOC_POOL pool)
+		bool IndexBuffer::Create(SOC_POOL pool)
 		{
 			return graphics->CreateIndexBuffer(sizeof(SOC_word) * count, pool, &indexBuffer);
 		}
 
-		bool IndexBufferDX::Lock(void** inputData)
+		bool IndexBuffer::Lock(void** inputData)
 		{
 			return SUCCEEDED( indexBuffer->Lock( 0, sizeof(SOC_word) * count, inputData, NULL) );
 		}
 
-		bool IndexBufferDX::UnLock()
+		bool IndexBuffer::UnLock()
 		{
 			return SUCCEEDED( indexBuffer->Unlock() );
 		}
 
-		DeviceIndexBuffer IndexBufferDX::GetDeviceBuffer()
+		DeviceIndexBuffer IndexBuffer::GetDeviceBuffer()
 		{
 			return indexBuffer;
+		}
+
+		int IndexBuffer::GetCount()
+		{
+			return count;
 		}
 	}
 }

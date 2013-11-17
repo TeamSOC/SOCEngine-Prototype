@@ -14,7 +14,7 @@ protected:
 	Container<Rendering::Object> *rootObjects;
 
 protected:
-	Device::Graphics::GraphicsForm			*graphics;
+	Device::Graphics			*graphics;
 	Rendering::Light::LightManager			*lightMgr;
 	Rendering::Texture::TextureManager		*textureMgr;
 	Rendering::Shader::ShaderManager		*shaderMgr;

@@ -102,6 +102,7 @@ typedef LPDIRECT3DTEXTURE9			 DeviceTexture;
 typedef LPDIRECT3DVERTEXBUFFER9		 DeviceVertexBuffer;
 typedef LPDIRECT3DINDEXBUFFER9		 DeviceIndexBuffer;
 typedef LPDIRECT3DVERTEXDECLARATION9 VertexDeclaration;
+typedef LPDIRECT3DSURFACE9			 DeviceSurface;
 
 #elif defined(__APPLE__) || defined(_USE_GL_DEFINES)
 
@@ -112,7 +113,7 @@ typedef LPDIRECT3DVERTEXDECLARATION9 VertexDeclaration;
 
 #if defined(WIN32)
 
-#include <Windows.h>
+#include <Application.h>
 #include <math.h>
 #include <gl/GL.h>
 #include <gl/GLU.h>

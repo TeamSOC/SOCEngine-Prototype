@@ -6,7 +6,7 @@
 //#include "FBXImporter.h"
 #include "TestScene.h"
 
-using namespace Device::Application;
+using namespace Device;
 using namespace Common;
 
 INT WINAPI wWinMain( HINSTANCE hInst, HINSTANCE, LPWSTR, INT )

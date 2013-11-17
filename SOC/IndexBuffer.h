@@ -1,19 +1,22 @@
 #pragma once
 
-#include "IndexBufferForm.h"
+#include "Platform.h"
 
 namespace Rendering
 {
 	namespace Buffer
 	{
-		class IndexBufferDX : public IndexBufferForm
+		class IndexBuffer
 		{
 		private:
 			LPDIRECT3DINDEXBUFFER9 indexBuffer;
+			Device::Graphics *graphics;
+			int count;
 
 		public:
-			IndexBufferDX(int count, Device::Graphics::GraphicsForm *graphics);
-			~IndexBufferDX(void);
+			IndexBuffer();
+			IndexBuffer(int count, Device::Graphics *graphics);
+			~IndexBuffer(void);
 
 		public:
 			bool Create(SOC_POOL pool);
@@ -28,6 +31,7 @@ namespace Rendering
 
 		public:
 			DeviceIndexBuffer GetDeviceBuffer();
+			int GetCount();
 		};
 
 	}

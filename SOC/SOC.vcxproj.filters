@@ -98,15 +98,6 @@
     <Filter Include="Engine\Device\Graphics">
       <UniqueIdentifier>{9a30c35e-7122-4c4a-898d-48ceccbca445}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Device\Graphics\Form">
-      <UniqueIdentifier>{654c1d28-9582-441e-8de7-caa5393116aa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Device\Application\Form">
-      <UniqueIdentifier>{e0d16ee9-170d-4fbb-b21c-559f58f3c580}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Device\Application\Windows">
-      <UniqueIdentifier>{ff62a7cb-05aa-4aae-93ba-0885e1d55832}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Device\Director">
       <UniqueIdentifier>{2d1c4e0d-019b-4cd3-ab97-1d297bff4d6b}</UniqueIdentifier>
     </Filter>
@@ -115,15 +106,6 @@
     </Filter>
     <Filter Include="Engine\Rendering\Texture\Manager">
       <UniqueIdentifier>{2ab0c5d1-5ea3-4c73-b8eb-80ccdad2a94b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Rendering\Texture\Form">
-      <UniqueIdentifier>{80aed4ce-11b2-4229-bddd-762f079d95f6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Rendering\Texture\DX">
-      <UniqueIdentifier>{56898e55-afeb-443e-92a5-05fb2bf8dd8d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Rendering\Texture\GL">
-      <UniqueIdentifier>{5736f897-73a6-46de-bd99-5b222953acb2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Rendering\Buffer">
       <UniqueIdentifier>{d936b711-4f37-48a8-95ed-011883f8b119}</UniqueIdentifier>
@@ -134,59 +116,20 @@
     <Filter Include="Engine\Rendering\Buffer\Index">
       <UniqueIdentifier>{d7fe2914-1386-4483-a53f-cdb0be4ab505}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Rendering\Buffer\Index\Form">
-      <UniqueIdentifier>{db055877-f815-48db-b007-c243961a481d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Rendering\Buffer\Index\DX">
-      <UniqueIdentifier>{bf53f986-7778-4e2e-8b07-3ad69c8bbf2c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Rendering\Buffer\Vertex\DX">
-      <UniqueIdentifier>{d4c04d7b-4a52-4d22-9df2-0f5447b405d9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Rendering\Buffer\Vertex\Form">
-      <UniqueIdentifier>{f55009c0-f914-4ce3-b92b-959bcd420519}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Rendering\Material">
       <UniqueIdentifier>{614e1a77-6fa7-4e6a-95ad-22825afddbf4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Rendering\Shader\Shader">
       <UniqueIdentifier>{49e4fe26-1f44-4d58-89b7-dd0de124d08b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Rendering\Shader\Shader\Form">
-      <UniqueIdentifier>{eb1c94f8-0acd-4afc-ac5d-e402de25ce89}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Rendering\Shader\Shader\DX">
-      <UniqueIdentifier>{f647cd5d-11af-4d8e-9edf-d29622302bbc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Rendering\Shader\Shader\GL">
-      <UniqueIdentifier>{3a5d34a4-a988-4f92-8604-5315ac6037ae}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Rendering\Mesh\Mesh">
       <UniqueIdentifier>{3c315de4-85d6-407a-b864-4ff52aca5259}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Device\Graphics\DX">
-      <UniqueIdentifier>{d15b0059-0604-4084-a116-d161ebd1d372}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Device\Graphics\GL">
-      <UniqueIdentifier>{fe8109a7-ee13-49c4-83fd-2c747420076d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Rendering\Shader\Manager\DX">
-      <UniqueIdentifier>{22b83591-ba11-43dd-943d-399cd7392051}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Rendering\Shader\Manager\GL">
-      <UniqueIdentifier>{045b511c-3b4f-4adc-ae96-d5570c5c1556}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Device\Graphics\VertexElements">
       <UniqueIdentifier>{aca77eab-3ae9-481d-b34a-fbefd30df3e0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Rendering\Shader\Manager\Form">
-      <UniqueIdentifier>{c2e3ede5-f275-4cfd-a619-5c8e4f4bfe5f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Rendering\Shader\Code">
       <UniqueIdentifier>{b37480fb-1a72-46b2-96dc-ff679e179ad6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Rendering\Shader\Code\GL">
-      <UniqueIdentifier>{868c3bd9-81ce-436a-b676-951aa600c941}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Scene">
       <UniqueIdentifier>{0d0e23fb-fbe5-492c-ae3a-e27adac08eb5}</UniqueIdentifier>
@@ -248,6 +191,12 @@
     <Filter Include="Engine\Rendering\Material\LambertMaterial">
       <UniqueIdentifier>{7612513d-3da2-4a1f-9dd9-bb788eba7ead}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Rendering\RenderTarget">
+      <UniqueIdentifier>{c1b6c682-1c90-415f-9ee1-9f20f23879d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Buffer\Surface">
+      <UniqueIdentifier>{7212c10b-f11b-48f1-8ddc-2c7e9ec0545a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AABB.cpp">
@@ -301,50 +250,14 @@
     <ClCompile Include="main.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Application.cpp">
-      <Filter>Engine\Device\Application\Form</Filter>
-    </ClCompile>
-    <ClCompile Include="DX.cpp">
-      <Filter>Engine\Device\Graphics\DX</Filter>
-    </ClCompile>
-    <ClCompile Include="Windows.cpp">
-      <Filter>Engine\Device\Application\Windows</Filter>
-    </ClCompile>
     <ClCompile Include="DeviceDirector.cpp">
       <Filter>Engine\Device\Director</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphicsForm.cpp">
-      <Filter>Engine\Device\Graphics\Form</Filter>
     </ClCompile>
     <ClCompile Include="TextureManager.cpp">
       <Filter>Engine\Rendering\Texture\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="TextureForm.cpp">
-      <Filter>Engine\Rendering\Texture\Form</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureDX.cpp">
-      <Filter>Engine\Rendering\Texture\DX</Filter>
-    </ClCompile>
-    <ClCompile Include="VertexBufferDX.cpp">
-      <Filter>Engine\Rendering\Buffer\Vertex\DX</Filter>
-    </ClCompile>
-    <ClCompile Include="IndexBufferDX.cpp">
-      <Filter>Engine\Rendering\Buffer\Index\DX</Filter>
-    </ClCompile>
-    <ClCompile Include="IndexBufferForm.cpp">
-      <Filter>Engine\Rendering\Buffer\Index\Form</Filter>
-    </ClCompile>
-    <ClCompile Include="VertexBufferForm.cpp">
-      <Filter>Engine\Rendering\Buffer\Vertex\Form</Filter>
-    </ClCompile>
     <ClCompile Include="Material.cpp">
       <Filter>Engine\Rendering\Material</Filter>
-    </ClCompile>
-    <ClCompile Include="ShaderForm.cpp">
-      <Filter>Engine\Rendering\Shader\Shader\Form</Filter>
-    </ClCompile>
-    <ClCompile Include="ShaderDX.cpp">
-      <Filter>Engine\Rendering\Shader\Shader\DX</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
       <Filter>Engine\Rendering\Mesh\Mesh</Filter>
@@ -354,12 +267,6 @@
     </ClCompile>
     <ClCompile Include="Object.cpp">
       <Filter>Engine\Rendering\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="ShaderManagerDX.cpp">
-      <Filter>Engine\Rendering\Shader\Manager\DX</Filter>
-    </ClCompile>
-    <ClCompile Include="ShaderCodeGL.cpp">
-      <Filter>Engine\Rendering\Shader\Code\GL</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Engine\Scene</Filter>
@@ -411,6 +318,33 @@
     </ClCompile>
     <ClCompile Include="LambertMaterial.cpp">
       <Filter>Engine\Rendering\Material\LambertMaterial</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderTarget.cpp">
+      <Filter>Engine\Rendering\RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="Surface.cpp">
+      <Filter>Engine\Rendering\Buffer\Surface</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics.cpp">
+      <Filter>Engine\Device\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="IndexBuffer.cpp">
+      <Filter>Engine\Rendering\Buffer\Index</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexBuffer.cpp">
+      <Filter>Engine\Rendering\Buffer\Vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderManager.cpp">
+      <Filter>Engine\Rendering\Shader\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Engine\Rendering\Shader\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Engine\Rendering\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>Engine\Device\Application</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -477,41 +411,11 @@
     <ClInclude Include="SOCHashMap.h">
       <Filter>Engine\Common\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Application.h">
-      <Filter>Engine\Device\Application\Form</Filter>
-    </ClInclude>
-    <ClInclude Include="DX.h">
-      <Filter>Engine\Device\Graphics\DX</Filter>
-    </ClInclude>
-    <ClInclude Include="Windows.h">
-      <Filter>Engine\Device\Application\Windows</Filter>
-    </ClInclude>
     <ClInclude Include="DeviceDirector.h">
       <Filter>Engine\Device\Director</Filter>
     </ClInclude>
-    <ClInclude Include="GraphicsForm.h">
-      <Filter>Engine\Device\Graphics\Form</Filter>
-    </ClInclude>
     <ClInclude Include="TextureManager.h">
       <Filter>Engine\Rendering\Texture\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureForm.h">
-      <Filter>Engine\Rendering\Texture\Form</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureDX.h">
-      <Filter>Engine\Rendering\Texture\DX</Filter>
-    </ClInclude>
-    <ClInclude Include="VertexBufferDX.h">
-      <Filter>Engine\Rendering\Buffer\Vertex\DX</Filter>
-    </ClInclude>
-    <ClInclude Include="IndexBufferDX.h">
-      <Filter>Engine\Rendering\Buffer\Index\DX</Filter>
-    </ClInclude>
-    <ClInclude Include="IndexBufferForm.h">
-      <Filter>Engine\Rendering\Buffer\Index\Form</Filter>
-    </ClInclude>
-    <ClInclude Include="VertexBufferForm.h">
-      <Filter>Engine\Rendering\Buffer\Vertex\Form</Filter>
     </ClInclude>
     <ClInclude Include="Buffer.h">
       <Filter>Engine\Rendering\Buffer</Filter>
@@ -521,15 +425,6 @@
     </ClInclude>
     <ClInclude Include="Material.h">
       <Filter>Engine\Rendering\Material</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderForm.h">
-      <Filter>Engine\Rendering\Shader\Shader\Form</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Engine\Rendering\Shader\Shader</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderDX.h">
-      <Filter>Engine\Rendering\Shader\Shader\DX</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
       <Filter>Engine\Rendering\Mesh\Mesh</Filter>
@@ -543,20 +438,8 @@
     <ClInclude Include="Object.h">
       <Filter>Engine\Rendering\Object</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderManagerDX.h">
-      <Filter>Engine\Rendering\Shader\Manager\DX</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderManager.h">
-      <Filter>Engine\Rendering\Shader\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="VertexDeclaration.h">
       <Filter>Engine\Device\Graphics\VertexElements</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderManagerForm.h">
-      <Filter>Engine\Rendering\Shader\Manager\Form</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderCodeGL.h">
-      <Filter>Engine\Rendering\Shader\Code\GL</Filter>
     </ClInclude>
     <ClInclude Include="ShaderCode.h">
       <Filter>Engine\Rendering\Shader\Code</Filter>
@@ -603,9 +486,6 @@
     <ClInclude Include="MaterialElements.h">
       <Filter>Engine\Rendering\Material</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Engine\Rendering\Texture</Filter>
-    </ClInclude>
     <ClInclude Include="FBXImporter.h">
       <Filter>Engine\Rendering\FBXImporter</Filter>
     </ClInclude>
@@ -633,13 +513,32 @@
     <ClInclude Include="ResourcesFolder.h">
       <Filter>Engine\Common\Utility</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="..\Shader\DX\test.fx">
-      <Filter>Source\TestScene</Filter>
-    </FxCompile>
-    <FxCompile Include="..\Shader\DX\Basic.fx">
-      <Filter>Source\TestScene</Filter>
-    </FxCompile>
+    <ClInclude Include="RenderTarget.h">
+      <Filter>Engine\Rendering\RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="Surface.h">
+      <Filter>Engine\Rendering\Buffer\Surface</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics.h">
+      <Filter>Engine\Device\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="IndexBuffer.h">
+      <Filter>Engine\Rendering\Buffer\Index</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexBuffer.h">
+      <Filter>Engine\Rendering\Buffer\Vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderManager.h">
+      <Filter>Engine\Rendering\Shader\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Engine\Rendering\Shader\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Engine\Rendering\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>Engine\Device\Application</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
