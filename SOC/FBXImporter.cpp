@@ -261,7 +261,16 @@ namespace Rendering
 			outVBElements->numOfTriangle = indexCount / 3;
 			outVBElements->isDynamic = false;
 
-			if(fbxMesh->GetLayer(0)->GetNormals() != nullptr)
+			//FbxGeometryElementNormal *fgn = fbxMesh->GetElementNormal(0);
+			//FbxLayerElementNormal *gln = fbxMesh->GetLayer(0)->GetNormals();
+
+			//int test = 0;
+			//test = fbxMesh->GetElementNormalCount();
+			//test = fbxMesh->GetElementUVCount();
+			//test = fbxMesh->GetElementBinormalCount();
+			//test = fbxMesh->GetElementTangentCount();
+
+			if(fbxMesh->GetElementNormal() != nullptr)
 				outVBElements->normals = new SOC_Vector3[numOfVertex];
 
 			if(fbxMesh->GetLayer(0)->GetVertexColors() != nullptr)
@@ -470,10 +479,11 @@ namespace Rendering
 			bool res = ParseElements(layer->GetNormals(), ctrlPointIdx, vertexIdx, &index);
 
 			if(res)
-			{
+			{				
 				FbxLayerElementNormal *fbxNormal = layer->GetNormals();
 				FbxVector4 v = fbxNormal->GetDirectArray().GetAt(index);
-				(*out) = SOC_Vector3((float)v[0], (float)v[1], (float)v[2]);
+				v.Normalize();
+				(*out) = SOC_Vector3((float)v[0], (float)v[1], -(float)v[2]);
 			}
 
 			return res;

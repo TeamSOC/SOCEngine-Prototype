@@ -143,6 +143,7 @@ namespace Device
 
 			int size = ve->vertexElement.size();
 			D3DVERTEXELEMENT9 *elements = new D3DVERTEXELEMENT9[size + 1];
+//			d3ddeclusage_norm
 
 			for(int i=0; i<size; ++i)
 			{

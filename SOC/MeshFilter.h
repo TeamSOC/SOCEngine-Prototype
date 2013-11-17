@@ -39,9 +39,6 @@ namespace Rendering
 
 			SOC_TRIANGLE triangleType;
 
-			
-//			VertexDeclarationElements vertexElements;
-
 		private:
 			Device::Graphics::GraphicsForm	*graphics;
 			VertexDeclaration				decl;

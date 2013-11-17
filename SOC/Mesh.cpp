@@ -87,6 +87,7 @@ namespace Rendering
 				graphics->SetIndices(idxBuffer);
 
 				graphics->DrawIndexedPrimitive(type, 0, 0, numOfVertex, 0, triangleCount);
+
 			}
 			endFunc(renderer);
 		}

@@ -14,6 +14,10 @@ private:
 	Object *lightObj;
 	Object *lightObj2;
 
+private:
+	LPD3DXMESH gpSphere;
+	LPD3DXEFFECT ls;
+
 public:
 	TestScene(void);
 	~TestScene(void);

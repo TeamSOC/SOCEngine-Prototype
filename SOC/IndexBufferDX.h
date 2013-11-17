@@ -17,6 +17,12 @@ namespace Rendering
 
 		public:
 			bool Create(SOC_POOL pool);
+			bool Create(LPD3DXMESH mesh)
+			{
+				mesh->GetIndexBuffer(&indexBuffer);
+				return true;
+			}
+
 			bool Lock(void** inputData);
 			bool UnLock();
 
