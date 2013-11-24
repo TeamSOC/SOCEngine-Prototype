@@ -197,6 +197,12 @@
     <Filter Include="Engine\Rendering\Buffer\Surface">
       <UniqueIdentifier>{7212c10b-f11b-48f1-8ddc-2c7e9ec0545a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Etc">
+      <UniqueIdentifier>{c21e8c80-bc37-475d-886d-7188528088b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Etc\Arduino">
+      <UniqueIdentifier>{52091b4e-4d50-491a-aa79-23b78abf8879}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AABB.cpp">
@@ -345,6 +351,9 @@
     </ClCompile>
     <ClCompile Include="Application.cpp">
       <Filter>Engine\Device\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Serial.cpp">
+      <Filter>Engine\Etc\Arduino</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -539,6 +548,9 @@
     </ClInclude>
     <ClInclude Include="Application.h">
       <Filter>Engine\Device\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Serial.h">
+      <Filter>Engine\Etc\Arduino</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

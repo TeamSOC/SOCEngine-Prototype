@@ -2,98 +2,107 @@
 
 namespace Etc
 {
-	namespace Communication
+	Serial::Serial(char *portName)			
 	{
-		Serial::Serial()
+		errors = 0;
+		serial = nullptr;
+		connected = false;
+
+		memset(&status, 0, sizeof(COMSTAT));
+		memset(buffer, 0, sizeof(char) * maxBufferSize);
+	}
+
+	Serial::~Serial()
+	{
+		Disconnect();
+	}
+
+	bool Serial::Recive(std::string *out, unsigned int packetLength)
+	{
+		DWORD bytesRead;
+		unsigned int toRead;
+
+		ClearCommError(serial, &errors, &status);
+
+		if(status.cbInQue > 0)
 		{
-			serial = nullptr;
-			connected = false;
+			toRead = status.cbInQue > packetLength ? packetLength : status.cbInQue;
+
+			ReadFile(serial, buffer, toRead, &bytesRead, NULL);
+
+			if( bytesRead != 0)
+			{
+				(*out) = buffer;
+				PurgeComm(serial, PURGE_TXABORT | PURGE_RXABORT |  PURGE_TXCLEAR | PURGE_RXCLEAR);
+				return true;
+			}
+
+			memset(buffer, 0, sizeof(char) * maxBufferSize);
 		}
 
-		Serial::~Serial()
+		return false;
+	}
+
+	bool Serial::Send(char *buffer, unsigned int packetLength)
+	{
+		DWORD bytesSend;
+
+		if(WriteFile(serial, (void *)buffer, packetLength, &bytesSend, 0) == false)
 		{
-			if(this->connected)
-				CloseHandle(this->serial);
+			ClearCommError(serial, &errors, &status);
+			return false;
 		}
 
-		bool Serial::ConnectArduino(int portNum)
+		return true;
+	}
+
+	bool Serial::IsConnected()
+	{
+		return connected;
+	}
+
+	bool Serial::Connect(int portNum)
+	{
+		char port[10];
+		sprintf_s(port, "\\\\.\\COM%d", portNum);
+
+		serial = CreateFile(port, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+		if(serial==INVALID_HANDLE_VALUE)
+			return false;
+		// Handle was not attached.
+		else
 		{
-			char port[10];
-			sprintf(port, "\\\\.\\COM%d", portNum);
-
-			serial = CreateFile(port, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-
-			if(this->serial==INVALID_HANDLE_VALUE)
-				return false; //포트 번호 체크 다시해봐
 			DCB dcbSerialParams = {0};
 
-			if (GetCommState(this->serial, &dcbSerialParams) == false)
-				return false; //현재 시리얼의 파라메터 얻어올 수 없듬
-
-			dcbSerialParams.BaudRate=CBR_9600;
-			dcbSerialParams.ByteSize=8;
-			dcbSerialParams.StopBits=ONESTOPBIT;
-			dcbSerialParams.Parity=NOPARITY;
-
-			if(SetCommState(serial, &dcbSerialParams) == false)
-				return false; // 포트 파라메터 세팅 안됨
-
-			this->connected = true;
-			Sleep(ARDUINO_WAIT_TIME);
-		}
-
-		void Serial::Recive(std::string &buffer, unsigned int length)
-		{
-			DWORD bytesRead;
-			unsigned int toRead;
-			char incomingData[256] = "";
-
-			length -= 1;
-
-			ClearCommError(serial, &errors, &status);
-
-			if(status.cbInQue>0)
+			if (GetCommState(serial, &dcbSerialParams) == false)
+				return false; //failed to get current serial parameters!
+			else
 			{
-				toRead = status.cbInQue > length ? length : status.cbInQue;
+				dcbSerialParams.BaudRate=CBR_9600;
+				dcbSerialParams.ByteSize=8;
+				dcbSerialParams.StopBits=ONESTOPBIT;
+				dcbSerialParams.Parity=NOPARITY;
 
-				while(1)
+				if(SetCommState(serial, &dcbSerialParams) == false)
+					return false; //ALERT: Could not set Serial Port parameters
+				else
 				{
-					if( (ReadFile(serial, incomingData, toRead, &bytesRead, NULL) && bytesRead != 0 ) == false)
-						continue;
-
-					int len = strlen(incomingData);
-					for(int i=0; i<len; ++i)
-					{
-						if(incomingData[i] != '\n' && incomingData[i] != '\r')
-						{
-							buffer += incomingData[i];
-
-							if(buffer.length() > length)
-								return;
-						}
-					}
+					connected = true;
+					Sleep(waitTime);
 				}
-
 			}
 		}
 
-
-		bool Serial::Send(std::string &packet, unsigned int nbChar)
-		{
-			DWORD bytesSend;
-
-			if(!WriteFile(serial, (void *)packet.c_str(), nbChar, &bytesSend, 0))
-			{
-				ClearCommError(serial, &errors, &status);
-				return false;
-			}
-			else return true;
-		}
-
-		bool Serial::IsConnected()
-		{
-			return connected;
-		}
-
+		return true;
 	}
+	void Serial::Disconnect()
+	{
+		if(connected)
+		{
+			connected = false;
+			CloseHandle(serial);
+		}
+	}
+
 }

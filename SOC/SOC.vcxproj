@@ -112,6 +112,7 @@
     <ClCompile Include="MeshDataManager.cpp" />
     <ClCompile Include="MeshFilter.cpp" />
     <ClCompile Include="RenderTarget.cpp" />
+    <ClCompile Include="Serial.cpp" />
     <ClCompile Include="Surface.cpp" />
     <ClCompile Include="VBElements.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
@@ -168,6 +169,7 @@
     <ClInclude Include="MeshFilter.h" />
     <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="ResourcesFolder.h" />
+    <ClInclude Include="Serial.h" />
     <ClInclude Include="Surface.h" />
     <ClInclude Include="VBElements.h" />
     <ClInclude Include="MeshRenderer.h" />
