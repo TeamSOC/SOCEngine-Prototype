@@ -355,6 +355,9 @@
     <ClCompile Include="Serial.cpp">
       <Filter>Engine\Etc\Arduino</Filter>
     </ClCompile>
+    <ClCompile Include="Math.cpp">
+      <Filter>Engine\Common\Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABB.h">
@@ -551,6 +554,9 @@
     </ClInclude>
     <ClInclude Include="Serial.h">
       <Filter>Engine\Etc\Arduino</Filter>
+    </ClInclude>
+    <ClInclude Include="Math.h">
+      <Filter>Engine\Common\Utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

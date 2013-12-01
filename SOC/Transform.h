@@ -2,6 +2,7 @@
 
 #include "RenderingMath.h"
 #include "AABB.h"
+#include "Math.h"
 
 namespace Rendering
 {
@@ -47,7 +48,6 @@ namespace Rendering
 		void LookAt(SOC_Vector3 worldPosition, SOC_Vector3 worldUp);
 
 		void Rotate(SOC_Vector3 eulerAngles);
-		void Rotate(SOC_Vector3 axis, float angle);
 		void Rotate(float x, float y, float z);
 
 		void Translate(SOC_Vector3 translation);
@@ -70,7 +70,7 @@ namespace Rendering
 
 	public:
 		void SetPosition(SOC_Vector3 position);		
-		void SetRotation(SOC_Quaternion quaternion);				
+		//void SetRotation(SOC_Quaternion quaternion);				
 		void SetScale(SOC_Vector3 scale);
 		void SetEulerAngles(SOC_Vector3 euler);
 		void SetDirection(SOC_Vector3 dir);

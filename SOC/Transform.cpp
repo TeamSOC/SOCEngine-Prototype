@@ -51,9 +51,9 @@ namespace Rendering
 		y = acos(D3DXVec2Dot(&SOC_Vector2(forward.x, forward.z), &SOC_Vector2(dir.x, dir.z)));	//xz 평면
 		z = acos(D3DXVec2Dot(&SOC_Vector2(forward.y, forward.z), &SOC_Vector2(dir.y, dir.z)));	//yz 평면
 
-		x = (int)SOCRadianToDegree(x);
-		y = (int)SOCRadianToDegree(y);
-		z = (int)SOCRadianToDegree(z);
+		x = (int)Math::RadianToDegree(x);
+		y = (int)Math::RadianToDegree(y);
+		z = (int)Math::RadianToDegree(z);
 
 		if( x == 0 && z == 0 )
 		{
@@ -99,18 +99,18 @@ namespace Rendering
 		//회전 순서?? 그거 문제인거 같은데,, 나중에 제대로 살펴보자
 		if(x == 0 && z == 0)
 		{
-			localEulerAngles.x = SOCRadianToDegree(atan2(-rotationMatrix._31, rotationMatrix._11));
-			localEulerAngles.y = SOCRadianToDegree(atan2(-rotationMatrix._23, rotationMatrix._22));
-			localEulerAngles.z = SOCRadianToDegree(asin(rotationMatrix._21));
+			localEulerAngles.x = Math::RadianToDegree(atan2(-rotationMatrix._31, rotationMatrix._11));
+			localEulerAngles.y = Math::RadianToDegree(atan2(-rotationMatrix._23, rotationMatrix._22));
+			localEulerAngles.z = Math::RadianToDegree(asin(rotationMatrix._21));
 		}
 		else
 		{
-			localEulerAngles.y = SOCRadianToDegree(atan2(-rotationMatrix._31, rotationMatrix._11));
-			localEulerAngles.x = SOCRadianToDegree(atan2(-rotationMatrix._23, rotationMatrix._22));
-			localEulerAngles.z = SOCRadianToDegree(asin(rotationMatrix._21));
+			localEulerAngles.y = Math::RadianToDegree(atan2(-rotationMatrix._31, rotationMatrix._11));
+			localEulerAngles.x = Math::RadianToDegree(atan2(-rotationMatrix._23, rotationMatrix._22));
+			localEulerAngles.z = Math::RadianToDegree(asin(rotationMatrix._21));
 		}
 
-		localEulerAngles = SOCEulerNormalize(localEulerAngles);
+		localEulerAngles = Math::EulerNormalize(localEulerAngles);
 
 		UpdateMatrix();
 	}
@@ -124,17 +124,6 @@ namespace Rendering
 	void Transform::Rotate(SOC_Vector3 eulerAngles)
 	{
 		SOC_Vector3 euler = this->localEulerAngles + eulerAngles;
-		SetEulerAngles(euler);
-	}
-
-	void Transform::Rotate(SOC_Vector3 axis, float angle)
-	{
-		SOC_Quaternion q;
-		SOCQuaternionRotationAxis(&q, &axis, angle);
-
-		SOC_Vector3 euler = SOCQuaternionToEuler(q);
-		euler += this->localEulerAngles;
-
 		SetEulerAngles(euler);
 	}
 
@@ -189,21 +178,21 @@ namespace Rendering
 		UpdateMatrix();
 	}
 
-	void Transform::SetRotation(SOC_Quaternion quaternion)
-	{
-		rotation = quaternion; 
+	//void Transform::SetRotation(SOC_Quaternion quaternion)
+	//{
+	//	rotation = quaternion; 
 
-		SOC_Matrix rotationMatrix;
-		SOCMatrixRotationQuaternion(&rotationMatrix, &quaternion);
+	//	SOC_Matrix rotationMatrix;
+	//	SOCMatrixRotationQuaternion(&rotationMatrix, &quaternion);
 
-		right	= SOC_Vector3(rotationMatrix._11, rotationMatrix._21, rotationMatrix._31);
-		up		= SOC_Vector3(rotationMatrix._12, rotationMatrix._22, rotationMatrix._32);
-		forward = SOC_Vector3(rotationMatrix._13, rotationMatrix._23, rotationMatrix._33);
+	//	right	= SOC_Vector3(rotationMatrix._11, rotationMatrix._21, rotationMatrix._31);
+	//	up		= SOC_Vector3(rotationMatrix._12, rotationMatrix._22, rotationMatrix._32);
+	//	forward = SOC_Vector3(rotationMatrix._13, rotationMatrix._23, rotationMatrix._33);
 
-		localEulerAngles = SOCQuaternionToEuler(quaternion);
+	//	localEulerAngles = SOCQuaternionToEuler(quaternion);
 
-		UpdateMatrix();
-	}
+	//	UpdateMatrix();
+	//}
 
 	void Transform::SetScale(SOC_Vector3 scale)
 	{
@@ -213,13 +202,13 @@ namespace Rendering
 
 	void Transform::SetEulerAngles(SOC_Vector3 euler)
 	{
-		euler = SOCEulerNormalize(euler);
+		euler = Math::EulerNormalize(euler);
 		localEulerAngles = euler; 
 
 		SOC_Vector3 re;
-		re.x = SOCDegreeToRadian(euler.x);
-		re.y = SOCDegreeToRadian(euler.y);
-		re.z = SOCDegreeToRadian(euler.z);
+		re.x = Math::DegreeToRadian(euler.x);
+		re.y = Math::DegreeToRadian(euler.y);
+		re.z = Math::DegreeToRadian(euler.z);
 
 		SOC_Matrix rotationMatrix;
 		D3DXMatrixRotationYawPitchRoll(&rotationMatrix, re.y, re.x, re.z);
@@ -253,7 +242,7 @@ namespace Rendering
 			e += localEulerAngles;
 		}
 
-		eulerAngles = SOCEulerNormalize(e);
+		eulerAngles = Math::EulerNormalize(e);
 		position = p;
 		scale = s;
 	}
