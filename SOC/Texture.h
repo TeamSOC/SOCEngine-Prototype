@@ -8,7 +8,7 @@ namespace Rendering
 	{
 		class Texture
 		{
-		private:
+		protected:
 			LPDIRECT3DTEXTURE9 texture;
 			Common::Size<int> size;
 			float alpha;
@@ -19,10 +19,8 @@ namespace Rendering
 
 		public:
 			bool Create(const char *path);
-			bool Create(int width, int height);
 
 		public:
-			bool GetRenderTarget(SOC_uint level, DeviceSurface *surface);
 			DeviceTexture GetTexture();
 			float GetAlpha();
 			Common::Size<int> GetSize();

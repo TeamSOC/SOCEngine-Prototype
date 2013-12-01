@@ -53,9 +53,14 @@ namespace Device
 	void DeviceDirector::CalculateElapse()
 	{
 		static BaseTimer	staticTimer;
+		static float before = 0.0f;
+		float start;
 
-		staticTimer.CheckElapsed(elapse);
+		staticTimer.CheckElapsed(start);
+		elapse = start - before;
 		elapse = Utility::Max((float)0, elapse);
+
+		before = start;
 	}
 
 	void DeviceDirector::CalculateFPS()
@@ -141,6 +146,8 @@ namespace Device
 			{
 				if(scene)
 				{
+					CalculateElapse();
+					CalculateFPS();
 					BaseScene::STATE state = scene->GetState();
 
 					if(state == BaseScene::STATE_LOOP)

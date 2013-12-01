@@ -38,36 +38,39 @@ namespace Rendering
 
 	}
 
-	void Transform::LookAt(Transform *target)
-	{
-		target->UpdateWorldTransform();
-		LookAt(target->position, SOC_Vector3(0, 1, 0));
-	}
-
 	void Transform::LookAt(SOC_Vector3 worldPosition)
-	{
-		LookAt(worldPosition, SOC_Vector3(0, 1, 0));
-	}
-
-	void Transform::LookAt(Transform *target, SOC_Vector3 worldUp)
-	{
-		target->UpdateWorldTransform();
-		LookAt(target->position, worldUp);
-	}
-
-	void Transform::LookAt(SOC_Vector3 worldPosition, SOC_Vector3 worldUp)
 	{
 		UpdateWorldTransform();
 
 		SOC_Vector3 dir = worldPosition - position;
 		SOCVec3Normalize(&dir, &dir);
 		forward = dir;
-		up = worldUp;
 
-		SOCVec3Cross(&right, &up, &forward);
-		SOCVec3Normalize(&right, &right);
+		float x, y, z;
+		x = acos(D3DXVec2Dot(&SOC_Vector2(forward.x, forward.y), &SOC_Vector2(dir.x, dir.y)));	//xy 평면
+		y = acos(D3DXVec2Dot(&SOC_Vector2(forward.x, forward.z), &SOC_Vector2(dir.x, dir.z)));	//xz 평면
+		z = acos(D3DXVec2Dot(&SOC_Vector2(forward.y, forward.z), &SOC_Vector2(dir.y, dir.z)));	//yz 평면
 
-		SOCVec3Cross(&up, &forward, &right);
+		x = (int)SOCRadianToDegree(x);
+		y = (int)SOCRadianToDegree(y);
+		z = (int)SOCRadianToDegree(z);
+
+		if( x == 0 && z == 0 )
+		{
+			SOCVec3Cross(&up, &forward, &right);
+			SOCVec3Normalize(&up, &up);
+
+			SOCVec3Cross(&right, &up, &forward);
+			SOCVec3Normalize(&right, &right);
+		}
+		else
+		{
+			SOCVec3Cross(&right, &up, &forward);
+			SOCVec3Normalize(&right, &right);
+
+			SOCVec3Cross(&up, &forward, &right);
+			SOCVec3Normalize(&up, &up);
+		}
 
 		SOC_Matrix rotationMatrix;
 
@@ -92,9 +95,30 @@ namespace Rendering
 		rotationMatrix._44 = 1.0f;
 
 		SOCQuaternionRotationMatrix(&rotation, &rotationMatrix);
-		localEulerAngles = SOCQuaternionToEuler(rotation);
-		UpdateMatrix();
 
+		//회전 순서?? 그거 문제인거 같은데,, 나중에 제대로 살펴보자
+		if(x == 0 && z == 0)
+		{
+			localEulerAngles.x = SOCRadianToDegree(atan2(-rotationMatrix._31, rotationMatrix._11));
+			localEulerAngles.y = SOCRadianToDegree(atan2(-rotationMatrix._23, rotationMatrix._22));
+			localEulerAngles.z = SOCRadianToDegree(asin(rotationMatrix._21));
+		}
+		else
+		{
+			localEulerAngles.y = SOCRadianToDegree(atan2(-rotationMatrix._31, rotationMatrix._11));
+			localEulerAngles.x = SOCRadianToDegree(atan2(-rotationMatrix._23, rotationMatrix._22));
+			localEulerAngles.z = SOCRadianToDegree(asin(rotationMatrix._21));
+		}
+
+		localEulerAngles = SOCEulerNormalize(localEulerAngles);
+
+		UpdateMatrix();
+	}
+
+	void Transform::LookAt(Transform *target)
+	{
+		target->UpdateWorldTransform();
+		LookAt(target->position);
 	}
 
 	void Transform::Rotate(SOC_Vector3 eulerAngles)
@@ -192,34 +216,17 @@ namespace Rendering
 		euler = SOCEulerNormalize(euler);
 		localEulerAngles = euler; 
 
-		Yaw(SOCDegreeToRadian(euler.y));
-		Pitch(SOCDegreeToRadian(euler.x));
-		Roll(SOCDegreeToRadian(euler.z));
-
-		SOCVec3Normalize(&forward, &forward);
-
-		SOCVec3Cross(&up, &forward, &right);
-		SOCVec3Normalize(&up, &up);
-
-		SOCVec3Cross(&right, &up, &forward);
-		SOCVec3Normalize(&right, &right);
+		SOC_Vector3 re;
+		re.x = SOCDegreeToRadian(euler.x);
+		re.y = SOCDegreeToRadian(euler.y);
+		re.z = SOCDegreeToRadian(euler.z);
 
 		SOC_Matrix rotationMatrix;
+		D3DXMatrixRotationYawPitchRoll(&rotationMatrix, re.y, re.x, re.z);
 
-		rotationMatrix._11 = right.x;
-		rotationMatrix._12 = up.x;
-		rotationMatrix._13 = forward.x;
-		rotationMatrix._14 = 0;
-
-		rotationMatrix._21 = right.y;
-		rotationMatrix._22 = up.y;
-		rotationMatrix._23 = forward.y;
-		rotationMatrix._24 = 0;
-
-		rotationMatrix._31 = right.z;
-		rotationMatrix._32 = up.z;
-		rotationMatrix._33 = forward.z;
-		rotationMatrix._34 = 0;
+		right = SOC_Vector3(rotationMatrix._11, rotationMatrix._21, rotationMatrix._31);
+		up = SOC_Vector3(rotationMatrix._12, rotationMatrix._22, rotationMatrix._32);
+		forward = SOC_Vector3(rotationMatrix._13, rotationMatrix._23, rotationMatrix._33);
 
 		SOCQuaternionRotationMatrix(&rotation, &rotationMatrix);
 		UpdateMatrix();
@@ -289,6 +296,15 @@ namespace Rendering
 		SOC_Matrix T;
 
 		SOCMatrixRotationAxis(&T, &up, angle);
+
+		//right.x = T._11;
+		//right.y = T._21;
+		//right.z = T._31;
+
+		//forward.x = T._13;
+		//forward.y = T._23;
+		//forward.z = T._33;
+
 		SOCVec3TransformCoord(&right, &right, &T);
 		SOCVec3TransformCoord(&forward, &forward, &T);
 	}

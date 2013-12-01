@@ -4,15 +4,7 @@
 
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
-
-namespace Rendering
-{
-	namespace Buffer
-	{
-		typedef VertexBuffer	VertexBuffer;
-		typedef IndexBuffer	IndexBuffer;
-	}
-}
+#include "Surface.h"
 
 #elif defined(__APPLE__) || defined(_USE_GL_DEFINES)
 

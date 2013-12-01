@@ -94,35 +94,35 @@ typedef D3DXPLANE			SOC_Plane;
 
 static SOC_Vector3 SOCQuaternionToEuler(SOC_Quaternion quaternion)
 {
-	float pitch, roll, yaw;
+        float pitch, roll, yaw;
 
-	float test = quaternion.x * quaternion.y + quaternion.z * quaternion.w;
+        float test = quaternion.x * quaternion.y + quaternion.z * quaternion.w;
 
-	if(test > 0.499f) //위 보고 있을때
-	{
-		roll =  2 * atan2f(quaternion.x, quaternion.w);
-		pitch = SOCM_PI / 2.0f;
-		yaw = 0;
+        if(test > 0.499f) //위 보고 있을때
+        {
+                roll =  2 * atan2f(quaternion.x, quaternion.w);
+                pitch = SOCM_PI / 2.0f;
+                yaw = 0;
 
-		return SOC_Vector3(pitch, yaw, roll);
-	}
+                return SOC_Vector3(pitch, yaw, roll);
+        }
 
-	else if(test < -0.499) //아래보고 있을때
-	{
-		roll = -2 * atan2f(quaternion.x, quaternion.w);
-		pitch = - SOCM_PI / 2.0f;
-		yaw = 0;
+        else if(test < -0.499) //아래보고 있을때
+        {
+                roll = -2 * atan2f(quaternion.x, quaternion.w);
+                pitch = - SOCM_PI / 2.0f;
+                yaw = 0;
 
-		return SOC_Vector3(pitch, yaw, roll);
-	}
+                return SOC_Vector3(pitch, yaw, roll);
+        }
 
-	SOC_Vector3 sq = SOC_Vector3(quaternion.x*quaternion.x, quaternion.y*quaternion.y, quaternion.z*quaternion.z);
+        SOC_Vector3 sq = SOC_Vector3(quaternion.x*quaternion.x, quaternion.y*quaternion.y, quaternion.z*quaternion.z);
 
-	roll = atan2f( (2 * quaternion.y * quaternion.w) - (2 * quaternion.x * quaternion.z), 1 - (2 * sq.y - 2 * sq.z));
-	pitch = asin(2 * test);
-	yaw = atan2( (2 * quaternion.x * quaternion.w) - (2 * quaternion.y * quaternion.z), 1 - (2 * sq.x - 2 * sq.z));
+        roll = atan2f( (2 * quaternion.y * quaternion.w) - (2 * quaternion.x * quaternion.z), 1 - (2 * sq.y - 2 * sq.z));
+        pitch = asin(2 * test);
+        yaw = atan2( (2 * quaternion.x * quaternion.w) - (2 * quaternion.y * quaternion.z), 1 - (2 * sq.x - 2 * sq.z));
 
-	return SOC_Vector3(pitch, yaw, roll);
+        return SOC_Vector3(pitch, yaw, roll);
 
 }
 
@@ -132,12 +132,17 @@ static SOC_Vector3 SOCEulerNormalize(SOC_Vector3 eulerAngels)
 	int y = (int)(eulerAngels.y / 360.0f);
 	int z = (int)(eulerAngels.z / 360.0f);
 
-	return SOC_Vector3(eulerAngels.x - x * 360, eulerAngels.y - y * 360, eulerAngels.z - z * 360);
+	SOC_Vector3 e;//(eulerAngels.x - x * 360, eulerAngels.y - y * 360, eulerAngels.z - z * 360)
+	e.x = eulerAngels.x - x * 360.0f + (int)(eulerAngels.x < 0) * 360.0f;
+	e.y = eulerAngels.y - y * 360.0f + (int)(eulerAngels.y < 0) * 360.0f;
+	e.z = eulerAngels.z - z * 360.0f + (int)(eulerAngels.z < 0) * 360.0f;
+
+	return e;
 }
 
 static float SOCDegreeToRadian(float degree)
 {
-	return degree * SOCM_PI / 180.0f;
+	return degree * (SOCM_PI / 180.0f);
 }
 
 static float SOCRadianToDegree(float radian)

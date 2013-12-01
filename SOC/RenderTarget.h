@@ -4,22 +4,31 @@
 #include "Buffer.h"
 #include <vector>
 #include "Texture.h"
+#include "Shader.h"
+
 
 namespace Rendering
 {
 	namespace Texture
 	{
-		class RenderTarget
+		class RenderTarget : public Texture
 		{
 		private:			
 			Buffer::VertexBuffer *vertexBuffer;
 			Buffer::IndexBuffer  *indexBuffer;
 			VertexDeclaration decl;
-			Texture *texture;
+			Shader::Shader *shader;
+
+			Buffer::Surface *surface;
 
 		public:
-			RenderTarget(void)
+			RenderTarget()
 			{
+				vertexBuffer	= nullptr;
+				indexBuffer		= nullptr;
+				decl			= nullptr;
+				shader			= nullptr;
+				surface			= nullptr;
 			}
 
 			~RenderTarget(void)
@@ -31,7 +40,7 @@ namespace Rendering
 			}
 
 		public:
-			bool Create(int width, int height)
+			bool Create(int width, int height, Shader::Shader *shader)
 			{
 				Device::Graphics *graphics = Device::DeviceDirector::GetInstance()->GetGraphics();
 
@@ -47,10 +56,32 @@ namespace Rendering
 				if( CreateVertexDeclaration(graphics, &decl) == false )
 					return false;
 
-				texture = new Texture;
-				texture->Create(width, height);
+				this->shader = shader;
+
+				if(FAILED(D3DXCreateTexture(graphics->GetD3DDevice(), width, height, 1, D3DUSAGE_RENDERTARGET, D3DFMT_X8R8G8B8, D3DPOOL_DEFAULT, &texture)))
+					return false;
+
+				size.w = width;
+				size.h = height;
+
+				surface = new Buffer::Surface(graphics);
 
 				return true;
+			}
+
+			void GetRenderTarget(SOC_uint renderTargetIdx)
+			{
+				surface->GetRenderTarget(renderTargetIdx);
+			}
+
+			void SetRenderTarget(SOC_uint renderTargetIdx)
+			{
+				surface->SetRenderTarget(renderTargetIdx);
+			}
+
+			void GetSurfaceLevel(SOC_uint level=0)
+			{
+				surface->GetSurfaceLevel(texture, level);
 			}
 
 		private:
@@ -60,7 +91,7 @@ namespace Rendering
 
 				VertexDeclarationElement e;
 				std::vector<VertexDeclarationElement> *decls = &ves.vertexElement;
-				
+
 				e = VertexDeclarationElement(0, 0, SOC_VERTEX_DECLTYPE_FLOAT3, SOC_VERTEX_USAGE_POSITION, 0);
 				decls->push_back(e);
 
@@ -127,7 +158,8 @@ namespace Rendering
 
 				return true;
 			}
-		};
 
+
+		};
 	}
 }

@@ -43,7 +43,7 @@ namespace Rendering
 	public:
 		void LookAt(Transform *target);
 		void LookAt(SOC_Vector3 worldPosition);
-		void LookAt(Transform *target, SOC_Vector3 worldUp);
+		//void LookAt(Transform *target, SOC_Vector3 worldUp);
 		void LookAt(SOC_Vector3 worldPosition, SOC_Vector3 worldUp);
 
 		void Rotate(SOC_Vector3 eulerAngles);

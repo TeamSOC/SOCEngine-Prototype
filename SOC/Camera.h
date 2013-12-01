@@ -6,6 +6,7 @@
 #include "LightManager.h"
 #include "Component.h"
 #include "Shader.h"
+#include "RenderTarget.h"
 
 namespace Rendering
 {
@@ -22,6 +23,7 @@ namespace Rendering
 	private:
 		Frustum			*frustum;
 		Shader::Shader	*rtShader;
+		Texture::RenderTarget *renderTarget;
 
 	private:
 		Common::Rect<float>	  normalizedViewPortRect;
@@ -57,9 +59,13 @@ namespace Rendering
 		void GetViewProjectionMatrix(SOC_Matrix *outMatrix, float farGap = 0);
 
 	public:
-		static void SceneUpdate(float dt, std::vector<Object*> *sceneObjects);
+		//static void SceneUpdate(float dt, std::vector<Object*> *sceneObjects);
 		static void SceneRender(Camera *cam, 
 			std::vector<Object*>::iterator &objectBegin,
+			std::vector<Object*>::iterator &objectEnd,
+			Light::LightManager* sceneLights);
+
+		void Render(std::vector<Object*>::iterator &objectBegin,
 			std::vector<Object*>::iterator &objectEnd,
 			Light::LightManager* sceneLights);
 

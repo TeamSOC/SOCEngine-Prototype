@@ -41,6 +41,8 @@ namespace Rendering
 
 		Scene *scene = dynamic_cast<Scene*>(Device::DeviceDirector::GetInstance()->GetScene());
 		scene->GetShaderManager()->LoadShaderFromFile("Camera", &rtShader, false);
+
+
 	}
 
 	void Camera::Destroy()
@@ -110,10 +112,28 @@ namespace Rendering
 		CalcAspect();
 	}
 
-	void Camera::SceneUpdate(float dt, std::vector<Object*> *sceneObjects)
+	void Camera::Render(std::vector<Object*>::iterator &objectBegin, std::vector<Object*>::iterator &objectEnd,	Light::LightManager* sceneLights)
 	{
-		for(vector<Object*>::iterator iter = sceneObjects->begin(); iter != sceneObjects->end(); ++iter)
-			(*iter)->Update(dt);
+		SOC_Matrix projMat, viewMat, viewProjMat;
+		GetProjectionMatrix(&projMat);
+		GetViewMatrix(&viewMat);
+
+		SOCMatrixMultiply(&viewProjMat, &viewMat, &projMat);
+
+		Clear();
+		frustum->Make(&viewProjMat);
+
+		//추후 작업.
+
+		vector<LightForm*> lights;
+		sceneLights->Intersect(frustum, &lights);
+		//월드 상의 빛에서 절두체에 겹치는거 모두 찾음.
+
+		for(vector<Object*>::iterator iter = objectBegin; iter != objectEnd; ++iter)
+		{
+			(*iter)->Culling(frustum);
+			(*iter)->Render(&lights, &viewMat, &projMat, &viewProjMat);
+		}
 	}
 
 	void Camera::SceneRender(Camera *cam, std::vector<Object*>::iterator& objectBegin,
@@ -128,7 +148,7 @@ namespace Rendering
 		cam->Clear();
 		cam->frustum->Make(&viewProjMat);
 
-		//추후 작업.	
+		//추후 작업.
 
 		vector<LightForm*> lights;
 		sceneLights->Intersect(cam->frustum, &lights);
