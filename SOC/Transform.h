@@ -44,7 +44,6 @@ namespace Rendering
 	public:
 		void LookAt(Transform *target);
 		void LookAt(SOC_Vector3 worldPosition);
-		//void LookAt(Transform *target, SOC_Vector3 worldUp);
 		void LookAt(SOC_Vector3 worldPosition, SOC_Vector3 worldUp);
 
 		void Rotate(SOC_Vector3 eulerAngles);
@@ -60,17 +59,12 @@ namespace Rendering
 	protected:
 		void UpdateMatrix();
 
-	private:
-		void Roll(float angle);
-		void Yaw(float angle);
-		void Pitch(float angle);
-
 	public:
 		void UpdateWorldTransform();
 
 	public:
 		void SetPosition(SOC_Vector3 position);		
-		//void SetRotation(SOC_Quaternion quaternion);				
+		void SetRotation(SOC_Quaternion quaternion);				
 		void SetScale(SOC_Vector3 scale);
 		void SetEulerAngles(SOC_Vector3 euler);
 		void SetDirection(SOC_Vector3 dir);

@@ -178,21 +178,21 @@ namespace Rendering
 		UpdateMatrix();
 	}
 
-	//void Transform::SetRotation(SOC_Quaternion quaternion)
-	//{
-	//	rotation = quaternion; 
+	void Transform::SetRotation(SOC_Quaternion quaternion)
+	{
+		rotation = quaternion; 
 
-	//	SOC_Matrix rotationMatrix;
-	//	SOCMatrixRotationQuaternion(&rotationMatrix, &quaternion);
+		SOC_Matrix rotationMatrix;
+		SOCMatrixRotationQuaternion(&rotationMatrix, &quaternion);
 
-	//	right	= SOC_Vector3(rotationMatrix._11, rotationMatrix._21, rotationMatrix._31);
-	//	up		= SOC_Vector3(rotationMatrix._12, rotationMatrix._22, rotationMatrix._32);
-	//	forward = SOC_Vector3(rotationMatrix._13, rotationMatrix._23, rotationMatrix._33);
+		right	= SOC_Vector3(rotationMatrix._11, rotationMatrix._21, rotationMatrix._31);
+		up		= SOC_Vector3(rotationMatrix._12, rotationMatrix._22, rotationMatrix._32);
+		forward = SOC_Vector3(rotationMatrix._13, rotationMatrix._23, rotationMatrix._33);
 
-	//	localEulerAngles = SOCQuaternionToEuler(quaternion);
+		Math::RadianToDegree(&localEulerAngles, &Math::QuaternionToEuler(rotation));
 
-	//	UpdateMatrix();
-	//}
+		UpdateMatrix();
+	}
 
 	void Transform::SetScale(SOC_Vector3 scale)
 	{
@@ -211,13 +211,13 @@ namespace Rendering
 		re.z = Math::DegreeToRadian(euler.z);
 
 		SOC_Matrix rotationMatrix;
-		D3DXMatrixRotationYawPitchRoll(&rotationMatrix, re.y, re.x, re.z);
+		D3DXQuaternionRotationYawPitchRoll(&rotation, re.y, re.x, re.z);
+		D3DXMatrixRotationQuaternion(&rotationMatrix, &rotation);
 
 		right = SOC_Vector3(rotationMatrix._11, rotationMatrix._21, rotationMatrix._31);
 		up = SOC_Vector3(rotationMatrix._12, rotationMatrix._22, rotationMatrix._32);
 		forward = SOC_Vector3(rotationMatrix._13, rotationMatrix._23, rotationMatrix._33);
 
-		SOCQuaternionRotationMatrix(&rotation, &rotationMatrix);
 		UpdateMatrix();
 	}
 
@@ -271,42 +271,6 @@ namespace Rendering
 		//matrix._44 = 1.0f;
 	}
 
-	void Transform::Roll(float angle)
-	{
-		SOC_Matrix T;
-
-		SOCMatrixRotationAxis(&T, &forward, angle);
-		SOCVec3TransformCoord(&up, &up, &T);
-		SOCVec3TransformCoord(&right, &right, &T);
-	}
-
-	void Transform::Yaw(float angle)
-	{
-		SOC_Matrix T;
-
-		SOCMatrixRotationAxis(&T, &up, angle);
-
-		//right.x = T._11;
-		//right.y = T._21;
-		//right.z = T._31;
-
-		//forward.x = T._13;
-		//forward.y = T._23;
-		//forward.z = T._33;
-
-		SOCVec3TransformCoord(&right, &right, &T);
-		SOCVec3TransformCoord(&forward, &forward, &T);
-	}
-
-	void Transform::Pitch(float angle)
-	{
-		SOC_Matrix T;
-
-		SOCMatrixRotationAxis(&T, &right, angle);
-		SOCVec3TransformCoord(&right, &right, &T);
-		SOCVec3TransformCoord(&forward, &forward, &T);
-	}
-
 	SOC_Vector3 Transform::GetWorldPosition()
 	{
 		SOC_Vector3 p(0,0,0);
@@ -349,7 +313,7 @@ namespace Rendering
 	{
 		return forward;
 	}
-	
+
 	SOC_Vector3 Transform::GetLocalEulerAngle()
 	{
 		return this->localEulerAngles;
