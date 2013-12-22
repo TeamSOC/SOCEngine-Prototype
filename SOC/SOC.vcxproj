@@ -87,6 +87,7 @@
     <ClCompile Include="AABB.cpp" />
     <ClCompile Include="BaseScene.cpp" />
     <ClCompile Include="BasicParameterNames.cpp" />
+    <ClCompile Include="Bone.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="Color.cpp" />
@@ -114,6 +115,7 @@
     <ClCompile Include="MeshFilter.cpp" />
     <ClCompile Include="RenderTarget.cpp" />
     <ClCompile Include="Serial.cpp" />
+    <ClCompile Include="Skeleton.cpp" />
     <ClCompile Include="Surface.cpp" />
     <ClCompile Include="VBElements.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
@@ -140,6 +142,7 @@
     <ClInclude Include="AABB.h" />
     <ClInclude Include="BaseScene.h" />
     <ClInclude Include="BasicParameterNames.h" />
+    <ClInclude Include="Bone.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="Color.h" />
@@ -172,6 +175,7 @@
     <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="ResourcesFolder.h" />
     <ClInclude Include="Serial.h" />
+    <ClInclude Include="Skeleton.h" />
     <ClInclude Include="Surface.h" />
     <ClInclude Include="VBElements.h" />
     <ClInclude Include="MeshRenderer.h" />

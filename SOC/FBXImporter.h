@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "Object.h"
+#include "Skeleton.h"
 
 namespace Rendering
 {
@@ -37,12 +38,17 @@ namespace Rendering
 
 		private:
 			Object* Decode(Object *parent, FbxNode *fbxNode);
-			void BuildSkeleton(Object *parent, FbxNode *node);
+
+			void BuildSkeletonRecursive(FbxNode *fbxNode, int parentBoneIdx, std::vector<Animation::Bone*> *bones);
+			bool BuildSkeleton(Animation::Skeleton *skeleton, FbxNode *node);
+			
 			void CreateMeshComponent(Object *obj, FbxNode *node);
+
 			void SetFbxTransform(Object *obj, FbxNode *node);
+			//void SetFbxTransform(Animation::Bone *bone, FbxNode *node);
 
 			bool BuildMesh(fbxsdk_2014_1::FbxMesh *fbxMesh, Mesh::VBElements *outVBElements, Intersection::AABB *outBounds, float *outRadius);
-			void BuildskinningMesh(fbxsdk_2014_1::FbxMesh *fbxMesh, std::vector<int> &skinIndices);
+			void BuildskinningMesh(fbxsdk_2014_1::FbxMesh *fbxMesh);
 
 			void ParseMaterial(fbxsdk_2014_1::FbxMesh *fbxMesh, Material::MaterialElements *outMaterialElements, MeshTextureNames *outTextureNames);
 

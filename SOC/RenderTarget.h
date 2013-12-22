@@ -5,7 +5,7 @@
 #include <vector>
 #include "Texture.h"
 #include "Shader.h"
-
+#include <cassert>
 
 namespace Rendering
 {

@@ -203,6 +203,12 @@
     <Filter Include="Engine\Etc\Arduino">
       <UniqueIdentifier>{52091b4e-4d50-491a-aa79-23b78abf8879}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Rendering\Skeleton">
+      <UniqueIdentifier>{cd7ff357-f5a8-48cc-b944-50873bec306c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Skeleton\Bone">
+      <UniqueIdentifier>{5443f42e-c65a-42fb-9139-4f02e6f15822}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AABB.cpp">
@@ -357,6 +363,12 @@
     </ClCompile>
     <ClCompile Include="Math.cpp">
       <Filter>Engine\Common\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Bone.cpp">
+      <Filter>Engine\Rendering\Skeleton\Bone</Filter>
+    </ClCompile>
+    <ClCompile Include="Skeleton.cpp">
+      <Filter>Engine\Rendering\Skeleton</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -557,6 +569,12 @@
     </ClInclude>
     <ClInclude Include="Math.h">
       <Filter>Engine\Common\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Bone.h">
+      <Filter>Engine\Rendering\Skeleton\Bone</Filter>
+    </ClInclude>
+    <ClInclude Include="Skeleton.h">
+      <Filter>Engine\Rendering\Skeleton</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

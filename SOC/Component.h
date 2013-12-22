@@ -17,6 +17,7 @@ public:
 		Mesh,
 		Camera,
 		Light,
+		Skeleton,
 		User
 	};
 

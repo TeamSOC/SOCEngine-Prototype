@@ -1,6 +1,7 @@
 #include "FBXImporter.h"
 #include "Scene.h"
 #include "ResourcesFolder.h"
+#include <cassert>
 
 using namespace fbxsdk_2014_1;
 
@@ -8,6 +9,8 @@ using namespace fbxsdk_2014_1;
 
 namespace Rendering
 {
+	using namespace Animation;
+
 	namespace Importer
 	{
 		FBXImporter::FBXImporter(FbxManager *manager)
@@ -107,20 +110,64 @@ namespace Rendering
 				status = importer->Import(scene);
 
 				FbxStatus::EStatusCode code = importer->GetStatus().GetCode();
-				if(code == FbxStatus::ePasswordError)
-					return false;//디버깅 용도
+				assert(code != FbxStatus::ePasswordError);//디버깅 용도
 			}
 
 			importer->Destroy();
 
+			FbxAxisSystem axis = FbxAxisSystem::DirectX;
+			axis.ConvertScene(scene);
+
 			return status;
 		}
 
-		void FBXImporter::BuildSkeleton(Object *parent, FbxNode *node)
+		void FBXImporter::BuildSkeletonRecursive(FbxNode *fbxNode, int parentBoneIdx, std::vector<Bone*> *bones)
 		{
-			//뭔가 좀 부실한데..
-			//FbxSkeleton *fbxSkeleton = node->GetSkeleton();
+			Bone *bone = new Bone;
+			bone->name = fbxNode->GetName();
+			bone->index = bones->size();
+			bone->indexParent = parentBoneIdx;
 
+			FbxDouble3 p = fbxNode->LclTranslation.Get();
+			FbxDouble3 r = fbxNode->LclRotation.Get();
+
+			bone->position = SOC_Vector3((float)p[0], (float)p[1], (float)p[2]);
+			bone->eulerAngles = SOC_Vector3(
+				(float)r[0], 
+				(float)r[1],
+				(float)r[2]);
+
+			bones->push_back(bone);
+
+			int childCount = fbxNode->GetChildCount();
+
+			for(int i=0; i<childCount; ++i)
+			{
+				FbxNode *fbxChildNode = fbxNode->GetChild(i);
+				BuildSkeletonRecursive(fbxChildNode, bone->index, bones);
+			}
+		}
+
+		bool FBXImporter::BuildSkeleton(Animation::Skeleton *skeleton, FbxNode *fbxNode)
+		{
+			if(fbxNode == nullptr)				return false;
+
+			FbxSkeleton *fbxSkeleton = FbxCast<FbxSkeleton>(fbxNode->GetNodeAttribute());
+
+			if(fbxSkeleton == nullptr)
+				return false;
+
+			FbxSkeleton::EType type = fbxSkeleton->GetSkeletonType();
+			FbxDouble size = 0;
+
+			if(type == FbxSkeleton::eLimb)
+				size = fbxSkeleton->LimbLength.Get();
+			else
+				size = fbxSkeleton->Size.Get();
+
+			BuildSkeletonRecursive(fbxNode, -1, &skeleton->bones);
+
+			return true;
 		}
 
 		void FBXImporter::CreateMeshComponent(Object *obj, FbxNode *node)
@@ -210,7 +257,10 @@ namespace Rendering
 			if(atType == FbxNodeAttribute::eMesh)
 				CreateMeshComponent(obj, fbxNode);
 			else if(atType == FbxNodeAttribute::eSkeleton)
-				BuildSkeleton(obj, fbxNode);
+			{
+				Animation::Skeleton *sk = obj->AddComponent<Animation::Skeleton>();
+				BuildSkeleton(sk, fbxNode);
+			}
 
 			int childCount = fbxNode->GetChildCount();
 			for(int i=0; i<childCount; ++i)
@@ -227,6 +277,12 @@ namespace Rendering
 			if(fbxMesh->GetControlPointsCount() == 0)
 				return false;
 
+			if( fbxMesh->IsTriangleMesh() == false )
+			{
+				FbxGeometryConverter converter(this->manager);
+				fbxMesh = converter.TriangulateMeshAdvance(fbxMesh);
+			}
+
 			FbxVector4 *ctrlPoints	= fbxMesh->GetControlPoints();
 			int layerCount			= fbxMesh->GetLayerCount();
 			int polygonCount		= fbxMesh->GetPolygonCount();
@@ -241,18 +297,8 @@ namespace Rendering
 			//	outVBElements->skinIndices.second = new int[skinIndices.size()];
 			//}
 
-			int indexCount =  0;
 
-			for(int i=0; i<polygonCount; ++i)
-			{
-				int polySize = fbxMesh->GetPolygonSize(i);
-
-				if( polySize == 3 )					indexCount += 3;
-				else if(polySize == 4)				indexCount += 6;
-				else 
-					return false;
-			}
-
+			int indexCount =  polygonCount * 3;
 			int numOfVertex = fbxMesh->GetControlPointsCount();
 			outVBElements->indices.first = indexCount;
 			outVBElements->indices.second = new SOC_word[indexCount];
@@ -260,15 +306,6 @@ namespace Rendering
 			outVBElements->vertices = new SOC_Vector3[outVBElements->numOfVertex];
 			outVBElements->numOfTriangle = indexCount / 3;
 			outVBElements->isDynamic = false;
-
-			//FbxGeometryElementNormal *fgn = fbxMesh->GetElementNormal(0);
-			//FbxLayerElementNormal *gln = fbxMesh->GetLayer(0)->GetNormals();
-
-			//int test = 0;
-			//test = fbxMesh->GetElementNormalCount();
-			//test = fbxMesh->GetElementUVCount();
-			//test = fbxMesh->GetElementBinormalCount();
-			//test = fbxMesh->GetElementTangentCount();
 
 			if(fbxMesh->GetElementNormal() != nullptr)
 				outVBElements->normals = new SOC_Vector3[numOfVertex];
@@ -361,34 +398,30 @@ namespace Rendering
 					if(tangents)
 						ParseTangents(layer, ctrlIdx, vertexCount, &tangents[ctrlIdx]);
 
-					if(colors)
+					if(colors) //아마 에러 날듯.. 이 방법이 아님
 						ParseVertexColor(layer, ctrlIdx, vertexCount, &colors[ctrlIdx]);
 
+					indices[vertexCount] = fbxMesh->GetPolygonVertex(polyIdx, i);
 					vertexCount++;
 				}
 			}
 
-			int triangleAry[3] = { 0, 1, 2 };
-			int rectAry[6] = { 0, 1, 2, 0, 2, 3 };
-			int *ary = nullptr;
+			//BuildskinningMesh(fbxMesh);
 
-			int index = 0;
-			for(int polygonIdx = 0; polygonIdx < polygonCount; ++polygonIdx)
-			{
-				int polygonSize = fbxMesh->GetPolygonSize(polygonIdx);					
+			//int index = 0;
+			//for(int polygonIdx = 0; polygonIdx < polygonCount; ++polygonIdx)
+			//{
+			//	int polygonSize = fbxMesh->GetPolygonSize(polygonIdx);					
 
-				ary = polygonSize == 3 ? triangleAry : rectAry;
-				int count = polygonSize == 3 ? 3 : 6;
+			//	for(int vertexIdx = 0; vertexIdx < 3; ++vertexIdx)
+			//	{
+			//		indices[index] = fbxMesh->GetPolygonVertex(polygonIdx, vertexIdx);
 
-				for(int vertexIdx = 0; vertexIdx < count; ++vertexIdx)
-				{
-					indices[index] = fbxMesh->GetPolygonVertex(polygonIdx, ary[vertexIdx]);
+			//		//skin mesh??
 
-					//skin mesh??
-
-					++index;
-				}
-			}
+			//		++index;
+			//	}
+			//}
 
 			return true;
 		}
@@ -434,41 +467,29 @@ namespace Rendering
 
 		}
 
-		void FBXImporter::BuildskinningMesh(FbxMesh *fbxMesh, std::vector<int> &boneIndices)
+		void FBXImporter::BuildskinningMesh(FbxMesh *fbxMesh)
 		{
 			int skinCount = fbxMesh->GetDeformerCount(FbxDeformer::eSkin);
-
-			if(skinCount > 0)
-				boneIndices.resize(fbxMesh->GetControlPointsCount());
 
 			for(int skinIdx = 0; skinIdx < skinCount; ++skinIdx)
 			{
 				FbxSkin *fbxSkin = FbxCast<FbxSkin>(fbxMesh->GetDeformer(skinIdx, FbxDeformer::eSkin));
 
 				int clusterCount = fbxSkin->GetClusterCount();
-				if( clusterCount == 0 )
-					continue;
-
+				FbxCluster::ELinkMode linkMode = fbxSkin->GetCluster(0)->GetLinkMode();
 				for(int clusterIdx = 0; clusterIdx < clusterCount; ++clusterIdx)
 				{
 					FbxCluster *fbxCluster = fbxSkin->GetCluster(clusterIdx);
-					FbxNode *bone = fbxCluster->GetLink();
-
-					if( bone == nullptr )
+					
+					if(fbxCluster == nullptr)
 						continue;
 
-					int numInfluencedVertices = fbxCluster->GetControlPointIndicesCount();
+					FbxCluster::ELinkMode clusterLinkMode = fbxCluster->GetLinkMode();
+					assert(linkMode == clusterLinkMode);
 
-					int *indexAry = fbxCluster->GetControlPointIndices();
-					double *weightAry = fbxCluster->GetControlPointWeights();
-
-					for(int ctrlPointIdx = 0; ctrlPointIdx < numInfluencedVertices; ++ctrlPointIdx)
-					{
-						int index = indexAry[ctrlPointIdx];
-						int boneIndex = boneIndices[index];
-
-						boneIndices[index] = clusterIdx;
-					}
+					int test = fbxCluster->GetControlPointIndicesCount();
+					if(test == 10)
+						test = 0;
 				}
 			}
 		}

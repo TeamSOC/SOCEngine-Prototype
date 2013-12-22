@@ -1,6 +1,7 @@
 #ifdef WIN32
 
 #include "Application.h"
+#include <cassert>
 
 namespace Device
 {
@@ -53,8 +54,7 @@ namespace Device
 				rect.size.w, rect.size.h, 
 				parentHandle, NULL, windowInfo.hInstance, NULL);
 
-			if(handle == NULL)
-				return false;
+			assert(handle);
 
 			if( options != (WS_CHILD | WS_VISIBLE | WS_CLIPCHILDREN) )
 				ShowWindow(handle, SW_SHOWDEFAULT);

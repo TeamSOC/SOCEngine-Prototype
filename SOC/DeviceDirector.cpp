@@ -1,5 +1,6 @@
 #include "DeviceDirector.h"
 #include "Timer.h"
+#include <cassert>
 
 namespace Device
 {
@@ -114,17 +115,10 @@ namespace Device
 	bool DeviceDirector::Initialize(PresentInterval interval, WindowsInitOption &options)
 	{
 		app = new Application(options.rect, options.instance, options.name, options.windowMode, options.isChild, options.parentHandle);
-
-		if( app->Initialize() == false)
-			return false;
+		assert(app->Initialize());
 
 		graphics = new Graphics(interval, app);
-
-		if(graphics->Initialize() == false)
-		{
-			Destroy();
-			return false;
-		}
+		assert(graphics->Initialize());
 
 		return true;
 	}

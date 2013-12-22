@@ -1,4 +1,5 @@
 #include "MeshFilter.h"
+#include <cassert>
 
 namespace Rendering
 {
@@ -112,14 +113,9 @@ namespace Rendering
 			vertexBuffer = new Buffer::VertexBuffer( vertexBufferSize, numOfVertex, graphics );
 			indexBuffer = new Buffer::IndexBuffer( indices.first, graphics);
 
-			if( CreateVertexBuffer(isDynamic) == false )
-				return false;
-
-			if( CreateIndexBuffer() == false )
-				return false;				
-
-			if( CreateVertexDeclaration(&decl) == false )
-				return false;
+			assert(CreateVertexBuffer(isDynamic));
+			assert(CreateIndexBuffer());
+			assert(CreateVertexDeclaration(&decl));
 
 			return true; 
 		}
@@ -128,9 +124,8 @@ namespace Rendering
 		{
 			SOC_dword usage = SOC_USAGE_WRITEONLY | (isDynamic ? SOC_USAGE_DYNAMIC : 0);
 
-			if( vertexBuffer->Create( usage, SOC_POOL_DEFAULT) == false )
-				return false;
-
+			assert(vertexBuffer->Create( usage, SOC_POOL_DEFAULT));
+			
 			void *vertexBufferData = nullptr;
 			if( vertexBuffer->Lock(&vertexBufferData) == false )
 				return false;
@@ -186,8 +181,7 @@ namespace Rendering
 
 		bool MeshFilter::CreateIndexBuffer()
 		{
-			if( indexBuffer->Create(SOC_POOL_DEFAULT) == false)
-				return false;
+			assert(indexBuffer->Create(SOC_POOL_DEFAULT));
 
 			SOC_word *indexBufferData = nullptr;
 			if( indexBuffer->Lock((void**)&indexBufferData) == false)
