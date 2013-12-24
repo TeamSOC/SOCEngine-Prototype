@@ -256,11 +256,13 @@ namespace Rendering
 
 			if(atType == FbxNodeAttribute::eMesh)
 				CreateMeshComponent(obj, fbxNode);
-			else if(atType == FbxNodeAttribute::eSkeleton)
-			{
-				Animation::Skeleton *sk = obj->AddComponent<Animation::Skeleton>();
-				BuildSkeleton(sk, fbxNode);
-			}
+			else
+				assert("Sorry, Not Support Other Option");
+			//else if(atType == FbxNodeAttribute::eSkeleton)
+			//{
+			//	Animation::Skeleton *sk = obj->AddComponent<Animation::Skeleton>();
+			//	BuildSkeleton(sk, fbxNode);
+			//}
 
 			int childCount = fbxNode->GetChildCount();
 			for(int i=0; i<childCount; ++i)
@@ -370,6 +372,9 @@ namespace Rendering
 			if(outBounds)
 				outBounds->SetMinMax(minSize, maxSize);
 
+//			std::vector<int> controlPoints;
+//			controlPoints.resize(numOfVertex);
+
 			int vertexCount = 0;
 			for(int polyIdx = 0; polyIdx < polygonCount; ++polyIdx)
 			{
@@ -402,26 +407,10 @@ namespace Rendering
 						ParseVertexColor(layer, ctrlIdx, vertexCount, &colors[ctrlIdx]);
 
 					indices[vertexCount] = fbxMesh->GetPolygonVertex(polyIdx, i);
+//					controlPoints[indices[vertexCount]] = (polyIdx * 3 + i);
 					vertexCount++;
 				}
 			}
-
-			//BuildskinningMesh(fbxMesh);
-
-			//int index = 0;
-			//for(int polygonIdx = 0; polygonIdx < polygonCount; ++polygonIdx)
-			//{
-			//	int polygonSize = fbxMesh->GetPolygonSize(polygonIdx);					
-
-			//	for(int vertexIdx = 0; vertexIdx < 3; ++vertexIdx)
-			//	{
-			//		indices[index] = fbxMesh->GetPolygonVertex(polygonIdx, vertexIdx);
-
-			//		//skin mesh??
-
-			//		++index;
-			//	}
-			//}
 
 			return true;
 		}
@@ -467,13 +456,18 @@ namespace Rendering
 
 		}
 
-		void FBXImporter::BuildskinningMesh(FbxMesh *fbxMesh)
+		void FBXImporter::BuildSkin(FbxMesh *fbxMesh)
 		{
 			int skinCount = fbxMesh->GetDeformerCount(FbxDeformer::eSkin);
 
+			if(skins.size() > 0)
+				return;
+
+//			std::vector<std::vector<BoneInfluence*>> skins;
 			for(int skinIdx = 0; skinIdx < skinCount; ++skinIdx)
 			{
 				FbxSkin *fbxSkin = FbxCast<FbxSkin>(fbxMesh->GetDeformer(skinIdx, FbxDeformer::eSkin));
+				
 
 				int clusterCount = fbxSkin->GetClusterCount();
 				FbxCluster::ELinkMode linkMode = fbxSkin->GetCluster(0)->GetLinkMode();
@@ -487,9 +481,25 @@ namespace Rendering
 					FbxCluster::ELinkMode clusterLinkMode = fbxCluster->GetLinkMode();
 					assert(linkMode == clusterLinkMode);
 
-					int test = fbxCluster->GetControlPointIndicesCount();
-					if(test == 10)
-						test = 0;
+					FbxAMatrix bindMatrix;
+					bindMatrix = fbxCluster->GetTransformMatrix(bindMatrix);
+					//어따쓰라고?
+
+					int *indices = fbxCluster->GetControlPointIndices();
+					double *weights = fbxCluster->GetControlPointWeights();
+					int ctrlIndicesCount = fbxCluster->GetControlPointIndicesCount();
+					std::string name = fbxCluster->GetName();
+
+					std::vector<BoneInfluence*> infs;
+					for(int i = 0; i < ctrlIndicesCount; ++i)
+					{
+						BoneInfluence *inf = new BoneInfluence;
+						inf->ctrlPointIdx = indices[i];
+						inf->weight = weights[i];
+						infs.push_back(inf);
+					}
+
+					skins.push_back(infs);
 				}
 			}
 		}

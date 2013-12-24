@@ -21,6 +21,9 @@ namespace Rendering
 		class FBXImporter
 		{
 		private:
+			std::vector<std::vector<Animation::BoneInfluence*>> skins;
+
+		private:
 			fbxsdk_2014_1::FbxManager	*manager;
 			fbxsdk_2014_1::FbxScene	*scene;
 
@@ -48,7 +51,7 @@ namespace Rendering
 			//void SetFbxTransform(Animation::Bone *bone, FbxNode *node);
 
 			bool BuildMesh(fbxsdk_2014_1::FbxMesh *fbxMesh, Mesh::VBElements *outVBElements, Intersection::AABB *outBounds, float *outRadius);
-			void BuildskinningMesh(fbxsdk_2014_1::FbxMesh *fbxMesh);
+			void BuildSkin(fbxsdk_2014_1::FbxMesh *fbxMesh);
 
 			void ParseMaterial(fbxsdk_2014_1::FbxMesh *fbxMesh, Material::MaterialElements *outMaterialElements, MeshTextureNames *outTextureNames);
 
