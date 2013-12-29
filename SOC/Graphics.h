@@ -40,6 +40,7 @@ namespace Device
 			bool Initialize();
 
 		public:
+			bool Clear(unsigned int count, const Common::Rect<int> *rect, ClearFlag flags, SOC_dword color, float z, unsigned int stencil);
 			bool Clear(unsigned int count, const Common::Rect<int> *rect, ClearFlag flags, Rendering::Color &color, float z, unsigned int stencil);
 			bool Clear(ClearFlag flags, Rendering::Color &color);
 
@@ -59,15 +60,11 @@ namespace Device
 			bool EndScene();
 			void Present();
 
-			bool GetRenderTarget(SOC_uint renderTargetIdx, DeviceSurface *renderTarget)
-			{
-				return SUCCEEDED( device->GetRenderTarget(renderTargetIdx, renderTarget) );
-			}
+			bool GetRenderTarget(SOC_uint renderTargetIdx, DeviceSurface *renderTarget);
+			bool SetRenderTarget(SOC_uint renderTargetIdx, DeviceSurface renderTarget);
 
-			bool SetRenderTarget(SOC_uint renderTargetIdx, DeviceSurface renderTarget)
-			{
-				return SUCCEEDED( device->SetRenderTarget(renderTargetIdx, renderTarget) );
-			}
+			bool GetRenderTarget(SOC_uint renderTargetIdx, void* surface);
+			bool SetRenderTarget(SOC_uint renderTargetIdx, void* surface);
 
 		public:
 			LPDIRECT3DDEVICE9 GetD3DDevice();

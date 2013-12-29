@@ -49,7 +49,8 @@ namespace Rendering
 
 	private:
 		void CalcAspect();
-		void Clear();
+		void Clear(Device::Graphics *gp);
+		void RenderObjects(std::vector<Object*>::iterator &objectBegin,	std::vector<Object*>::iterator &objectEnd,	Light::LightManager* sceneLights);
 
 	public:
 		void GetPerspectiveMatrix(SOC_Matrix *outMatrix, float farGap);

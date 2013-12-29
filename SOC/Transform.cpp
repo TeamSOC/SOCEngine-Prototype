@@ -51,9 +51,13 @@ namespace Rendering
 		y = acos(D3DXVec2Dot(&SOC_Vector2(forward.x, forward.z), &SOC_Vector2(dir.x, dir.z)));	//xz 평면
 		z = acos(D3DXVec2Dot(&SOC_Vector2(forward.y, forward.z), &SOC_Vector2(dir.y, dir.z)));	//yz 평면
 
-		x = (int)Math::RadianToDegree(x);
-		y = (int)Math::RadianToDegree(y);
-		z = (int)Math::RadianToDegree(z);
+		//x = (int)Math::RadianToDegree(x);
+		//y = (int)Math::RadianToDegree(y);
+		//z = (int)Math::RadianToDegree(z);
+
+		x = (int)(x * Math::Rad2Deg());
+		y = (int)(y * Math::Rad2Deg());
+		z = (int)(z * Math::Rad2Deg());
 
 		if( x == 0 && z == 0 )
 		{
@@ -99,15 +103,23 @@ namespace Rendering
 		//회전 순서?? 그거 문제인거 같은데,, 나중에 제대로 살펴보자
 		if(x == 0 && z == 0)
 		{
-			localEulerAngles.x = Math::RadianToDegree(atan2(-rotationMatrix._31, rotationMatrix._11));
-			localEulerAngles.y = Math::RadianToDegree(atan2(-rotationMatrix._23, rotationMatrix._22));
-			localEulerAngles.z = Math::RadianToDegree(asin(rotationMatrix._21));
+			//localEulerAngles.x = Math::RadianToDegree(atan2(-rotationMatrix._31, rotationMatrix._11));
+			//localEulerAngles.y = Math::RadianToDegree(atan2(-rotationMatrix._23, rotationMatrix._22));
+			//localEulerAngles.z = Math::RadianToDegree(asin(rotationMatrix._21));
+
+			localEulerAngles.x = Math::Rad2Deg() * atan2(-rotationMatrix._31, rotationMatrix._11);
+			localEulerAngles.y = Math::Rad2Deg() * atan2(-rotationMatrix._23, rotationMatrix._22);
+			localEulerAngles.z = Math::Rad2Deg() * asin(rotationMatrix._21);
 		}
 		else
 		{
-			localEulerAngles.y = Math::RadianToDegree(atan2(-rotationMatrix._31, rotationMatrix._11));
-			localEulerAngles.x = Math::RadianToDegree(atan2(-rotationMatrix._23, rotationMatrix._22));
-			localEulerAngles.z = Math::RadianToDegree(asin(rotationMatrix._21));
+			//localEulerAngles.y = Math::RadianToDegree(atan2(-rotationMatrix._31, rotationMatrix._11));
+			//localEulerAngles.x = Math::RadianToDegree(atan2(-rotationMatrix._23, rotationMatrix._22));
+			//localEulerAngles.z = Math::RadianToDegree(asin(rotationMatrix._21));
+
+			localEulerAngles.y = Math::Rad2Deg() * atan2(-rotationMatrix._31, rotationMatrix._11);
+			localEulerAngles.x = Math::Rad2Deg() * atan2(-rotationMatrix._23, rotationMatrix._22);
+			localEulerAngles.z = Math::Rad2Deg() * asin(rotationMatrix._21);
 		}
 
 		localEulerAngles = Math::EulerNormalize(localEulerAngles);
@@ -189,7 +201,14 @@ namespace Rendering
 		up		= SOC_Vector3(rotationMatrix._12, rotationMatrix._22, rotationMatrix._32);
 		forward = SOC_Vector3(rotationMatrix._13, rotationMatrix._23, rotationMatrix._33);
 
-		Math::RadianToDegree(&localEulerAngles, &Math::QuaternionToEuler(rotation));
+		//Math::RadianToDegree(&localEulerAngles, &Math::QuaternionToEuler(rotation));
+		
+		SOC_Vector3 euler = Math::QuaternionToEuler(rotation);
+
+		localEulerAngles.x = Math::Rad2Deg() * euler.x;
+		localEulerAngles.y = Math::Rad2Deg() * euler.y;
+		localEulerAngles.z = Math::Rad2Deg() * euler.z;
+
 
 		UpdateMatrix();
 	}
@@ -206,9 +225,9 @@ namespace Rendering
 		localEulerAngles = euler; 
 
 		SOC_Vector3 re;
-		re.x = Math::DegreeToRadian(euler.x);
-		re.y = Math::DegreeToRadian(euler.y);
-		re.z = Math::DegreeToRadian(euler.z);
+		re.x = Math::Deg2Rad() * euler.x;
+		re.y = Math::Deg2Rad() * euler.y;
+		re.z = Math::Deg2Rad() * euler.z;
 
 		SOC_Matrix rotationMatrix;
 		D3DXQuaternionRotationYawPitchRoll(&rotation, re.y, re.x, re.z);

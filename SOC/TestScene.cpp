@@ -31,11 +31,13 @@ void TestScene::OnInitialize()
 //	success = importer->LoadScene("carl.fbx");
 //	success = importer->LoadScene("GR_attack.fbx");
 //	success = importer->LoadScene("dxsphere.fbx");
+//	success = importer->LoadScene("turret_anim_v2_5.fbx");
 	success = importer->LoadScene("AS_FatZombie_FBX.fbx");
 
 	meshObject = importer->BuildObject(nullptr);
 	rootObjects->Add(meshObject);
 	meshObject->GetTransform()->SetPosition(SOC_Vector3(0, -100, 0));
+//	meshObject->GetTransform()->SetPosition(SOC_Vector3(0, 0, -180));
 	meshObject->GetTransform()->SetEulerAngles(SOC_Vector3(90, 0, 0));
 
 	//	SOC_Vector3 v = SOC_Vector3(0.0, 30, 100);

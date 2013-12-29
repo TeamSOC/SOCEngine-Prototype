@@ -15,29 +15,39 @@ SOC_Vector3 Math::EulerNormalize(SOC_Vector3 eulerAngels)
 	return e;
 }
 
-float Math::DegreeToRadian(float degree)
+//float Math::DegreeToRadian(float degree)
+//{
+//	return degree * (SOCM_PI / 180.0f);
+//}
+//
+//float Math::RadianToDegree(float radian)
+//{
+//	return radian * 180.0f / SOCM_PI;
+//}
+
+float Math::Rad2Deg()
 {
-	return degree * (SOCM_PI / 180.0f);
+	return 180.0f / SOCM_PI;
 }
 
-float Math::RadianToDegree(float radian)
+float Math::Deg2Rad()
 {
-	return radian * 180.0f / SOCM_PI;
+	return SOCM_PI / 180.0f;
 }
 
-void Math::DegreeToRadian(SOC_Vector3 *out, SOC_Vector3 *degree)
-{
-	out->x = DegreeToRadian(degree->x);
-	out->y = DegreeToRadian(degree->y);
-	out->z = DegreeToRadian(degree->z);
-}
-
-void Math::RadianToDegree(SOC_Vector3 *out, SOC_Vector3 *radian)
-{
-	out->x = RadianToDegree(radian->x);
-	out->y = RadianToDegree(radian->y);
-	out->z = RadianToDegree(radian->z);
-}
+//void Math::DegreeToRadian(SOC_Vector3 *out, SOC_Vector3 *degree)
+//{
+//	out->x = DegreeToRadian(degree->x);
+//	out->y = DegreeToRadian(degree->y);
+//	out->z = DegreeToRadian(degree->z);
+//}
+//
+//void Math::RadianToDegree(SOC_Vector3 *out, SOC_Vector3 *radian)
+//{
+//	out->x = RadianToDegree(radian->x);
+//	out->y = RadianToDegree(radian->y);
+//	out->z = RadianToDegree(radian->z);
+//}
 
 SOC_Vector3 Math::QuaternionToEuler(SOC_Quaternion &quaternion)
 {

@@ -11,6 +11,8 @@ namespace Rendering
 		{
 		private:
 			Device::Graphics *graphics;
+
+		public:
 			DeviceSurface surface;
 
 		public:
@@ -28,7 +30,6 @@ namespace Rendering
 		public:
 			void GetRenderTarget(SOC_uint renderTargetIdx)
 			{
-				ReleaseSurface();
 				graphics->GetRenderTarget(renderTargetIdx, &surface);
 			}
 
@@ -53,7 +54,6 @@ namespace Rendering
 
 			void GetSurfaceLevel(DeviceTexture texture, SOC_uint level)
 			{
-				ReleaseSurface();
 				texture->GetSurfaceLevel(level, &surface);
 			}
 		};

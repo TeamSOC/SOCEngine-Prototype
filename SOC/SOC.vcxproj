@@ -110,9 +110,11 @@
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MaterialManager.cpp" />
     <ClCompile Include="Math.cpp" />
+    <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshDataManager.cpp" />
     <ClCompile Include="MeshFilter.cpp" />
+    <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="RenderTarget.cpp" />
     <ClCompile Include="Serial.cpp" />
     <ClCompile Include="Skeleton.cpp" />
@@ -135,6 +137,9 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TransformParameters.cpp" />
+    <ClCompile Include="Vector2.cpp" />
+    <ClCompile Include="Vector3.cpp" />
+    <ClCompile Include="Vector4.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="Application.cpp" />
   </ItemGroup>
@@ -169,9 +174,11 @@
     <ClInclude Include="MaterialElements.h" />
     <ClInclude Include="MaterialManager.h" />
     <ClInclude Include="Math.h" />
+    <ClInclude Include="Matrix.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshDataManager.h" />
     <ClInclude Include="MeshFilter.h" />
+    <ClInclude Include="Quaternion.h" />
     <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="ResourcesFolder.h" />
     <ClInclude Include="Serial.h" />
@@ -204,6 +211,9 @@
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TransformParameters.h" />
     <ClInclude Include="Utility.h" />
+    <ClInclude Include="Vector2.h" />
+    <ClInclude Include="Vector3.h" />
+    <ClInclude Include="Vector4.h" />
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="VertexDeclaration.h" />
     <ClInclude Include="Application.h" />

@@ -19,8 +19,6 @@ namespace Rendering
 			VertexDeclaration decl;
 			Shader::Shader *shader;
 
-			Buffer::Surface *surface;
-
 		public:
 			RenderTarget()
 			{
@@ -28,7 +26,6 @@ namespace Rendering
 				indexBuffer		= nullptr;
 				decl			= nullptr;
 				shader			= nullptr;
-				surface			= nullptr;
 			}
 
 			~RenderTarget(void)
@@ -64,24 +61,37 @@ namespace Rendering
 				size.w = width;
 				size.h = height;
 
-				surface = new Buffer::Surface(graphics);
 
 				return true;
 			}
 
-			void GetRenderTarget(SOC_uint renderTargetIdx)
+			bool GetSurfaceLevel( SOC_uint level , Buffer::Surface *getSurface)
 			{
-				surface->GetRenderTarget(renderTargetIdx);
+				return SUCCEEDED(texture->GetSurfaceLevel(0, &getSurface->surface));
 			}
 
-			void SetRenderTarget(SOC_uint renderTargetIdx)
+			void Render()
 			{
-				surface->SetRenderTarget(renderTargetIdx);
-			}
+				static Device::Graphics *graphics = Device::DeviceDirector::GetInstance()->GetGraphics();
+				bool test = false;
+				test = shader->SetVariable("sceneTexture", this);
+				test = shader->Begin();
 
-			void GetSurfaceLevel(SOC_uint level=0)
-			{
-				surface->GetSurfaceLevel(texture, level);
+				SOC_uint num = shader->GetNumPasses();
+
+				for(SOC_uint i=0; i<num; ++i)
+				{
+					shader->BeginPass(i);
+
+					graphics->SetVertexDeclaration(decl);
+					graphics->SetVertexStream(0, vertexBuffer->GetDeviceBuffer(), vertexBuffer->GetSize());
+					graphics->SetIndices(indexBuffer->GetDeviceBuffer());
+					graphics->DrawIndexedPrimitive(SOC_TRIANGLE_LIST, 0, 0, 6, 0, 2);
+
+					shader->EndPass();
+				}
+
+				shader->End();
 			}
 
 		private:
@@ -158,8 +168,6 @@ namespace Rendering
 
 				return true;
 			}
-
-
 		};
 	}
 }

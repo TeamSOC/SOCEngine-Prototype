@@ -16,7 +16,7 @@ namespace Rendering
 		Camera* GetMainCamera();
 
 	public:
-		std::vector<Camera*>::iterator GetIteratorBegin();
-		std::vector<Camera*>::iterator GetIteratorEnd();
+		void Render(std::vector<Object*>::iterator& objectBegin,
+			std::vector<Object*>::iterator& objectEnd, Light::LightManager* sceneLights);
 	}; 
 }

@@ -35,6 +35,8 @@ sampler2D SceneSampler = sampler_state
 float4 ps_main( PS_INPUT i ) : COLOR
 {
    float4 tex = tex2D(SceneSampler, i.uv);   
+   if(i.uv.x > 0.5f)
+     tex.rgb = dot(tex.rgb, float3(0.3, 0.59, 0.11));
    return tex;
 }
 

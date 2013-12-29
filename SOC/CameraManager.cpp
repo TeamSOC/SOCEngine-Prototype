@@ -22,12 +22,12 @@ Camera* CameraManager::GetMainCamera()
 	return (*objects.begin());
 }
 
-std::vector<Camera*>::iterator CameraManager::GetIteratorBegin()
+void CameraManager::Render(std::vector<Object*>::iterator& objectBegin,
+			std::vector<Object*>::iterator& objectEnd, Light::LightManager* sceneLights)
 {
-	return objects.begin();
-}
-
-std::vector<Camera*>::iterator CameraManager::GetIteratorEnd()
-{
-	return objects.end();
+	for(std::vector<Camera*>::iterator iter = objects.begin();
+		iter != objects.end(); ++iter)
+	{
+		(*iter)->Render(objectBegin, objectEnd, sceneLights);
+	}
 }

@@ -6,6 +6,7 @@ using namespace Shader;
 using namespace Light;
 using namespace std;
 using namespace Material;
+using namespace Device;
 
 //static Scene* nowScene = nullptr;
 
@@ -46,6 +47,7 @@ void Scene::Update(float dt)
 void Scene::Render()
 {
 	Camera *mainCam = cameraMgr->GetMainCamera();
+	SOC_dword bgColour = 0xFF0000FF;
 
 	if(mainCam == nullptr)
 		return;
@@ -54,12 +56,21 @@ void Scene::Render()
 	{
 		OnRenderPreview();
 
+		graphics->Clear(0, NULL,
+			Graphics::ClearFlagType::FlagTarget | 
+			Graphics::ClearFlagType::FlagZBuffer, 
+			bgColour,
+			1.0f, 0);
+
 		//for(vector<Camera*>::iterator iter = cameraMgr->GetIteratorBegin(); iter != cameraMgr->GetIteratorEnd(); ++iter)
 		//	(*iter)->Run(dt);
 		
-		Camera::SceneRender(mainCam, rootObjects->GetBeginIter(), rootObjects->GetEndIter(), lightMgr);
+		//Camera::SceneRender(mainCam, rootObjects->GetBeginIter(), rootObjects->GetEndIter(), lightMgr);
 		//일단은, 이렇게 처리하고 추후에 각 카메라마다 Render to texture 세팅해준뒤, 그걸 처리하도록 해야할듯.
 		//추후 조정이 필요함.
+
+		cameraMgr->Render(rootObjects->GetBeginIter(), rootObjects->GetEndIter(), lightMgr);
+
 
 		OnRenderPost();
 	}

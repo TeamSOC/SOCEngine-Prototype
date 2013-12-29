@@ -209,6 +209,24 @@
     <Filter Include="Engine\Rendering\Skeleton\Bone">
       <UniqueIdentifier>{5443f42e-c65a-42fb-9139-4f02e6f15822}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Common\Vector">
+      <UniqueIdentifier>{57260d8d-1f98-4854-8d52-f097e923cb7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Common\Matrix">
+      <UniqueIdentifier>{36506397-d6cb-4ada-a15a-9000f7a6e6e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Common\Vector\Vector2">
+      <UniqueIdentifier>{918403ac-f955-46c4-9909-1818d0a45531}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Common\Vector\Vector3">
+      <UniqueIdentifier>{916c5ceb-fafa-43a6-aee6-f28c116cea73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Common\Vector\Vector4">
+      <UniqueIdentifier>{d64d38f4-c9ba-4fcf-813b-e55ca78e89ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Common\Quaternion">
+      <UniqueIdentifier>{e2fe578e-6dc9-4ac7-a1e2-90d0dffc248c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AABB.cpp">
@@ -369,6 +387,21 @@
     </ClCompile>
     <ClCompile Include="Skeleton.cpp">
       <Filter>Engine\Rendering\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2.cpp">
+      <Filter>Engine\Common\Vector\Vector2</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector3.cpp">
+      <Filter>Engine\Common\Vector\Vector3</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector4.cpp">
+      <Filter>Engine\Common\Vector\Vector4</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix.cpp">
+      <Filter>Engine\Common\Matrix</Filter>
+    </ClCompile>
+    <ClCompile Include="Quaternion.cpp">
+      <Filter>Engine\Common\Quaternion</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -575,6 +608,21 @@
     </ClInclude>
     <ClInclude Include="Skeleton.h">
       <Filter>Engine\Rendering\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2.h">
+      <Filter>Engine\Common\Vector\Vector2</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3.h">
+      <Filter>Engine\Common\Vector\Vector3</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector4.h">
+      <Filter>Engine\Common\Vector\Vector4</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix.h">
+      <Filter>Engine\Common\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="Quaternion.h">
+      <Filter>Engine\Common\Quaternion</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
