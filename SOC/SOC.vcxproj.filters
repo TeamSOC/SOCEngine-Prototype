@@ -227,6 +227,12 @@
     <Filter Include="Engine\Common\Quaternion">
       <UniqueIdentifier>{e2fe578e-6dc9-4ac7-a1e2-90d0dffc248c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Rendering\Camera\Tone">
+      <UniqueIdentifier>{2992eee4-1bd9-434c-a232-4da9af56e7c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\Camera\DownSampling">
+      <UniqueIdentifier>{c0cbfebb-302a-40dd-a4e8-a40cf0816d03}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AABB.cpp">
@@ -402,6 +408,9 @@
     </ClCompile>
     <ClCompile Include="Quaternion.cpp">
       <Filter>Engine\Common\Quaternion</Filter>
+    </ClCompile>
+    <ClCompile Include="Luminance.cpp">
+      <Filter>Engine\Rendering\Camera\DownSampling</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -623,6 +632,9 @@
     </ClInclude>
     <ClInclude Include="Quaternion.h">
       <Filter>Engine\Common\Quaternion</Filter>
+    </ClInclude>
+    <ClInclude Include="Luminance.h">
+      <Filter>Engine\Rendering\Camera\DownSampling</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
